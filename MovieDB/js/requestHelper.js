@@ -5,7 +5,7 @@ function DETAILS(id){
    return `https://api.themoviedb.org/3/movie/${id}`;
 }
 function IMAGE(id,size = 'w185_and_h278_bestv2'){
-  return path = id ? `http://image.tmdb.org/t/p/${size}/${id}` : '../images/noPoster.jpg';
+  return path = id ? `https://image.tmdb.org/t/p/${size}/${id}` : '../images/noPoster.jpg';
 }
 function SIMILAR(movie_id){
   return `https://api.themoviedb.org/3/movie/${movie_id}/similar`
