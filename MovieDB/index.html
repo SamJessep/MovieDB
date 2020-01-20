@@ -16,7 +16,7 @@
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
         <input id='search' placeholder="search.." onKeyDown='checkForSearch(this); updateFontSize(this)'/>
-        <img  id="searchButton" src="images/search.svg" onclick="search(document.getElementById('search'))" />
+        <img  id="searchButton" src="images/search.svg" onclick="search(document.getElementById('search').value)" />
       </div>
       <nav id='quickBar'>
         <button id='latest' onclick='latest()'>Latest</button>
@@ -29,10 +29,10 @@
         <button id='preferences' onclick='showPreferenceMenu()'>Preferences</button>
       </nav>
     </header>
-    
+
     <div id='preferencesMenu' class='hidden'>
       <div>
-          
+
         <div class='formSection'>
           <label for='lang'>Language</label>
           <label for='countries'>Country</label>
@@ -46,7 +46,7 @@
           <select id='adult'></select>
           <select id='siteSelect'></select>
         </div>
-      
+
 
         <button onclick='AppPreferences.savePreferences()'>Save</button>
       </div>
@@ -61,7 +61,7 @@
             <p id='pageNumber'></p>
             <button id='nextPage' class="mediumBtn" onclick='navigatePage(1)' >forward</button>
           </div>
-        
+
         </div>
       </div>
 
