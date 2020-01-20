@@ -1,22 +1,34 @@
 class Movie {
   constructor(data) {
+    this.allData = data
     this.id = data.id;
     this.title = data.title;
     this.about = data.overview;
+    this.rating;
     this.releaseDate = data.release_date;
     this.runTime = data.runtime;
     this.genres = data.genres || data.genre_ids;
     this.images = {
-      poster: IMAGE(data.poster_path),
-      backdrop: IMAGE(data.backdrop_path, 'w1280') || '../images/noBackDrop.jpg'
+      poster: IMAGE(data.poster_path, 'original'),
+      backdrop: IMAGE(data.backdrop_path, 'original') || '../images/noBackDrop.jpg'
+    }
+  }
+  
+  updateCountryData(data){
+    for(let aRegion of data){
+      if(aRegion['iso_3166_1'] == AppPreferences.country){
+        console.log(aRegion['release_dates'][0])
+        this.rating = aRegion['release_dates'][0]['certification'];
+        this.releaseDate = aRegion['release_dates'][0]['release_date'].split('T')[0];
+      }
     }
   }
 
   makeCard(){
     return `
     <div class="card movie" id=${this.id} onclick='LoadDetailed(this.id)'>
-      <img src="${this.images['poster']}">
-      <div class="card-body">
+      <img class='poster' src="${this.images['poster']}">
+      <div class="card-body hidden">
         <h1 class="card-title">${this.title}</h1>
         <p>${this.about}</p>
       </div>
@@ -24,23 +36,26 @@ class Movie {
   }
 
   GetDetailed(){
+    this.updateCountryData(this.allData.release_dates.results)
     let genreLinks = [];
     for(let aLink of this.genres){
       genreLinks.push(makeGenreLink(aLink));
     }
     return`
     <div class="detailedDiv" >
+    
+      <div id='shortAbout'>
       <img class="detailsBackDrop" src="${this.images['backdrop']}">
+        <p class='noBoarder'>${this.rating}</p>
+        <p>${this.runTime} mins</p>
+        <p>${this.releaseDate}</p>
+      </div>
       <div class="detailedText">
-        <h1>${this.title}</h1>
+        <h2>${this.title}</h2>
         <p>${this.about}</p>
-        <ul>
-          <li>Release Date: ${this.releaseDate}</li>
-          <li>Run time: ${this.runTime} mins</li>
-          <li>Genres: ${genreLinks.join(', ')}</li>
-        </ul>
-        <div>
-          <h2>Download</h2>
+        <strong>Genres:</strong><span>${genreLinks.join(', ')}</span>
+        <details id='downloads' class='detailSection' open>
+          <summary>Downloads</summary>
           <label for="quality">Movie quality</label>
           <select id="quality" onchange='GetTorrents()'>
             <option value="720p">720p</option>
@@ -59,22 +74,24 @@ class Movie {
             <button onclick='RunTorrent()'>Download</button>
           </div>
           <span id='torrentError' class='hidden'>No links available</span>
-        </div>
+        </details>
       </div>
-      <div id='reviews'></div>
-      <div id='Recommendations'></div>
+      <details class='detailSection' id='reviews'></details>
+      <details class='detailSection' id='Recommendations' open></details>
     </div>`;
 
   }
 
   MakeRecomendationSection(){
     MDBReq(SIMILAR(this.id), AddRecomendations, {
-      'language' : AppPreferences.getLang()
+      'language' : AppPreferences.getLang(),
+      'include_adult' : AppPreferences.includeAdult
     })
   }
   MakeReviewSection(){
     MDBReq(REVIEW(this.id), AddReviews, {
-      'language' : AppPreferences.getLang()
+      'language' : AppPreferences.getLang(),
+      'include_adult' : AppPreferences.includeAdult,
     })
   }
 }

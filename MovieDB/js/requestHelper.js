@@ -5,6 +5,7 @@ function DETAILS(id){
    return `https://api.themoviedb.org/3/movie/${id}`;
 }
 function IMAGE(id,size = 'w185_and_h278_bestv2'){
+  console.log(size)
   return path = id ? `http://image.tmdb.org/t/p/${size}/${id}` : '../images/noPoster.jpg';
 }
 function SIMILAR(movie_id){
@@ -22,12 +23,12 @@ function MDBReq(baseURL, successMethod, filters){
     successMethod : successMethod,
     filters : filters
   }
-  SendReq(baseURL, successMethod, filters);
+  SendReq(baseURL, successMethod, filters, filters.page);
   window.scrollTo(0, 0);
 }
 
 
-function SendReq(baseURL, successMethod, filters){
+function SendReq(baseURL, successMethod, filters, updatePagination){
   let query = $.ajax({
     url: baseURL,
     type: 'GET',
@@ -36,10 +37,13 @@ function SendReq(baseURL, successMethod, filters){
     },
     success: function(response){
       successMethod(response);
+      if(updatePagination){
+        checkPagination(response)
+      }
     },
     error: function(response){
-      console.log(response);
-    }
+      //console.log(response);
+    },
   })
 }
 
@@ -51,3 +55,24 @@ function getDate(){
   var fullDate =`${date.getFullYear()}-${month}-${day}`
   return fullDate
 }
+
+function toggleBtn(el, state){
+  console.log('button is '+ state)
+  el.disabled = state;
+  console.log(el.disabled)
+}
+
+function checkPagination(response){
+  if(response.total_pages < 2){
+    hide(getEl('navBarContainer'))
+  }else{
+    show(getEl('navBarContainer'))
+  }
+  
+  toggleBtn(getEl('prevPage'),response.page<=1)
+  toggleBtn(getEl('nextPage'),response.page>=response.total_pages)
+  
+  //Update page Number
+  getEl('pageNumber').innerText = response.page
+}
+

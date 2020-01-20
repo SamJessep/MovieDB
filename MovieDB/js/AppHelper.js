@@ -11,7 +11,7 @@ MDBReq('https://api.themoviedb.org/3/configuration/countries', AppPreferences.sa
 
 
 function showPreferenceMenu(){
-  getEl('PreferencesMenu').classList.toggle('hidden');
+  getEl('preferencesMenu').classList.toggle('hidden');
 }
 
 function getEl(id){
@@ -24,6 +24,13 @@ function Update(el, content){
 
 function Append(el, content){
   el.innerHTML += content
+}
+
+function home(){
+  hide(getEl('preferencesMenu'))
+  empty(getEl('details'))
+  empty(getEl('searchResults'))
+  hide(getEl('navBarContainer'))
 }
 
 function showMessage(msg){
@@ -47,8 +54,12 @@ function hide(el){
   }
 }
 
+function empty(el){
+  el.innerHTML = ''
+}
 
 function search(term){
+  home()
   MDBReq(SEARCH, LoadResults, {
     'query' : term,
     'page' : 1,
@@ -64,7 +75,22 @@ function checkForSearch(ele) {
   }
 }
 
+function updateFontSize(input){
+  let text = input.value;
+  let charCount = text.length;
+  let fontSize = input.style.fontSize;
+  let searchBarSize = input.offsetWidth;
+  let newFontSize = fontSize
+  console.log(fontSize, charCount)
+  console.log('charLen: ', (charCount*fontSize), 'SB SIZE: ', searchBarSize)
+  while((charCount*fontSize) > searchBarSize){
+    newFontSize --;
+  }
+  input.style.fontSize = newFontSize;
+}
+
 function latest(){
+  home()
   MDBReq(DISCOVER, LoadResults, {
     'language' : AppPreferences.getLang(),
     'include_adult' : AppPreferences.includeAdult,
@@ -76,6 +102,7 @@ function latest(){
 }
 
 function popular(){
+  home()
   MDBReq(DISCOVER, LoadResults, {
     'language' : AppPreferences.getLang(),
     'include_adult' : AppPreferences.includeAdult,
@@ -99,7 +126,7 @@ function LoadResults(resp){
       html += aMovie.makeCard();
     }
     Update(searchArea, html);
-    console.log(resp);
+   // console.log(resp);
   }else{
     showMessage("No results found");
   }
@@ -117,7 +144,7 @@ function navigatePage(dir){
 }
 
 function LoadDetailed(id){
-  MDBReq(DETAILS(id), DetailResult)
+  MDBReq(DETAILS(id), DetailResult, {'append_to_response': 'release_dates'})
 }
 
 function DetailResult(data){
@@ -133,7 +160,7 @@ function DetailResult(data){
 }
 
 function AddReviews(data){
-  let html = '<h3>Reviews</h3>';
+  let html = '<summary>Reviews</summary>';
   if(data.results.length == 0){html += '<strong>no reviews</strong>'}
   for(let aReview of data.results){
     html += new Review(aReview).formatReview();
@@ -142,7 +169,7 @@ function AddReviews(data){
 }
 
 function AddRecomendations(data){
-  let html = '<h3>Similar movies</h3>'
+  let html = '<summary>Similar movies</summary>'
   for(aMovie of data.results){
     html += new Movie(aMovie).makeCard();
   }
@@ -150,6 +177,7 @@ function AddRecomendations(data){
 }
 
 function SearchGenre(id){
+  home()
   MDBReq(DISCOVER, LoadResults, {
     'language' : AppPreferences.getLang(),
     'include_adult' : AppPreferences.includeAdult,
@@ -218,3 +246,7 @@ function RunTorrent(){
   console.log(magnet);
 }
 GetGenres();
+
+
+
+
