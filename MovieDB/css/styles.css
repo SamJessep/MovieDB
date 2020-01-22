@@ -1,6 +1,7 @@
 *{
   padding: 0;
   margin: 0;
+  font-family: arial;
 }
 
 body{
@@ -23,14 +24,10 @@ p, input, button, select{
   font-size: 2vmin;
 }
 
-button {
-  font-size: 2vw;
-  border-bottom: solid black 1px;
+button, a{
+  cursor: pointer;
 }
 
-button:hover{
-  border-bottom: solid green 1px;
-}
 .detailsBackDrop{
   width: 100%;
 }
@@ -61,11 +58,21 @@ button:hover{
 
 .detailSection {
   padding: 2vmin 0;
+  cursor: pointer;
+}
+
+.detailSection>.detailContents{
+  margin: 2vmin 3vmin;
 }
 
 .detailSection > summary{
   font-size: 3vmin;
   font-weight: double;
+  outline: none;
+}
+
+.detailSection > summary:focus{
+  color:#00d474;
 }
 
 
@@ -84,9 +91,24 @@ button:hover{
   text-align: center;
 }
 
+#search{
+  width: 80vw;
+  height: 10vh;
+  display: block;
+  font-size: 10vh;
+  border: none;
+  border-bottom: solid black 0.5vmin;
+}
+
+#search:hover, #search:focus{
+  border-bottom: solid #00d474 0.5vmin;
+  outline: none;
+}
+
 #searchButton{
   width: 10vw;
   height: auto;
+  cursor: pointer;
 }
 
 #searchButton:active{
@@ -98,6 +120,7 @@ button:hover{
   max-width: 50vw;
   max-height: 20vh;
   display: block;
+  cursor: pointer;
 }
 
 #detailsBackDrop{
@@ -105,32 +128,31 @@ button:hover{
   height: auto;
 }
 
-#search{
-  width: 80vw;
-  height: 10vh;
-  display: block;
-  font-size: 10vh;
-  border: none;
-  border-bottom: solid black;
-}
+
 
 #quickBar{
   width: 90vw;
   margin: 1vmin auto;
   display: flex;
   justify-content: space-around;
-  
+
 }
 
-#quickBar>button, .dropbtn, button{
+.navButton, #genreButton{
   background-color: white;
   border: none;
+  margin: 1.5vmin 0;
+  padding: 0;
+  cursor: pointer;
 }
 
 
 
-#quickBar>button:hover, .dropbtn:hover{
-  font-weight: bold;  
+.navButton:hover, #genreButton:hover,.navButton:focus, #genreButton:focus {
+  background: transparent;
+  box-shadow: 0 4.5vmin 0 0 #00d474;
+  border-radius: 2vmin;
+  height: 1vmin;
 }
 
 #quickBar>*, #genreSelect, .dropbtn, #navBar>button, button{
@@ -152,12 +174,30 @@ button:hover{
 }
 .poster{
   margin: 5vh auto;
-  height: 65vh ;
-  width: auto;
+  height: 65vh;
+  width: 45vh;
   display: block;
 }
-.card{
-  width:100vw;
+
+div.poster{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.no_poster>strong{
+  padding-top: 10%;
+  font-size: 5vmin;
+}
+
+.no_poster>p{
+  font-size: 6vmin;
+  margin: 0;
+}
+
+.no_detailsBackDrop{
+  font-size:6vmin;
 }
 
 #navBar{
@@ -168,6 +208,16 @@ button:hover{
 #navBar>button{
   width:40vw;
   height:auto;
+}
+
+#searchResults, #Recommendations>div{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#torrentLoad{
+  cursor:progress;
 }
 
 #pageNumber{
@@ -187,55 +237,4 @@ button:hover{
   font-weight: 150%;
   font-size: 3vmin;
   border-left: solid black 3px;
-}
-
-
-
-
-
-/* Dropdown Button */
-.dropbtn {
-  background-color: green
-  color: white;
-  padding: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-/* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-  font-weight: bold;
-}
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {
-  display:block;
 }

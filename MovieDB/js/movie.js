@@ -10,10 +10,10 @@ class Movie {
     this.genres = data.genres || data.genre_ids;
     this.images = {
       poster: IMAGE(data.poster_path, 'original'),
-      backdrop: IMAGE(data.backdrop_path, 'original') || '../images/noBackDrop.jpg'
+      backdrop: IMAGE(data.backdrop_path, 'original')
     }
   }
-  
+
   updateCountryData(data){
     for(let aRegion of data){
       if(aRegion['iso_3166_1'] == AppPreferences.country){
@@ -25,9 +25,10 @@ class Movie {
   }
 
   makeCard(){
+    let poster = this.getPoster(this.images['poster'], 'poster')
     return `
     <div class="card movie" id=${this.id} onclick='LoadDetailed(this.id)'>
-      <img class='poster' src="${this.images['poster']}">
+      ${poster}
       <div class="card-body hidden">
         <h1 class="card-title">${this.title}</h1>
         <p>${this.about}</p>
@@ -35,17 +36,31 @@ class Movie {
     </div>`;
   }
 
+  getPoster(id, classSelector){
+    let poster;
+    if(id){
+        poster = `<img class='${classSelector}' src="${id}">`
+    }else{
+      poster = `<div class='${classSelector} ${'no_'+classSelector}'>
+                  ${classSelector == 'poster'? `<p>${this.title}</p><strong>No Poster</strong>`:`<strong>No Backdrop</strong>`}
+                </div>`
+    }
+    return poster;
+  }
+
   GetDetailed(){
+    console.log(this);
     this.updateCountryData(this.allData.release_dates.results)
     let genreLinks = [];
     for(let aLink of this.genres){
       genreLinks.push(makeGenreLink(aLink));
     }
+    let poster = this.getPoster(this.images['backdrop'], 'detailsBackDrop')
     return`
     <div class="detailedDiv" >
-    
+
       <div id='shortAbout'>
-      <img class="detailsBackDrop" src="${this.images['backdrop']}">
+      ${poster}
         <p class='noBoarder'>${this.rating}</p>
         <p>${this.runTime} mins</p>
         <p>${this.releaseDate}</p>
@@ -54,24 +69,26 @@ class Movie {
         <h2>${this.title}</h2>
         <p>${this.about}</p>
         <strong>Genres:</strong><span>${genreLinks.join(', ')}</span>
+      </div>
         <details id='downloads' class='detailSection' open>
           <summary>Downloads</summary>
-          <label for="quality">Movie quality</label>
-          <select id="quality" onchange='GetTorrents()'>
-            <option value="720p">720p</option>
-            <option value="1080p" selected>1080p</option>
-            <option value="1440p">1440p</option>
-            <option value="4k">4k</option>
-          </select>
-          <img class='inline hidden' id='torrentLoad' src='../images/torrentLoad.gif' />
-          <div id='linkSelect' class='inline shown'>
-            <label for="selector">Choose a link</label>
-            <select id="selector">
-              <option value="">Link 1</option>
-              <option value="">Link 2</option>
-              <option value="">Link 3</option>
+          <div class='detailContents'>
+            <label for="quality">Movie quality</label>
+            <select id="quality" onchange='Torrent.GetTorrents()'>
+              <option value="720p">720p</option>
+              <option value="1080p" selected>1080p</option>
+              <option value="1440p">1440p</option>
+              <option value="4k">4k</option>
             </select>
-            <button onclick='RunTorrent()'>Download</button>
+            <img class='inline hidden' id='torrentLoad' src='images/torrentLoad.gif' />
+            <div id='linkSelect' class='inline shown'>
+              <label for="selector">Choose a link</label>
+              <select id="selector">
+                <option value="">Link 1</option>
+                <option value="">Link 2</option>
+                <option value="">Link 3</option>
+              </select>
+              <button onclick='RunTorrent()'>Download</button>
           </div>
           <span id='torrentError' class='hidden'>No links available</span>
         </details>

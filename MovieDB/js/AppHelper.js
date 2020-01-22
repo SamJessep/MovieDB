@@ -2,6 +2,8 @@ var searchArea = getEl('searchResults');
 var searchBody = getEl('searchBody');
 var details = getEl('details');
 var page, totalPages, detailedPageMovie;
+
+
 var AppPreferences = new Preferences();
 
 MDBReq('https://api.themoviedb.org/3/configuration/languages', AppPreferences.saveLanguages.bind(AppPreferences), {});
@@ -133,13 +135,26 @@ function LoadResults(resp){
   return movies;
 }
 
+function InfinateLoad(resp){
+  console.log(resp)
+  let aMovie = '',movies = [], html='';
+  if(resp.results.length>1){
+    for(let result of resp.results){
+      aMovie = new Movie(result);
+      movies.push(aMovie);
+      html += aMovie.makeCard();
+    }
+    Append(searchArea, html);
+   // console.log(resp);
+  }
+}
 function navigatePage(dir){
   let newPage = page + dir;
   if(!(newPage<1 || newPage>totalPages)){
     page = newPage
     let req = HISTORY;
     req.filters['page'] = page;
-    MDBReq(req.baseURL, req.successMethod, req.filters);
+    MDBReq(req.baseURL, InfinateLoad, req.filters,false);
   }
 }
 
@@ -154,25 +169,27 @@ function DetailResult(data){
   let html = movie.GetDetailed();
   detailedPageMovie = movie;
   Update(details, html);
-  GetTorrents();
+  Torrent.GetTorrents();
   movie.MakeReviewSection()
   movie.MakeRecomendationSection()
 }
 
 function AddReviews(data){
-  let html = '<summary>Reviews</summary>';
+  let html = '<summary>Reviews</summary><div class="detailContents">';
   if(data.results.length == 0){html += '<strong>no reviews</strong>'}
   for(let aReview of data.results){
     html += new Review(aReview).formatReview();
   }
+  html += '</div>'
   Update(getEl('reviews'), html)
 }
 
 function AddRecomendations(data){
-  let html = '<summary>Similar movies</summary>'
+  let html = '<summary>Similar movies</summary><div class="detailContents">'
   for(aMovie of data.results){
     html += new Movie(aMovie).makeCard();
   }
+  html += '</div>'
   Update(Recommendations, html)
 }
 
@@ -207,46 +224,4 @@ function ShowGenres(data){
   Update(getEl('GenreSelect'), html);
 }
 
-function GetTorrents(data){
-  let loadGif = getEl('torrentLoad')
-  let linkSelect = getEl('linkSelect')
-  let errorMsg = getEl('torrentError')
-  if(!data){
-    show(loadGif);
-    hide(linkSelect);
-    hide(errorMsg);
-    var baseURL = 'https://mdbscrap.herokuapp.com/'
-    SendReq(baseURL, GetTorrents, {
-      'url' : new Torrent(getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}).URL,
-      'site' : AppPreferences.downloadSite
-    })
-  }else{
-    console.log(data);
-    if(data.length > 0){
-      let options = ''
-      for(let aTorrent of data){
-        options += `<option value=${aTorrent.link}>${aTorrent.title}</option>`
-      }
-      Update(getEl('selector'), options);
-      hide(loadGif);
-      show(linkSelect);
-    }else{
-      hide(loadGif);
-      show(errorMsg);
-    }
-
-
-  }
-
-}
-
-function RunTorrent(){
-  magnet = getEl('selector').value;
-  window.location.href = magnet;
-  console.log(magnet);
-}
 GetGenres();
-
-
-
-

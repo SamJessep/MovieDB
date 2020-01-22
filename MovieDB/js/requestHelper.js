@@ -5,7 +5,7 @@ function DETAILS(id){
    return `https://api.themoviedb.org/3/movie/${id}`;
 }
 function IMAGE(id,size = 'w185_and_h278_bestv2'){
-  return path = id ? `https://image.tmdb.org/t/p/${size}/${id}` : '../images/noPoster.jpg';
+  return path = id ? `https://image.tmdb.org/t/p/${size}/${id}` : false;
 }
 function SIMILAR(movie_id){
   return `https://api.themoviedb.org/3/movie/${movie_id}/similar`
@@ -15,19 +15,21 @@ function REVIEW(movie_id){
 }
 var HISTORY;
 
-function MDBReq(baseURL, successMethod, filters){
+function MDBReq(baseURL, successMethod, filters, scrollTop = true){
   filters = {...filters, ...{'api_key': configs['MDB_API_KEY']}}
   HISTORY = {
     baseURL : baseURL,
     successMethod : successMethod,
     filters : filters
   }
-  SendReq(baseURL, successMethod, filters, filters.page);
-  window.scrollTo(0, 0);
+  SendReq(baseURL, {'success':successMethod}, filters, filters.page);
+  if(scrollTop){
+    window.scrollTo(0, 0);
+  }
 }
 
 
-function SendReq(baseURL, successMethod, filters, updatePagination){
+function SendReq(baseURL, methods, filters, updatePagination){
   let query = $.ajax({
     url: baseURL,
     type: 'GET',
@@ -35,12 +37,15 @@ function SendReq(baseURL, successMethod, filters, updatePagination){
       ...filters
     },
     success: function(response){
-      successMethod(response);
+      methods['success'](response);
       if(updatePagination){
         checkPagination(response)
       }
     },
     error: function(response){
+      if(methods['fail']){
+        methods['fail'](response)
+      }
       //console.log(response);
     },
   })
