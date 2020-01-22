@@ -25,7 +25,7 @@ function Update(el, content){
 }
 
 function Append(el, content){
-  el.innerHTML += content
+  el.insertAdjacentHTML('beforeend', content);
 }
 
 function home(){
@@ -128,9 +128,17 @@ function LoadResults(resp){
       html += aMovie.makeCard();
     }
     Update(searchArea, html);
+    var timer;
     $(window).scroll(function() {
-      if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-          loadMore()
+      if($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
+        if(timer) {
+      		window.clearTimeout(timer);
+      	}
+
+      	timer = window.setTimeout(function() {
+      		loadMore()
+      	}, 100);
+
       }
     });
   }else{

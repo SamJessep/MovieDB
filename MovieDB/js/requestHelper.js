@@ -57,10 +57,3 @@ function getDate(){
   var fullDate =`${date.getFullYear()}-${month}-${day}`
   return fullDate
 }
-<<<<<<< HEAD
-=======
-
-function toggleBtn(el, state){
-  el.disabled = state;
-}
->>>>>>> 16b2e0a809c4d56a79787140edf3826cbd375f74
