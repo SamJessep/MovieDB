@@ -128,7 +128,10 @@ button, a{
   height: auto;
 }
 
-
+#BackdropDiv{
+  position: relative;
+  overflow: hidden;
+}
 
 #quickBar{
   width: 90vw;

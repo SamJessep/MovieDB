@@ -1,0 +1,42 @@
+.openTrailer{
+  width: 6vmin;
+  transform: rotate(180deg);
+  margin-bottom: 2vmin;
+  box-shadow: 0 0 5px 6px #ffffff;
+  border-radius: 100%;
+  cursor: pointer;
+  position: absolute;
+  top:50%;
+  left:94%;
+}
+
+.openTrailer:hover{
+  background-color: #00d474;
+}
+
+.closeTrailer{
+  width: 5vmin;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#trailerPlayer{
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.openTrailer:hover + #trailer{
+  transition: 1s;
+  left: 0;
+}
+
+#trailer{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 100%;
+  top: 0;
+  background-color: red;
+  transition: 1s;
+}

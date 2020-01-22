@@ -1,6 +1,7 @@
 //URLS
 var SEARCH = 'https://api.themoviedb.org/3/search/movie';
 var DISCOVER = 'https://api.themoviedb.org/3/discover/movie';
+var VIDEO = `https://www.googleapis.com/youtube/v3/search`;
 function DETAILS(id){
    return `https://api.themoviedb.org/3/movie/${id}`;
 }

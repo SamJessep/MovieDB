@@ -128,14 +128,18 @@ function LoadResults(resp){
       html += aMovie.makeCard();
     }
     Update(searchArea, html);
-   // console.log(resp);
+    $(window).scroll(function() {
+      if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+          loadMore()
+      }
+    });
   }else{
     showMessage("No results found");
   }
   return movies;
 }
 
-function InfinateLoad(resp){
+function infinateLoad(resp){
   console.log(resp)
   let aMovie = '',movies = [], html='';
   if(resp.results.length>1){
@@ -148,13 +152,13 @@ function InfinateLoad(resp){
    // console.log(resp);
   }
 }
-function navigatePage(dir){
-  let newPage = page + dir;
+function loadMore(){
+  let newPage = page + 1;
   if(!(newPage<1 || newPage>totalPages)){
     page = newPage
     let req = HISTORY;
     req.filters['page'] = page;
-    MDBReq(req.baseURL, InfinateLoad, req.filters,false);
+    MDBReq(req.baseURL, infinateLoad, req.filters,false);
   }
 }
 

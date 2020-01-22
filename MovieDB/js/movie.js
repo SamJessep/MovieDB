@@ -49,7 +49,7 @@ class Movie {
   }
 
   GetDetailed(){
-    console.log(this);
+    getTrailer(this)
     this.updateCountryData(this.allData.release_dates.results)
     let genreLinks = [];
     for(let aLink of this.genres){
@@ -58,9 +58,15 @@ class Movie {
     let poster = this.getPoster(this.images['backdrop'], 'detailsBackDrop')
     return`
     <div class="detailedDiv" >
-
+      <div id='BackdropDiv'>
+        ${poster}
+        <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='showTrailer()'></div>
+        <div id='trailer'>
+          <img class='closeTrailer' src='images/close.svg' onclick='hideTrailer()'>
+          <iframe id='trailerPlayer'></iframe>
+        </div>
+      </div>
       <div id='shortAbout'>
-      ${poster}
         <p class='noBoarder'>${this.rating}</p>
         <p>${this.runTime} mins</p>
         <p>${this.releaseDate}</p>
