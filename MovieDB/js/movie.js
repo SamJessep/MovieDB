@@ -26,8 +26,10 @@ class Movie {
 
   makeCard(){
     let poster = this.getPoster(this.images['poster'], 'poster')
+    let id = this.id+'_Poster';
     return `
     <div class="card movie" id=${this.id} onclick='LoadDetailed(this.id)'>
+      <div id='${this.id}_LL' class='lazyLoad'></div>
       ${poster}
       <div class="card-body hidden">
         <h1 class="card-title">${this.title}</h1>
@@ -39,7 +41,7 @@ class Movie {
   getPoster(id, classSelector){
     let poster;
     if(id){
-        poster = `<img class='${classSelector}' src="${id}">`
+        poster = `<img class='${classSelector}' id="${this.id}_Poster" src="${id}" onload='hideLazyLoads(this)'>`
     }else{
       poster = `<div class='${classSelector} ${'no_'+classSelector}'>
                   ${classSelector == 'poster'? `<p>${this.title}</p><strong>No Poster</strong>`:`<strong>No Backdrop</strong>`}
