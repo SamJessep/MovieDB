@@ -11,7 +11,7 @@ function hideTrailer(){
 
 function getTrailer(movie){
   var id;
-  let searchTerm = movie.title + ' +movie +trailer';
+  let searchTerm = movie.title + ' movie trailer';
   let filters = {
     'part': 'snippet',
     'maxResults': 1,
