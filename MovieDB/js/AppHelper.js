@@ -228,4 +228,9 @@ function ShowGenres(data){
   Update(getEl('GenreSelect'), html);
 }
 
+function hideLazyLoads(el){
+  let LazyLoads = document.getElementsByClassName('movie')
+  getEl(el.parentNode.id+'_LL').outerHTML = '';
+}
+
 GetGenres();

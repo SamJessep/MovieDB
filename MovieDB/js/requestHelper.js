@@ -30,7 +30,7 @@ function MDBReq(baseURL, successMethod, filters, scrollTop = true){
 }
 
 
-function SendReq(baseURL, methods, filters, updatePagination){
+function SendReq(baseURL, methods, filters){
   let query = $.ajax({
     url: baseURL,
     type: 'GET',
@@ -39,9 +39,6 @@ function SendReq(baseURL, methods, filters, updatePagination){
     },
     success: function(response){
       methods['success'](response);
-      if(updatePagination){
-        checkPagination(response)
-      }
     },
     error: function(response){
       if(methods['fail']){
@@ -63,18 +60,4 @@ function getDate(){
 
 function toggleBtn(el, state){
   el.disabled = state;
-}
-
-function checkPagination(response){
-  if(response.total_pages < 2){
-    hide(getEl('navBarContainer'))
-  }else{
-    show(getEl('navBarContainer'))
-  }
-
-  toggleBtn(getEl('prevPage'),response.page<=1)
-  toggleBtn(getEl('nextPage'),response.page>=response.total_pages)
-
-  //Update page Number
-  getEl('pageNumber').innerText = response.page
 }

@@ -203,6 +203,13 @@ div.poster{
   font-size:6vmin;
 }
 
+.lazyLoad{
+  width: 45vmin;
+  height: 70vmin;
+  position: absolute;
+  background-color: grey;
+}
+
 #navBar{
   display: flex;
   justify-content: space-between;
