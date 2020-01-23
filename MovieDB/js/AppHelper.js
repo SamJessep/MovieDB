@@ -117,7 +117,6 @@ function popular(){
 
 function LoadResults(resp){
   details.hidden = true;
-  searchBody.hidden = false;
   page = resp.page;
   totalPages = resp.total_pages;
   let aMovie = '',movies = [], html='';
@@ -144,6 +143,7 @@ function LoadResults(resp){
   }else{
     showMessage("No results found");
   }
+  searchBody.hidden = false;
   return movies;
 }
 
@@ -175,7 +175,6 @@ function LoadDetailed(id){
 }
 
 function DetailResult(data){
-  details.hidden = false;
   searchBody.hidden = true;
   let movie = new Movie(data);
   let html = movie.GetDetailed();
@@ -184,6 +183,7 @@ function DetailResult(data){
   Torrent.GetTorrents();
   movie.MakeReviewSection()
   movie.MakeRecomendationSection()
+  details.hidden = false;
 }
 
 function AddReviews(data){
