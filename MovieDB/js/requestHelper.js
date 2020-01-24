@@ -5,8 +5,8 @@ var VIDEO = `https://www.googleapis.com/youtube/v3/search`;
 function DETAILS(id){
    return `https://api.themoviedb.org/3/movie/${id}`;
 }
-function IMAGE(id,size = 'w185_and_h278_bestv2'){
-  return path = id ? `https://image.tmdb.org/t/p/${size}/${id}` : false;
+function IMAGE(id,size = 'w45'){
+  return path = id ? {"SD": `https://image.tmdb.org/t/p/${size}/${id}`, "HD": `https://image.tmdb.org/t/p/original/${id}`} : false;
 }
 function SIMILAR(movie_id){
   return `https://api.themoviedb.org/3/movie/${movie_id}/similar`
@@ -40,6 +40,7 @@ function SendReq(baseURL, methods, filters){
     success: function(response){
       console.log(response)
       methods['success'](response);
+      LazyLoadImg.update();
     },
     error: function(response){
       if(methods['fail']){

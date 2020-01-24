@@ -9,8 +9,8 @@ class Movie {
     this.runTime = data.runtime;
     this.genres = data.genres || data.genre_ids;
     this.images = {
-      poster: IMAGE(data.poster_path, 'original'),
-      backdrop: IMAGE(data.backdrop_path, 'original')
+      poster: IMAGE(data.poster_path),
+      backdrop: IMAGE(data.backdrop_path, 'w92')
     }
   }
 
@@ -29,7 +29,6 @@ class Movie {
     let id = this.id+'_Poster';
     return `
     <div class="card movie" id=${this.id} onclick='LoadDetailed(this.id)'>
-      <div id='${this.id}_LL' class='lazyLoad'></div>
       ${poster}
       <div class="card-body hidden">
         <h1 class="card-title">${this.title}</h1>
@@ -38,10 +37,10 @@ class Movie {
     </div>`;
   }
 
-  getPoster(id, classSelector){
+  getPoster(srcs, classSelector){
     let poster;
-    if(id){
-        poster = `<img class='${classSelector}' id="${this.id}_Poster" src="${id}" onload='hideLazyLoads(this)'>`
+    if(srcs){
+        poster = `<img class='${classSelector} lazy' id="${this.id}_Poster" src="${srcs['SD']}" data-src="${srcs['HD']}">`
     }else{
       poster = `<div class='${classSelector} ${'no_'+classSelector}'>
                   ${classSelector == 'poster'? `<p>${this.title}</p><strong>No Poster</strong>`:`<strong>No Backdrop</strong>`}
