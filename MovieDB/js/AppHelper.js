@@ -120,7 +120,7 @@ function LoadResults(resp){
   page = resp.page;
   totalPages = resp.total_pages;
   let aMovie = '',movies = [], html='';
-  if(resp.results.length>1){
+  if(resp.results.length>0){
     for(let result of resp.results){
       aMovie = new Movie(result);
       movies.push(aMovie);

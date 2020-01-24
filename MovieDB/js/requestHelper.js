@@ -1,5 +1,5 @@
 //URLS
-var SEARCH = 'https://api.themoviedb.org/3/search/movie';
+var SEARCH = 'https://api.themoviedb.org/3/search/multi';
 var DISCOVER = 'https://api.themoviedb.org/3/discover/movie';
 var VIDEO = `https://www.googleapis.com/youtube/v3/search`;
 function DETAILS(id){
@@ -38,6 +38,7 @@ function SendReq(baseURL, methods, filters){
       ...filters
     },
     success: function(response){
+      console.log(response)
       methods['success'](response);
     },
     error: function(response){
