@@ -1,2 +1,4 @@
 # MovieDB
-React web app using TMDb api
+Vanila JS web app using 
+  - The Movie Database API: for movie data
+  - Youtube API: for movie trailers
