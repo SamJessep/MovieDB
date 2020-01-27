@@ -47,9 +47,9 @@
 }
 
 #torrentLoad > div {
-  width: 18px;
-  height: 18px;
-  background-color: #333;
+  width: var(--BaseFontSize);
+  height: var(--BaseFontSize);
+  background-color: var(--AccentColor);;
 
   border-radius: 100%;
   display: inline-block;

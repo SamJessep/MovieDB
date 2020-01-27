@@ -5,6 +5,7 @@
     --AccentColor: #00d474;
     --VideoBackground: #000000f0;
     --ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
+    --BaseFontSize: 3vmin;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,7 +23,7 @@
   margin: 0;
   font-family: arial;
   color: var(--FontColor, white);
-  font-size: 3vmin;
+  font-size: var(--BaseFontSize);
   outline-color: var(--AccentColor);
 }
 
@@ -40,11 +41,11 @@ h2{
 }
 
 p{
-  margin: 2vmin 3vmin;
+  margin: 2vmin var(--BaseFontSize);
 }
 
 p, input, button, select{
-  font-size: 3vmin;
+  font-size: var(--BaseFontSize);
 }
 
 button, a{
@@ -101,16 +102,16 @@ input, select, button{
   padding: 0 2vmin;
 }
 .detailSection {
-  padding: 2vmin 3vmin;
+  padding: 2vmin var(--BaseFontSize);
 }
 
 .detailSection>.detailContents{
-  margin: 2vmin 3vmin;
+  margin: 2vmin var(--BaseFontSize);
 }
 
 .detailSection > summary{
   cursor: pointer;
-  font-size: 3vmin;
+  font-size: var(--BaseFontSize);
   outline: none;
 }
 
@@ -212,7 +213,7 @@ input, select, button{
 }
 
 #quickBar>*, #genreSelect, .dropbtn, #navBar>button, button{
-  font-size: 3vmin;
+  font-size: var(--BaseFontSize);
 }
 
 #preferencesMenu>div{
@@ -226,7 +227,7 @@ input, select, button{
 
 .formSection>*{
   width:20vw;
-  font-size: 3vmin;
+  font-size: var(--BaseFontSize);
 }
 
 .movie{
@@ -309,6 +310,6 @@ div.poster{
 #shortAbout > p{
   padding: 0 3vw;
   font-weight: 150%;
-  font-size: 3vmin;
+  font-size: var(--BaseFontSize);
   border-left: solid var(--FontColor, white) 3px;
 }
