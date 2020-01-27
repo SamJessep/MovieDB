@@ -27,6 +27,6 @@ function loadVideoPlayer(response) {
   console.log(response)
   let id = response.items[0].id.videoId;
   console.log(id)
-  let trailer = `<iframe id='trailerPlayer' class='YTPlayer' src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  let trailer = `<iframe id='trailerPlayer' class='YTPlayer' tabindex="-1" src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   getEl('trailerPlayer').outerHTML = trailer;
 }

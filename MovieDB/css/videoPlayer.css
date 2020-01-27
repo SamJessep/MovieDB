@@ -11,7 +11,7 @@
 }
 
 .openTrailer:hover{
-  background-color: #00d474;
+  background-color: var(--AccentColor);
 }
 
 .closeTrailer{
@@ -36,6 +36,6 @@
   height: 100%;
   left: 100%;
   top: 0;
-  background-color: red;
+  background-color: transparent;
   transition: 1s;
 }

@@ -28,19 +28,19 @@ class Movie {
     let poster = this.getPoster(this.images['poster'], 'poster')
     let id = this.id+'_Poster';
     return `
-    <div class="card movie" id=${this.id} onclick='LoadDetailed(this.id)'>
+    <button class="card movie" id=${this.id} onclick='LoadDetailed(this.id)' tabindex='0'>
       ${poster}
       <div class="card-body hidden">
         <h1 class="card-title">${this.title}</h1>
         <p>${this.about}</p>
       </div>
-    </div>`;
+    </button>`;
   }
 
   getPoster(srcs, classSelector){
     let poster;
     if(srcs){
-        poster = `<img class='${classSelector} lazy' id="${this.id}_Poster" src="${srcs['SD']}" data-src="${srcs['HD']}">`
+        poster = `<img class='${classSelector} lazy' id="${this.id}_Poster" src="${srcs['SD']}" data-src="${srcs['HD']}" alt='"${this.title}" Movie poster'>`
     }else{
       poster = `<div class='${classSelector} ${'no_'+classSelector}'>
                   ${classSelector == 'poster'? `<p>${this.title}</p><strong>No Poster</strong>`:`<strong>No Backdrop</strong>`}

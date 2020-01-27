@@ -2,64 +2,68 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="Movie Database App">
     <title>MovieDB v2</title>
 
     <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"crossorigin="anonymous" defer></script>
 
     <!-- LAZY LOAD :) -->
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.min.js" defer></script>
 
-    <script type="text/javascript" src='js/config.js'></script>
-    <link rel="stylesheet" type="text/css" href='css/dropMenu.css' />
-    <link rel="stylesheet" type="text/css" href='css/styles.css' />
-    <link rel="stylesheet" type="text/css" href='css/videoPlayer.css' />
+    <script type="text/javascript" src='js/config.js' defer></script>
+    <link rel="stylesheet" type="text/css" href='css/dropMenu.css' media="wait" onload="this.media='all'" />
+    <link rel="stylesheet" type="text/css" href='css/styles.css'/>
+    <link rel="stylesheet" type="text/css" href='css/videoPlayer.css' media="wait" onload="this.media='all'"/>
   </head>
   <body>
     <header>
-      <img id='logo' onclick="home()"src='images/MDB_Logo.png' />
+      <img id='logo' onclick="home()"src='images/MDB_Logo.png' alt='movie database logo'/>
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
-        <input id='search' placeholder="search.." onKeyDown='checkForSearch(this); updateFontSize(this)'/>
-        <img  id="searchButton" src="images/search.svg" onclick="search(document.getElementById('search').value)" />
+        <label class='bgColored text-selection-none'>Search
+          <input id='search' placeholder="search.." onKeyDown='checkForSearch(this); updateFontSize(this)'/>
+        </label>
+        <img  id="searchButton" src="images/search.svg" alt='search button' onclick="search(document.getElementById('search').value)" />
       </div>
       <nav id='quickBar'>
-        <div id='latest' class="navButton" onclick='latest()'>Latest</div>
-        <div id='popular' class="navButton" onclick='popular()'>Most popular</div>
+        <div id='latest' class="navButton text-selection-none" onclick='latest()'>Latest</div>
+        <div id='popular' class="navButton text-selection-none" onclick='popular()'>Most popular</div>
         <div class="dropdown">
           <div id='genreButtonContainer'>
-            <div id='genreButton' onclick="myFunction()" class="dropbtn navButton">Genres</div>
+            <div id='genreButton' onclick="myFunction()" class="dropbtn navButton text-selection-none">Genres</div>
           </div>
           <div id="GenreSelect" class="dropdown-content">
           </div>
         </div>
-        <div id='preferences' class="navButton" onclick='showPreferenceMenu()'>Preferences</div>
+        <div id='preferences' class="navButton text-selection-none" onclick='showPreferenceMenu()'>Preferences</div>
       </nav>
+      <div id='preferencesMenu' class='hidden'>
+        <div>
+
+          <div class='formSection'>
+            <label for='lang'>Language</label>
+            <label for='countries'>Country</label>
+            <label for='adult'>Include adult content</label>
+            <label for='siteSelect'>Download site</label>
+          </div>
+
+          <div class='formSection'>
+            <select id='lang'></select>
+            <select id='countries'></select>
+            <select id='adult'></select>
+            <select id='siteSelect'></select>
+          </div>
+
+
+          <button onclick='AppPreferences.savePreferences()'>Save</button>
+        </div>
+      </div>
     </header>
 
-    <div id='preferencesMenu' class='hidden'>
-      <div>
 
-        <div class='formSection'>
-          <label for='lang'>Language</label>
-          <label for='countries'>Country</label>
-          <label for='adult'>Include adult content</label>
-          <label for='siteSelect'>Download site</label>
-        </div>
-
-        <div class='formSection'>
-          <select id='lang'></select>
-          <select id='countries'></select>
-          <select id='adult'></select>
-          <select id='siteSelect'></select>
-        </div>
-
-
-        <button onclick='AppPreferences.savePreferences()'>Save</button>
-      </div>
-    </div>
-
-    <div id='body'>
+    <main>
       <div id='searchBody'>
         <div id='searchResults'> </div>
         <div id='navBarContainer' class="hidden">
@@ -68,18 +72,18 @@
 
       <div id='details' hidden>
       </div>
-    </div>
+    </main>
 
-    <script type="text/javascript" src='js/preferences.js'></script>
-    <script type="text/javascript" src='js/requestHelper.js'></script>
-    <script type="text/javascript" src='js/AppHelper.js'></script>
-    <script type="text/javascript" src='js/Result.js'></script>
-    <script type="text/javascript" src='js/movie.js'></script>
-    <script type="text/javascript" src='js/review.js'></script>
-    <script type="text/javascript" src='js/torrent.js'></script>
-    <script type="text/javascript" src='js/trailer.js'></script>
-    <script type="text/javascript" src='js/dropDownMenu.js'></script>
-    <script type="text/javascript" src='js/dropDownMenu.js'></script>
-    <script type="text/javascript" src='js/addons.js'></script>
+    <script type="text/javascript" src='js/preferences.js' defer></script>
+    <script type="text/javascript" src='js/requestHelper.js' defer></script>
+    <script type="text/javascript" src='js/AppHelper.js' defer></script>
+    <script type="text/javascript" src='js/Result.js' defer></script>
+    <script type="text/javascript" src='js/movie.js' defer></script>
+    <script type="text/javascript" src='js/review.js' defer></script>
+    <script type="text/javascript" src='js/torrent.js' defer></script>
+    <script type="text/javascript" src='js/trailer.js' defer></script>
+    <script type="text/javascript" src='js/dropDownMenu.js' defer></script>
+    <script type="text/javascript" src='js/dropDownMenu.js' defer></script>
+    <script type="text/javascript" src='js/addons.js' defer></script>
   </body>
 </html>
