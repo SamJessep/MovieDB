@@ -62,13 +62,15 @@ function empty(el){
 
 function search(term){
   home()
-  MDBReq(SEARCH, LoadResults, {
-    'query' : term,
-    'page' : 1,
-    'language' : AppPreferences.getLang(),
-    'include_adult' : AppPreferences.includeAdult
-  });
-  page = 1;
+  if(term.trim() != ''){
+    MDBReq(SEARCH, LoadResults, {
+      'query' : term,
+      'page' : 1,
+      'language' : AppPreferences.getLang(),
+      'include_adult' : AppPreferences.includeAdult
+    });
+    page = 1;
+  }
 }
 
 function checkForSearch(ele) {
