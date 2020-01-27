@@ -17,8 +17,7 @@ class Movie {
   updateCountryData(data){
     for(let aRegion of data){
       if(aRegion['iso_3166_1'] == AppPreferences.country){
-        console.log(aRegion['release_dates'][0])
-        this.rating = aRegion['release_dates'][0]['certification'];
+        this.rating = aRegion['release_dates'][0]['certification'] || 'n/a';
         this.releaseDate = aRegion['release_dates'][0]['release_date'].split('T')[0];
       }
     }

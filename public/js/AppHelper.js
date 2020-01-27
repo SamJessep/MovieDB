@@ -85,8 +85,6 @@ function updateFontSize(input){
   let fontSize = input.style.fontSize;
   let searchBarSize = input.offsetWidth;
   let newFontSize = fontSize
-  console.log(fontSize, charCount)
-  console.log('charLen: ', (charCount*fontSize), 'SB SIZE: ', searchBarSize)
   while((charCount*fontSize) > searchBarSize){
     newFontSize --;
   }
@@ -131,14 +129,14 @@ function LoadResults(resp){
     Update(searchArea, html);
     var timer;
     $(window).scroll(function() {
-      if($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
+      if($(window).scrollTop() + $(window).height() > $(document).height() - 400 && !$('searchBody').hidden) {
         if(timer) {
       		window.clearTimeout(timer);
       	}
 
       	timer = window.setTimeout(function() {
       		loadMore()
-      	}, 100);
+      	}, 500);
 
       }
     });
@@ -150,7 +148,6 @@ function LoadResults(resp){
 }
 
 function infinateLoad(resp){
-  console.log(resp)
   let aMovie = '',movies = [], html='';
   if(resp.results.length>1){
     for(let result of resp.results){
@@ -159,7 +156,6 @@ function infinateLoad(resp){
       html += aMovie.makeCard();
     }
     Append(searchArea, html);
-   // console.log(resp);
   }
 }
 function loadMore(){
