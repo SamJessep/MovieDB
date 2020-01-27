@@ -24,7 +24,7 @@ function getTrailer(movie){
     'type': 'video',
     'key': configs['YT_API_KEY']
   }
-  SendReq(VIDEO, {'success':loadVideoPlayer}, filters)
+  SendReq(VIDEO, {'success':loadVideoPlayer, 'fail':hidePlayer}, filters)
 }
 
 
@@ -33,6 +33,11 @@ function loadVideoPlayer(response) {
   let trailer = `<iframe id='trailerPlayer' class='YTPlayer' tabindex="-1" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   getEl('trailerPlayer').outerHTML = trailer;
   addYoutubeScripts()
+}
+
+function hidePlayer(){
+  document.getElementsByClassName('trailerSlide')[0].outerHTML = '';
+  getEl('trailer').outerHTML = '';
 }
 
 function addYoutubeScripts(){
