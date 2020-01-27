@@ -18,6 +18,7 @@ function getTrailer(movie){
   let searchTerm = movie.title + ' movie trailer';
   let filters = {
     'part': 'snippet',
+    'fields': 'id',
     'maxResults': 1,
     'q': searchTerm,
     'type': 'video',

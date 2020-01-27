@@ -18,6 +18,7 @@ Torrent = class{
     show(Torrent.loadGif);
     hide(Torrent.linkSelect);
     hide(Torrent.errorMsg);
+    console.log(new Torrent(getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}))
     var baseURL = 'https://mdbscrap.herokuapp.com/'
     SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
       'url' : new Torrent(getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}).URL,
@@ -54,7 +55,7 @@ Torrent = class{
   getSTerm() {
     let m = this.movie
     let term = `${m.original_title} ${m.release_date.slice(0,4)} ${this.quality}`
-    return encodeURI(term)
+    return term;
   }
 
   getURL() {
@@ -70,6 +71,7 @@ Torrent = class{
          url = `http://rarbg.to/torrents.php?search=${this.STerm}`;
          break;
      }
+     //return encodeURI(url)
      return url
   }
 }

@@ -40,7 +40,12 @@ class Movie {
   getPoster(srcs, classSelector){
     let poster;
     if(srcs){
-        poster = `<img class='${classSelector} lazy' id="${this.id}_Poster" src="${srcs['SD']}" data-src="${srcs['HD']}" alt='"${this.title}" Movie poster'>`
+        poster = `<img class='${classSelector} lazy' id="${this.id}_Poster" src="${srcs['SD']}" data-src="${srcs['HD']}" alt='"${this.title}" Movie poster'>
+        <div class="spinner" id='${this.id}_loader'>
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+        `
     }else{
       poster = `<div class='${classSelector} ${'no_'+classSelector}'>
                   ${classSelector == 'poster'? `<p>${this.title}</p><strong>No Poster</strong>`:`<strong>No Backdrop</strong>`}
@@ -87,7 +92,13 @@ class Movie {
               <option value="1440p">1440p</option>
               <option value="4k">4k</option>
             </select>
-            <img class='inline hidden' id='torrentLoad' src='images/torrentLoad.gif' />
+
+            <div id="torrentLoad" class='hidden' >
+              <div class="bounce1"></div>
+              <div class="bounce2"></div>
+              <div class="bounce3"></div>
+            </div>
+
             <div id='linkSelect' class='inline shown'>
               <label for="selector">Choose a link</label>
               <select id="selector">

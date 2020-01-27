@@ -241,6 +241,10 @@ input, select, button{
   display: block;
 }
 
+.poster:not(.loading) + .spinner, .detailsBackDrop:not(.loading) + .spinner{
+  display: none;
+}
+
 div.poster{
   display: flex;
   justify-content: center;
