@@ -46,7 +46,7 @@ Torrent = class{
   }
 
   static RunTorrent(){
-    magnet = getEl('selector').value;
+    let magnet = getEl('selector').value;
     window.location.href = magnet;
     console.log(magnet);
   }

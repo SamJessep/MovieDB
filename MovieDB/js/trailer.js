@@ -1,12 +1,16 @@
 // search format "[title] [release year] partner hd"
+var trailer;
+
 function showTrailer(){
   let trailerDIV = getEl('trailer');
-  trailerDIV.style.left = 0;
+  trailerDIV.classList.add('open');
+  trailer.playVideo();
 }
 
 function hideTrailer(){
   let trailerDIV = getEl('trailer');
-  trailerDIV.style.left = '100%';
+  trailerDIV.classList.remove('open')
+  trailer.pauseVideo();
 }
 
 function getTrailer(movie){
@@ -24,9 +28,30 @@ function getTrailer(movie){
 
 
 function loadVideoPlayer(response) {
-  console.log(response)
   let id = response.items[0].id.videoId;
-  console.log(id)
-  let trailer = `<iframe id='trailerPlayer' class='YTPlayer' tabindex="-1" src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  let trailer = `<iframe id='trailerPlayer' class='YTPlayer' tabindex="-1" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   getEl('trailerPlayer').outerHTML = trailer;
+  addYoutubeScripts()
+}
+
+function addYoutubeScripts(){
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('trailerPlayer', {
+      events: {
+        'onReady': onPlayerReady
+      }
+  });
+}
+function onPlayerReady(event) {
+  console.log(event)
+  trailer = event.target;
+  if(getEl('trailerPlayer').classList.contains('open')){
+    trailer.playVideo();
+  }
 }

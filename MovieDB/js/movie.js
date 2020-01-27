@@ -95,7 +95,7 @@ class Movie {
                 <option value="">Link 2</option>
                 <option value="">Link 3</option>
               </select>
-              <button onclick='RunTorrent()'>Download</button>
+              <button onclick='Torrent.RunTorrent()'>Download</button>
           </div>
           <span id='torrentError' class='hidden'>No links available</span>
         </details>

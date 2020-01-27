@@ -1,11 +1,10 @@
-
-@media not (prefers-color-scheme: dark) {
-  :root{
+:root{
     --BackgroundColor: #f7f7f7;
-    --SecondBackgroundColor:#333333;
+    --SecondBackgroundColor: #eaeaea;
     --FontColor: #333333;
     --AccentColor: #00d474;
-  }
+    --VideoBackground: #000000f0;
+    --ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,6 +13,7 @@
     --SecondBackgroundColor:#2f2f2f;
     --FontColor: #e2e2e2;
     --AccentColor: #00d474;
+    --ImgColor: invert(100%) sepia(10%) saturate(861%) hue-rotate(41deg) brightness(115%) contrast(77%);
   }
 }
 
@@ -22,7 +22,8 @@
   margin: 0;
   font-family: arial;
   color: var(--FontColor, white);
-  outline-color: var(--AccentColor, green);
+  font-size: 3vmin;
+  outline-color: var(--AccentColor);
 }
 
 body{
@@ -35,7 +36,7 @@ h1{
 }
 
 h2{
-  font-size: 4vmin;
+  font-size: 5vmin;
 }
 
 p{
@@ -96,8 +97,11 @@ input, select, button{
   width: 100%;
 }
 
+.detailedText{
+  padding: 0 2vmin;
+}
 .detailSection {
-  padding: 2vmin 0;
+  padding: 2vmin 3vmin;
 }
 
 .detailSection>.detailContents{
@@ -116,6 +120,7 @@ input, select, button{
 
 #linkSelect button{
   font-size: 2vmin;
+  padding: 0.7vmin;
 }
 
 #linkSelect #selector{
@@ -158,8 +163,7 @@ input, select, button{
 }
 
 #searchButton:active{
-  filter: invert(100%);
-  background-color: white;
+  filter: var(--ImgColor);
 }
 
 #logo{
@@ -177,6 +181,8 @@ input, select, button{
 #BackdropDiv{
   position: relative;
   overflow: hidden;
+  height: 67vmin;
+  text-align: center;
 }
 
 #quickBar{
@@ -292,7 +298,7 @@ div.poster{
 #shortAbout{
   display: flex;
   flex-wrap: wrap;
-  background-color: var(FontColor, #00d474);;
+  background-color: var(--SecondBackgroundColor, #00d474);
   width: 100%;
 }
 

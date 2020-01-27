@@ -15,27 +15,43 @@
 }
 
 .closeTrailer{
-  width: 5vmin;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-#trailerPlayer{
-  width: 100%;
-  height: 56.25vw;
+  height: 5vmin;
+  margin-left: 0.2vmin;
+  margin-top: 0.3vmin;
+  filter: var(--ImgColor);
 }
 
-.openTrailer:hover + #trailer{
-  transition: 1s;
-  left: 0;
+.closeTrailer:hover{
+  filter: invert(69%) sepia(64%) saturate(3731%) hue-rotate(109deg) brightness(97%) contrast(102%);
+}
+
+#trailerPlayer{
+  width: 100%;
+  height: calc(100vw * 0.56);
+  max-height: 90%;
+  max-width: calc(90vh*1.77);
+  display: block;
+  margin: 0 auto;
 }
 
 #trailer{
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   left: 100%;
-  top: 0;
-  background-color: transparent;
+  top: 0vmin;
+  transition: 1s;
+  text-align: initial;
+}
+
+#trailer.open{
+  background-color: var(--VideoBackground);
+  left: 0;
+  transition: 1s;
+}
+
+#trailer.hidden{
+  background-color: var(--VideoBackground);
+  left: 100%;
   transition: 1s;
 }
