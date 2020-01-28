@@ -120,6 +120,18 @@ input, select, button{
   color: var(--AccentColor, #00d474);
 }
 
+.seed, .leeche{
+  font-size: calc(var(--BaseFontSize) + 1vmin);
+}
+
+.seed{
+  color: var(--AccentColor);
+}
+
+.leeche{
+  color: red;
+}
+
 #linkSelect button{
   font-size: 2vmin;
   padding: 0.7vmin;

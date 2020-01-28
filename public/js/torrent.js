@@ -31,7 +31,9 @@ Torrent = class{
     if(data.length > 0){
       let options = ''
       for(let aTorrent of data){
-        options += `<option value=${aTorrent.link}>${aTorrent.title}</option>`
+        let difference = aTorrent.seeds - aTorrent.leeches;
+        console.log(difference);
+        options += `<option value=${aTorrent.link}>${aTorrent.title} ${aTorrent.seeds}&#8593; ${aTorrent.leeches}&#8595;</option>`
       }
       Update(getEl('selector'), options);
       hide(Torrent.loadGif);
