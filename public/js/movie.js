@@ -27,7 +27,7 @@ class Movie {
     let poster = this.getPoster(this.images['poster'], 'poster')
     let id = this.id+'_Poster';
     return `
-    <button class="card movie" id=${this.id} onclick='LoadDetailed(this.id)' tabindex='0'>
+    <button class="card movie" id=${this.id} onclick='Move("Details/${this.id}")' tabindex='0'>
       ${poster}
       <div class="card-body hidden">
         <h1 class="card-title">${this.title}</h1>

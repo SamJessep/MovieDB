@@ -26,11 +26,11 @@
         <label class='bgColored text-selection-none'>Search
           <input id='search' placeholder="search.." onKeyDown='checkForSearch(this); updateFontSize(this)'/>
         </label>
-        <img  id="searchButton" src="images/search.svg" alt='search button' onclick="search(document.getElementById('search').value)" />
+        <img  id="searchButton" src="images/search.svg" alt='search button' onclick="Move('Search/'+document.getElementById('search').value)" />
       </div>
       <nav id='quickBar'>
-        <div id='latest' class="navButton text-selection-none" onclick='latest()'>Latest</div>
-        <div id='popular' class="navButton text-selection-none" onclick='popular()'>Most popular</div>
+        <div id='latest' class="navButton text-selection-none" onclick='Move("Discover/Theatres/")'>In theatres</div>
+        <div id='popular' class="navButton text-selection-none" onclick='Move("Discover/Popular")'>Popular</div>
         <div class="dropdown">
           <div id='genreButtonContainer'>
             <div id='genreButton' onclick="myFunction()" class="dropbtn navButton text-selection-none">Genres</div>
@@ -85,5 +85,6 @@
     <script type="text/javascript" src='js/trailer.js' defer></script>
     <script type="text/javascript" src='js/dropDownMenu.js' defer></script>
     <script type="text/javascript" src='js/addons.js' defer></script>
+    <script type="text/javascript" src='js/router.js' defer></script>
   </body>
 </html>
