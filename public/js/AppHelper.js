@@ -256,7 +256,7 @@ function GetGenres(){
 }
 
 function makeGenreLink(genre){
-  return `<a id='${genre.id}' class='genreLink' onclick='Move("Genre/${genre.id}")' href='#'>${genre.name}</a>`
+  return `<a id='${genre.id}' class='genreLink' href='#Genre/${genre.id}'>${genre.name}</a>`
 }
 
 function ShowGenres(data){

@@ -12,23 +12,11 @@ window.onload = () => {
   }
 }
 
-window.addEventListener("hashchange", () => {
-  const CurrentPath = window.location.hash
-  //Move(hash)
-  console.log(CurrentPath);
-  if (CurrentPath === '#login') {
-    // Display a login page (maybe using innerHTML)
-  } else if (CurrentPath === '#register') {
-    // Display a register page
-  }
-})
-
 
 function Move(hash, title){
   hash = hash!=''?'#'+hash:hash;
   if(!title) title = hash;
   window.location.hash = hash;
-  //window.history.pushState({}, title, hash)
 }
 
 
@@ -56,7 +44,7 @@ function LoadPage(event){
         Discover(query)
         break;
       case 'Genre':
-        title = 'Genre:'+query;
+        title = 'Genre:'+getEl(query).innerText;
         SearchGenre(query);
         break;
       default:
