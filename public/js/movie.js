@@ -2,7 +2,7 @@ class Movie {
   constructor(data) {
     this.allData = data
     this.id = data.id;
-    this.title = data.title;
+    this.title = data.title || data.name;
     this.about = data.overview;
     this.starRating = data.vote_average;
     this.rating;
@@ -52,7 +52,6 @@ class Movie {
   }
 
   GetDetailed(){
-    //console.log(this);
     getTrailer(this)
     this.updateCountryData(this.allData.release_dates.results)
     let genreLinks = [];

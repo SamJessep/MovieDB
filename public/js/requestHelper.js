@@ -38,7 +38,6 @@ function SendReq(baseURL, methods, filters){
       ...filters
     },
     success: function(response){
-      //console.log(response)
       methods['success'](response);
       LazyLoadImg.update();
     },
@@ -46,7 +45,6 @@ function SendReq(baseURL, methods, filters){
       if(methods['fail']){
         methods['fail'](response)
       }
-      //console.log(response);
     },
   })
 }
