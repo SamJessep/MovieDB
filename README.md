@@ -18,9 +18,9 @@ Vanila JS web app using
     - Tidy php Torrent web scraper API
       - Add scraping other torrent sites if i doesnt find any results
     
-  #Future features
-    - Add user accounts
-      - Save movies to list
-      - signup to recive notification when movie is available to download
-    - Add to homescreen/PWA
-    - Make native android version/JAVA
+#Future features
+  - Add user accounts
+    - Save movies to list
+    - signup to recive notification when movie is available to download
+  - Add to homescreen/PWA
+  - Make native android version/JAVA
