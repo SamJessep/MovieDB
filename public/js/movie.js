@@ -4,6 +4,7 @@ class Movie {
     this.id = data.id;
     this.title = data.title;
     this.about = data.overview;
+    this.starRating = data.vote_average;
     this.rating;
     this.releaseDate = data.release_date;
     this.runTime = data.runtime;
@@ -29,10 +30,7 @@ class Movie {
     return `
     <button class="card movie" id=${this.id} onclick='theRouter.Move("Details/${this.id}")' tabindex='0'>
       ${poster}
-      <div class="card-body hidden">
-        <h1 class="card-title">${this.title}</h1>
-        <p>${this.about}</p>
-      </div>
+        <h1 class="card-title hidden">${this.title}</h1>
     </button>`;
   }
 
@@ -54,6 +52,7 @@ class Movie {
   }
 
   GetDetailed(){
+    console.log(this);
     getTrailer(this)
     this.updateCountryData(this.allData.release_dates.results)
     let genreLinks = [];
@@ -75,6 +74,10 @@ class Movie {
         <p class='noBoarder'>${this.rating}</p>
         <p>${this.runTime} mins</p>
         <p>${this.releaseDate}</p>
+        <div id="starRatingContainer">
+          <div class='ratings' id='rating-bg'></div>
+          <div class='ratings' id='rating' style='width:${(this.starRating/2)*5}vmin;'></div>
+        </div>
       </div>
       <div class="detailedText">
         <h2>${this.title}</h2>

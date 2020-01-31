@@ -68,6 +68,13 @@ function empty(el){
   el.innerHTML = ''
 }
 
+function Scroll(x,y){
+  window.scroll({
+      top:x,
+      bottom:y,
+      behavior: 'smooth'
+    })
+}
 function search(term){
   Clear()
   if(term.trim() != ''){
@@ -150,6 +157,9 @@ function Discover(preset){
   }
 }
 
+function scrollIsNearBottom(){
+  return $(window).scrollTop() + $(window).height() > $(document).height() - 400 && !$('searchBody').hidden;
+}
 
 function LoadResults(resp){
   details.hidden = true;
@@ -165,16 +175,16 @@ function LoadResults(resp){
     Update(searchArea, html);
     var timer;
     $(window).scroll(function() {
-      if($(window).scrollTop() + $(window).height() > $(document).height() - 400 && !$('searchBody').hidden) {
         if(timer) {
       		window.clearTimeout(timer);
       	}
 
       	timer = window.setTimeout(function() {
-      		loadMore()
-      	}, 500);
-
-      }
+          checkForScrollBtn()
+          if(scrollIsNearBottom()) {
+      		    loadMore()
+          }
+      	}, 250);
     });
   }else{
     showMessage("No results found");
@@ -182,6 +192,36 @@ function LoadResults(resp){
   searchBody.hidden = false;
   return movies;
 }
+
+function loadMore(){
+  let newPage = page + 1;
+  if(!(newPage<1 || newPage>totalPages)){
+    page = newPage
+    let req = HISTORY;
+    req.filters['page'] = page;
+    MDBReq(req.baseURL, infinateLoad, req.filters,false);
+  }
+}
+
+function checkForScrollBtn(){
+  let quickBar = getEl('quickBar');
+  let scrollBtn = getEl('backToTop')
+  if(isInViewport(quickBar)){
+    hide(scrollBtn);
+  }else{
+    show(scrollBtn)
+  }
+}
+
+function isInViewport (elem) {
+    var bounding = elem.getBoundingClientRect();
+    return (
+        bounding.top >= 0 &&
+        bounding.left >= 0 &&
+        bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+};
 
 function infinateLoad(resp){
   let aMovie = '',movies = [], html='';
@@ -192,15 +232,6 @@ function infinateLoad(resp){
       html += aMovie.makeCard();
     }
     Append(searchArea, html);
-  }
-}
-function loadMore(){
-  let newPage = page + 1;
-  if(!(newPage<1 || newPage>totalPages)){
-    page = newPage
-    let req = HISTORY;
-    req.filters['page'] = page;
-    MDBReq(req.baseURL, infinateLoad, req.filters,false);
   }
 }
 
