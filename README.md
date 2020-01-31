@@ -2,6 +2,8 @@
 Vanila JS web app using 
   - The Movie Database API: for movie data
   - Youtube API: for movie trailers
+  
+
 
 #To do
   - save/cache preferences to local storage
@@ -17,7 +19,9 @@ Vanila JS web app using
     - Clean and segregate CSS
     - Tidy php Torrent web scraper API
       - Add scraping other torrent sites if i doesnt find any results
-    
+
+
+
 #Future features
   - Add user accounts
     - Save movies to list
