@@ -9,7 +9,7 @@ function showTrailer(){
 
 function hideTrailer(){
   let trailerDIV = getEl('trailer');
-  trailerDIV.classList.remove('open')
+  trailerDIV.classList.retheRouter.Move('open')
   trailer.pauseVideo();
 }
 
@@ -36,8 +36,11 @@ function loadVideoPlayer(response) {
 }
 
 function hidePlayer(){
-  document.getElementsByClassName('trailerSlide')[0].outerHTML = '';
-  getEl('trailer').outerHTML = '';
+  let player = document.getElementsByClassName('trailerSlide')[0];
+  if(player){
+    player.outerHTML = '';
+    getEl('trailer').outerHTML = '';
+  }
 }
 
 function addYoutubeScripts(){

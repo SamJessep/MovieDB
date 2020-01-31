@@ -21,7 +21,9 @@ function getEl(id){
 }
 
 function Update(el, content){
-  el.innerHTML = content;
+  if (el){
+    el.innerHTML = content;
+  }
 }
 
 function Append(el, content){
@@ -29,7 +31,7 @@ function Append(el, content){
 }
 
 function home(){
-  Move('Home')
+  theRouter.Move('Home')
   Clear()
 }
 
@@ -81,7 +83,7 @@ function search(term){
 
 function checkForSearch(ele) {
   if (event.key === 'Enter') {
-    Move('Search/'+ele.value)
+    theRouter.Move('Search/'+ele.value)
   }
 }
 
