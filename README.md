@@ -5,7 +5,7 @@ Vanila JS web app using
   
 
 
-#To do
+# To do
   - save/cache preferences to local storage
   - Read saved preferences if saved
   - Add option to turn off darkmode
@@ -22,7 +22,7 @@ Vanila JS web app using
 
 
 
-#Future features
+# Future features
   - Add user accounts
     - Save movies to list
     - signup to recive notification when movie is available to download
