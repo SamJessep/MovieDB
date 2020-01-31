@@ -21,7 +21,9 @@ function getEl(id){
 }
 
 function Update(el, content){
-  el.innerHTML = content;
+  if (el){
+    el.innerHTML = content;
+  }
 }
 
 function Append(el, content){
@@ -29,6 +31,12 @@ function Append(el, content){
 }
 
 function home(){
+  theRouter.Move('Home')
+  Clear()
+}
+
+function Clear(){
+  page = 1;
   hide(getEl('preferencesMenu'))
   empty(getEl('details'))
   empty(getEl('searchResults'))
@@ -61,7 +69,7 @@ function empty(el){
 }
 
 function search(term){
-  home()
+  Clear()
   if(term.trim() != ''){
     MDBReq(SEARCH, LoadResults, {
       'query' : term,
@@ -75,7 +83,7 @@ function search(term){
 
 function checkForSearch(ele) {
   if (event.key === 'Enter') {
-    search(ele.value)
+    theRouter.Move('Search/'+ele.value)
   }
 }
 
@@ -91,29 +99,57 @@ function updateFontSize(input){
   input.style.fontSize = newFontSize;
 }
 
-function latest(){
-  home()
-  MDBReq(DISCOVER, LoadResults, {
-    'language' : AppPreferences.getLang(),
-    'include_adult' : AppPreferences.includeAdult,
-    'release_date.lte' : getDate(),
-    'page' : 1,
-    'sort_by' : 'release_date.desc'
-  })
-  page = 1;
+function Discover(preset){
+  Clear()
+  let params;
+  if(preset.includes('?') && preset.includes('Custom')){
+    //Must use "" in JSON, template= URL/#Discover/Custom?{}
+    params = JSON.parse(decodeURI(preset.split('?')[1]))
+  }else{
+    switch(preset){
+      case "Theatres":
+        params = {
+          'with_release_type' : '2|3',
+          'release_date.gte' : getDate(),
+          'release_date.lte' : getDate(30),
+        }
+        break;
+
+      case "Popular":
+        params = {
+          'sort_by' : 'popularity.desc'
+        }
+        break;
+
+      case "Latest":
+        params = {
+          'release_date.lte' : getDate(),
+          'sort_by' : 'release_date.desc'
+        }
+        break;
+
+      case "Old":
+        params = {
+          'sort_by' : 'release_date.asc'
+        }
+        break;
+
+      default:
+        console.error("please provide a discover preset or custom");
+        break;
+    }
+  }
+
+  if(params){
+    MDBReq(DISCOVER, LoadResults, {
+      ...params,
+      'language' : AppPreferences.getLang(),
+      'include_adult' : AppPreferences.includeAdult,
+      'page' : page
+    })
+  }
 }
 
-function popular(){
-  home()
-  MDBReq(DISCOVER, LoadResults, {
-    'language' : AppPreferences.getLang(),
-    'include_adult' : AppPreferences.includeAdult,
-    'release_date.lte' : getDate(),
-    'page' : 1,
-    'sort_by' : 'popularity.desc'
-  })
-  page = 1;
-}
 
 function LoadResults(resp){
   details.hidden = true;
@@ -204,7 +240,7 @@ function AddRecomendations(data){
 }
 
 function SearchGenre(id){
-  home()
+  Clear()
   MDBReq(DISCOVER, LoadResults, {
     'language' : AppPreferences.getLang(),
     'include_adult' : AppPreferences.includeAdult,
@@ -212,7 +248,6 @@ function SearchGenre(id){
     'page' : 1,
     'with_genres' : id
   })
-  page = 1;
 }
 
 function GetGenres(){
@@ -223,7 +258,7 @@ function GetGenres(){
 }
 
 function makeGenreLink(genre){
-  return `<a id='${genre.id}' class='genreLink' onclick='SearchGenre(${genre.id})' href='#'>${genre.name}</a>`
+  return `<a id='${genre.id}' class='genreLink' href='#Genre/${genre.id}'>${genre.name}</a>`
 }
 
 function ShowGenres(data){

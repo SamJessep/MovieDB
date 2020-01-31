@@ -51,8 +51,9 @@ function SendReq(baseURL, methods, filters){
   })
 }
 
-function getDate(){
+function getDate(dateOffset = 0){
   var date  = new Date
+  date.setDate(date.getDate()+dateOffset);
   var month = date.getMonth()+1;
   var day = date.getDate().toString().length ==1 ? '0'+date.getDate() : date.getDate();
   month = month.toString().length == 1 ? '0'+ month : month;
