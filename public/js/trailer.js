@@ -58,7 +58,6 @@ function onYouTubeIframeAPIReady() {
   });
 }
 function onPlayerReady(event) {
-  console.log(event)
   trailer = event.target;
   if(getEl('trailerPlayer').classList.contains('open')){
     trailer.playVideo();
