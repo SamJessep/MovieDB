@@ -1,18 +1,19 @@
 :root{
     --BackgroundColor: #f7f7f7;
-    --SecondBackgroundColor: #eaeaea;
+    --SecondBackgroundColor: #eaeaeae6;
     --FontColor: #333333;
     --AccentColor: #00d474;
     --VideoBackground: #000000f0;
     --ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
     --ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);
     --BaseFontSize: 3vmin;
+    --StarWidth: 5vmin;
 }
 
 @media (prefers-color-scheme: dark) {
   :root{
     --BackgroundColor: #0e1015;
-    --SecondBackgroundColor:#2f2f2f;
+    --SecondBackgroundColor:#2f2f2fe6;
     --FontColor: #e2e2e2;
     --AccentColor: #00d474;
     --ImgColor: invert(100%) sepia(10%) saturate(861%) hue-rotate(41deg) brightness(115%) contrast(77%);
@@ -96,7 +97,8 @@ input, select, button{
 }
 
 .detailsBackDrop{
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .detailedText{
@@ -163,6 +165,7 @@ input, select, button{
   font-size: 10vmin;
   border: none;
   border-bottom: solid var(--FontColor,black) 0.5vmin;
+  margin-right: 2vmin;
 }
 
 #search:hover, #search:focus{
@@ -231,12 +234,15 @@ input, select, button{
 }
 
 #preferencesMenu>div{
-  display: flex;
+  /* display: flex; */
+  margin: 0 auto;
+  display: grid;
   justify-content: space-around;
 }
 
 #preferencesMenu *{
-  display: block;
+  display: inline-block;
+  padding-bottom: 1vmin;
 }
 
 .formSection>*{
@@ -245,10 +251,18 @@ input, select, button{
 }
 
 .movie{
+  position: relative;
   border: none;
   background-color: transparent;
 }
 
+.movie:hover > .card-title{
+  width: 100%;
+  position: absolute;
+  bottom: 10vh;
+  display: block !important;
+  background-color: var(--SecondBackgroundColor);
+}
 .poster{
   margin: 5vh auto;
   height: 65vh;
@@ -321,9 +335,46 @@ div.poster{
   width: 100%;
 }
 
-#shortAbout > p{
-  padding: 0 3vw;
-  font-weight: 150%;
+#shortAbout > p, #shortAbout > #starRatingContainer{
+  height: 5vmin;
+  padding-left: 1vmin;
   font-size: var(--BaseFontSize);
   border-left: solid var(--FontColor, white) 3px;
+  margin: 2vmin;
+}
+
+#starRatingContainer{
+  position: relative;
+  margin: 2vmin 0;
+  overflow: visible;
+}
+
+.ratings{
+  width: 0vmin;
+  height: 5vmin;
+  background-image: url('../images/star.svg');
+  background-repeat: repeat-x;
+  background-size: 5vmin;
+  position: absolute;
+  top: 0;
+  left: 4vmin;
+}
+
+#rating-bg{
+  filter: brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(763%) hue-rotate(205deg) brightness(93%) contrast(89%);
+  width: calc(5*5vmin);
+}
+#backToTop{
+  position: fixed;
+  width: 10vmin;
+  bottom: 1vmin;
+  right: 1vmin;
+  background-color: var(--SecondBackgroundColor);
+  padding: 1vmin;
+}
+#backToTop>img{
+  filter: var(--ImgColor);
+}
+#backToTop>img:active{
+  filter: var(--ImgClickColor);
 }

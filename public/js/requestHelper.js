@@ -38,7 +38,7 @@ function SendReq(baseURL, methods, filters){
       ...filters
     },
     success: function(response){
-      //console.log(response)
+      console.log(response)
       methods['success'](response);
       LazyLoadImg.update();
     },
