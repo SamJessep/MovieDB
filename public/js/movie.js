@@ -52,7 +52,7 @@ class Movie {
   }
 
   GetDetailed(){
-    console.log(this);
+    //console.log(this);
     getTrailer(this)
     this.updateCountryData(this.allData.release_dates.results)
     let genreLinks = [];

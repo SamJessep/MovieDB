@@ -24,7 +24,6 @@ class Router {
 
   LoadPage(event){
     let title;
-    console.log(this.hash)
     if(this.hash.includes('/')){
       let pathParts = this.hash.split('#')[1].split('/');
       let action = pathParts[0];
