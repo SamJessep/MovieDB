@@ -6,10 +6,15 @@ class Preferences{
     this.downloadSite = '1337x';
     this.possibleLanguages = [];
     this.possibleCountries = [];
-    this.langSelect = getEl('lang')
-    this.countrySelect = getEl('countries')
-    this.adultSelect = getEl('adult')
-    this.downloadSiteSelect = getEl('siteSelect');
+    this.langSelect = document.getElementById('lang')
+    this.countrySelect = document.getElementById('countries')
+    this.adultSelect = document.getElementById('adult')
+    this.downloadSiteSelect = document.getElementById('siteSelect');
+
+    //GET PREFERENCE DATA
+    MDBReq('https://api.themoviedb.org/3/configuration/languages', this.saveLanguages.bind(this), {});
+
+    MDBReq('https://api.themoviedb.org/3/configuration/countries', this.saveCountries.bind(this), {});
   }
 
 
@@ -63,6 +68,6 @@ class Preferences{
     this.country = this.countrySelect.value
     this.includeAdult = this.adultSelect.value == 'true'
     this.downloadSite = this.downloadSiteSelect.value;
-    showPreferenceMenu()
+    app.showPreferenceMenu()
   }
 }

@@ -12,15 +12,15 @@ Torrent = class{
   static errorMsg;
 
   static GetTorrents(data){
-    Torrent.loadGif = getEl('torrentLoad')
-    Torrent.linkSelect = getEl('linkSelect')
-    Torrent.errorMsg = getEl('torrentError')
+    Torrent.loadGif = app.getEl('torrentLoad')
+    Torrent.linkSelect = app.getEl('linkSelect')
+    Torrent.errorMsg = app.getEl('torrentError')
     show(Torrent.loadGif);
     hide(Torrent.linkSelect);
     hide(Torrent.errorMsg);
     var baseURL = 'https://mdbscrap.herokuapp.com/'
     SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
-      'url' : new Torrent(getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}).URL,
+      'url' : new Torrent(app.getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}).URL,
       'site' : AppPreferences.downloadSite
     })
   }
@@ -32,7 +32,7 @@ Torrent = class{
         let difference = aTorrent.seeds - aTorrent.leeches;
         options += `<option value=${aTorrent.link}>${aTorrent.title} ${aTorrent.seeds}&#8593; ${aTorrent.leeches}&#8595;</option>`
       }
-      Update(getEl('selector'), options);
+      Update(app.getEl('selector'), options);
       hide(Torrent.loadGif);
       show(Torrent.linkSelect);
     }else{
@@ -46,7 +46,7 @@ Torrent = class{
   }
 
   static RunTorrent(){
-    let magnet = getEl('selector').value;
+    let magnet = app.getEl('selector').value;
     window.location.href = magnet;
   }
 

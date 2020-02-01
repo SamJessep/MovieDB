@@ -31,7 +31,7 @@ class Router {
       title = this[action](query);
     }
     else {
-      home();
+      app.home();
       title = 'Home';
     }
     document.title = 'MDB-'+title
@@ -39,27 +39,27 @@ class Router {
 
   Search(query){
     query = decodeURI(query);
-    search(query);
+    app.Search(query);
     return "search: "+query;
   }
 
   Details(id){
-    LoadDetailed(id)
+    app.LoadDetailedPage(id)
     return 'MovieID:'+id;
   }
 
   Discover(query){
-    Discover(query)
+    app.Discover(query)
     return query;
   }
 
   Genre(id){
-    SearchGenre(id);
-    return 'Genre:'+getEl(id).innerText;
+    app.SearchGenre(id);
+    return 'Genre:'+app.getEl(id).innerText;
   }
 
   Home(){
-    home();
+    app.Home();
     return 'Home';
   }
 

@@ -20,11 +20,11 @@
   </head>
   <body>
     <header>
-      <img id='logo' onclick="home()"src='images/MDB_Logo.png' alt='movie database logo'/>
+      <img id='logo' onclick="app.home()"src='images/MDB_Logo.png' alt='movie database logo'/>
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
         <label class='bgColored text-selection-none'>Search
-          <input id='search' placeholder="search.." onKeyDown='checkForSearch(this); updateFontSize(this)'/>
+          <input id='search' placeholder="search.." onKeyDown='app.checkForSearch(this)'/>
         </label>
         <img  id="searchButton" src="images/search.svg" alt='search button' onclick="theRouter.Move('Search/'+document.getElementById('search').value)" />
       </div>
@@ -38,7 +38,7 @@
           <div id="GenreSelect" class="dropdown-content">
           </div>
         </div>
-        <div id='preferences' class="navButton text-selection-none" onclick='showPreferenceMenu()'>Preferences</div>
+        <div id='preferences' class="navButton text-selection-none" onclick='app.showPreferenceMenu()'>Preferences</div>
       </nav>
       <div id='preferencesMenu' class='hidden'>
         <div>
@@ -58,7 +58,7 @@
           </div>
 
 
-          <button onclick='AppPreferences.savePreferences()'>Save</button>
+          <button onclick='app.preferences.savePreferences()'>Save</button>
         </div>
       </div>
     </header>
@@ -67,8 +67,6 @@
     <main>
       <div id='searchBody'>
         <div id='searchResults'> </div>
-        <div id='navBarContainer' class="hidden">
-        </div>
       </div>
 
       <div id='details' hidden>
@@ -79,9 +77,12 @@
       </div>
     </main>
 
-    <script type="text/javascript" src='js/preferences.js' defer></script>
     <script type="text/javascript" src='js/requestHelper.js' defer></script>
-    <script type="text/javascript" src='js/AppHelper.js' defer></script>
+    <script type="text/javascript" src='js/preferences.js' defer></script>
+    <script type="text/javascript" src='js/Genre.js' defer></script>
+    <script type="text/javascript" src='js/App.js' defer></script>
+    <script type="text/javascript" src='js/Main.js' defer></script>
+    <!--<script type="text/javascript" src='js/AppHelper.js' defer></script>-->
     <script type="text/javascript" src='js/Result.js' defer></script>
     <script type="text/javascript" src='js/movie.js' defer></script>
     <script type="text/javascript" src='js/review.js' defer></script>

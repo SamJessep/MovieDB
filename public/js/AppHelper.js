@@ -40,7 +40,7 @@ function Clear(){
   hide(getEl('preferencesMenu'))
   empty(getEl('details'))
   empty(getEl('searchResults'))
-  hide(getEl('navBarContainer'))
+  //hide(getEl('navBarContainer'))
 }
 
 function showMessage(msg){
