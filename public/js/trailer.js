@@ -39,7 +39,7 @@ function hidePlayer(){
   let player = document.getElementsByClassName('trailerSlide')[0];
   if(player){
     player.outerHTML = '';
-    getEl('trailer').outerHTML = '';
+    app.getEl('trailer').outerHTML = '';
   }
 }
 

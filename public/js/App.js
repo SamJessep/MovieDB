@@ -93,7 +93,7 @@ class App{
 //---User-Actions---------------------------------------------------------------
 Action(method,params){
   this.Clear()
-  if(method) this[method]();
+  if(method) this[method](params);
 }
 
 showPreferenceMenu(){
@@ -129,7 +129,6 @@ checkForSearch(ele) {
 //DISCOVER
 
 Discover(hash){
-  this.Clear()
   let params;
   if(this.discoverParams.hasOwnProperty(hash)){
     params = this.discoverParams[hash];
@@ -200,20 +199,20 @@ showScrollButton(){
 //DETAILED
 
 GetDetailedPage(id){
-  MDBReq(DETAILS(id), this.DrawDetailedPage, {'append_to_response': 'release_dates'})
+  MDBReq(DETAILS(id), this.LoadDetailedPage.bind(this), {'append_to_response': 'release_dates'})
 }
 
 LoadDetailedPage(data){
   this.hide(this.SearchArea);
   let movie = new Movie(data);
-  this.Update(this.DetailPage, movie.GetDetailed())
+  console.log(movie)
+  this.Update(this.DetailPage, movie.makeDetailedPage())
   this.show(this.DetailPage);
 }
 
 //GENRE SEARCH
 
 SearchGenre(id){
-  this.Clear()
   MDBReq(DISCOVER, this.LoadResults.bind(this), {
     'language' : this.preferences.getLang(),
     'include_adult' : this.preferences.includeAdult,

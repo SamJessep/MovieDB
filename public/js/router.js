@@ -38,23 +38,24 @@ class Router {
   }
 
   Search(query){
+
     query = decodeURI(query);
-    app.Search(query);
+    app.Action('Search', query);
     return "search: "+query;
   }
 
   Details(id){
-    app.LoadDetailedPage(id)
+    app.Action('GetDetailedPage',id)
     return 'MovieID:'+id;
   }
 
   Discover(query){
-    app.Discover(query)
+    app.Action('Discover',query)
     return query;
   }
 
   Genre(id){
-    app.SearchGenre(id);
+    app.Action('SearchGenre', id);
     return 'Genre:'+app.getEl(id).innerText;
   }
 

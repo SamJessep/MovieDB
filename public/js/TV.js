@@ -1,8 +1,8 @@
-class Movie extends Result{
-  constructor(data) {
-    super(data)
+class TV extends Result{
+  constructor(data){
+    super()
     this.id = data.id;
-    this.title = data.title || data.name;
+    this.title = data.name;
     this.about = data.overview;
     this.starRating = data.vote_average;
     this.rating;
