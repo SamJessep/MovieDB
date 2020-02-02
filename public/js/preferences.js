@@ -68,6 +68,6 @@ class Preferences{
     this.country = this.countrySelect.value
     this.includeAdult = this.adultSelect.value == 'true'
     this.downloadSite = this.downloadSiteSelect.value;
-    app.showPreferenceMenu()
+    app.hide(app.getEl('preferencesMenu'));
   }
 }

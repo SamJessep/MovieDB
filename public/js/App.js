@@ -3,6 +3,7 @@ class App{
     this.page = 1;
     this.totalPages = 0;
     this.preferences = new Preferences();
+    this.loadedMovie;
 
     this.discoverParams = {
       "Theatres":{
@@ -23,6 +24,7 @@ class App{
     }
     //Saved elements
     this.SearchArea = this.getEl('searchResults');
+    this.SearchBar = this.getEl('search');
     this.DetailPage = this.getEl('details');
     this.PreferencesMenu = this.getEl('preferencesMenu');
 
@@ -96,12 +98,9 @@ Action(method,params){
   if(method) this[method](params);
 }
 
-showPreferenceMenu(){
-  this.PreferencesMenu.classList.toggle('hidden');
-}
-
 //HOME
 home(){
+  this.SearchBar.value = '';
   theRouter.Move('Home')
   this.Clear()
 }
@@ -122,6 +121,7 @@ Search(term){
 
 checkForSearch(ele) {
   if (event.key === 'Enter') {
+    this.Clear();
     theRouter.Move('Search/'+ele.value)
   }
 }
@@ -159,6 +159,8 @@ LoadResults(data){
   if(data.results.length>0){
     this.Update(this.SearchArea, this.GetResultHTML(data.results));
     if(!$(window).scroll) timer = this.scrollEvent(timer,500);
+  }else{
+    this.showMessage('No results found...')
   }
 }
 
@@ -205,8 +207,10 @@ GetDetailedPage(id){
 LoadDetailedPage(data){
   this.hide(this.SearchArea);
   let movie = new Movie(data);
+  this.loadedMovie = movie;
   console.log(movie)
   this.Update(this.DetailPage, movie.makeDetailedPage())
+  movie.LoadTorrents();
   this.show(this.DetailPage);
 }
 

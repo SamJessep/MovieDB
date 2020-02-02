@@ -13,5 +13,9 @@ class Movie extends Result{
       poster: IMAGE(data.poster_path),
       backdrop: IMAGE(data.backdrop_path, 'w92')
     }
+
+  }
+  LoadTorrents(){
+    Torrent.GetTorrents(this.allData);
   }
 }

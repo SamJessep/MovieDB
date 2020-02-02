@@ -11,8 +11,10 @@ class Router {
   }
 
   Hashchange(){
-    this.hash = window.location.hash;
-    this.LoadPage();
+    if(this.hash != window.location.hash){
+      this.hash = window.location.hash;
+      this.LoadPage();
+    }
   }
 
   Move(hash, title){

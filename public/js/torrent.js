@@ -3,7 +3,7 @@ Torrent = class{
     this.quality = quality
     this.movie = movie
     this.website = website
-    this.STerm = this.getSTerm()
+    this.STerm = this.getSearchTerm()
     this.URL = this.getURL()
 
   }
@@ -15,13 +15,13 @@ Torrent = class{
     Torrent.loadGif = app.getEl('torrentLoad')
     Torrent.linkSelect = app.getEl('linkSelect')
     Torrent.errorMsg = app.getEl('torrentError')
-    show(Torrent.loadGif);
-    hide(Torrent.linkSelect);
-    hide(Torrent.errorMsg);
+    app.show(Torrent.loadGif);
+    app.hide(Torrent.linkSelect);
+    app.hide(Torrent.errorMsg);
     var baseURL = 'https://mdbscrap.herokuapp.com/'
     SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
-      'url' : new Torrent(app.getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}).URL,
-      'site' : AppPreferences.downloadSite
+      'url' : new Torrent(app.getEl('quality').value, app.preferences.downloadSite, {'original_title' : app.loadedMovie.title, 'release_date': app.loadedMovie.releaseDate}).URL,
+      'site' : app.preferences.downloadSite
     })
   }
 
@@ -32,17 +32,17 @@ Torrent = class{
         let difference = aTorrent.seeds - aTorrent.leeches;
         options += `<option value=${aTorrent.link}>${aTorrent.title} ${aTorrent.seeds}&#8593; ${aTorrent.leeches}&#8595;</option>`
       }
-      Update(app.getEl('selector'), options);
-      hide(Torrent.loadGif);
-      show(Torrent.linkSelect);
+      app.Update(app.getEl('selector'), options);
+      app.hide(Torrent.loadGif);
+      app.show(Torrent.linkSelect);
     }else{
       Torrent.torrentFailed()
     }
   }
 
   static torrentFailed(){
-    hide(Torrent.loadGif);
-    show(Torrent.errorMsg);
+    app.hide(Torrent.loadGif);
+    app.show(Torrent.errorMsg);
   }
 
   static RunTorrent(){
@@ -50,7 +50,7 @@ Torrent = class{
     window.location.href = magnet;
   }
 
-  getSTerm() {
+  getSearchTerm() {
     let m = this.movie
     let term = `${m.original_title} ${m.release_date.slice(0,4)} ${this.quality}`
     return term;

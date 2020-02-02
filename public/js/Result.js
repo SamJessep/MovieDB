@@ -1,6 +1,7 @@
 class Result{
     constructor(data){
       this.allData = data;
+      this.trailer;
     }
 
     updateCountryData(data){
@@ -24,12 +25,14 @@ class Result{
 
     makeDetailedPage(){
       this.updateCountryData(this.allData.release_dates.results);
+      this.trailer = new Trailer(this.allData)
       let backdrop = this.getPoster(this.images['backdrop'], 'detailsBackDrop');
       let trailer = this.getTrailer();
       let shortAbout = this.getShortAbout();
       let description = this.getDescripton();
       let downloadSection = this.getDownloadSection();
-
+      this.addReviews()
+      this.addRelatedResults();
       return`
       <div class="detailedDiv" >
         <div id='BackdropDiv'>
@@ -63,9 +66,9 @@ class Result{
 
     getTrailer(){
       return `
-      <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='showTrailer()'></div>
+      <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='app.loadedMovie.trailer.showTrailer()'></div>
       <div id='trailer'>
-        <img class='closeTrailer' src='images/close.svg' onclick='hideTrailer()'>
+        <img class='closeTrailer' src='images/close.svg' onclick='app.loadedMovie.trailer.hideTrailer()'>
         <iframe id='trailerPlayer'></iframe>
       </div>`
     }
@@ -130,10 +133,6 @@ class Result{
         `
     }
 
-    addTorrentLinks(data){
-
-    }
-
     addReviews(data){
       if(data){
         let html = '<summary>Reviews</summary><div class="detailContents">';
@@ -144,36 +143,26 @@ class Result{
         html += '</div>'
         app.Update(app.getEl('reviews'), html)
       }else{
-        MDBReq(SIMILAR(this.id), AddRecomendations, {
+        MDBReq(REVIEW(this.id), this.addReviews, {
           'language' : app.preferences.getLang(),
-          'include_adult' : app.preferences.includeAdult
+          'include_adult' : app.preferences.includeAdult,
         })
       }
     }
 
     addRelatedResults(data){
-
-    }
-
-
-    AddReviews(data){
-      let html = '<summary>Reviews</summary><div class="detailContents">';
-      if(data.results.length == 0){html += '<strong>no reviews</strong>'}
-      for(let aReview of data.results){
-        html += new Review(aReview).formatReview();
+      if(data){
+        let html = '<summary>Similar movies</summary><div class="detailContents">'
+        for(let aMovie of data.results){
+          html += new Movie(aMovie).makeCard();
+        }
+        html += '</div>'
+        app.Update(app.getEl('Recommendations'), html)
+      }else{
+        MDBReq(SIMILAR(this.id), this.addRelatedResults, {
+          'language' : app.preferences.getLang(),
+          'include_adult' : app.preferences.includeAdult
+        })
       }
-      html += '</div>'
-      Update(getEl('reviews'), html)
     }
-
-    AddRecomendations(data){
-      let html = '<summary>Similar movies</summary><div class="detailContents">'
-      for(aMovie of data.results){
-        html += new Movie(aMovie).makeCard();
-      }
-      html += '</div>'
-      Update(Recommendations, html)
-    }
-
-
 }
