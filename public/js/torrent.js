@@ -70,7 +70,6 @@ Torrent = class{
     }else{
       this.STerm = this.getSearchTerm()
     }
-    console.log(this.STerm);
     let url;
     switch (this.website) {
       case 'thepiratebay':

@@ -42,12 +42,14 @@
   top: 0vmin;
   transition: 1s;
   text-align: initial;
+  z-index: 10;
 }
 
 #trailer.open{
   background-color: var(--VideoBackground);
   left: 0;
   transition: 1s;
+
 }
 
 #trailer.hidden{

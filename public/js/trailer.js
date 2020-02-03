@@ -43,24 +43,16 @@ class Trailer{
   }
 
   YTError(err){
-      console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
-      let filters = {
-        'part': 'id',
-        'maxResults': 1,
-        'q': this.searchTerm,
-        'type': 'video',
-        'key': configs['YT_API_KEY']
-      }
-      this.tryWebScrape(VIDEO,filters)
-      this.hideTrailer()
+    console.log("Youtube API unavailable, trying alt method");
+    //console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
+    this.tryWebScrape()
+    this.hideTrailer()
   }
 
   showTrailer(){
-    console.log(this)
     let trailerEl = app.getEl('trailer');
     trailerEl.classList.add('open');
     if(this.player){
-      console.log(this.player)
       this.player.playVideo();
     }
   }
@@ -73,8 +65,9 @@ class Trailer{
     }
   }
 
-  tryWebScrape(url,filters){
-
+  tryWebScrape(){
+    let url = `https://mdbscrap.herokuapp.com/YT.php`
+    SendReq(url, {'success':this.loadVideoPlayer.bind(this), 'fail':this.hideTrailer.bind(this)}, {q:this.searchTerm});
   }
 
   removePlayer(){
@@ -86,7 +79,12 @@ class Trailer{
   }
 
   loadVideoPlayer(response) {
-    let id = response.items[0].id.videoId;
+    let id
+    if(response.hasOwnProperty('items')){
+      id = response.items[0].id.videoId;
+    }else{
+      id = response.id
+    }
     let origin = window.location.href;
     this.video = `<iframe id='trailerPlayer' class='YTPlayer' onload="attachYTController()" tabindex="-1" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
     app.getEl('trailerPlayer').outerHTML = this.video;
