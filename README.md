@@ -1,9 +1,11 @@
 # MovieDB
-Vanila JS web app using 
+Javascript Web app using
   - The Movie Database API: for movie data
   - Youtube API: for movie trailers
-  
-
+  - Bit of JQuery
+  - PHP web service for -https://github.com/SamJessep/PHP-Webscrap
+    - Scraping YT if the API is down
+    - Scraping torrent magnet links
 
 ## To do
   - [ ] Add option to turn off darkmode
