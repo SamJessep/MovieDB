@@ -26,7 +26,7 @@ window.onclick = function(event) {
       }
     }
   }
-  if(!app.getEl('preferencesMenu').contains(event.target) && !(event.target.matches('#preferences')&&app.getEl('preferencesMenu').classList.contains('hidden')){
+  if(!app.getEl('preferencesMenu').contains(event.target) && !event.target.matches('#preferences')){
     app.hide(app.getEl('preferencesMenu'))
   }
 }
