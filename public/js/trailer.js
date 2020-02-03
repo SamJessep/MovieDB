@@ -16,10 +16,11 @@ class Trailer{
       'type': 'video',
       'key': configs['YT_API_KEY']
     }
-      SendReq(VIDEO, {'success':this.loadVideoPlayer.bind(this), 'fail':this.tryWebScrape.bind(VIDEO,filters)}, filters);
+      //SendReq(VIDEO, {'success':this.loadVideoPlayer.bind(this), 'fail':this.tryWebScrape.bind(VIDEO,filters)}, filters);
+      this.checkForYoutubeAPI(VIDEO,filters,this.loadVideoPlayer.bind(this))
   }
 
-  /*checkForYoutubeAPI(url, filters){
+  checkForYoutubeAPI(url, filters,success){
     $.ajax({
         url: url,
         type: 'GET',
@@ -34,16 +35,25 @@ class Trailer{
             xhr.addEventListener("abort", function(){
                 alert("cancelled");
             }, false);
-            this.loadVideoPlayer(xhr)
+            success()
             return xhr;
         },
-        error: function (err) {
-          alert('YT API down');
-            console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
-            this.removePlayer()
-        }
+        error: this.YTError.bind(this)
     });
-  }*/
+  }
+
+  YTError(err){
+      console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
+      let filters = {
+        'part': 'id',
+        'maxResults': 1,
+        'q': this.searchTerm,
+        'type': 'video',
+        'key': configs['YT_API_KEY']
+      }
+      this.tryWebScrape(VIDEO,filters)
+      this.hideTrailer()
+  }
 
   showTrailer(){
     console.log(this)
@@ -57,8 +67,10 @@ class Trailer{
 
   hideTrailer(){
     let trailerEl = app.getEl('trailer');
-    trailerEl.classList.remove('open')
-    this.player.pauseVideo();
+    if(trailerEl){
+      trailerEl.classList.remove('open')
+      this.player.pauseVideo();
+    }
   }
 
   tryWebScrape(url,filters){
