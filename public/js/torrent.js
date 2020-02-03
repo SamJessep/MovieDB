@@ -1,9 +1,9 @@
 Torrent = class{
-  constructor(quality, website, movie){
+  constructor(quality, website, media){
     this.quality = quality
-    this.movie = movie
+    this.media = media
     this.website = website
-    this.STerm = this.getSearchTerm()
+    this.STerm;
     this.URL = this.getURL()
 
   }
@@ -11,7 +11,8 @@ Torrent = class{
   static linkSelect;
   static errorMsg;
 
-  static GetTorrents(data){
+  static GetTorrents(){
+    let resultData = app.loadedResult
     Torrent.loadGif = app.getEl('torrentLoad')
     Torrent.linkSelect = app.getEl('linkSelect')
     Torrent.errorMsg = app.getEl('torrentError')
@@ -20,7 +21,8 @@ Torrent = class{
     app.hide(Torrent.errorMsg);
     var baseURL = 'https://mdbscrap.herokuapp.com/'
     SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
-      'url' : new Torrent(app.getEl('quality').value, app.preferences.downloadSite, {'original_title' : app.loadedMovie.title, 'release_date': app.loadedMovie.releaseDate}).URL,
+      'url' : new Torrent(app.getEl('quality').value,
+       app.preferences.downloadSite,resultData).URL,
       'site' : app.preferences.downloadSite
     })
   }
@@ -50,13 +52,25 @@ Torrent = class{
     window.location.href = magnet;
   }
 
+  getTVSearchTerm(){
+    let s = this.media;
+    let term = `${s.title} S${s.selectedSeason.seasonNumber}E${s.selectedEpisode.episodeNumber} ${this.quality}`
+    return term;
+  }
+
   getSearchTerm() {
-    let m = this.movie
-    let term = `${m.original_title} ${m.release_date.slice(0,4)} ${this.quality}`
+    let m = this.media
+    let term = `${m.title} ${m.releaseDate.slice(0,4)} ${this.quality}`
     return term;
   }
 
   getURL() {
+    if(this.media.hasOwnProperty('season') || this.media.type == 'tv'){
+      this.STerm = this.getTVSearchTerm();
+    }else{
+      this.STerm = this.getSearchTerm()
+    }
+    console.log(this.STerm);
     let url;
     switch (this.website) {
       case 'thepiratebay':

@@ -89,5 +89,5 @@ function attachYTController() {
   });
 }
 function onPlayerReady(event) {
-  app.loadedMovie.trailer.player = event.target;
+  app.loadedResult.trailer.player = event.target;
 }

@@ -2,6 +2,7 @@ class Result{
     constructor(data){
       this.allData = data;
       this.trailer;
+      this.type = data.media_type || 'movie';
     }
 
     updateCountryData(data){
@@ -16,7 +17,7 @@ class Result{
     makeCard(){
       let poster = this.getPoster(this.images['poster'], 'poster')
       return `
-      <button class="card movie" id=${this.id} onclick='theRouter.Move("Details/${this.id}")' tabindex='0'>
+      <button class="card movie" id=${this.id} onclick='theRouter.Move("Details/${this.type}/${this.id}")' tabindex='0'>
         ${poster}
           <h1 class="card-title hidden">${this.title}</h1>
       </button>`;
@@ -31,8 +32,8 @@ class Result{
       let shortAbout = this.getShortAbout();
       let description = this.getDescripton();
       let downloadSection = this.getDownloadSection();
-      this.addReviews()
-      this.addRelatedResults();
+      this.addReviews(null,'movie')
+      this.addRelatedResults(null,'movie');
       return`
       <div class="detailedDiv" >
         <div id='BackdropDiv'>
@@ -66,9 +67,9 @@ class Result{
 
     getTrailer(){
       return `
-      <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='app.loadedMovie.trailer.showTrailer()'></div>
+      <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='app.loadedResult.trailer.showTrailer()'></div>
       <div id='trailer'>
-        <img class='closeTrailer' src='images/close.svg' onclick='app.loadedMovie.trailer.hideTrailer()'>
+        <img class='closeTrailer' src='images/close.svg' onclick='app.loadedResult.trailer.hideTrailer()'>
         <iframe id='trailerPlayer'></iframe>
       </div>`
     }
@@ -78,7 +79,7 @@ class Result{
       <div id='shortAbout'>
         <p class='noBoarder'>${this.rating}</p>
         <p>${this.runTime} mins</p>
-        <p>${this.releaseDate}</p>
+        <p id='release-date'>${this.releaseDate}</p>
         <div id="starRatingContainer">
           <div class='ratings' id='rating-bg'></div>
           <div class='ratings' id='rating' style='width:${(this.starRating/2)*5}vmin;'></div>
@@ -90,12 +91,12 @@ class Result{
     getDescripton(){
       let genreLinks = [];
       for(let aLink of this.genres){
-        genreLinks.push(new Genre(aLink.id,aLink.name).makeLink());
+        genreLinks.push(new Genre(aLink.id,aLink.name,this.type).makeLink());
       }
       return `
       <div class="detailedText">
-        <h2>${this.title}</h2>
-        <p>${this.about}</p>
+        <h2 id='title'>${this.title}</h2>
+        <p id='description'>${this.about}</p>
         <strong>Genres:</strong><span>${genreLinks.join(', ')}</span>
       </div>`
     }
@@ -133,7 +134,7 @@ class Result{
         `
     }
 
-    addReviews(data){
+    addReviews(data,type){
       if(data){
         let html = '<summary>Reviews</summary><div class="detailContents">';
         if(data.results.length == 0){html += '<strong>no reviews</strong>'}
@@ -143,26 +144,30 @@ class Result{
         html += '</div>'
         app.Update(app.getEl('reviews'), html)
       }else{
-        MDBReq(REVIEW(this.id), this.addReviews, {
+        MDBReq(REVIEW(this.id,type), this.addReviews, {
           'language' : app.preferences.getLang(),
           'include_adult' : app.preferences.includeAdult,
         })
       }
     }
 
-    addRelatedResults(data){
+    addRelatedResults(data,type){
       if(data){
-        let html = '<summary>Similar movies</summary><div class="detailContents">'
+
+        let title = this.type == 'tv' ? 'TV shows' : 'Movies';
+        let html = `<summary>Similar ${title}</summary><div class="detailContents">`
         for(let aMovie of data.results){
+          aMovie.media_type = this.type;
           html += new Movie(aMovie).makeCard();
         }
         html += '</div>'
         app.Update(app.getEl('Recommendations'), html)
       }else{
-        MDBReq(SIMILAR(this.id), this.addRelatedResults, {
+        this.type = type;
+        MDBReq(SIMILAR(this.id,type), this.addRelatedResults.bind(this), {
           'language' : app.preferences.getLang(),
           'include_adult' : app.preferences.includeAdult
-        })
+        },false, type)
       }
     }
 }

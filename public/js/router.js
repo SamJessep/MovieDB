@@ -25,12 +25,14 @@ class Router {
   }
 
   LoadPage(event){
+    this.hash = window.location.hash;
     let title;
     if(this.hash.includes('/')){
       let pathParts = this.hash.split('#')[1].split('/');
       let action = pathParts[0];
       let query = pathParts[1];
-      title = this[action](query);
+      let query2 = pathParts[2];
+      title = this[action](query, query2);
     }
     else {
       app.home();
@@ -46,8 +48,8 @@ class Router {
     return "search: "+query;
   }
 
-  Details(id){
-    app.Action('GetDetailedPage',id)
+  Details(type,id){
+    app.Action('GetDetailedPage',type,id)
     return 'MovieID:'+id;
   }
 
@@ -56,8 +58,8 @@ class Router {
     return query;
   }
 
-  Genre(id){
-    app.Action('SearchGenre', id);
+  Genre(type,id){
+    app.Action('SearchGenre', type,id);
     return 'Genre:'+app.getEl(id).innerText;
   }
 

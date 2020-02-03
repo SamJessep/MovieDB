@@ -1,9 +1,9 @@
 class App{
-  constructor(){
+  constructor(preferences){
     this.page = 1;
     this.totalPages = 0;
-    this.preferences = new Preferences();
-    this.loadedMovie;
+    this.preferences = preferences;
+    this.loadedResult;
 
     this.discoverParams = {
       "Theatres":{
@@ -40,11 +40,18 @@ class App{
     }
   }
 
+  Replace(el,content){
+    if(el){
+      el.outerHTML = content
+    }
+  }
+
   Append(el, content){
     el.insertAdjacentHTML('beforeend', content);
   }
 
   Clear(){
+    CloseMenu()
     this.page = 1;
     this.hide(this.PreferencesMenu)
     this.Empty(this.SearchArea)
@@ -93,9 +100,9 @@ class App{
     );
   }
 //---User-Actions---------------------------------------------------------------
-Action(method,params){
+Action(method,...params){
   this.Clear()
-  if(method) this[method](params);
+  if(method) this[method](...params);
 }
 
 //HOME
@@ -138,12 +145,13 @@ Discover(hash){
     console.error("please provide a discover preset or custom");
     return;
   }
-  MDBReq(DISCOVER, this.LoadResults.bind(this), {
+  MDBReq(DISCOVER+'movie', this.LoadResults.bind(this), {
     ...params,
     'language' : this.preferences.getLang(),
     'include_adult' : this.preferences.includeAdult,
-    'page' : this.page
-  })
+    'page' : this.page,
+    'append_to_response': 'media_type'
+  },true,'movie')
 }
 
 GetCustomParams(params){
@@ -151,23 +159,31 @@ GetCustomParams(params){
 }
 
 
-LoadResults(data){
+LoadResults(data,type){
+  console.log(data);
   let timer
   this.totalPages = data.total_pages;
   this.hide(this.DetailPage);
   this.page = data.page;
   if(data.results.length>0){
-    this.Update(this.SearchArea, this.GetResultHTML(data.results));
+    this.Update(this.SearchArea, this.GetResultHTML(data.results,type));
     if(!$(window).scroll) timer = this.scrollEvent(timer,500);
   }else{
     this.showMessage('No results found...')
   }
 }
 
-GetResultHTML(results){
+GetResultHTML(results,type){
   let html = '';
   for(let aResult of results){
+    if(type && !aResult.media_type){
+      aResult.media_type = type;
+    }
+    if(aResult.media_type == 'tv'){
+      html += new TVshow(aResult).makeCard();
+    }else if(aResult.media_type == 'movie'){
       html += new Movie(aResult).makeCard();
+    }
   }
   return html;
 }
@@ -200,45 +216,61 @@ showScrollButton(){
 
 //DETAILED
 
-GetDetailedPage(id){
-  MDBReq(DETAILS(id), this.LoadDetailedPage.bind(this), {'append_to_response': 'release_dates'})
+GetDetailedPage(type,id){
+  MDBReq(DETAILS(type,id), this.LoadDetailedPage.bind(this), {'append_to_response': 'release_dates'},true, type)
 }
 
-LoadDetailedPage(data){
+LoadDetailedPage(data,type){
+  let page;
   this.hide(this.SearchArea);
-  let movie = new Movie(data);
-  this.loadedMovie = movie;
-  console.log(movie)
-  this.Update(this.DetailPage, movie.makeDetailedPage())
-  movie.LoadTorrents();
+  if(type == 'tv'){
+    page = new TVshow(data);
+    page.makeDetailedPage()
+  }else{
+    page = new Movie(data);
+    this.Update(this.DetailPage, page.makeDetailedPage())
+  }
+  this.loadedResult = page;
+  if(type=='movie') page.LoadTorrents();
   this.show(this.DetailPage);
 }
 
 //GENRE SEARCH
 
-SearchGenre(id){
-  MDBReq(DISCOVER, this.LoadResults.bind(this), {
+SearchGenre(type,id){
+  MDBReq(DISCOVER+type, this.LoadResults.bind(this), {
     'language' : this.preferences.getLang(),
     'include_adult' : this.preferences.includeAdult,
     'release_date.lte' : getDate(),
     'page' : 1,
     'with_genres' : id
-  })
+  },true, type)
 }
 
 GetGenres(){
   var baseURL = 'https://api.themoviedb.org/3/genre/movie/list';
   MDBReq(baseURL, this.AddGenres.bind(this), {
     'language' : this.preferences.getLang()
-  })
+  },false,'movie')
+  baseURL = 'https://api.themoviedb.org/3/genre/tv/list';
+  MDBReq(baseURL, this.AddGenres.bind(this), {
+    'language' : this.preferences.getLang()
+  },false,'tv')
 }
 
-AddGenres(data){
-  let html = ''
+AddGenres(data,type){
+  let title = type == 'movie'?'Movie':'TV'
+  let html, links = ''
   for(let aGenre of data.genres){
-    html += new Genre(aGenre.id, aGenre.name).makeLink();
+    links += new Genre(aGenre.id, aGenre.name,type).makeLink();
   }
-  this.Update(this.getEl('GenreSelect'), html);
+  html = `
+    <details>
+      <summary>${title}</summary>
+      ${links}
+    </details>
+  `
+  this.Append(this.getEl('GenreSelect'), html);
 }
 
 }

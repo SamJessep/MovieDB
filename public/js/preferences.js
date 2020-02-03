@@ -17,6 +17,26 @@ class Preferences{
     MDBReq('https://api.themoviedb.org/3/configuration/countries', this.saveCountries.bind(this), {});
   }
 
+  static fetchData(){
+    let data = localStorage.getItem('preferences');
+    if(data) data = JSON.parse(data);
+    return data;
+  }
+
+  static LoadData(oldData, newData){
+    return Object.assign(oldData,newData)
+  }
+
+  saveData(){
+    var preferenceData = {
+      language: this.language,
+      country: this.country,
+      includeAdult: this.includeAdult,
+      downloadSite: this.downloadSite
+    }
+    localStorage.setItem('preferences', JSON.stringify(preferenceData));
+  }
+
 
   getLang(){
     return this.language + '_' + this.country;
@@ -68,6 +88,7 @@ class Preferences{
     this.country = this.countrySelect.value
     this.includeAdult = this.adultSelect.value == 'true'
     this.downloadSite = this.downloadSiteSelect.value;
+    this.saveData();
     app.hide(app.getEl('preferencesMenu'));
   }
 }
