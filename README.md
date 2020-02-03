@@ -9,11 +9,11 @@ Vanila JS web app using
   - [X] save/cache preferences to local storage
   - [X] Read saved preferences if saved
   - [ ] Add option to turn off darkmode
-  - [ ] scrape YT if API down
-  - [ ] Clean code into classes
+  - [X] scrape YT if API down
+  - [X] Clean code into classes
     - [X] Make App class
     - [X] Make VideoResult class
-      - [ ] Make Tv show class inherited from Video result
+      - [X] Make Tv show class inherited from Video result
       - [X] Make Movie inherited from video result
     - [X] Clean HTML components into seperate functions
     - [ ] Clean and segregate CSS
