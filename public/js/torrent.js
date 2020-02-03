@@ -19,7 +19,7 @@ Torrent = class{
     app.show(Torrent.loadGif);
     app.hide(Torrent.linkSelect);
     app.hide(Torrent.errorMsg);
-    var baseURL = 'https://mdbscrap.herokuapp.com/'
+    var baseURL = 'https://mdbscrap.herokuapp.com/Torrent.php'
     SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
       'url' : new Torrent(app.getEl('quality').value,
        app.preferences.downloadSite,resultData).URL,
