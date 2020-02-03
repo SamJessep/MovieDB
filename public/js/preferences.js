@@ -6,10 +6,35 @@ class Preferences{
     this.downloadSite = '1337x';
     this.possibleLanguages = [];
     this.possibleCountries = [];
-    this.langSelect = getEl('lang')
-    this.countrySelect = getEl('countries')
-    this.adultSelect = getEl('adult')
-    this.downloadSiteSelect = getEl('siteSelect');
+    this.langSelect = document.getElementById('lang')
+    this.countrySelect = document.getElementById('countries')
+    this.adultSelect = document.getElementById('adult')
+    this.downloadSiteSelect = document.getElementById('siteSelect');
+
+    //GET PREFERENCE DATA
+    MDBReq('https://api.themoviedb.org/3/configuration/languages', this.saveLanguages.bind(this), {});
+
+    MDBReq('https://api.themoviedb.org/3/configuration/countries', this.saveCountries.bind(this), {});
+  }
+
+  static fetchData(){
+    let data = localStorage.getItem('preferences');
+    if(data) data = JSON.parse(data);
+    return data;
+  }
+
+  static LoadData(oldData, newData){
+    return Object.assign(oldData,newData)
+  }
+
+  saveData(){
+    var preferenceData = {
+      language: this.language,
+      country: this.country,
+      includeAdult: this.includeAdult,
+      downloadSite: this.downloadSite
+    }
+    localStorage.setItem('preferences', JSON.stringify(preferenceData));
   }
 
 
@@ -63,6 +88,7 @@ class Preferences{
     this.country = this.countrySelect.value
     this.includeAdult = this.adultSelect.value == 'true'
     this.downloadSite = this.downloadSiteSelect.value;
-    showPreferenceMenu()
+    this.saveData();
+    app.hide(app.getEl('preferencesMenu'));
   }
 }

@@ -11,8 +11,10 @@ class Router {
   }
 
   Hashchange(){
-    this.hash = window.location.hash;
-    this.LoadPage();
+    if(this.hash != window.location.hash){
+      this.hash = window.location.hash;
+      this.LoadPage();
+    }
   }
 
   Move(hash, title){
@@ -23,43 +25,46 @@ class Router {
   }
 
   LoadPage(event){
+    this.hash = window.location.hash;
     let title;
     if(this.hash.includes('/')){
       let pathParts = this.hash.split('#')[1].split('/');
       let action = pathParts[0];
       let query = pathParts[1];
-      title = this[action](query);
+      let query2 = pathParts[2];
+      title = this[action](query, query2);
     }
     else {
-      home();
+      app.home();
       title = 'Home';
     }
     document.title = 'MDB-'+title
   }
 
   Search(query){
+
     query = decodeURI(query);
-    search(query);
+    app.Action('Search', query);
     return "search: "+query;
   }
 
-  Details(id){
-    LoadDetailed(id)
+  Details(type,id){
+    app.Action('GetDetailedPage',type,id)
     return 'MovieID:'+id;
   }
 
   Discover(query){
-    Discover(query)
+    app.Action('Discover',query)
     return query;
   }
 
-  Genre(id){
-    SearchGenre(id);
-    return 'Genre:'+getEl(id).innerText;
+  Genre(type,id){
+    app.Action('SearchGenre', type,id);
+    return 'Genre:'+app.getEl(id).innerText;
   }
 
   Home(){
-    home();
+    app.Home();
     return 'Home';
   }
 

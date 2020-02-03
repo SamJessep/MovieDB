@@ -1,9 +1,9 @@
 Torrent = class{
-  constructor(quality, website, movie){
+  constructor(quality, website, media){
     this.quality = quality
-    this.movie = movie
+    this.media = media
     this.website = website
-    this.STerm = this.getSTerm()
+    this.STerm;
     this.URL = this.getURL()
 
   }
@@ -11,17 +11,19 @@ Torrent = class{
   static linkSelect;
   static errorMsg;
 
-  static GetTorrents(data){
-    Torrent.loadGif = getEl('torrentLoad')
-    Torrent.linkSelect = getEl('linkSelect')
-    Torrent.errorMsg = getEl('torrentError')
-    show(Torrent.loadGif);
-    hide(Torrent.linkSelect);
-    hide(Torrent.errorMsg);
+  static GetTorrents(){
+    let resultData = app.loadedResult
+    Torrent.loadGif = app.getEl('torrentLoad')
+    Torrent.linkSelect = app.getEl('linkSelect')
+    Torrent.errorMsg = app.getEl('torrentError')
+    app.show(Torrent.loadGif);
+    app.hide(Torrent.linkSelect);
+    app.hide(Torrent.errorMsg);
     var baseURL = 'https://mdbscrap.herokuapp.com/'
     SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
-      'url' : new Torrent(getEl('quality').value, AppPreferences.downloadSite, {'original_title' : detailedPageMovie.title, 'release_date': detailedPageMovie.releaseDate}).URL,
-      'site' : AppPreferences.downloadSite
+      'url' : new Torrent(app.getEl('quality').value,
+       app.preferences.downloadSite,resultData).URL,
+      'site' : app.preferences.downloadSite
     })
   }
 
@@ -32,31 +34,43 @@ Torrent = class{
         let difference = aTorrent.seeds - aTorrent.leeches;
         options += `<option value=${aTorrent.link}>${aTorrent.title} ${aTorrent.seeds}&#8593; ${aTorrent.leeches}&#8595;</option>`
       }
-      Update(getEl('selector'), options);
-      hide(Torrent.loadGif);
-      show(Torrent.linkSelect);
+      app.Update(app.getEl('selector'), options);
+      app.hide(Torrent.loadGif);
+      app.show(Torrent.linkSelect);
     }else{
       Torrent.torrentFailed()
     }
   }
 
   static torrentFailed(){
-    hide(Torrent.loadGif);
-    show(Torrent.errorMsg);
+    app.hide(Torrent.loadGif);
+    app.show(Torrent.errorMsg);
   }
 
   static RunTorrent(){
-    let magnet = getEl('selector').value;
+    let magnet = app.getEl('selector').value;
     window.location.href = magnet;
   }
 
-  getSTerm() {
-    let m = this.movie
-    let term = `${m.original_title} ${m.release_date.slice(0,4)} ${this.quality}`
+  getTVSearchTerm(){
+    let s = this.media;
+    let term = `${s.title} S${s.selectedSeason.seasonNumber}E${s.selectedEpisode.episodeNumber} ${this.quality}`
+    return term;
+  }
+
+  getSearchTerm() {
+    let m = this.media
+    let term = `${m.title} ${m.releaseDate.slice(0,4)} ${this.quality}`
     return term;
   }
 
   getURL() {
+    if(this.media.hasOwnProperty('season') || this.media.type == 'tv'){
+      this.STerm = this.getTVSearchTerm();
+    }else{
+      this.STerm = this.getSearchTerm()
+    }
+    console.log(this.STerm);
     let url;
     switch (this.website) {
       case 'thepiratebay':

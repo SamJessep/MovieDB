@@ -1,36 +1,37 @@
 //URLS
 var SEARCH = 'https://api.themoviedb.org/3/search/multi';
-var DISCOVER = 'https://api.themoviedb.org/3/discover/movie';
+var DISCOVER = 'https://api.themoviedb.org/3/discover/';
 var VIDEO = `https://www.googleapis.com/youtube/v3/search`;
-function DETAILS(id){
-   return `https://api.themoviedb.org/3/movie/${id}`;
+function DETAILS(type,id){
+  return `https://api.themoviedb.org/3/${type}/${id}`;
 }
 function IMAGE(id,size = 'w45'){
   return path = id ? {"SD": `https://image.tmdb.org/t/p/${size}/${id}`, "HD": `https://image.tmdb.org/t/p/original/${id}`} : false;
 }
-function SIMILAR(movie_id){
-  return `https://api.themoviedb.org/3/movie/${movie_id}/similar`
+function SIMILAR(movie_id,type){
+  return `https://api.themoviedb.org/3/${type}/${movie_id}/similar`
 }
-function REVIEW(movie_id){
-  return `https://api.themoviedb.org/3/movie/${movie_id}/reviews`
+function REVIEW(movie_id,type){
+  return `https://api.themoviedb.org/3/${type}/${movie_id}/reviews`
 }
 var HISTORY;
 
-function MDBReq(baseURL, successMethod, filters, scrollTop = true){
+function MDBReq(baseURL, successMethod, filters, scrollTop = true, extraData){
   filters = {...filters, ...{'api_key': configs['MDB_API_KEY']}}
   HISTORY = {
     baseURL : baseURL,
     successMethod : successMethod,
-    filters : filters
+    filters : filters,
+    extraData: extraData
   }
-  SendReq(baseURL, {'success':successMethod}, filters, filters.page);
+  SendReq(baseURL, {'success':successMethod}, filters, extraData);
   if(scrollTop){
     window.scrollTo(0, 0);
   }
 }
 
 
-function SendReq(baseURL, methods, filters){
+function SendReq(baseURL, methods, filters,extraData){
   let query = $.ajax({
     url: baseURL,
     type: 'GET',
@@ -38,7 +39,7 @@ function SendReq(baseURL, methods, filters){
       ...filters
     },
     success: function(response){
-      methods['success'](response);
+      methods['success'](response,extraData);
       LazyLoadImg.update();
     },
     error: function(response){

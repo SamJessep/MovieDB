@@ -12,6 +12,8 @@
     <!-- LAZY LOAD :) -->
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.min.js" defer></script>
 
+    <script src="https://www.youtube.com/player_api"></script>
+
     <script type="text/javascript" src='js/config.js' defer></script>
     <link rel="stylesheet" type="text/css" href='css/dropMenu.css' media="wait" onload="this.media='all'" />
     <link rel="stylesheet" type="text/css" href='css/loader.css' media="wait" onload="this.media='all'" />
@@ -20,11 +22,11 @@
   </head>
   <body>
     <header>
-      <img id='logo' onclick="home()"src='images/MDB_Logo.png' alt='movie database logo'/>
+      <img id='logo' onclick="app.home()"src='images/MDB_Logo.png' alt='movie database logo'/>
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
         <label class='bgColored text-selection-none'>Search
-          <input id='search' placeholder="search.." onKeyDown='checkForSearch(this); updateFontSize(this)'/>
+          <input id='search' placeholder="search.." onKeyDown='app.checkForSearch(this)'/>
         </label>
         <img  id="searchButton" src="images/search.svg" alt='search button' onclick="theRouter.Move('Search/'+document.getElementById('search').value)" />
       </div>
@@ -33,12 +35,12 @@
         <div id='popular' class="navButton text-selection-none" onclick='theRouter.Move("Discover/Popular")'>Popular</div>
         <div class="dropdown">
           <div id='genreButtonContainer'>
-            <div id='genreButton' onclick="myFunction()" class="dropbtn navButton text-selection-none">Genres</div>
+            <div id='genreButton' onclick="OpenMenu()" class="dropbtn navButton text-selection-none">Genres</div>
           </div>
           <div id="GenreSelect" class="dropdown-content">
           </div>
         </div>
-        <div id='preferences' class="navButton text-selection-none" onclick='showPreferenceMenu()'>Preferences</div>
+        <div id='preferences' class="navButton text-selection-none" onclick="app.getEl('preferencesMenu').classList.toggle('hidden')">Preferences</div>
       </nav>
       <div id='preferencesMenu' class='hidden'>
         <div>
@@ -58,7 +60,7 @@
           </div>
 
 
-          <button onclick='AppPreferences.savePreferences()'>Save</button>
+          <button onclick='app.preferences.savePreferences()'>Save</button>
         </div>
       </div>
     </header>
@@ -67,8 +69,6 @@
     <main>
       <div id='searchBody'>
         <div id='searchResults'> </div>
-        <div id='navBarContainer' class="hidden">
-        </div>
       </div>
 
       <div id='details' hidden>
@@ -79,16 +79,21 @@
       </div>
     </main>
 
-    <script type="text/javascript" src='js/preferences.js' defer></script>
+    <script type="text/javascript" src='js/addons.js' defer></script>
     <script type="text/javascript" src='js/requestHelper.js' defer></script>
-    <script type="text/javascript" src='js/AppHelper.js' defer></script>
+    <script type="text/javascript" src='js/preferences.js' defer></script>
+    <script type="text/javascript" src='js/Genre.js' defer></script>
+    <script type="text/javascript" src='js/App.js' defer></script>
+    <script type="text/javascript" src='js/Main.js' defer></script>
+    <!--<script type="text/javascript" src='js/AppHelper.js' defer></script>-->
     <script type="text/javascript" src='js/Result.js' defer></script>
     <script type="text/javascript" src='js/movie.js' defer></script>
+    <script type="text/javascript" src='js/TVshow.js' defer></script>
+    <script type="text/javascript" src='js/Season.js' defer></script>
+    <script type="text/javascript" src='js/Episode.js' defer></script>
     <script type="text/javascript" src='js/review.js' defer></script>
     <script type="text/javascript" src='js/torrent.js' defer></script>
     <script type="text/javascript" src='js/trailer.js' defer></script>
-    <script type="text/javascript" src='js/dropDownMenu.js' defer></script>
-    <script type="text/javascript" src='js/addons.js' defer></script>
     <script type="text/javascript" src='js/router.js' defer></script>
   </body>
 </html>
