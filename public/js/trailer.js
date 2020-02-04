@@ -1,11 +1,19 @@
 // search format "[title] [release year] partner hd"
 class Trailer{
   constructor(movie){
-    this.searchTerm = movie.title + ' movie trailer';
+    this.searchTerm = this.getYTSearchTerm();
     this.video;
     this.trailerEl;
     this.player;
     this.getTrailer();
+  }
+
+  getYTSearchTerm(){
+    if(app.loadedResult.type == 'tv'){
+      return app.loadedResult.title + ' trailer';
+    }else if(app.loadedResult.type == 'movie'){
+      return app.loadedResult.title + ' movie trailer';
+    }
   }
 
   getTrailer(){
@@ -64,7 +72,7 @@ class Trailer{
       if(this.player){
         this.player.pauseVideo();
       }
-      
+
     }
   }
 

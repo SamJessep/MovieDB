@@ -249,10 +249,10 @@ LoadDetailedPage(data,type){
   let page;
   this.hide(this.SearchArea);
   if(type == 'tv'){
-    page = new TVshow(data);
+    this.loadedResult = page = new TVshow(data);
     page.makeDetailedPage()
   }else{
-    page = new Movie(data);
+    this.loadedResult = page = new Movie(data);
     this.Update(this.DetailPage, page.makeDetailedPage())
   }
   this.loadedResult = page;

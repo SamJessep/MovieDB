@@ -1,6 +1,7 @@
 class TVshow extends Result{
   constructor(data){
     super(data)
+    this.type = 'tv'
     this.allData = data;
     this.id = data.id;
     this.title = data.name;

@@ -77,7 +77,7 @@ class Result{
     getShortAbout(){
       return `
       <div id='shortAbout'>
-        <p class='noBoarder'>${this.rating}</p>
+        <p class='noBoarder'>${this.rating?this.rating:''}</p>
         <p>${this.runTime} mins</p>
         <p id='release-date'>${this.releaseDate}</p>
         <div id="starRatingContainer">

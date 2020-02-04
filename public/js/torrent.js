@@ -26,7 +26,7 @@ Torrent = class{
       'site' : app.preferences.downloadSite
     })
     if(isTVShow){
-      SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
+      SendReq(baseURL, {'success':Torrent.torrentLoaded.bind(false), 'fail':Torrent.torrentFailed}, {
         'url' : new Torrent(app.getEl('quality').value,
          app.preferences.downloadSite,resultData).getURL(true),
         'site' : app.preferences.downloadSite
