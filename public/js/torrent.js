@@ -98,6 +98,6 @@ Torrent = class{
          break;
      }
      //return encodeURI(url)
-     return url
+     return url;
   }
 }

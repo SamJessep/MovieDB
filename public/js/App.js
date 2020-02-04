@@ -227,8 +227,10 @@ scrollEvent(timer,milliseconds){
 
 loadMore(data){
   if(data){
-    if(data.results.length>1){
-      app.Append(this.SearchArea, this.GetResultHTML(data.results,'movie'));
+    if(data.hasOwnProperty('results')){
+      if(data.results.length>1){
+        app.Append(this.SearchArea, this.GetResultHTML(data.results,'movie'));
+      }
     }
   }else if (this.page<this.totalPages) {
     this.page++;
