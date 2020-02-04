@@ -93,12 +93,20 @@ input::-webkit-calendar-picker-indicator {
   display: inline;
 }
 
-.text-selection-none, button{
+.text-selection-none, button,*{
    user-select: none; /* supported by Chrome and Opera */
    -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
    -moz-user-select: none; /* Firefox */
    -ms-user-select: none;
+}
+
+p,h1,h2{
+  user-select: text; /* supported by Chrome and Opera */
+  -webkit-user-select: text; /* Safari */
+  -khtml-user-select: text; /* Konqueror HTML */
+  -moz-user-select: text; /* Firefox */
+  -ms-user-select: text;
 }
 
 .bgColored{
@@ -385,6 +393,12 @@ div.poster{
   filter: brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(763%) hue-rotate(205deg) brightness(93%) contrast(89%);
   width: calc(5*5vmin);
 }
+
+#episodeArea{
+  display: flex;
+  justify-content: space-evenly;
+}
+
 #backToTop{
   position: fixed;
   width: 10vmin;

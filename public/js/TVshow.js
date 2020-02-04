@@ -42,9 +42,7 @@ class TVshow extends Result{
         ${trailer}
       </div>
       ${shortAbout}
-      <div id='SeasonSelect'>
-        ${this.getSeasonSelector()}
-      </div>
+      ${this.getSeasonSelector()}
       ${description}
       <details id="downloads" class="detailSection">
           <summary>Downloads</summary>
@@ -87,7 +85,7 @@ class TVshow extends Result{
           ${seasonOptions}
         </select>
       </div>
-      <div id='ES'></div>
+      <div id='episodeSelect'></div>
     </div>
     `
   }
@@ -105,7 +103,7 @@ class TVshow extends Result{
         ${episodes}
       </select>
     </div>`
-    app.Replace(app.getEl('ES'),html)
+    app.Replace(app.getEl('episodeSelect'),html)
   }
 
   getSeasons(seasonData){
