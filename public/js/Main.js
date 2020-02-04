@@ -6,6 +6,10 @@ if(savedPreferences){
 }
 const app = new App(preferencesObject);
 
+$('#search').on('input', function(){
+  app.getAutoCompleteItems(this);
+});
+
 window.addEventListener('scroll', throttle(infinateLoad, 500));
 window.onscroll = function(ev) {
   if(app.isOnBottom()){

@@ -26,7 +26,7 @@
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
         <label class='bgColored text-selection-none'>Search
-          <input id='search' placeholder="search.." onKeyDown='app.checkForSearch(this)' onchange="app.getAutoCompleteItems(this)" list='suggestedResults'/>
+          <input id='search' onkeypress="app.checkForSearch(this)" placeholder="search.." list='suggestedResults' autocomplete='off'/>
         </label>
         <datalist id='suggestedResults'></datalist>
         <img  id="searchButton" src="images/search.svg" alt='search button' onclick="theRouter.Move('Search/'+document.getElementById('search').value)" />

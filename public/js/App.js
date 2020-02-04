@@ -138,9 +138,8 @@ checkForSearch(ele) {
   }
 }
 getAutoCompleteItems(ele){
+  console.log(ele.value)
   let term = ele.value
-  console.log(term);
-//  console.log(app.getEl('suggestedResults').value)
   if(term != ''){
     MDBReq(SEARCH, this.updateAutoComplete, {
       'query' : term,
