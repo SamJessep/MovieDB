@@ -13,7 +13,7 @@ $('#search').on('input', function(){
 window.addEventListener('scroll', throttle(infinateLoad, 500));
 window.onscroll = function(ev) {
   app.showScrollButton()
-  if(app.isOnBottom()){
+  if(app.isOnBottom() && app.getEl('detailed').classList.contains('hidden')){
     app.loadMore();
   }
 }
