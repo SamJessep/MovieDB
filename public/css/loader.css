@@ -1,9 +1,10 @@
 .spinner {
   width: 10vmin;
   height: 10vmin;
-  position: relative;
-  margin: 100px auto;
-  top: -50vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .double-bounce1, .double-bounce2 {

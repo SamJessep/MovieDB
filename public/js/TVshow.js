@@ -31,7 +31,7 @@ class TVshow extends Result{
     let trailer = this.getTrailer();
     let shortAbout = this.getShortAbout();
     let description = this.getDescripton();
-    let downloadSection = this.getDownloadSection();
+    let downloadSection = this.getDownloadSection('Select an episode above');
     this.addReviews(null,'tv')
     this.addRelatedResults(null,'tv');
     let html = `
@@ -45,7 +45,10 @@ class TVshow extends Result{
         ${this.getSeasonSelector()}
       </div>
       ${description}
-      ${downloadSection}
+      <details id="downloads" class="detailSection">
+          <summary>Downloads</summary>
+          <span id="torrentError" class="shown">Select an episode above for downloads</span>
+      </details>
       <details class='detailSection' id='reviews'></details>
       <details class='detailSection' id='Recommendations' open></details>
     </div>
@@ -75,12 +78,16 @@ class TVshow extends Result{
     }
 
     return `
-      <label for='season'>Season:</label>
-      <select id='season' onchange='app.loadedResult.getEpisodeSelector(this)'>
-        <option selected disabled>Choose a season</option>
-        ${seasonOptions}
-      </select>
-      <div id='episodeArea'></div>
+    <div id='episodeArea'>
+      <div id='SeasonSelect'>
+        <label for='season'>Season:</label>
+        <select id='season' onchange='app.loadedResult.getEpisodeSelector(this)'>
+          <option selected disabled>Choose a season</option>
+          ${seasonOptions}
+        </select>
+      </div>
+      <div id='ES'></div>
+    </div>
     `
   }
   getEpisodeSelector(s){
@@ -90,24 +97,14 @@ class TVshow extends Result{
         episodes += `<option value=${aEpisode.episodeNumber}>${aEpisode.episodeNumber}</option>`
     }
     html =  `
-    <label for='episode'>Episode</label>
-    <select id='episode' onchange='app.loadedResult.loadEpisode()'>
-      <option selected disabled>Choose a episode</option>
-      ${episodes}
-    </select>`
-    app.Update(app.getEl('episodeArea'),html)
-  }
-
-  updateCountryData(){
-
-  }
-
-  getShowData(data){
-    if(data){
-      getSeasons(data.seasons);
-    }else{
-
-    }
+    <div id='episodeSelect'>
+      <label for='episode'>Episode</label>
+      <select id='episode' onchange='app.loadedResult.loadEpisode()'>
+        <option selected disabled>Choose a episode</option>
+        ${episodes}
+      </select>
+    </div>`
+    app.Replace(app.getEl('ES'),html)
   }
 
   getSeasons(seasonData){

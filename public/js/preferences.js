@@ -90,5 +90,6 @@ class Preferences{
     this.downloadSite = this.downloadSiteSelect.value;
     this.saveData();
     app.hide(app.getEl('preferencesMenu'));
+    theRouter.LoadPage()
   }
 }

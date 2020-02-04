@@ -61,7 +61,10 @@ class Trailer{
     let trailerEl = app.getEl('trailer');
     if(trailerEl){
       trailerEl.classList.remove('open')
-      this.player.pauseVideo();
+      if(this.player){
+        this.player.pauseVideo();
+      }
+      
     }
   }
 

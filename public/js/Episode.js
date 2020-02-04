@@ -35,6 +35,7 @@ class Episode {
     app.Replace(app.getEl('description'), this.getDescripton());
     app.Replace(app.getEl('release-date'), this.getReleaseDate());
     app.Replace(app.getEl('rating'), this.getRating());
-    Torrent.GetTorrents({title: this.season.show.title, season: this.seasonNumber, episode: this.episodeNumber});
+    app.Replace(app.getEl('downloads'), this.season.show.getDownloadSection())
+    Torrent.GetTorrents(true);
   }
 }

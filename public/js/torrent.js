@@ -11,7 +11,7 @@ Torrent = class{
   static linkSelect;
   static errorMsg;
 
-  static GetTorrents(){
+  static GetTorrents(isTVShow = false){
     let resultData = app.loadedResult
     Torrent.loadGif = app.getEl('torrentLoad')
     Torrent.linkSelect = app.getEl('linkSelect')
@@ -20,11 +20,18 @@ Torrent = class{
     app.hide(Torrent.linkSelect);
     app.hide(Torrent.errorMsg);
     var baseURL = 'https://mdbscrap.herokuapp.com/Torrent.php'
-    SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
+    SendReq(baseURL, {'success':Torrent.torrentLoaded.bind(isTVShow), 'fail':Torrent.torrentFailed}, {
       'url' : new Torrent(app.getEl('quality').value,
        app.preferences.downloadSite,resultData).URL,
       'site' : app.preferences.downloadSite
     })
+    if(isTVShow){
+      SendReq(baseURL, {'success':Torrent.torrentLoaded, 'fail':Torrent.torrentFailed}, {
+        'url' : new Torrent(app.getEl('quality').value,
+         app.preferences.downloadSite,resultData).getURL(true),
+        'site' : app.preferences.downloadSite
+      })
+    }
   }
 
   static torrentLoaded(data){
@@ -38,13 +45,15 @@ Torrent = class{
       app.hide(Torrent.loadGif);
       app.show(Torrent.linkSelect);
     }else{
-      Torrent.torrentFailed()
+      Torrent.torrentFailed(this)
     }
   }
 
-  static torrentFailed(){
-    app.hide(Torrent.loadGif);
-    app.show(Torrent.errorMsg);
+  static torrentFailed(skip){
+    if(!skip){
+      app.hide(Torrent.loadGif);
+      app.show(Torrent.errorMsg);
+    }
   }
 
   static RunTorrent(){
@@ -52,9 +61,15 @@ Torrent = class{
     window.location.href = magnet;
   }
 
-  getTVSearchTerm(){
+  getTVSearchTerm(tryZeroPrefix){
     let s = this.media;
-    let term = `${s.title} S${s.selectedSeason.seasonNumber}E${s.selectedEpisode.episodeNumber} ${this.quality}`
+    let sn = s.selectedSeason.seasonNumber;
+    let en = s.selectedEpisode.episodeNumber;
+    if(tryZeroPrefix){
+      sn = sn.toString.length==1?'0'+sn:sn;
+      en = en.toString.length==1?'0'+en:en;
+    }
+    let term = `${s.title} S${sn}E${en} ${this.quality}`
     return term;
   }
 
@@ -64,9 +79,9 @@ Torrent = class{
     return term;
   }
 
-  getURL() {
+  getURL(zeroPrefix) {
     if(this.media.hasOwnProperty('season') || this.media.type == 'tv'){
-      this.STerm = this.getTVSearchTerm();
+      this.STerm = this.getTVSearchTerm(zeroPrefix);
     }else{
       this.STerm = this.getSearchTerm()
     }

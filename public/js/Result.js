@@ -101,7 +101,8 @@ class Result{
       </div>`
     }
 
-    getDownloadSection(){
+    getDownloadSection(errorMsg = 'No links available'){
+        let isTV = this.type == "tv";
         let selectOptions = ''
         let qualities = ['720p', '1080p', '1440p', '4k'];
         for(let quailty of qualities){
@@ -112,7 +113,7 @@ class Result{
           <summary>Downloads</summary>
           <div class='detailContents'>
             <label for="quality">Movie quality</label>
-            <select id="quality" onchange='Torrent.GetTorrents()'>
+            <select id="quality" onchange='Torrent.GetTorrents(${isTV})'>
               ${selectOptions}
             </select>
 
@@ -122,14 +123,14 @@ class Result{
               <div class="bounce3"></div>
             </div>
 
-            <div id='linkSelect' class='inline shown'>
+            <div id='linkSelect' class='inline hidden'>
               <label for="selector">Choose a link</label>
               <select id="selector">
                 <option value="">Loading</option>
               </select>
               <button onclick='Torrent.RunTorrent()'>Download</button>
           </div>
-          <span id='torrentError' class='hidden'>No links available</span>
+          <span id='torrentError' class='hidden'>${errorMsg}</span>
         </details>
         `
     }

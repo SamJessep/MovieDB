@@ -14,7 +14,7 @@
 
     <script src="https://www.youtube.com/player_api"></script>
 
-    <script type="text/javascript" src='js/config.js' defer></script>
+    <script type="text/javascript" src='js/Config.js' defer></script>
     <link rel="stylesheet" type="text/css" href='css/dropMenu.css' media="wait" onload="this.media='all'" />
     <link rel="stylesheet" type="text/css" href='css/loader.css' media="wait" onload="this.media='all'" />
     <link rel="stylesheet" type="text/css" href='css/videoPlayer.css' media="wait" onload="this.media='all'"/>
@@ -26,8 +26,9 @@
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
         <label class='bgColored text-selection-none'>Search
-          <input id='search' placeholder="search.." onKeyDown='app.checkForSearch(this)'/>
+          <input id='search' placeholder="search.." onKeyDown='app.checkForSearch(this)' onchange="app.getAutoCompleteItems(this)" list='suggestedResults'/>
         </label>
+        <datalist id='suggestedResults'></datalist>
         <img  id="searchButton" src="images/search.svg" alt='search button' onclick="theRouter.Move('Search/'+document.getElementById('search').value)" />
       </div>
       <nav id='quickBar'>
@@ -79,21 +80,20 @@
       </div>
     </main>
 
-    <script type="text/javascript" src='js/addons.js' defer></script>
-    <script type="text/javascript" src='js/requestHelper.js' defer></script>
-    <script type="text/javascript" src='js/preferences.js' defer></script>
+    <script type="text/javascript" src='js/Addons.js' defer></script>
+    <script type="text/javascript" src='js/RequestHelper.js' defer></script>
+    <script type="text/javascript" src='js/Preferences.js' defer></script>
     <script type="text/javascript" src='js/Genre.js' defer></script>
     <script type="text/javascript" src='js/App.js' defer></script>
     <script type="text/javascript" src='js/Main.js' defer></script>
-    <!--<script type="text/javascript" src='js/AppHelper.js' defer></script>-->
     <script type="text/javascript" src='js/Result.js' defer></script>
-    <script type="text/javascript" src='js/movie.js' defer></script>
+    <script type="text/javascript" src='js/Movie.js' defer></script>
     <script type="text/javascript" src='js/TVshow.js' defer></script>
     <script type="text/javascript" src='js/Season.js' defer></script>
     <script type="text/javascript" src='js/Episode.js' defer></script>
-    <script type="text/javascript" src='js/review.js' defer></script>
-    <script type="text/javascript" src='js/torrent.js' defer></script>
-    <script type="text/javascript" src='js/trailer.js' defer></script>
-    <script type="text/javascript" src='js/router.js' defer></script>
+    <script type="text/javascript" src='js/Review.js' defer></script>
+    <script type="text/javascript" src='js/Torrent.js' defer></script>
+    <script type="text/javascript" src='js/Trailer.js' defer></script>
+    <script type="text/javascript" src='js/Router.js' defer></script>
   </body>
 </html>

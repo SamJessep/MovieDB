@@ -56,6 +56,7 @@ class App{
     this.hide(this.PreferencesMenu)
     this.Empty(this.SearchArea)
     this.Empty(this.DetailPage)
+    this.Empty(app.getEl('suggestedResults'))
   }
 
   Empty(el){
@@ -132,7 +133,27 @@ checkForSearch(ele) {
     theRouter.Move('Search/'+ele.value)
   }
 }
-
+getAutoCompleteItems(ele){
+  let term = ele.value
+  console.log(term);
+//  console.log(app.getEl('suggestedResults').value)
+  if(term != ''){
+    MDBReq(SEARCH, this.updateAutoComplete, {
+      'query' : term,
+      'page' : 1,
+      'language' : this.preferences.getLang(),
+      'include_adult' : this.preferences.includeAdult
+    },false)
+  }
+}
+updateAutoComplete(data){
+  let list = app.getEl('suggestedResults');
+  let items ='';
+  for(let aResult of data.results){
+    items += `<option value='${aResult.title || aResult.name}'>`
+  }
+  app.Update(list, items);
+}
 //DISCOVER
 
 Discover(hash){
@@ -166,8 +187,12 @@ LoadResults(data,type){
   this.hide(this.DetailPage);
   this.page = data.page;
   if(data.results.length>0){
-    this.Update(this.SearchArea, this.GetResultHTML(data.results,type));
-    if(!$(window).scroll) timer = this.scrollEvent(timer,500);
+    if(data.results.length == 1){
+      theRouter.Move(`Details/${data.results[0].media_type}/${data.results[0].id}`)
+    }else{
+      this.Update(this.SearchArea, this.GetResultHTML(data.results,type));
+      if(!$(window).scroll) timer = this.scrollEvent(timer,500);
+    }
   }else{
     this.showMessage('No results found...')
   }

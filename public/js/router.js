@@ -35,7 +35,7 @@ class Router {
       title = this[action](query, query2);
     }
     else {
-      app.home();
+    //  app.home();
       title = 'Home';
     }
     document.title = 'MDB-'+title

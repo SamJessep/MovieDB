@@ -16,6 +16,6 @@ class Movie extends Result{
 
   }
   LoadTorrents(){
-    Torrent.GetTorrents(this.allData);
+    Torrent.GetTorrents();
   }
 }

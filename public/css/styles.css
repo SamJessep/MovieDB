@@ -59,6 +59,27 @@ input, select, button{
   color: var(--FontColor, black);
 }
 
+/* Change the white to any color ;) */
+
+
+@-webkit-keyframes autofill {
+    0%,100% {
+        color: var(--FontColor, black);
+        background: var(--SecondBackgroundColor, white);
+        -webkit-font-size: 10vmin !important;
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+    -webkit-font-size: 10vmin !important;
+}
+
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
 
 .hidden{
   display:none;
