@@ -100,6 +100,10 @@ class App{
         bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
   }
+
+  isOnBottom(){
+    return ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight);
+  }
 //---User-Actions---------------------------------------------------------------
 Action(method,...params){
   this.Clear()
@@ -224,19 +228,21 @@ scrollEvent(timer,milliseconds){
 
 loadMore(data){
   if(data){
-    if(resp.results.length>1) Append(searchArea, this.GetResultHTML(data.results));
+    if(data.results.length>1){
+      app.Append(this.SearchArea, this.GetResultHTML(data.results,'movie'));
+    }
   }else if (this.page<this.totalPages) {
     this.page++;
     let req = HISTORY;
     req.filters['page'] = this.page;
-    MDBReq(req.baseURL, this.loadMore, req.filters,false);
+    MDBReq(req.baseURL, this.loadMore.bind(this), req.filters,false);
   }
 }
 
 showScrollButton(){
-  let quickBar = getEl('quickBar');
-  let scrollBtn = getEl('backToTop')
-  this[isInViewport(quickBar)?'hide':'show'](scrollBtn);
+  let quickBar = app.getEl('quickBar');
+  let scrollBtn = app.getEl('backToTop')
+  this[app.isInViewport(quickBar)?'hide':'show'](scrollBtn);
 }
 
 //DETAILED
