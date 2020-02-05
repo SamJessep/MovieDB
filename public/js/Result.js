@@ -18,8 +18,12 @@ class Result{
       let poster = this.getPoster(this.images['poster'], 'poster')
       return `
       <button class="card movie" id=${this.id} onclick='theRouter.Move("Details/${this.type}/${this.id}")' tabindex='0'>
+      <div class='cardContainer' >
+        <div class='posterContainer'>
         ${poster}
           <h1 class="card-title hidden">${this.title}</h1>
+        </div>
+        </div>
       </button>`;
     }
 
@@ -91,7 +95,7 @@ class Result{
     getDescripton(){
       let genreLinks = [];
       for(let aLink of this.genres){
-        genreLinks.push(new Genre(aLink.id,aLink.name,this.type).makeLink());
+        genreLinks.push(new Genre(aLink.id,aLink.name,this.type).makeLink('result'));
       }
       return `
       <div class="detailedText">

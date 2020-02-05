@@ -5,7 +5,7 @@ class Genre{
       this.name = name;
   }
 
-  makeLink(){
-    return `<a id='${this.id}' class='genreLink' href='#Genre/${this.type}/${this.id}'>${this.name}</a>`;
+  makeLink(addToID){
+    return `<a id='${this.id}_${this.type}_${addToID}' class='genreLink' href='#Genre/${this.type}/${this.id}'>${this.name}</a>`;
   }
 }

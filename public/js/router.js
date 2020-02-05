@@ -71,6 +71,7 @@ class Router {
 }
 
 window.onload = () => {
+  app.SetImageSizes()
   let hash = window.location.hash;
   theRouter = new Router(hash);
   window.onpopstate = theRouter.LoadPage.bind(theRouter);

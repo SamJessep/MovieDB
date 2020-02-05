@@ -104,6 +104,25 @@ class App{
   isOnBottom(){
     return ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight);
   }
+
+  SetImageSizes(){
+    let h = window.innerHeight;
+    let w = window.innerWidth;
+    for(let aSizeSection in configs.imageSizes){
+      let sizes = configs.imageSizes[aSizeSection];
+      for(let aSize of sizes){
+        aSize['leftOverWidth'] = Math.max(aSize.w,w) - Math.min(aSize.w,w);
+      }
+      sizes = sizes.sort(this.SortSizes)
+      this[sizes[0].type+'_Size'] = sizes[0].leftOverWidth<400 ? sizes[0]['querySize'] : 'original';
+      }
+    }
+
+    SortSizes(a, b){
+       if (a['leftOverWidth'] < b['leftOverWidth']) return -1;
+       if (a['leftOverWidth'] > b['leftOverWidth']) return 1;
+       return 0;
+    }
 //---User-Actions---------------------------------------------------------------
 Action(method,...params){
   this.Clear()
@@ -294,7 +313,7 @@ AddGenres(data,type){
   let title = type == 'movie'?'Movie':'TV'
   let html, links = ''
   for(let aGenre of data.genres){
-    links += new Genre(aGenre.id, aGenre.name,type).makeLink();
+    links += new Genre(aGenre.id, aGenre.name,type).makeLink('search');
   }
   html = `
     <details>

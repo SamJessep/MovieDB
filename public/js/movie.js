@@ -10,8 +10,8 @@ class Movie extends Result{
     this.runTime = data.runtime;
     this.genres = data.genres || data.genre_ids;
     this.images = {
-      poster: IMAGE(data.poster_path),
-      backdrop: IMAGE(data.backdrop_path, 'w92')
+      poster: IMAGE(data.poster_path,'poster'),
+      backdrop: IMAGE(data.backdrop_path,'backdrop')
     }
 
   }

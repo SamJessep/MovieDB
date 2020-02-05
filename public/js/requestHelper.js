@@ -5,8 +5,11 @@ var VIDEO = `https://www.googleapis.com/youtube/v3/search`;
 function DETAILS(type,id){
   return `https://api.themoviedb.org/3/${type}/${id}`;
 }
-function IMAGE(id,size = 'w45'){
-  return path = id ? {"SD": `https://image.tmdb.org/t/p/${size}/${id}`, "HD": `https://image.tmdb.org/t/p/original/${id}`} : false;
+function IMAGE(id,type,size){
+  if(!size){
+    size = app[type+'_Size'];
+  }
+  return path = id ? {"SD": `https://image.tmdb.org/t/p/w92/${id}`, "HD": `https://image.tmdb.org/t/p/${size}/${id}`} : false;
 }
 function SIMILAR(movie_id,type){
   return `https://api.themoviedb.org/3/${type}/${movie_id}/similar`
