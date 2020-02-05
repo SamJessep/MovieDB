@@ -13,7 +13,7 @@ window.addEventListener("resize", app.SetImageSizes.bind(app));
 window.addEventListener('scroll', throttle(infinateLoad, 500));
 window.onscroll = function(ev) {
   app.showScrollButton()
-  if(app.isOnBottom()){
+  if(app.isOnBottom() && $('details').hidden){
     app.loadMore();
   }
 }
