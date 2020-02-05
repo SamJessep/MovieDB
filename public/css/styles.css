@@ -228,7 +228,7 @@ p,h1,h2{
 #BackdropDiv{
   position: relative;
   overflow: hidden;
-  height: 67vmin;
+  max-height: 67vmin;
   text-align: center;
 }
 

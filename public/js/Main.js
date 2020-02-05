@@ -18,7 +18,7 @@ window.onscroll = function(ev) {
   }
 }
 function infinateLoad(){
-  if(app.scrollIsNearBottom()){
+  if(app.scrollIsNearBottom() && $('details').hidden){
     app.loadMore()
   }
 }

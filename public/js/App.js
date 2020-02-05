@@ -213,7 +213,6 @@ LoadResults(data,type){
       theRouter.Move(`Details/${data.results[0].media_type}/${data.results[0].id}`)
     }else{
       this.Update(this.SearchArea, this.GetResultHTML(data.results,type));
-      if(!$(window).scroll) timer = this.scrollEvent(timer,500);
     }
   }else{
     this.showMessage('No results found...')

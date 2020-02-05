@@ -30,8 +30,11 @@
   height: calc(100vw * 0.56);
   max-height: 90%;
   max-width: calc(90vh*1.77);
-  display: block;
+  display: initial;
   margin: 0 auto;
+  position: relative;
+  /* vertical-align: middle; */
+  top: 25%;
 }
 
 #trailer{
@@ -49,7 +52,6 @@
   background-color: var(--VideoBackground);
   left: 0;
   transition: 1s;
-
 }
 
 #trailer.hidden{
