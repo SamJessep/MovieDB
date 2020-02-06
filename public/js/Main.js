@@ -13,12 +13,12 @@ window.addEventListener("resize", app.SetImageSizes.bind(app));
 window.addEventListener('scroll', throttle(infinateLoad, 500));
 window.onscroll = function(ev) {
   app.showScrollButton()
-  if(app.isOnBottom() && $('details').hidden){
+  if(app.isOnBottom() && app.getEl('details').classList.contains('hidden')){
     app.loadMore();
   }
 }
 function infinateLoad(){
-  if(app.scrollIsNearBottom() && $('details').hidden){
+  if(app.scrollIsNearBottom() && app.getEl('details').classList.contains('hidden')){
     app.loadMore()
   }
 }
