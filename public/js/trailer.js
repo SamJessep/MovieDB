@@ -78,7 +78,7 @@ class Trailer{
 
   tryWebScrape(){
     let url = `https://mdbscrap.herokuapp.com/YT.php`
-    SendReq(url, {'success':this.loadVideoPlayer.bind(this), 'fail':this.hideTrailer.bind(this)}, {q:this.searchTerm});
+    SendReq(url, {'success':this.loadVideoPlayer.bind(this), 'fail':this.hideTrailer.bind(this)}, {q:encodeURI(this.searchTerm)});
   }
 
   removePlayer(){
