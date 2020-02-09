@@ -60,7 +60,7 @@ class Router {
 
   Genre(type,id){
     app.Action('SearchGenre', type,id);
-    return 'Genre:'+app.getEl(id).innerText;
+    return 'Genre:'+app.getEl(`${id}_${type}_search`).innerText;
   }
 
   Home(){
