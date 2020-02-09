@@ -5,13 +5,13 @@ let REQUEST_TOKEN = getParameterByName('request_token');
 if(savedPreferences){
   Preferences.LoadData(preferencesObject,savedPreferences)
 }
-if(getParameterByName('approved') && REQUEST_TOKEN){
+const app = new App(preferencesObject);
+if(getParameterByName('approved') == 'true' && REQUEST_TOKEN){
   console.log('logged in')
   let btn = app.getEl('loginButton');
   btn.innerText = "Logout"
-  //btn.onclick = SendReq('https://api.themoviedb.org/3/authentication/session',{success:console.log},{api_key:'579872d8976e8f07d27624584808fee2'})
+  btn.onclick = logout;
 }
-const app = new App(preferencesObject);
 
 $('#search').on('input', function(){
   app.getAutoCompleteItems(this);
@@ -37,12 +37,26 @@ function getKey(){
   }
   SendReq(URL, {'success':login}, filters)
 }
+
 function login(data){
   let token = data.request_token;
   let URL = `https://www.themoviedb.org/authenticate/${token}?redirect_to=http://moviedb-77.netlify.com/`
   window.open(URL);
 }
 
-function loginSuccess(data){
-  console.log(data);
+function logout(){
+  let URL = 'https://api.themoviedb.org/3/authentication/session?api_key=579872d8976e8f07d27624584808fee2'
+  $.ajax({
+    url: baseURL,
+    type: 'POST',
+    data: {
+      session_id: REQUEST_TOKEN
+    },
+    success: function(response){
+      window.location.reload()
+    },
+    error: function(response){
+      console.error(response)
+    },
+  })
 }
