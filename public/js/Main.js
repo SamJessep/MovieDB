@@ -6,11 +6,15 @@ if(savedPreferences){
   Preferences.LoadData(preferencesObject,savedPreferences)
 }
 const app = new App(preferencesObject);
+let btn = $('#loginButton')[0];
 if(getParameterByName('approved') == 'true' && REQUEST_TOKEN){
   console.log('logged in')
-  let btn = app.getEl('loginButton');
+  preferencesObject.Session_token = REQUEST_TOKEN;
+  //preferencesObject.savePreferences();
   btn.innerText = "Logout"
   btn.onclick = logout;
+}else{
+  btn.innerText = 'Login';
 }
 
 $('#search').on('input', function(){
@@ -53,7 +57,8 @@ function logout(){
       session_id: REQUEST_TOKEN
     },
     success: function(response){
-      window.location.reload()
+      let page = window.location.href.split('?')[0]+window.location.hash;
+      window.location = page;
     },
     error: function(response){
       console.error(response)
