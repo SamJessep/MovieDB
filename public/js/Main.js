@@ -48,7 +48,7 @@ function logout(){
   let URL = 'https://api.themoviedb.org/3/authentication/session?api_key=579872d8976e8f07d27624584808fee2'
   $.ajax({
     url: URL,
-    type: 'POST',
+    type: 'DELETE',
     data: {
       session_id: REQUEST_TOKEN
     },
