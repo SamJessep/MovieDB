@@ -1,7 +1,7 @@
 // Use a cacheName for cache versioning
 var CACHE_STORE = 'v1:static';
 var $FILES = ['./']
-
+caches.delete('v1:static');
 // During the installation phase, you'll usually want to cache static assets.
 self.addEventListener('install', function(e) {
     // Once the service worker is installed, go ahead and fetch the resources to make this work offline.

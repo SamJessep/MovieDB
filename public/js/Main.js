@@ -14,7 +14,7 @@ if(getParameterByName('approved') == 'true' && REQUEST_TOKEN){
   btn.innerText = "Logout"
   btn.onclick = logout;
 }else{
-  btn.innerText = 'Login';
+  //btn.innerText = 'Login';
 }
 
 $('#search').on('input', function(){
