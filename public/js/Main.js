@@ -1,8 +1,12 @@
 //console.log(Preferences.fetchData());
 let savedPreferences = Preferences.fetchData();
 let preferencesObject = new Preferences()
+let REQUEST_TOKEN = getParameterByName('request_token');
 if(savedPreferences){
   Preferences.LoadData(preferencesObject,savedPreferences)
+}
+if(getParameterByName('approved') && REQUEST_TOKEN){
+  console.log('logged in')
 }
 const app = new App(preferencesObject);
 
