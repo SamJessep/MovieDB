@@ -7,6 +7,9 @@ if(savedPreferences){
 }
 if(getParameterByName('approved') && REQUEST_TOKEN){
   console.log('logged in')
+  let btn = app.getEl('loginButton');
+  btn.innerText = "Logout"
+  //btn.onclick = SendReq('https://api.themoviedb.org/3/authentication/session',{success:console.log},{api_key:'579872d8976e8f07d27624584808fee2'})
 }
 const app = new App(preferencesObject);
 
