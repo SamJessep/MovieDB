@@ -22,3 +22,20 @@ function infinateLoad(){
     app.loadMore()
   }
 }
+
+function getKey(){
+  let URL = `https://api.themoviedb.org/3/authentication/token/new`
+  let filters = {
+    api_key: '579872d8976e8f07d27624584808fee2'
+  }
+  SendReq(URL, {'success':login}, filters)
+}
+function login(data){
+  let token = data.request_token;
+  let URL = `https://www.themoviedb.org/authenticate/${token}?redirect_to=http://moviedb-77.netlify.com/`
+  window.open(URL);
+}
+
+function loginSuccess(data){
+  console.log(data);
+}
