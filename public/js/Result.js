@@ -22,6 +22,7 @@ class Result{
         <div class='posterContainer'>
         ${poster}
           <h1 class="card-title hidden">${this.title}</h1>
+          <p class='addToFavourites'  onclick='app.LoggedUser.AddMovieToWatchList(this.parentElement.parentElement.parentElement.id)'>Add to favs</p>
         </div>
         </div>
       </button>`;
