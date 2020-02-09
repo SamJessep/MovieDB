@@ -74,7 +74,9 @@ class Result{
       <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='app.loadedResult.trailer.showTrailer()'></div>
       <div id='trailer'>
         <img class='closeTrailer' src='images/close.svg' onclick='app.loadedResult.trailer.hideTrailer()'>
-        <iframe id='trailerPlayer'></iframe>
+        <iframe id='trailerPlayer'>
+          <h1>Loading trailer...</h1>
+        </iframe>
       </div>`
     }
 
