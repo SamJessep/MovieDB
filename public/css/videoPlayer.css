@@ -19,9 +19,6 @@
   margin-left: 0.2vmin;
   margin-top: 0.3vmin;
   filter: var(--ImgColor);
-  position: absolute;
-  top: 2vmin;
-  left: 2vmin;
 }
 
 .closeTrailer:hover{
@@ -29,13 +26,15 @@
 }
 
 #trailerPlayer{
-  width: 90vw;
-  max-height: 90vh;
-  height: calc(90vw * 0.56);
+  width: 100%;
+  height: calc(100vw * 0.56);
+  max-height: 90%;
+  max-width: calc(90vh*1.77);
+  display: initial;
   margin: 0 auto;
   position: relative;
-  top: 13vmin;
-  left: 5vw;
+  /* vertical-align: middle; */
+  top: 25%;
 }
 
 #trailer{
@@ -59,11 +58,4 @@
   background-color: var(--VideoBackground);
   left: 100%;
   transition: 1s;
-}
-
-
-@media only screen and (max-width: 768px) and (orientation:portrait) {
-  #trailerPlayer{
-    top: 13vmin;
-  }
 }
