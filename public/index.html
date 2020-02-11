@@ -24,7 +24,7 @@
   </head>
   <body>
     <header>
-      <button id='loginButton' onclick='Account.OpenSession()'>Login</button>
+      <button id='loginButton' onclick='getKey()'>Login</button>
       <img id='logo' onclick="app.home()"src='images/MDB_Logo.png' alt='movie database logo'/>
       <!--<h1>Movie DB</h1>-->
       <div id="searchBar">
@@ -44,7 +44,6 @@
           <div id="GenreSelect" class="dropdown-content">
           </div>
         </div>
-        <div id='latest' class="navButton text-selection-none" onclick='theRouter.Move("MyList/")'>My list</div>
         <div id='preferences' class="navButton text-selection-none" onclick="app.getEl('preferencesMenu').classList.toggle('hidden')">Preferences</div>
       </nav>
       <div id='preferencesMenu' class='hidden'>
@@ -85,7 +84,6 @@
     </main>
 
     <script type="text/javascript" src='js/Addons.js' defer></script>
-    <script type="text/javascript" src='js/Account.js' defer></script>
     <script type="text/javascript" src='js/RequestHelper.js' defer></script>
     <script type="text/javascript" src='js/Preferences.js' defer></script>
     <script type="text/javascript" src='js/Genre.js' defer></script>

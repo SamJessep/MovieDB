@@ -5,12 +5,6 @@ var VIDEO = `https://www.googleapis.com/youtube/v3/search`;
 function DETAILS(type,id){
   return `https://api.themoviedb.org/3/${type}/${id}`;
 }
-function LIST(accountID){
-  return `https://api.themoviedb.org/3/account/${accountID}/lists`
-}
-function WATCHLIST(accountID){
-  return `https://api.themoviedb.org/3/account/${accountID}/watchlist/movies?`
-}
 function IMAGE(id,type,size){
   if(!size){
     size = app[type+'_Size'];

@@ -5,7 +5,6 @@ class App{
     this.preferences = preferences;
     this.loadedResult;
 
-    this.LoggedAccount;
     this.discoverParams = {
       "Theatres":{
         'with_release_type' : '2|3',
@@ -135,24 +134,6 @@ home(){
   this.SearchBar.value = '';
   theRouter.Move('Home')
   this.Clear()
-}
-
-//MyList
-
-MyList(data){
-  if(this.LoggedUser && !data){
-    MDBReq(
-      WATCHLIST(this.LoggedUser.id),
-      app.MyList,{
-        'sort_by':'created_at.asc',
-        'session_id': app.SESSION_ID,
-        'language': this.preferences.getLang(),
-        'page': 1
-      }
-    )
-  }else if(data){
-    console.log(data);
-  }
 }
 
 //SEARCH

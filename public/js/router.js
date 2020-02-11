@@ -68,11 +68,6 @@ class Router {
     return 'Home';
   }
 
-  MyList(){
-    app.Action('MyList');
-    return 'My list';
-  }
-
 }
 
 window.onload = () => {
