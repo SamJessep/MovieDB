@@ -175,4 +175,14 @@ class Result{
         },false, type)
       }
     }
+
+    static sortResults(el){
+      if(el.value){
+        let params = {
+          ...HISTORY.filters,
+          sort_by: el.value
+        }
+        theRouter.Move(`Discover/${app.resultMediaType}/Custom?${$.param(params)}`);
+      }
+    }
 }

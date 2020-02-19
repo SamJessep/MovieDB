@@ -50,6 +50,10 @@ class App{
     el.insertAdjacentHTML('beforeend', content);
   }
 
+  Prepend(el, content){
+    el.insertAdjacentHTML('afterbegin', content);
+  }
+
   Clear(){
     CloseMenu()
     this.page = 1;
@@ -126,9 +130,23 @@ class App{
 //---User-Actions---------------------------------------------------------------
 Action(method,...params){
   this.Clear()
+  this.showSortOptions(method)
   if(method) this[method](...params);
 }
 
+showSortOptions(m){
+  let shouldHaveSort = [
+    'Discover',
+    'SearchGenre'
+  ]
+  if(shouldHaveSort.includes(m)){
+    if(!this.getEl('sortElement')) this.Prepend(this.getEl('searchBody'), this.AddSortSelect());
+
+    this.updateSelectedSort();
+  }else{
+    if(this.getEl('sortElement')) this.getEl('sortElement').outerHTML = '';
+  }
+}
 //HOME
 home(){
   this.SearchBar.value = '';
@@ -144,7 +162,8 @@ Search(term){
       'query' : term,
       'page' : 1,
       'language' : this.preferences.getLang(),
-      'include_adult' : this.preferences.includeAdult
+      'include_adult' : this.preferences.includeAdult,
+      'region': app.preferences.country
     });
     this.page = 1;
   }
@@ -164,7 +183,8 @@ getAutoCompleteItems(ele){
       'query' : term,
       'page' : 1,
       'language' : this.preferences.getLang(),
-      'include_adult' : this.preferences.includeAdult
+      'include_adult' : this.preferences.includeAdult,
+      'region': app.preferences.country
     },false)
   }
 }
@@ -178,27 +198,30 @@ updateAutoComplete(data){
 }
 //DISCOVER
 
-Discover(hash){
+Discover(type, hash){
+  type = !type ? this.resultMediaType : type;
   let params;
   if(this.discoverParams.hasOwnProperty(hash)){
     params = this.discoverParams[hash];
   }else if(hash.includes('?') && hash.includes('Custom')){
-    params = this.GetCustomParams(params);
+    params = this.GetCustomParams(hash);
   }else{
     console.error("please provide a discover preset or custom");
     return;
   }
-  MDBReq(DISCOVER+'movie', this.LoadResults.bind(this), {
+  MDBReq(DISCOVER+type, this.LoadResults.bind(this), {
     ...params,
+    ...this.preferences.garbageFilters,
     'language' : this.preferences.getLang(),
     'include_adult' : this.preferences.includeAdult,
     'page' : this.page,
+    'region': app.preferences.country,
     'append_to_response': 'media_type'
-  },true,'movie')
+  },true,type)
 }
 
 GetCustomParams(params){
-  return JSON.parse(decodeURI(preset.split('?')[1]));
+  return $.deparam(decodeURI(params.split('?')[1]));
 }
 
 
@@ -209,7 +232,7 @@ LoadResults(data,type){
   this.hide(this.DetailPage);
   this.page = data.page;
   if(data.results.length>0){
-    if(data.results.length == 1){
+    if(data.results.length == 1 && data.results[0].media_type){
       theRouter.Move(`Details/${data.results[0].media_type}/${data.results[0].id}`)
     }else{
       this.Update(this.SearchArea, this.GetResultHTML(data.results,type));
@@ -221,17 +244,62 @@ LoadResults(data,type){
 
 GetResultHTML(results,type){
   let html = '';
+  let isMovie, isTV = 0;
   for(let aResult of results){
     if(type && !aResult.media_type){
       aResult.media_type = type;
     }
     if(aResult.media_type == 'tv'){
       html += new TVshow(aResult).makeCard();
+      isTV = true;
     }else if(aResult.media_type == 'movie'){
       html += new Movie(aResult).makeCard();
+      isMovie = true;
     }
   }
+  if(isMovie && !isTV){
+    app.resultMediaType = 'movie';
+  }else if (!isMovie && isTV) {
+    app.resultMediaType = 'tv';
+  }else if (isMovie && isTV) {
+    app.resultMediaType = 'both';
+  }
   return html;
+}
+
+AddSortSelect(){
+  let optionsHTML = '';
+  for(let aOption of configs.sortOptions){
+    optionsHTML += `<option id='SortIndex_${configs.sortOptions.indexOf(aOption)}'value='${aOption.value}'>${aOption.name}</option>`;
+  }
+
+  return `
+  <label id='sortElement'>Sort by:
+    <select id='sortBy' onchange='Result.sortResults(this)'>
+      <option id='noSort' selected disabled>...</option>
+      ${optionsHTML}
+    </select>
+  </label>
+  `
+}
+
+updateSelectedSort(){
+  if(window.location.hash.includes('?')){
+    let query = $.deparam(window.location.hash.split('?')[1]);
+    if(query.hasOwnProperty('sort_by')){
+      let sortVal = query.sort_by
+      let sortIndex = -1;
+      for(let aSortType of configs.sortOptions){
+        if(aSortType.value == sortVal){
+          sortIndex = configs.sortOptions.indexOf(aSortType)
+        }
+      }
+      this.getEl('SortIndex_'+sortIndex).selected = true;
+    }
+
+  }else{
+    this.getEl('noSort').selected = true;
+  }
 }
 
 scrollEvent(timer,milliseconds){
@@ -289,11 +357,13 @@ LoadDetailedPage(data,type){
 
 SearchGenre(type,id){
   MDBReq(DISCOVER+type, this.LoadResults.bind(this), {
+    ...this.preferences.garbageFilters,
     'language' : this.preferences.getLang(),
     'include_adult' : this.preferences.includeAdult,
     'release_date.lte' : getDate(),
     'page' : 1,
-    'with_genres' : id
+    'with_genres' : id,
+    'region': app.preferences.country
   },true, type)
 }
 

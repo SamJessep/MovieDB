@@ -5,7 +5,19 @@ var configs = {
     'posterSizes': [],
     'backdropSizes': [],
     'stillSizes': []
-  }
+  },
+  'sortOptions': [
+    {name: 'popularity &#9650;', value: 'popularity.asc'},
+    {name: 'popularity &#9660;', value: 'popularity.desc'},
+    {name: 'release date &#9650;', value: 'release_date.asc'},
+    {name: 'release date &#9660;', value: 'release_date.desc'},
+    {name: 'revenue &#9650;', value: 'revenue.asc'},
+    {name: 'revenue &#9660;', value: 'revenue.desc'},
+    {name: 'title &#9650;', value: 'original_title.asc'},
+    {name: 'title &#9660;', value: 'original_title.desc'},
+    {name: 'star rating &#9650;', value: 'vote_average.asc'},
+    {name: 'star rating &#9660;', value: 'vote_average.desc'}
+  ]
 }
 let i = {
   "backdrop_sizes": [

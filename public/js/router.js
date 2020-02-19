@@ -38,7 +38,7 @@ class Router {
     //  app.home();
       title = 'Home';
     }
-    document.title = 'MDB-'+title
+    document.title = title
   }
 
   Search(query){
@@ -53,14 +53,14 @@ class Router {
     return 'MovieID:'+id;
   }
 
-  Discover(query){
-    app.Action('Discover',query)
+  Discover(type, query){
+    app.Action('Discover',type, query)
     return query;
   }
 
   Genre(type,id){
     app.Action('SearchGenre', type,id);
-    return 'Genre:'+app.getEl(`${id}_${type}_search`).innerText;
+    return 'Genre: '+app.getEl(`${id}_${type}_search`).innerText;
   }
 
   Home(){

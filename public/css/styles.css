@@ -127,7 +127,8 @@ p,h1,h2{
 
 .detailsBackDrop{
   max-width: 100%;
-  height: 67vmin;
+  max-height: 67vmin;
+  min-height: 50vmin;
 }
 
 .detailedText{
@@ -276,6 +277,10 @@ p,h1,h2{
 .formSection>*{
   width:20vw;
   font-size: var(--BaseFontSize);
+}
+
+#sortElement{
+  margin-left: 5vmin;
 }
 
 .movie{

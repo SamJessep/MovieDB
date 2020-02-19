@@ -11,6 +11,10 @@ class Preferences{
     this.adultSelect = document.getElementById('adult')
     this.downloadSiteSelect = document.getElementById('siteSelect');
 
+    this.garbageFilters = {
+      'vote_count.gte' : 50
+    }
+
     //GET PREFERENCE DATA
     MDBReq('https://api.themoviedb.org/3/configuration/languages', this.saveLanguages.bind(this), {});
 
