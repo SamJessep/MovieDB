@@ -150,6 +150,7 @@ showSortOptions(m){
 //HOME
 home(){
   this.SearchBar.value = '';
+  this.showSortOptions('home')
   theRouter.Move('Home')
   this.Clear()
 }
