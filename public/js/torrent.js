@@ -65,7 +65,7 @@ Torrent = class{
     let link = app.getEl('selector').value;
     let query = {magnet:link}
 
-    SendReq(app.PC_URL, {'success':Torrent.Notifiy}, query)
+    SendReq(app.PC_URL+'/add_torrent', {'success':Torrent.Notifiy}, query)
   }
 
   static Notifiy(response){
