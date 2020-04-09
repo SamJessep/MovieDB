@@ -69,7 +69,7 @@ Torrent = class{
 
     MDBReq(pcURL, (response)=>{
       alert(response)
-    }, query, scrollTop = false);
+    }, query, false);
   }
 
   getTVSearchTerm(tryZeroPrefix){
