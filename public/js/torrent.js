@@ -67,7 +67,7 @@ Torrent = class{
     let pcURL = `https:192.168.1.90:${port}/add_torrent`
     let query = {magnet:link}
 
-    SendReq(baseURL, {'success':(response)=>
+    SendReq(pcURL, {'success':(response)=>
       {
         alert(response)
       }
