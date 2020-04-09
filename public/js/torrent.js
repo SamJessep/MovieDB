@@ -63,10 +63,9 @@ Torrent = class{
 
   static DownloadToPC(){
     let link = app.getEl('selector').value;
-    let pcURL = `https://23d9938d.ngrok.io/add_torrent`
     let query = {magnet:link}
 
-    SendReq(pcURL, {'success':Torrent.Notifiy}, query)
+    SendReq(app.PC_URL, {'success':Torrent.Notifiy}, query)
   }
 
   static Notifiy(response){

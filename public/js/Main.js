@@ -22,3 +22,9 @@ function infinateLoad(){
     app.loadMore()
   }
 }
+
+const interval = setInterval(function() {
+   app.tryGetPCURL()
+ }, 5000);
+
+//clearInterval(interval);
