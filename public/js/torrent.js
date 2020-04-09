@@ -64,7 +64,7 @@ Torrent = class{
   static DownloadToPC(){
     let link = app.getEl('selector').value;
     let port = 5000
-    let pcURL = `http:192.168.1.90:${port}/add_torrent`
+    let pcURL = `https:192.168.1.90:${port}/add_torrent`
     let query = {magnet:link}
 
     MDBReq(pcURL, (response)=>{
