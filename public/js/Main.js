@@ -25,6 +25,6 @@ function infinateLoad(){
 
 const interval = setInterval(function() {
    app.tryGetPCURL()
- }, 5000);
+ }, 60000);
 
 //clearInterval(interval);
