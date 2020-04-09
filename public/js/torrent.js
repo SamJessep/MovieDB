@@ -66,11 +66,11 @@ Torrent = class{
     let pcURL = `https://23d9938d.ngrok.io/add_torrent`
     let query = {magnet:link}
 
-    SendReq(pcURL, {'success':(response)=>
-      {
-        alert(response)
-      }
-    }, query)
+    SendReq(pcURL, {'success':Torrent.Notifiy}, query)
+  }
+
+  static Notifiy(response){
+    alert(response.message);
   }
 
   getTVSearchTerm(tryZeroPrefix){
