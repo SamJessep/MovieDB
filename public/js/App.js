@@ -28,10 +28,22 @@ class App{
     this.DetailPage = this.getEl('details');
     this.PreferencesMenu = this.getEl('preferencesMenu');
 
+
+    //PC LINK
+    this.PC_URL = '';
+    this.tryGetPCURL()
     //Fetch UI data
     this.GetGenres();
   }
 
+  tryGetPCURL(){
+    SendReq("https://mdbscrap.herokuapp.com/DownloadToPcConfig.php", {'success':this.setPCURL.bind(this)}, {})
+  }
+
+  setPCURL(response){
+    console.log(response)
+    this.PC_URL = response['PC_URL'] ? response['PC_URL'] : ''
+  }
 //---Basic-Utilities/Helper-Functions-------------------------------------------
 
   Update(el, content){
