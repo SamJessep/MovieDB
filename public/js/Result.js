@@ -133,6 +133,7 @@ class Result{
                 <option value="">Loading</option>
               </select>
               <button onclick='Torrent.RunTorrent()'>Download</button>
+              <button onclick='Torrent.DownloadToPC()'>Download to Plex</button>
           </div>
           <span id='torrentError' class='hidden'>${errorMsg}</span>
         </details>

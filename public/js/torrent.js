@@ -61,6 +61,17 @@ Torrent = class{
     window.location.href = magnet;
   }
 
+  static DownloadToPC(){
+    let link = app.getEl('selector').value;
+    let port = 5000
+    let pcURL = `http:192.168.1.90${port}/add_torrent`
+    let query = {magnet:link}
+
+    MDBReq(pcURL, (response)=>{
+      alert(response)
+    }, query, scrollTop = false);
+  }
+
   getTVSearchTerm(tryZeroPrefix){
     let s = this.media;
     let sn = s.selectedSeason.seasonNumber;
