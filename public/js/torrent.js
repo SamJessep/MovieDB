@@ -67,9 +67,11 @@ Torrent = class{
     let pcURL = `https:192.168.1.90:${port}/add_torrent`
     let query = {magnet:link}
 
-    MDBReq(pcURL, (response)=>{
-      alert(response)
-    }, query, false);
+    SendReq(baseURL, {'success':(response)=>
+      {
+        alert(response)
+      }
+    }, query)
   }
 
   getTVSearchTerm(tryZeroPrefix){
