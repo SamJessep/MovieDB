@@ -53,6 +53,22 @@ function SendReq(baseURL, methods, filters,extraData){
   })
 }
 
+function PostReq(baseURL, methods, data, filters){
+    $.ajax({
+      url: baseURL,
+      type: 'POST',
+      data: data,
+      success: function(response){
+        methods['success'](response);
+      },
+      error: function(response){
+        if(methods['fail']){
+          methods['fail']
+        }
+      },
+    })
+  }
+
 function getDate(dateOffset = 0){
   var date  = new Date
   date.setDate(date.getDate()+dateOffset);

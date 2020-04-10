@@ -4,6 +4,10 @@ class Preferences{
     this.country = 'US'
     this.includeAdult = false;
     this.downloadSite = '1337x';
+    this.account = {
+      username:'',
+      password:''
+    }
     this.possibleLanguages = [];
     this.possibleCountries = [];
     this.langSelect = document.getElementById('lang')
@@ -36,7 +40,8 @@ class Preferences{
       language: this.language,
       country: this.country,
       includeAdult: this.includeAdult,
-      downloadSite: this.downloadSite
+      downloadSite: this.downloadSite,
+      account:this.account
     }
     localStorage.setItem('preferences', JSON.stringify(preferenceData));
   }
@@ -75,6 +80,8 @@ class Preferences{
     this.langSelect.innerHTML = langOptions;
     this.countrySelect.innerHTML = countryOptions;
     this.adultSelect.innerHTML = `<option ${this.includeAdult == true ? 'selected' : ''} value='true'>Yes</option> <option ${this.includeAdult == false ? 'selected' : ''} value='false'>No</option>`;
+    app.getEl('username').value = this.account['username']
+    app.getEl('password').value = this.account['password']
     this.addDownloadSites()
   }
 
@@ -92,6 +99,8 @@ class Preferences{
     this.country = this.countrySelect.value
     this.includeAdult = this.adultSelect.value == 'true'
     this.downloadSite = this.downloadSiteSelect.value;
+    this.account['username'] = app.getEl('username').value
+    this.account['password'] = app.getEl('password').value
     this.saveData();
     app.hide(app.getEl('preferencesMenu'));
     theRouter.LoadPage()

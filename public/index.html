@@ -8,10 +8,10 @@
     <title>MovieDB v2</title>
 
     <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"crossorigin="anonymous" defer></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"crossorigin="anonymous" defer></script>
 
     <!-- LAZY LOAD :) -->
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.min.js" defer></script>
 
     <script src="https://www.youtube.com/player_api" defer></script>
 
@@ -61,6 +61,14 @@
             <select id='adult'></select>
             <select id='siteSelect'></select>
           </div>
+
+          <div class='formSection'>
+            <label for="username">Username</label>
+            <input id='username'/>
+            <label for="password">Password</label>
+            <input id='password' type='password'/>
+          </div>
+
 
 
           <button onclick='app.preferences.savePreferences()'>Save</button>

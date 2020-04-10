@@ -63,9 +63,13 @@ Torrent = class{
 
   static DownloadToPC(){
     let link = app.getEl('selector').value;
-    let query = {magnet:link}
+    let data = {
+      username: app.preferences.account['username'],
+      password: app.preferences.account['password'],
+      magnet: link
+    }
 
-    SendReq(app.PC_URL+'/add_torrent', {'success':Torrent.Notifiy}, query)
+    PostReq(app.PC_URL+'/add_torrent', {'success':Torrent.Notifiy}, data)
   }
 
   static Notifiy(response){
