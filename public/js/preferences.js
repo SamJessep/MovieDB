@@ -94,15 +94,47 @@ class Preferences{
     this.downloadSiteSelect.innerHTML = options;
   }
 
-  savePreferences(){
-    this.language = this.langSelect.value
-    this.country = this.countrySelect.value
-    this.includeAdult = this.adultSelect.value == 'true'
-    this.downloadSite = this.downloadSiteSelect.value;
-    this.account['username'] = app.getEl('username').value
-    this.account['password'] = app.getEl('password').value
-    this.saveData();
-    app.hide(app.getEl('preferencesMenu'));
-    theRouter.LoadPage()
+  async tryValidateUser(username, password){
+    let postUrl = app.PC_URL+"/validate_user"
+    let postData = {
+      username:username,
+      password:password
+    }
+    return await $.post(postUrl, $.param(postData)).promise();
   }
+
+  async savePreferences(){
+    let username = app.getEl('username').value;
+    let password = app.getEl('password').value;
+    if(username != '' || password != ''){
+      app.setLoading(app.getEl("preferencesMenu"), true);
+      let validateUser = await this.tryValidateUser(username, password);
+      app.setLoading(app.getEl("preferencesMenu"), false);
+      if(!validateUser.success){
+        alert(validateUser.message);
+        app.getEl('username').value = ''
+        app.getEl('password').value = ''
+        return;
+      }else{
+        this.language = this.langSelect.value
+        this.country = this.countrySelect.value
+        this.includeAdult = this.adultSelect.value == 'true'
+        this.downloadSite = this.downloadSiteSelect.value;
+        this.account['username'] = username
+        this.account['password'] = password
+        this.saveData();
+        app.hide(app.getEl('preferencesMenu'));
+        theRouter.LoadPage()
+      }
+    }else{
+      this.language = this.langSelect.value
+      this.country = this.countrySelect.value
+      this.includeAdult = this.adultSelect.value == 'true'
+      this.downloadSite = this.downloadSiteSelect.value;
+      this.saveData();
+      app.hide(app.getEl('preferencesMenu'));
+      theRouter.LoadPage()
+      }
+    }
+
 }

@@ -28,6 +28,11 @@ class App{
     this.DetailPage = this.getEl('details');
     this.PreferencesMenu = this.getEl('preferencesMenu');
 
+    this.genres = {
+                    'tv':[],
+                    'movie': []
+                  };
+
 
     //PC LINK
     this.PC_URL = '';
@@ -98,6 +103,10 @@ class App{
   setVisability(el,visable){
     el.classList[visable?'add':'remove']('shown');
     el.classList[visable?'remove':'add']('hidden');
+  }
+
+  setLoading(el, loading){
+    el.classList[loading?'add':'remove']('loading');
   }
 
   hide(el){this.setVisability(el,false)}
@@ -218,6 +227,7 @@ Discover(type, hash){
     params = this.discoverParams[hash];
   }else if(hash.includes('?') && hash.includes('Custom')){
     params = this.GetCustomParams(hash);
+    setAdvancedSearchValues(params, type);
   }else{
     console.error("please provide a discover preset or custom");
     return;
@@ -395,8 +405,10 @@ AddGenres(data,type){
   let title = type == 'movie'?'Movie':'TV'
   let html, links = ''
   for(let aGenre of data.genres){
+    this.genres[type].push({"name": aGenre.name, "value": aGenre.id});
     links += new Genre(aGenre.id, aGenre.name,type).makeLink('search');
   }
+  updateGenereList();
   html = `
     <details>
       <summary>${title}</summary>

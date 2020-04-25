@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href='css/dropMenu.css' media="wait" onload="this.media='all'" />
     <link rel="stylesheet" type="text/css" href='css/loader.css' media="wait" onload="this.media='all'" />
     <link rel="stylesheet" type="text/css" href='css/videoPlayer.css' media="wait" onload="this.media='all'"/>
+    <link rel="stylesheet" type="text/css" href='css/advancedSearch.css' media="wait" onload="this.media='all'"/>
     <link rel="stylesheet" type="text/css" href='css/styles.css'/>
     <link rel="manifest" href="manifest.json">
   </head>
@@ -46,7 +47,7 @@
         <div id='preferences' class="navButton text-selection-none" onclick="app.getEl('preferencesMenu').classList.toggle('hidden')">Preferences</div>
       </nav>
       <div id='preferencesMenu' class='hidden'>
-        <div>
+        <form>
 
           <div class='formSection'>
             <label for='lang'>Language</label>
@@ -64,16 +65,20 @@
 
           <div class='formSection'>
             <label for="username">Username</label>
-            <input id='username'/>
+            <input id='username' autocomplete="username"/>
             <label for="password">Password</label>
-            <input id='password' type='password'/>
+            <input id='password' type='password' autocomplete="password"/>
           </div>
 
-
-
           <button onclick='app.preferences.savePreferences()'>Save</button>
-        </div>
+        </form>
       </div>
+      <div class="spinner" id='preferences_loader'>
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+      </div>
+      <details id='advancedSearchSection' class="detailSection">
+      </details>
     </header>
 
 
@@ -90,6 +95,7 @@
       </div>
     </main>
 
+
     <script type="text/javascript" src='js/Addons.js' defer></script>
     <script type="text/javascript" src='js/RequestHelper.js' defer></script>
     <script type="text/javascript" src='js/Preferences.js' defer></script>
@@ -105,6 +111,7 @@
     <script type="text/javascript" src='js/Torrent.js' defer></script>
     <script type="text/javascript" src='js/Trailer.js' defer></script>
     <script type="text/javascript" src='js/Router.js' defer></script>
+    <script type="text/javascript" src='js/advancedSearch.js' defer></script>
     <script type="text/javascript" src='main.js'></script>
     <script type="text/javascript" src='sw.js'></script>
   </body>

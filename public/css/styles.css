@@ -263,13 +263,13 @@ p,h1,h2{
   font-size: var(--BaseFontSize);
 }
 
-#preferencesMenu>div{
+#preferencesMenu>form{
   margin: 0 auto;
   display: grid;
   justify-content: space-around;
 }
 
-#preferencesMenu *{
+#preferencesMenu * :not(.spinner):not(.double-bounce1):not(.double-bounce2){
   display: inline-block;
   padding-bottom: 1vmin;
 }
@@ -319,7 +319,7 @@ p,h1,h2{
   height: 100%;
 }
 
-.poster:not(.loading) + .spinner, .detailsBackDrop:not(.loading) + .spinner{
+.poster:not(.loading) + .spinner, .detailsBackDrop:not(.loading) + .spinner, #preferencesMenu:not(.loading) + .spinner{
   display: none;
 }
 
