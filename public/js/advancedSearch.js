@@ -22,7 +22,7 @@ let SearchTemplate = `
   <div class='advancedSearchItem'>
     <label for='with_genres_select'>Genre</label>
     <select name='with_genres' id='with_genres_select'>
-      ${makeKeyedOptions(app.genres['movie'], 'Select a genre')}
+      ${makeKeyedOptions([], 'Select a genre')}
     </select>
   </div>
 
