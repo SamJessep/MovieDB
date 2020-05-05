@@ -21,7 +21,7 @@ class Result{
       <div class='cardContainer' >
         <div class='posterContainer'>
         ${poster}
-          <h1 class="card-title hidden">${this.title}</h1>
+          <h1 class="card-title hidden text-selection-none">${this.title}</h1>
         </div>
         </div>
       </button>`;
