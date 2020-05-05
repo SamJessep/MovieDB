@@ -29,6 +29,10 @@ window.onclick = function(event) {
   if(!app.getEl('preferencesMenu').contains(event.target) && !event.target.matches('#preferences')){
     app.hide(app.getEl('preferencesMenu'))
   }
+
+  if(!app.getEl('advancedSearchSection').contains(event.target) && !event.target.matches('#advancedSearchSection')){
+    app.close(app.getEl('advancedSearchSection'))
+  }
 }
 
 function throttle(fn, wait) {

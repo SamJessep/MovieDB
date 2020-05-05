@@ -52,7 +52,6 @@ class Trailer{
 
   YTError(err){
     console.log("Youtube API unavailable, trying alt method");
-    //console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
     this.tryWebScrape()
     this.hideTrailer()
   }

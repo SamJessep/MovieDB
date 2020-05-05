@@ -1,4 +1,3 @@
-//console.log(Preferences.fetchData());
 let savedPreferences = Preferences.fetchData();
 let preferencesObject = new Preferences()
 if(savedPreferences){

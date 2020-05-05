@@ -46,7 +46,6 @@ class App{
   }
 
   setPCURL(response){
-    console.log(response)
     this.PC_URL = response['PC_URL'] ? response['PC_URL'] : ''
   }
 //---Basic-Utilities/Helper-Functions-------------------------------------------
@@ -73,6 +72,7 @@ class App{
 
   Clear(){
     CloseMenu()
+    this.getEl("advancedSearch").reset()
     this.page = 1;
     this.hide(this.PreferencesMenu)
     this.Empty(this.SearchArea)
@@ -111,6 +111,8 @@ class App{
 
   hide(el){this.setVisability(el,false)}
   show(el){this.setVisability(el, true)}
+
+  close(el){el.removeAttribute("open")};
 
   scrollIsNearBottom(){
     return $(window).scrollTop() + $(window).height() > $(document).height() - 400 && !$('searchBody').hidden;
@@ -198,7 +200,6 @@ checkForSearch(ele) {
   }
 }
 getAutoCompleteItems(ele){
-  console.log(ele.value)
   let term = ele.value
   if(term != ''){
     MDBReq(SEARCH, this.updateAutoComplete, {
@@ -249,7 +250,6 @@ GetCustomParams(params){
 
 
 LoadResults(data,type){
-  console.log(data);
   let timer
   this.totalPages = data.total_pages;
   this.hide(this.DetailPage);
@@ -298,7 +298,7 @@ AddSortSelect(){
 
   return `
   <label id='sortElement'>Sort by:
-    <select id='sortBy' onchange='Result.sortResults(this)'>
+    <select id='sort_by_select' onchange='Result.sortResults(this)'>
       <option id='noSort' selected disabled>...</option>
       ${optionsHTML}
     </select>

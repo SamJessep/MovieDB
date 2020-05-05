@@ -29,8 +29,8 @@ let SearchTemplate = `
   <div class='advancedSearchItem'>
     <label for='mediaType'>Media type: </label>
     <select id='mediaType'>
-      <option value="movie">movie</option>
-      <option value="tv">tv</option>
+      <option value="movie">Movie</option>
+      <option value="tv">TV</option>
     </select>
   </div>
 
@@ -45,7 +45,9 @@ $("#mediaType").change(function(){
 function setAdvancedSearchValues(options, type){
   $('#mediaType').val(type)
   for(let option in options){
-    document.getElementById(`${option}_select`).value = options[option];
+    if(document.getElementById(`${option}_select`)){
+      document.getElementById(`${option}_select`).value = options[option];
+    }
   }
 }
 
@@ -57,7 +59,7 @@ form.addEventListener('submit', function(event) {
   })
 
 function updateGenereList(){
-  $("#with_genres_select").html(makeKeyedOptions(app.genres[$("#mediaType :selected").text()], "Select a genre"));
+  $("#with_genres_select").html(makeKeyedOptions(app.genres[$("#mediaType :selected").val()], "Select a genre"));
 }
 
 function makeOptions(options, defaultVal){
