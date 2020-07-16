@@ -18,7 +18,7 @@ class Trailer{
 
   getTrailer(){
     let filters = {
-      'part': 'id',
+      'fields': 'items/id/videoId',
       'maxResults': 1,
       'q': this.searchTerm,
       'type': 'video',
@@ -35,7 +35,7 @@ class Trailer{
         data: {
           ...filters
         },
-        xhr: function(){
+        /*xhr: function(){
             var xhr = new window.XMLHttpRequest();
             xhr.addEventListener("error", function(evt){
                 alert("an error occured");
@@ -43,10 +43,17 @@ class Trailer{
             xhr.addEventListener("abort", function(){
                 alert("cancelled");
             }, false);
-            success()
+            success(xhr)
             return xhr;
+        },*/
+        success: function(response){
+          console.log(response)
+          success(response)
+
         },
-        error: this.YTError.bind(this)
+        error: function(error){
+          this.YTError().bind(this)
+        }
     });
   }
 

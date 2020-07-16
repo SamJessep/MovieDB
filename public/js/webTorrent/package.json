@@ -1,0 +1,15 @@
+{
+  "name": "mdb_webtorrent",
+  "version": "1.0.0",
+  "description": "node js app using webtorrent to run torrent files in browser",
+  "main": "web_torrent_test.js",
+  "dependencies": {
+    "webtorrent": "^0.108.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -37,7 +37,8 @@
         <img  id="searchButton" src="images/search.svg" alt='search button' onclick="theRouter.Move('Search/'+document.getElementById('search').value)" />
       </div>
       <nav id='quickBar'>
-        <div id='latest' class="navButton text-selection-none" onclick='theRouter.Move("Discover/movie/Theatres/")'>In theatres</div>
+        <div id='inTheatres' class="navButton text-selection-none" onclick='theRouter.Move("Discover/movie/Theatres/")'>In theatres</div>
+        <div id='latest' class="navButton text-selection-none" onclick='theRouter.Move("Discover/movie/Latest/")'>Latest</div>
         <div id='popular' class="navButton text-selection-none" onclick='theRouter.Move("Discover/movie/Popular")'>Popular</div>
         <div class="dropdown">
           <div id='genreButtonContainer'>
