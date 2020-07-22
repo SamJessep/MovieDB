@@ -61,6 +61,18 @@ Torrent = class{
     window.location.href = magnet;
   }
 
+  static StartStream(){
+    let magnet = app.getEl('selector').value;
+    let videoLink = app.StreamURL+'/stream?magnet='+magnet
+    Trailer.toggleVideoBox(true);
+    let torrentPlayer = app.getEl("torrentStream")
+    let torrentSrc = app.getEl("torrentSRC")
+    torrentSRC.setAttribute("src", videoLink)
+    app.show(torrentPlayer)
+    app.hide(app.getEl("trailerPlayer"))
+    torrentPlayer.load();
+  }
+
   static DownloadToPC(){
     let link = app.getEl('selector').value;
     let data = {

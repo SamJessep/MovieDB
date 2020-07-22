@@ -74,7 +74,10 @@ class Result{
       <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='app.loadedResult.trailer.showTrailer()'></div>
       <div id='trailer'>
         <img class='closeTrailer' src='images/close.svg' onclick='app.loadedResult.trailer.hideTrailer()'>
-        <iframe id='trailerPlayer'></iframe>
+        <iframe id='trailerPlayer' class="VideoPlayer"></iframe>
+        <video id='torrentStream' class="hidden VideoPlayer" controls autoplay name="movie">
+          <source id='torrentSRC' src="" type="video/mp4">
+        </video>
       </div>`
     }
 
@@ -132,6 +135,7 @@ class Result{
               <select id="selector">
                 <option value="">Loading</option>
               </select>
+              <button onclick='Torrent.StartStream()'>Stream</button>
               <button onclick='Torrent.RunTorrent()'>Download</button>
               <button ${app.PC_URL == '' ? 'hidden' : ''} onclick='Torrent.DownloadToPC()'>Download to Plex</button>
           </div>

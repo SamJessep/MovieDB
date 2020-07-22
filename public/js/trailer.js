@@ -8,6 +8,12 @@ class Trailer{
     this.getTrailer();
   }
 
+  static toggleVideoBox(on){
+    let trailerEl = app.getEl('trailer');
+    if(trailerEl){
+      trailerEl.classList[on?"add":"remove"]('open')
+    }
+  }
   getYTSearchTerm(){
     if(app.loadedResult.type == 'tv'){
       return app.loadedResult.title + ' trailer';
@@ -63,22 +69,20 @@ class Trailer{
     this.hideTrailer()
   }
 
+
   showTrailer(){
-    let trailerEl = app.getEl('trailer');
-    trailerEl.classList.add('open');
+    app.show(app.getEl("trailerPlayer"))
+    Trailer.toggleVideoBox(true)
     if(this.player){
       this.player.playVideo();
     }
   }
 
   hideTrailer(){
-    let trailerEl = app.getEl('trailer');
-    if(trailerEl){
-      trailerEl.classList.remove('open')
-      if(this.player){
-        this.player.pauseVideo();
-      }
-
+    app.hide(app.getEl("torrentStream"))
+    Trailer.toggleVideoBox(false)
+    if(this.player){
+      this.player.pauseVideo();
     }
   }
 
@@ -103,7 +107,7 @@ class Trailer{
       id = response.id
     }
     let origin = window.location.href;
-    this.video = `<iframe id='trailerPlayer' class='YTPlayer' onload="attachYTController()" tabindex="-1" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+    this.video = `<iframe id='trailerPlayer' class='VideoPlayer' onload="attachYTController()" tabindex="-1" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
     app.getEl('trailerPlayer').outerHTML = this.video;
   }
 }
