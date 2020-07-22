@@ -48,6 +48,7 @@ class App{
 
   setPCURL(response){
     this.PC_URL = response['PC_URL'] ? response['PC_URL'] : ''
+    this.StreamURL = response['Stream_URL'] ? response['Stream_URL'] : ''
   }
 //---Basic-Utilities/Helper-Functions-------------------------------------------
 
