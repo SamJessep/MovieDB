@@ -36,7 +36,6 @@ class App{
 
     //PC LINK
     this.PC_URL = '';
-    this.StreamURL = 'http://localhost:5050'
     this.tryGetPCURL()
     //Fetch UI data
     this.GetGenres();
@@ -48,7 +47,6 @@ class App{
 
   setPCURL(response){
     this.PC_URL = response['PC_URL'] ? response['PC_URL'] : ''
-    this.StreamURL = response['Stream_URL'] ? response['Stream_URL'] : ''
   }
 //---Basic-Utilities/Helper-Functions-------------------------------------------
 

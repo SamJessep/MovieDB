@@ -63,7 +63,7 @@ Torrent = class{
 
   static StartStream(){
     let magnet = app.getEl('selector').value;
-    let videoLink = app.StreamURL+'/stream?magnet='+magnet
+    let videoLink = app.PC_URL+'/stream?magnet='+magnet
     Trailer.toggleVideoBox(true);
     let torrentPlayer = app.getEl("torrentStream")
     let torrentSrc = app.getEl("torrentSRC")
