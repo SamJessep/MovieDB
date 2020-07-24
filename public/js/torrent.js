@@ -77,11 +77,10 @@ Torrent = class{
     let link = app.getEl('selector').value;
     let data = {
       username: app.preferences.account['username'],
-      password: app.preferences.account['password'],
-      magnet: link
+      password: app.preferences.account['password']
     }
 
-    PostReq(app.PC_URL+'/download', {'success':Torrent.Notifiy}, data)
+    PostReq(app.PC_URL+'/download?magnet='+link, {'success':Torrent.Notifiy}, data)
   }
 
   static Notifiy(response){
