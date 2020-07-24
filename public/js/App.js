@@ -47,6 +47,7 @@ class App{
 
   setPCURL(response){
     this.PC_URL = response['PC_URL'] ? response['PC_URL'] : ''
+    app.getEl('downloadToPC').hidden = !this.PC_URL
   }
 //---Basic-Utilities/Helper-Functions-------------------------------------------
 

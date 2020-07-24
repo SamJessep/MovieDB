@@ -137,7 +137,7 @@ class Result{
               </select>
               <button onclick='Torrent.StartStream()'>Stream</button>
               <button onclick='Torrent.RunTorrent()'>Download</button>
-              <button ${app.PC_URL == '' ? 'hidden' : ''} onclick='Torrent.DownloadToPC()'>Download to Plex</button>
+              <button id='downloadToPC'${app.PC_URL == '' ? 'hidden' : ''} onclick='Torrent.DownloadToPC()'>Download to Plex</button>
           </div>
           <span id='torrentError' class='hidden'>${errorMsg}</span>
         </details>
