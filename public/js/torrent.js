@@ -81,7 +81,7 @@ Torrent = class{
       magnet: link
     }
 
-    PostReq(app.PC_URL+'/add_torrent', {'success':Torrent.Notifiy}, data)
+    PostReq(app.PC_URL+'/download', {'success':Torrent.Notifiy}, data)
   }
 
   static Notifiy(response){
