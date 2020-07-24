@@ -84,7 +84,7 @@ Torrent = class{
   }
 
   static Notifiy(response){
-    alert(response.message);
+    alert(response);
   }
 
   getTVSearchTerm(tryZeroPrefix){
