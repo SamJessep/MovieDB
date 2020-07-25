@@ -68,9 +68,20 @@ Torrent = class{
     let torrentPlayer = app.getEl("torrentStream")
     let torrentSrc = app.getEl("torrentSRC")
     torrentSRC.setAttribute("src", videoLink)
+    torrentPlayer.setAttribute("data-magnet", magnet)
     app.show(torrentPlayer)
     app.hide(app.getEl("trailerPlayer"))
     torrentPlayer.load();
+  }
+
+  static StreamStatus(res){
+    app.getEl("torrentStream").dataset.torrent_id = res.id
+    if(res.success){
+      ADD_WATCHER(res.id);
+    }else{
+      alert("Opps \n"+res.message)
+      app.loadedResult.closeVideo.closeVideo();
+    }
   }
 
   static DownloadToPC(){

@@ -73,7 +73,7 @@ class Result{
       return `
       <div class='trailerSlide'><img class='openTrailer' src='images/roundedPlay.svg' onclick='app.loadedResult.trailer.showTrailer()'></div>
       <div id='trailer'>
-        <img class='closeTrailer' src='images/close.svg' onclick='app.loadedResult.trailer.hideTrailer()'>
+        <img class='closeTrailer' src='images/close.svg' onclick='app.loadedResult.closeVideo()'>
         <iframe id='trailerPlayer' class="VideoPlayer"></iframe>
         <video id='torrentStream' class="hidden VideoPlayer" controls autoplay name="movie">
           <source id='torrentSRC' src="" type="video/mp4">
@@ -178,6 +178,18 @@ class Result{
           'language' : app.preferences.getLang(),
           'include_adult' : app.preferences.includeAdult
         },false, type)
+      }
+    }
+
+    closeVideo(){
+      let stream = app.getEl("torrentStream")
+      let trailer = app.getEl("trailerPlayer")
+      if(trailer.classList.contains('hidden') || !stream.classList.contains('hidden')){
+          stream.pause();
+          REMOVE_WATCHER(stream.dataset.torrent_id)
+          Trailer.toggleVideoBox(false)
+      }else if(!trailer.classList.contains('hidden') || stream.classList.contains('hidden')){
+        this.trailer.hideTrailer();
       }
     }
 
