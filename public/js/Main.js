@@ -8,6 +8,8 @@ const app = new App(preferencesObject);
 $('#search').on('input', function(){
   app.getAutoCompleteItems(this);
 });
+
+$("#preferencesForm").submit((e)=>{e.preventDefault()})
 window.addEventListener("resize", app.SetImageSizes.bind(app));
 window.addEventListener('scroll', throttle(infinateLoad, 500));
 window.onscroll = function(ev) {

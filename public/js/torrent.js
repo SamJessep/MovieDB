@@ -63,7 +63,7 @@ Torrent = class{
 
   static StartStream(){
     let magnet = app.getEl('selector').value;
-    let videoLink = app.PC_URL+'/stream?magnet='+magnet
+    let videoLink = app.PC_URL+'/stream?magnet='+magnet+"&auth="+app.preferences.account.token
     Trailer.toggleVideoBox(true);
     let torrentPlayer = app.getEl("torrentStream")
     let torrentSrc = app.getEl("torrentSRC")
@@ -86,12 +86,7 @@ Torrent = class{
 
   static DownloadToPC(){
     let link = app.getEl('selector').value;
-    let data = {
-      username: app.preferences.account['username'],
-      password: app.preferences.account['password']
-    }
-
-    PostReq(app.PC_URL+'/download?magnet='+link, {'success':Torrent.Notifiy}, data)
+    postPC(app.PC_URL+'/download', {'success':Torrent.Notifiy, 'error':Torrent.Notifiy}, {magnet:link})
   }
 
   static Notifiy(response){

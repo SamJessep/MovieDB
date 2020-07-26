@@ -95,12 +95,12 @@ class Preferences{
   }
 
   async tryValidateUser(username, password){
-    let postUrl = app.PC_URL+"/validate_user"
+    let postUrl = app.PC_URL+"/login"
     let postData = {
       username:username,
       password:password
     }
-    return await $.post(postUrl, $.param(postData)).promise();
+    return await $.post(postUrl, $.param(postData)).promise();//{success:true, message:"demo", token:"asdsad"}
   }
 
   async savePreferences(){
@@ -111,7 +111,7 @@ class Preferences{
       let validateUser = await this.tryValidateUser(username, password);
       app.setLoading(app.getEl("preferencesMenu"), false);
       if(!validateUser.success){
-        alert(validateUser.message);
+        alert(validateUser.message)
         app.getEl('username').value = ''
         app.getEl('password').value = ''
         return;
@@ -122,6 +122,7 @@ class Preferences{
         this.downloadSite = this.downloadSiteSelect.value;
         this.account['username'] = username
         this.account['password'] = password
+        this.account['token'] = validateUser.token
         this.saveData();
         app.hide(app.getEl('preferencesMenu'));
         theRouter.LoadPage()

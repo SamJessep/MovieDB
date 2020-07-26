@@ -53,11 +53,14 @@ function SendReq(baseURL, methods, filters,extraData){
   })
 }
 
-function PostReq(baseURL, methods, data, filters){
+function PostReq(baseURL, methods, data, headers){
     $.ajax({
       url: baseURL,
       type: 'POST',
       data: data,
+      headers: {
+        ...headers
+      },
       success: function(response){
         methods['success'](response);
       },
@@ -68,6 +71,8 @@ function PostReq(baseURL, methods, data, filters){
       },
     })
   }
+
+const postPC = (baseURL, methods, data)=>{PostReq(baseURL, methods, data,{auth:app.preferences.account.token})};
 
 
 function getDate(dateOffset = 0){
