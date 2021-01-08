@@ -1,11 +1,8 @@
 # MovieDB
 Javascript Web app using
   - The Movie Database API: for movie data
-  - Youtube API: for movie trailers
-  - Bit of JQuery
-  - PHP web service for -https://github.com/SamJessep/PHP-Webscrap
-    - Scraping YT if the API is down
-    - Scraping torrent magnet links
+  - Svelte framework for creating UI
+  - NodeJs for backend services
 
 ## To do
   - [ ] Import search feature
