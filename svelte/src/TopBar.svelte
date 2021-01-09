@@ -13,7 +13,7 @@
 	let SuggestionList;
 	let SearchButtonTabIndex = derived(ResultSuggestions,$ResultSuggestions=>$ResultSuggestions.length+2);
 
-		export async function KeyPressed(e){
+	export async function KeyPressed(e){
 		if(e.code == "Enter") SendSearch(e.target.value);
 		if(!(e.code == "ArrowUp" || e.code == "ArrowDown" || e.code == "Enter")) SelectedIndex = -1;
 		if(e.target.value == '' || e.code == "Enter") ResultSuggestions.set([]);
@@ -22,8 +22,13 @@
 			if('results' in res){
 				ResultSuggestions.set(res.results.map(
 					result=>result.original_title
-						|| result.title
-						|| result.name)
+					|| result.title
+					|| result.name).map(name=>{
+						return {
+							value:name,
+							innerHtml:name.replaceAll(new RegExp(e.target.value,"gi"), `<b style="color:var(--AccentColor, green)">${e.target.value}</b>`)
+						}
+					})
 					.slice(0,MaxResults
 					)
 				)
@@ -38,7 +43,7 @@
 	}
 
 	export function SelectReccomendation(e){
-		SearchValue = e.target.innerText;
+		SearchValue = e.target.value;
 	}
 
 	function SetSelectedSuggestionIndex(dir){
@@ -91,7 +96,8 @@
 						on:mouseover={()=>SelectedIndex=index}
 						on:focus={()=>SelectedIndex=index}
 						class:selected={SelectedIndex==index}
-					>{suggestion}</p>
+						value={suggestion.value}
+					>{@html suggestion.innerHtml}</p>
 				{/each}
 			</div>
 		</div>
