@@ -1,7 +1,7 @@
 <script>
 import QuickButton from './QuickButton.svelte'
 export let isOpen = false;
-export let root;
+let root;
 
 export let genresPromises = [
   {
@@ -137,8 +137,9 @@ details[open] .genreSectionHeader{
 }
 
 details p{
-  padding: 1rem 0.4rem;
+  padding: 0.5rem 0.4rem;
   text-align: center;
+  margin: 0.1rem 0;
 }
 
 details p:hover{

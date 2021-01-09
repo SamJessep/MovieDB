@@ -33,6 +33,7 @@ outline-color: var(--AccentColor);
 
 nav{
   display:flex;
-  justify-content:space-around;
+  justify-content:space-evenly;
+  padding-top: 1rem;
 }
 </style>
