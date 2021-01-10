@@ -5,7 +5,7 @@ import {
 
 export async function Search(query, page = 1, params = {}) {
   params = {
-    query: query,
+    query: encodeURI(query),
     page: page,
     api_key: Config.API_KEY,
     ...Config.REQUEST_PARAMS,

@@ -1,0 +1,75 @@
+<script>
+export let MenuOpen = false;
+export let HasDefaultClose;
+</script>
+
+<div id="dialogBackground" class:open={MenuOpen}>
+  <dialog open={MenuOpen}>
+    {#if HasDefaultClose}
+    <button id="close" on:click={()=>MenuOpen=!MenuOpen}>X</button>
+    {/if}
+    <slot name="contents"/>
+    <slot name="closeButton"/>
+  </dialog>
+</div>
+
+<style>
+
+#dialogBackground{
+  z-index: -1;
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  transition: background-color 1s;
+}
+
+#dialogBackground.open{
+  display: block;
+  z-index: 1;
+  background-color: #000000d4;
+  transition: background-color 1s;
+}
+
+dialog{
+  display: none;
+  width: 80vw;
+  color: var(--FontColor, black);
+  background-color: var(--BackgroundColor, white);
+  box-shadow: 0.5rem 0.5rem 3px 0px #00ff8c;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+dialog[open]{
+  display: block;
+  top:-100vh;
+  top:25%;
+  transition: top 1s;
+}
+
+#close{
+  position: absolute;
+  right: 0.5rem;
+  top: 0rem;
+  background-color: transparent;
+  font-size: var(--BaseFontSize, 3vmin);
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 0;
+}
+
+#close:hover, #close:focus{
+  color:var(--AccentColor, green);
+}
+
+</style>

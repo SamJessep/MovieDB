@@ -51,8 +51,8 @@ a {
 	text-decoration: none;
 }
 
-a:hover {
-	text-decoration: underline;
+a:hover, button:hover{
+	color: var(--AccentColor, green);
 }
 
 a:visited {
@@ -79,21 +79,25 @@ input:disabled {
 }
 
 button {
-	color: #333;
-	background-color: #f4f4f4;
+	color: var(--FontColor, white);
+	background-color: var(--BackgroundColor, black);
 	outline: none;
 }
 
 button:disabled {
-	color: #999;
+	color: grey;
 }
 
 button:not(:disabled):active {
 	background-color: #ddd;
 }
 
-button:focus {
-	border-color: #666;
+button:focus, button:active, button:hover{
+	border-color: var(--AccentColor, green);
+}
+
+.inline{
+  display: inline-block;
 }
 
 .link{

@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import {Search} from './model/TMDbAPI.js';
 	import PreferencesButton from './PreferenceButton.svelte'
+	import LoginButton from './LoginButton.svelte'
 	const dispatch = createEventDispatcher();
 
 	export let PlaceHolder = "Search...";
@@ -13,6 +14,7 @@
 	let SearchSection;
 	let SuggestionList;
 	let SearchButtonTabIndex = derived(ResultSuggestions,$ResultSuggestions=>$ResultSuggestions.length+2);
+	let SearchButton;
 
 	export async function KeyPressed(e){
 		if(e.code == "Enter") SendSearch(e.target.value);
@@ -57,25 +59,29 @@
 	export function DocumentKeyPressed(e){
 		if(e.code == "ArrowUp") SetSelectedSuggestionIndex(-1)
 		if(e.code == "ArrowDown") SetSelectedSuggestionIndex(1)
-		if(e.code == "Enter" && SelectedIndex != -1) SendSearch($ResultSuggestions[SelectedIndex])
+		if(e.code == "Enter" && SelectedIndex != -1) SendSearch($ResultSuggestions[SelectedIndex].value)
 	}
 	export function DocumentFocusStart(e){
+		if(SearchButton.contains(e.target)) SelectedIndex = -1;
 		if(!SearchSection.contains(e.target)) ResultSuggestions.set([]);
 	}
 
 	export async function SendSearch(query){
+		console.log(query)
 		SearchValue = query;
-		var res = await Search(query);
-		dispatch('loadResults',{
-			results:res
-		})
+		if(query != ""){
+			var res = await Search(query);
+			dispatch('loadResults',{
+				results:res
+			})
+		}
 	}
 
 	export function SendHome(){
 		dispatch('home')
 	}
 </script>
-
+	<LoginButton/>
 	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={SendHome}/>
 	<PreferencesButton/>
 	<div id="search" bind:this={SearchSection}>
@@ -103,7 +109,7 @@
 				{/each}
 			</div>
 		</div>
-		<img src="images/search.svg" alt="search button" tabindex={$SearchButtonTabIndex} on:click={()=>SendSearch(SearchValue)}/>
+		<img bind:this={SearchButton} src="images/search.svg" alt="search button" tabindex={$SearchButtonTabIndex} on:click={()=>SendSearch(SearchValue)}/>
 	</div>
 <svelte:window on:keydown={DocumentKeyPressed} on:click={DocumentClick} on:focusin={DocumentFocusStart}/>
 <style>
