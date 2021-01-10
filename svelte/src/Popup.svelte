@@ -6,7 +6,7 @@ export let HasDefaultClose;
 <div id="dialogBackground" class:open={MenuOpen}>
   <dialog open={MenuOpen}>
     {#if HasDefaultClose}
-    <button id="close" on:click={()=>MenuOpen=!MenuOpen}>X</button>
+    <button id="close" on:click={()=>MenuOpen=!MenuOpen}><img src='images/close.svg'/></button>
     {/if}
     <slot name="contents"/>
     <slot name="closeButton"/>
@@ -68,8 +68,14 @@ dialog[open]{
   padding: 0;
 }
 
-#close:hover, #close:focus{
-  color:var(--AccentColor, green);
+#close>img{
+  width:5vmin;
+  height:5vmin;
+  filter: invert(100%) sepia(72%) saturate(3848%) hue-rotate(204deg) brightness(139%) contrast(100%);
+}
+
+#close>img:hover, #close>img:focus{
+  filter: invert(59%) sepia(66%) saturate(2540%) hue-rotate(111deg) brightness(99%) contrast(101%);
 }
 
 </style>
