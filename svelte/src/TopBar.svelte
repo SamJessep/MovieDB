@@ -2,6 +2,7 @@
 	import { writable, derived } from 'svelte/store'
 	import { createEventDispatcher } from 'svelte';
 	import {Search} from './model/TMDbAPI.js';
+	import PreferencesButton from './PreferenceButton.svelte'
 	const dispatch = createEventDispatcher();
 
 	export let PlaceHolder = "Search...";
@@ -76,6 +77,7 @@
 </script>
 
 	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={SendHome}/>
+	<PreferencesButton/>
 	<div id="search" bind:this={SearchSection}>
 		<div id="searchBar">
 			<input

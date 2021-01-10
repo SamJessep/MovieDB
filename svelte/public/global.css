@@ -95,3 +95,12 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+.link{
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.link:hover{
+  color: var(--AccentColor, green);
+}
