@@ -27,8 +27,8 @@
 <style>
 *{
   color: var(--FontColor, white);
-font-size: var(--BaseFontSize);
-outline-color: var(--AccentColor);
+  font-size: var(--BaseFontSize);
+  outline-color: var(--AccentColor);
 }
 
 nav{

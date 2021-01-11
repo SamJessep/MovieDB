@@ -1,12 +1,29 @@
 <script>
+import SvgIcon from './SvgIcon.svelte';
+
 export let MenuOpen = false;
 export let HasDefaultClose;
+
+let closeStyles = `
+svg#SVGID{
+  fill: var(--FontColor, black);
+  width: 3vmin;
+  height: 3vmin;
+  padding: 1vmin 0;
+  transition: fill 0.5s;
+}
+svg#SVGID:hover{
+  fill: var(--AccentColor, green);
+}
+`
 </script>
 
 <div id="dialogBackground" class:open={MenuOpen}>
   <dialog open={MenuOpen}>
     {#if HasDefaultClose}
-    <button id="close" on:click={()=>MenuOpen=!MenuOpen}>X</button>
+    <button id="close" on:click={()=>MenuOpen=!MenuOpen}>
+      <SvgIcon src="images/close.svg" styles={closeStyles}/>
+    </button>
     {/if}
     <slot name="contents"/>
     <slot name="closeButton"/>
@@ -38,7 +55,7 @@ dialog{
   width: 80vw;
   color: var(--FontColor, black);
   background-color: var(--BackgroundColor, white);
-  box-shadow: 0.5rem 0.5rem 3px 0px #00ff8c;
+  box-shadow: 0.5rem 0.5rem 3px 0px var(--AccentColor, green);
 
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -68,8 +85,15 @@ dialog[open]{
   padding: 0;
 }
 
-#close:hover, #close:focus{
-  color:var(--AccentColor, green);
+#close>img{
+  width:5vmin;
+  height:5vmin;
+  filter: invert(100%) sepia(72%) saturate(3848%) hue-rotate(204deg) brightness(139%) contrast(100%);
+  transition: filter 5s;
+}
+
+#close>img:hover, #close>img:focus{
+  filter: invert(59%) sepia(66%) saturate(2540%) hue-rotate(111deg) brightness(99%) contrast(101%);
 }
 
 </style>

@@ -11,6 +11,7 @@ let prefrences = JSON.parse(localStorage.getItem("Preferences")) || {
 };
 
 export const Preferences = writable(prefrences);
+export const SvgIDS = writable(0);
 
 Preferences.subscribe(val => localStorage.setItem("Preferences", JSON.stringify(val)))
 

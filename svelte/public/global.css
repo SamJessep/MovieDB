@@ -108,3 +108,8 @@ button:focus, button:active, button:hover{
 .link:hover{
   color: var(--AccentColor, green);
 }
+
+p.selected>.searchReccomendation{
+  color:var(--AccentColor, green) !important;
+  font-weight: normal;
+}

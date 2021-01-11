@@ -4,6 +4,7 @@
 	import {Search} from './model/TMDbAPI.js';
 	import PreferencesButton from './PreferenceButton.svelte'
 	import LoginButton from './LoginButton.svelte'
+	import SvgIcon from './SvgIcon.svelte'
 	const dispatch = createEventDispatcher();
 
 	export let PlaceHolder = "Search...";
@@ -15,6 +16,22 @@
 	let SuggestionList;
 	let SearchButtonTabIndex = derived(ResultSuggestions,$ResultSuggestions=>$ResultSuggestions.length+2);
 	let SearchButton;
+	const SearchButtonStyles = `
+		svg#SVGID{
+			width:4vmin;
+			height:4vmin;
+			cursor: pointer;
+			fill:var(--FontColor, black);
+			transition: fill 0.3s;
+		}
+
+		a:hover>svg#SVGID, a:focus>svg#SVGID{
+			fill:var(--AccentColor, green);
+		}
+		a:active>svg#SVGID{
+			fill:var(--SelectedColor, green);
+		}
+	`
 
 	export async function KeyPressed(e){
 		if(e.code == "Enter") SendSearch(e.target.value);
@@ -29,7 +46,7 @@
 					|| result.name).map(name=>{
 						return {
 							value:name,
-							innerHtml:name.replaceAll(new RegExp(e.target.value,"gi"), `<b style="color:var(--AccentColor, green)">${e.target.value}</b>`)
+							innerHtml:name.replaceAll(new RegExp(e.target.value,"gi"), `<b style="color: var(--SelectedColor, green);" class="searchReccomendation">${e.target.value}</b>`)
 						}
 					})
 					.slice(0,MaxResults
@@ -39,14 +56,9 @@
 		}
 	}
 
-	export function DocumentClick(e){
-		if (!SearchSection.contains(e.target)) {
-			ResultSuggestions.set([]);
-		}
-	}
-
 	export function SelectReccomendation(e){
-		SearchValue = e.target.value;
+		SearchValue = e.target.innerText;
+		SendSearch(SearchValue);
 	}
 
 	function SetSelectedSuggestionIndex(dir){
@@ -61,13 +73,18 @@
 		if(e.code == "ArrowDown") SetSelectedSuggestionIndex(1)
 		if(e.code == "Enter" && SelectedIndex != -1) SendSearch($ResultSuggestions[SelectedIndex].value)
 	}
+
 	export function DocumentFocusStart(e){
 		if(SearchButton.contains(e.target)) SelectedIndex = -1;
 		if(!SearchSection.contains(e.target)) ResultSuggestions.set([]);
 	}
 
+	export function MouseLeaveSearchBar(e){
+		ResultSuggestions.set([]);
+		document.activeElement.blur();
+	}
+
 	export async function SendSearch(query){
-		console.log(query)
 		SearchValue = query;
 		if(query != ""){
 			var res = await Search(query);
@@ -85,9 +102,10 @@
 	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={SendHome}/>
 	<PreferencesButton/>
 	<div id="search" bind:this={SearchSection}>
-		<div id="searchBar">
+		<div id="searchBar" on:mouseleave={MouseLeaveSearchBar}>
 			<input
 				id="searchBarInput"
+				autofocus
 				tabindex="1"
 				placeholder={PlaceHolder}
 				list="resultSuggestions"
@@ -109,9 +127,11 @@
 				{/each}
 			</div>
 		</div>
-		<img bind:this={SearchButton} src="images/search.svg" alt="search button" tabindex={$SearchButtonTabIndex} on:click={()=>SendSearch(SearchValue)}/>
+		<a id="searchButtonContainer" class="svgContainer" bind:this={SearchButton}  on:click={(e)=>SendSearch(SearchValue)} tabindex={$SearchButtonTabIndex} href="#">
+			<SvgIcon src="images/search.svg" styles={SearchButtonStyles} />
+		</a>
 	</div>
-<svelte:window on:keydown={DocumentKeyPressed} on:click={DocumentClick} on:focusin={DocumentFocusStart}/>
+<svelte:window on:keydown={DocumentKeyPressed} on:focusin={DocumentFocusStart}/>
 <style>
 	#logo {
 		max-width: 50vw;
@@ -128,17 +148,12 @@
 		text-align: center;
 	}
 
-	#search>img {
-	width: 10vmin;
-	height: auto;
-	cursor: pointer;
-	filter: var(--ImgColor);
+#searchButtonContainer{
+	display: flex;
+  align-items: center;
+  outline: none;
 }
 
-  #search>img:active,#search>img:hover, #search>img:focus {
-    filter: var(--ImgClickColor);
-		outline:none;
-}
 	#search input {
 		width: 80vw;
 		height: 10vmin;
@@ -153,7 +168,7 @@
 	#searchBar input:hover,
 	#searchBar>input:focus,
 	#searchBar>input:active {
-		border-bottom: solid #00d474 0.5vmin;
+		border-bottom: solid var(--AccentColor, green) 0.5vmin;
 		outline: none;
 	}
 
@@ -163,8 +178,8 @@
 	}
 
 	#suggestions>p{
-		background-color:#2b2c2c;
-		color:white;
+		background-color:var(--SecondBackgroundColor, grey);
+		color:var(--FontColor, white);
 		border-radius: 1vmin;
 		font-size: var(--BaseFontSize, 2vmin);
 		padding: 1rem 0;
@@ -172,9 +187,12 @@
 	}
 
 #suggestions>p.selected{
-		/* background-color:#2b2c2c; */
-		color:var(--AccentColor, green);
-		background-color:#3c3c3b;
+		color:var(--AccentColor, green) !important;
+		background-color:var(--SecondBackgroundColor, green);
 		outline: none;
 	}
+	#suggestions>p.selected>b{
+		color: var(--AccentColor, green) !important;
+	}
+
 </style>

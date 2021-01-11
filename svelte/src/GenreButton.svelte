@@ -144,7 +144,7 @@ details p{
 
 details p:hover{
   color:var(--AccentColor, green);
-  background-color:#3c3c3b;
+  background-color:var(--SecondBackgroundColor, grey);;
   border-radius: 1vmin;
 }
 </style>
