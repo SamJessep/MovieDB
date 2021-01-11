@@ -85,15 +85,4 @@ dialog[open]{
   padding: 0;
 }
 
-#close>img{
-  width:5vmin;
-  height:5vmin;
-  filter: invert(100%) sepia(72%) saturate(3848%) hue-rotate(204deg) brightness(139%) contrast(100%);
-  transition: filter 5s;
-}
-
-#close>img:hover, #close>img:focus{
-  filter: invert(59%) sepia(66%) saturate(2540%) hue-rotate(111deg) brightness(99%) contrast(101%);
-}
-
 </style>
