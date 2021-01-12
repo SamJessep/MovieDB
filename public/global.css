@@ -22,11 +22,15 @@
   }
 }
 
+:focus {
+    outline: var(--AccentColor) auto 1px;
+}
+
 p{
   font-size: var(--BodyFontSize, 2vmin);
 }
 
-input, select, button {
+input, select, button:not(.nonStandard) {
 	background-color: var(--SecondBackgroundColor, white);
 	color: var(--FontColor, black);
 }
@@ -63,7 +67,7 @@ label {
 	display: block;
 }
 
-input, button, select, textarea {
+input, button:not(.nonStandard), select, textarea {
 	font-family: inherit;
 	font-size: inherit;
 	-webkit-padding: 0.4em 0;
@@ -78,21 +82,21 @@ input:disabled {
 	color: #ccc;
 }
 
-button {
+button:not(.nonStandard) {
 	color: var(--FontColor, white);
 	background-color: var(--BackgroundColor, black);
 	outline: none;
 }
 
-button:disabled {
+button:not(.nonStandard):disabled {
 	color: grey;
 }
 
-button:not(:disabled):active {
+button:not(:disabled):not(.nonStandard):active {
 	background-color: #ddd;
 }
 
-button:focus, button:active, button:hover{
+button:not(.nonStandard):focus, button:not(.nonStandard):active, button:not(.nonStandard):hover{
 	border-color: var(--AccentColor, green);
 }
 

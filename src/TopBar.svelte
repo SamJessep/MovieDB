@@ -13,6 +13,7 @@
 	export let SelectedIndex = -1;
 	let MaxResults = 5;
 	let SearchSection;
+	let showSuggestions = false;
 	let SuggestionList;
 	let SearchButtonTabIndex = derived(ResultSuggestions,$ResultSuggestions=>$ResultSuggestions.length+2);
 	let SearchButton;
@@ -25,10 +26,10 @@
 			transition: fill 0.3s;
 		}
 
-		a:hover>svg#SVGID, a:focus>svg#SVGID{
+		*:hover>svg#SVGID, *:focus>svg#SVGID{
 			fill:var(--AccentColor, green);
 		}
-		a:active>svg#SVGID{
+		*:active>svg#SVGID{
 			fill:var(--SelectedColor, green);
 		}
 	`
@@ -76,12 +77,13 @@
 
 	export function DocumentFocusStart(e){
 		if(SearchButton.contains(e.target)) SelectedIndex = -1;
-		if(!SearchSection.contains(e.target)) ResultSuggestions.set([]);
+		if(!SearchSection.contains(e.target)) CloseSuggestions()
 	}
-
-	export function MouseLeaveSearchBar(e){
+	export function DocumentClick(e){
+		if(!SearchSection.contains(e.target)) CloseSuggestions();
+	}
+	export function CloseSuggestions(){
 		ResultSuggestions.set([]);
-		document.activeElement.blur();
 	}
 
 	export async function SendSearch(query){
@@ -102,11 +104,10 @@
 	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={SendHome}/>
 	<PreferencesButton/>
 	<div id="search" bind:this={SearchSection}>
-		<div id="searchBar" on:mouseleave={MouseLeaveSearchBar}>
+		<div id="searchBar">
 			<input
 				id="searchBarInput"
 				autofocus
-				tabindex="1"
 				placeholder={PlaceHolder}
 				list="resultSuggestions"
 				on:keyup={KeyPressed}
@@ -116,22 +117,22 @@
 			/>
 			<div id="suggestions">
 				{#each $ResultSuggestions as suggestion, index}
-					<p
-						tabindex={2+index}
+					<button
+						class="nonStandard"
 						on:click={SelectReccomendation}
 						on:mouseover={()=>SelectedIndex=index}
 						on:focus={()=>SelectedIndex=index}
 						class:selected={SelectedIndex==index}
 						value={suggestion.value}
-					>{@html suggestion.innerHtml}</p>
+					>{@html suggestion.innerHtml}</button>
 				{/each}
 			</div>
 		</div>
-		<a id="searchButtonContainer" class="svgContainer" bind:this={SearchButton}  on:click={(e)=>SendSearch(SearchValue)} tabindex={$SearchButtonTabIndex} href="#">
+		<button id="searchButtonContainer" class="svgContainer" bind:this={SearchButton}  on:click={(e)=>SendSearch(SearchValue)} href="#">
 			<SvgIcon src="images/search.svg" styles={SearchButtonStyles} />
-		</a>
+		</button>
 	</div>
-<svelte:window on:keydown={DocumentKeyPressed} on:focusin={DocumentFocusStart}/>
+<svelte:window on:keydown={DocumentKeyPressed} on:click={DocumentClick} on:focusin={DocumentFocusStart}/>
 <style>
 	#logo {
 		max-width: 50vw;
@@ -152,6 +153,12 @@
 	display: flex;
   align-items: center;
   outline: none;
+	border: none;
+	background-color: transparent;
+}
+
+#searchButtonContainer:active{
+	background-color: transparent;
 }
 
 	#search input {
@@ -177,22 +184,21 @@
 		width: 80vw;
 	}
 
-	#suggestions>p{
+	#suggestions>button{
 		background-color:var(--SecondBackgroundColor, grey);
 		color:var(--FontColor, white);
 		border-radius: 1vmin;
 		font-size: var(--BaseFontSize, 2vmin);
 		padding: 1rem 0;
 		margin: 0.5rem 0;
+		display: block;
+    width: 100%;
 	}
 
-#suggestions>p.selected{
+#suggestions>button.selected{
 		color:var(--AccentColor, green) !important;
 		background-color:var(--SecondBackgroundColor, green);
 		outline: none;
-	}
-	#suggestions>p.selected>b{
-		color: var(--AccentColor, green) !important;
 	}
 
 </style>
