@@ -1,9 +1,18 @@
 <script>
 export let buttonText;
 export let buttonClick;
+const dispatch = createEventDispatcher();
+import { createEventDispatcher } from 'svelte';
+
+async function ButtonClicked(){
+  var res = await buttonClick();
+  dispatch('loadResults',{
+    results:res
+  })
+}
 </script>
 
-<button on:click={buttonClick}>
+<button on:click={ButtonClicked} id="quickButton">
   {buttonText}
 </button>
 
@@ -17,12 +26,12 @@ button{
   cursor: pointer;
 }
 
-button:hover{
+#quickButton:hover{
   font-weight:600;
   color:var(--AccentColor, green);
 }
 
-button:active{
+#quickButton:active{
   color:var(--SelectedColor, lightgreen);
   background-color:transparent;
 }

@@ -1,7 +1,24 @@
 <script>
 import AddButton from './AddButton.svelte'
+import SvgIcon from './SvgIcon.svelte'
 import {Config} from './config.js';
 export let Result;
+let placeholderStyles = `
+  svg#SVGID{
+    width:50%;
+    height:50%;
+    fill:var(--FontColor, black);
+    transition: fill 0.3s;
+    margin: auto;
+  }
+
+  *:hover>svg#SVGID, *:focus>svg#SVGID{
+    fill:var(--AccentColor, green);
+  }
+  *:active>svg#SVGID{
+    fill:var(--SelectedColor, green);
+  }
+`
 
 let title = Result.title || Result.original_title || Result.name;
 
@@ -10,9 +27,20 @@ export function GetImageUrl(){
   return Config.BASE_IMAGE_URL + "original/"+Result.poster_path
 }
 
+export function LoadResultPage(el){
+  alert("Clicked "+ title)
+}
+
 </script>
 <button class="resultCard nonStandard">
-  <img class="poster" src={GetImageUrl()} alt={title+" poster"}/>
+  {#if Result.poster_path}
+    <img class="poster" src={GetImageUrl()} alt={title+" poster"} on:click={LoadResultPage}/>
+  {:else}
+    <div class="placeholder_container poster">
+        <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
+        <small>No Poster</small>
+    </div>
+  {/if}
   <div class='toolbar'>
     <AddButton/>
     <p>{title}</p>
@@ -46,6 +74,14 @@ export function GetImageUrl(){
 .poster{
   width: 100%;
   height: auto;
+  min-height: 26rem;
+}
+
+.placeholder_container{
+  background-color: var(--SecondBackgroundColor, grey);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 </style>

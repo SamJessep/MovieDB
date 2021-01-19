@@ -19,8 +19,7 @@
 
 <main>
 	<TopBar on:loadResults={LoadResults} on:home={GoHome}/>
-	<DiscoverBar>
-	</DiscoverBar>
+	<DiscoverBar on:loadResults={LoadResults}/>
 	<div id="cardContainer">
 	{#each LoadedResults as result (result.id)}
 		<Card Result={result}/>
