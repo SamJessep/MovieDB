@@ -1,9 +1,27 @@
 <script>
 import bodymovin from './addons/bodymovin.js';
 import { onMount } from 'svelte';
+import { createEventDispatcher } from 'svelte';
+const dispatch = createEventDispatcher();
+
 let container;
 let animation;
-let state = "checked";
+export let checked = false;
+let SvgCSS = `
+.addButton *{
+  cursor: pointer;
+  stroke: var(--FontColor);
+  transition: stroke 0.2s;
+}
+
+.addButton.checked *{
+  stroke: var(--AccentColor);
+}
+
+.addButton:hover *{
+  stroke: var(--SelectedColor);
+}
+`
 
 onMount(async () => {
    animation= bodymovin.loadAnimation({
@@ -18,27 +36,31 @@ onMount(async () => {
     }
   })
   animation.addEventListener("DOMLoaded", ()=>{
-    animation.goToAndStop(1, true)
-    SetColor('var(--FontColor, black)')
+    var styleElement = document.createElement("style")
+    styleElement.innerHTML = SvgCSS;
+    container.children[0].prepend(styleElement)
+    container.children[0].classList.add("addButton")
+    SetSvgClass()
+    animation.goToAndStop(checked?14:27, true)
   });
 });
 
-function SetColor(color){
-  let paths = container.querySelectorAll('path');
-  paths.forEach(element => {
-    element.setAttribute('style', 'stroke: '+color+';');
-  });
+function ButtonClicked(){
+  if(checked) {
+    animation.playSegments([14, 27], true);
+  } else {
+    animation.playSegments([1, 14], true);
+  }
+  checked = !checked;
+  SetSvgClass()
+  dispatch('addClicked',{
+    checked: checked
+  })
 }
 
-function ButtonClicked(){
-    if(state === 'notChecked') {
-      animation.playSegments([14, 27], true);
-      state = 'checked';
-    } else {
-      animation.playSegments([1, 14], true);
-      state = 'notChecked';
-    }
-  }
+function SetSvgClass(){
+  container.children[0].classList[checked?"add":"remove"]("checked");
+}
 
 
 </script>
@@ -46,19 +68,12 @@ function ButtonClicked(){
 <div
   bind:this={container}
   on:click={ButtonClicked}
-  on:mouseover={()=>SetColor("var(--AccentColor)")}
-  on:mouseout={()=>SetColor("var(--FontColor)")}
 ></div>
 
 <style>
 div {
-  display: inline-block;
+  display: block;
   width: 50px;
-  height: 50px;
-  margin: auto 0;
 }
 
-path{
-  stroke: var(--FontColor) !important;
-}
 </style>

@@ -2,6 +2,8 @@
 	import TopBar from './TopBar.svelte';
 	import DiscoverBar from './DiscoverBar.svelte';
 	import Card from './ResultCard.svelte';
+	import {GetCountries, GetLanguages, Trending} from './model/TMDbAPI.js'
+	import {Languages, Countries} from './stores.js'
 
 	var LoadedResults = [];
 	export function LoadResults(event){
@@ -12,9 +14,13 @@
 		}
 	}
 
-	export function GoHome(){
-		LoadedResults = [];
+	export async function GoHome(){
+		let trending = await Trending();
+		LoadedResults = trending.results
 	}
+
+	GoHome()
+
 </script>
 
 <main>

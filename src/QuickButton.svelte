@@ -1,8 +1,8 @@
 <script>
 export let buttonText;
 export let buttonClick;
-const dispatch = createEventDispatcher();
 import { createEventDispatcher } from 'svelte';
+const dispatch = createEventDispatcher();
 
 async function ButtonClicked(){
   var res = await buttonClick();

@@ -1,16 +1,7 @@
 import {Config} from "../config.js";
+import {User} from '../stores.js'
 
 export async function CreateRequestToken(){
-  // const rawResponse = await fetch(Config.BASE_URL_V4+"auth/request_token", {
-  //   method: 'POST',
-  //   headers: {
-  //     'Accept': 'application/json',
-  //     'Content-Type': 'application/json;charset=utf-8',
-  //     'Authorization': 'Bearer '+Config.API_KEY_V4
-  //   },
-  //   body: JSON.stringify({"redirect_to": Config.SUCCESSFUL_LOGIN_URL})
-  // });
-
   const rawResponse = await fetch(Config.BASE_URL+"authentication/token/new", {
     method: 'GET',
     headers: {
@@ -46,6 +37,6 @@ export async function CreateAccessToken(AuthToken){
 export async function GetDetails(session_id){
   const rawResponse = await fetch(Config.BASE_URL+"account?session_id="+session_id+"&api_key="+Config.API_KEY);
   const content = await rawResponse.json();
-  console.log(content)
+  User.set({...content,session_id:session_id})
   return content
 }

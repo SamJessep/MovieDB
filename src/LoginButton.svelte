@@ -1,10 +1,12 @@
 <script>
 import Popup from './Popup.svelte'
 import {CreateRequestToken, GetUserApproval, CreateAccessToken, GetDetails} from './model/account.js'
+import {Languages, Countries, User} from './stores.js'
+import {GetLanguageText, GetCountryText} from './model/dataHelper.js'
+import { onDestroy } from 'svelte';
 
 let LoginOpen = false;
 let profilePromise
-
 TryLoadProfile()
 
 function LoggedIn(){
@@ -46,7 +48,7 @@ async function startSession(){
 }
 
 async function LogOut(){
-  
+
 }
 
 
@@ -66,32 +68,18 @@ async function LogOut(){
       {#if profile.name == ""}
         <h1>{profile.username}</h1>
       {:else}
-      <h1>{profile.name}</h1>
-      <small>{profile.username}</small>
+        <h1>{profile.name}</h1>
+        <small>{profile.username}</small>
       {/if}
-      <p>Language: <b>{profile.iso_639_1}</b></p>
-      <p>Country: <b>{profile.iso_3166_1}</b></p>
+      <p>Language: <b>{GetLanguageText(profile.iso_639_1)}</b></p>
+      <p>Country: <b>{GetCountryText(profile.iso_3166_1)}</b></p>
     {:catch e}
       <p>error loading profile
         <button>click here to try again</button>
       </p>
     {/await}
     <button on:click={LogOut}>Log Out</button>
-  {:else}
-    <p>No Promise</p>
   {/if}
-    <!-- <h1>Login</h1>
-
-    <label for="email">Email</label>
-    <input id="email" type="email"/>
-
-    <label for="password">Email</label>
-    <input id="password" type="password"/>
-
-    <p>Dont have an account? <span class="link">click here</span> to sign up</p>
-    <label for="remeberMe" class="inline" >Remeber Me</label>
-    <input if="remeberMe" type="checkbox"/>
-    <button id="login" on:click={login}>Login</button> -->
   </div>
 </Popup>
 

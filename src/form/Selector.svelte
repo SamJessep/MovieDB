@@ -6,7 +6,7 @@ export let label;
 let GetItems = fetchItemsFunction();
 
 function Retry(){
-  GetItems = fetchItems();
+  GetItems = fetchItemsFunction();
 }
 </script>
 

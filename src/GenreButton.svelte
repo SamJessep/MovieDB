@@ -104,6 +104,11 @@ export function GenreSelected(e){
 #container.isOpen{
   visibility: visible;
   opacity: 1;
+  background-color: var(--BackgroundColor);
+  padding: 0.5rem 3rem;
+  border-radius: 5px;
+  box-shadow: 0px 0px 12px 0px grey;
+  text-align: center;
 }
 
 .genreContainer{
@@ -129,7 +134,7 @@ details, details *{
 }
 
 details:not([open]) .genreSectionHeader:hover{
-  filter: brightness(0.6);
+  color: var(--SelectedColor);
 }
 
 details[open] .genreSectionHeader{
