@@ -1,9 +1,10 @@
 <script>
 import Popup from './Popup.svelte'
-import {CreateRequestToken, GetUserApproval, CreateAccessToken, GetDetails} from './model/account.js'
-import {Languages, Countries, User} from './stores.js'
-import {GetLanguageText, GetCountryText} from './model/dataHelper.js'
+import {CreateRequestToken, GetUserApproval, CreateAccessToken, GetDetails} from '../model/account.js'
+import {Languages, Countries, User} from '../stores/store.js'
+import {GetLanguageText, GetCountryText} from '../model/dataHelper.js'
 import { onDestroy } from 'svelte';
+import {QueryToJSON} from '../util.js'
 
 let LoginOpen = false;
 let profilePromise
@@ -32,7 +33,7 @@ if(params.includes("LoggedIn")){
   startSession()
 }
 async function startSession(){
-  var querySTR = JSON.parse('{"' + decodeURI(params).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+  var querySTR = util.QueryToJSON(params)
   try{
     if(querySTR['LoggedIn']){
       let token = localStorage.getItem("authToken")
@@ -93,15 +94,6 @@ async function LogOut(){
 
 div[slot="contents"]{
   text-align: center;
-}
-
-input[type="email"], input[type="password"], button#login{
-  min-width:60%;
-}
-
-button#login{
-  display: block;
-  margin: 0 auto;
 }
 
 </style>

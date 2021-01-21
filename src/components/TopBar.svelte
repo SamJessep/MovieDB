@@ -1,11 +1,10 @@
 <script>
 	import { writable, derived } from 'svelte/store'
-	import { createEventDispatcher } from 'svelte';
-	import {Search} from './model/TMDbAPI.js';
+	import {Search} from '../model/TMDbAPI.js';
 	import PreferencesButton from './PreferenceButton.svelte'
 	import LoginButton from './LoginButton.svelte'
 	import SvgIcon from './SvgIcon.svelte'
-	const dispatch = createEventDispatcher();
+	import {push} from 'svelte-spa-router'
 
 	export let PlaceHolder = "Search...";
 	let ResultSuggestions = writable([]);
@@ -87,27 +86,17 @@
 	}
 
 	export async function SendSearch(query){
-		SearchValue = query;
-		if(query != ""){
-			var res = await Search(query);
-			dispatch('loadResults',{
-				results:res
-			})
-		}
+		push('/Search/'+query)
 	}
 
-	export function SendHome(){
-		dispatch('home')
-	}
 </script>
 	<LoginButton/>
-	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={SendHome}/>
+	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={()=>push('/')}/>
 	<PreferencesButton/>
 	<div id="search" bind:this={SearchSection}>
 		<div id="searchBar">
 			<input
 				id="searchBarInput"
-				autofocus
 				placeholder={PlaceHolder}
 				list="resultSuggestions"
 				on:keyup={KeyPressed}

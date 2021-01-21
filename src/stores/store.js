@@ -3,7 +3,7 @@ import {
   readable,
   derived
 } from 'svelte/store'
-import {GetCountries, GetLanguages} from './model/api_config.js'
+import {GetCountries, GetLanguages} from '../model/api_config.js'
 
 let prefrences = JSON.parse(localStorage.getItem("Preferences")) || {
   country: "NZ",

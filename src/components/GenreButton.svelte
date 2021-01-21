@@ -51,12 +51,12 @@ export function Click(e){
   }
 }
 
-export function GenreSelected(e){
-  var genreId = e.target.id;
+export function GenreSelected(id, type){
+  push(`Genre/${type}/${id}`)
 }
 </script>
 <div id="root" bind:this={root}>
-  <QuickButton buttonText="Genre" buttonClick={ToggleGenreContainer}/>
+  <QuickButton text="Genre"/>
   <div id="container" class:isOpen={isOpen}>
   {#each genresPromises as genreType}
     {#await genreType.promise}
@@ -65,7 +65,7 @@ export function GenreSelected(e){
     <details class="genreContainer">
       <summary class="genreSectionHeader">{genreType.name}</summary>
       {#each genres as genre}
-        <p id={genre.id} on:click={GenreSelected}>{genre.name}</p>
+        <p id={genre.id} on:click={GenreSelected(genre.id, genreType.name)}>{genre.name}</p>
       {/each}
       </details>
     {:catch error}

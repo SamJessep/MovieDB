@@ -1,43 +1,56 @@
 import {Config} from "../config.js";
 import {get} from 'svelte/store';
-import {User, RequestParams} from "../stores.js"
+import {User, RequestParams} from "../stores/store.js"
+import {ParamsToString} from '../util.js'
 
 
-export async function Search(query, page = 1, params = {}) {
+export async function Search(query, params = {}) {
   params = {
     query: encodeURI(query),
-    page: page,
-    api_key: Config.API_KEY,
     ...get(RequestParams),
     ...params
   };
-  const paramString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-  var res = await fetch(Config.BASE_URL + "search/multi?" + paramString);
-  return res.json();
+  var res = await fetch(Config.BASE_URL + "search/multi?" + ParamsToString(params),{
+    method:'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': 'Bearer '+Config.API_KEY_V4
+    }
+  });
+  res = await res.json()
+  console.log(res)
+  return res;
 }
 
-export async function Discover(page=1, params={}){
+export async function Discover(params={}){
   params = {
-    page: page,
-    api_key: Config.API_KEY,
     ...get(RequestParams),
     ...params
   };
-  const paramString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-  var res = await fetch(Config.BASE_URL + "discover/movie?" + paramString);
+  var res = await fetch(Config.BASE_URL + "discover/movie?" + ParamsToString(params),{
+    method:'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': 'Bearer '+Config.API_KEY_V4
+    }
+  });
   return res.json();
 }
 
-export async function Latest(page=1, params={}){
+export async function Latest(params={}){
   //popularity.asc, popularity.desc, release_date.asc, release_date.desc, revenue.asc, revenue.desc, primary_release_date.asc, primary_release_date.desc, original_title.asc, original_title.desc, vote_average.asc, vote_average.desc, vote_count.asc, vote_count.desc
   params = {
-    sort_by: "release_date.desc"
+    sort_by: "release_date.desc",
+    ...params
   }
-  return Discover(page, params)
+  return Discover(params)
 }
 
-export async function Popular(page=1, params={}){
-  return Discover(page, params)
+export async function Popular(params={}){
+  console.log(params)
+  return Discover(params)
 }
 
 export async function Trending(media_type="movie", time_window="week"){
@@ -52,9 +65,13 @@ export async function Trending(media_type="movie", time_window="week"){
     return res.json()
 }
 
-export async function GetWatchList(page=1, sort_direction="desc"){
-  console.log(get(User))
-  let res = await fetch(Config.BASE_URL+`/account/${get(User).account_id}/watchlist/movies?session_id=${get(User).session_id}&sort_by=created_at.${sort_direction}&page=${page}`,{
+export async function GetWatchList(params={sort_direction:"created_at.desc"}){
+  params = {
+    ...get(RequestParams),
+    ...params,
+    session_id: get(User).session_id
+  }
+  let res = await fetch(Config.BASE_URL+`/account/${get(User).account_id}/watchlist/movies?${ParamsToString(params)}`,{
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -66,7 +83,10 @@ export async function GetWatchList(page=1, sort_direction="desc"){
 }
 
 export async function AddToWatchlist(media_id, media_type="movie", add=true){
-  const rawResponse = await fetch(Config.BASE_URL+`account/${get(User).account_id}/watchlist?session_id=${get(User).session_id}`, {
+  let params = {
+    session_id:get(User).session_id
+  }
+  const rawResponse = await fetch(Config.BASE_URL+`account/${get(User).account_id}/watchlist?${ParamsToString(params)}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -83,7 +103,10 @@ export async function AddToWatchlist(media_id, media_type="movie", add=true){
 }
 
 export async function IsOnWatchlist(item_id, media_type="movie"){
-  let res = await fetch(Config.BASE_URL+`${media_type}/${item_id}/account_states?session_id=${get(User).session_id}`,{
+  let params ={
+    session_id:get(User).session_id
+  }
+  let res = await fetch(Config.BASE_URL+`${media_type}/${item_id}/account_states?${ParamsToString(params)}`,{
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -95,9 +118,10 @@ export async function IsOnWatchlist(item_id, media_type="movie"){
   return res.watchlist
 }
 
-export async function GenreSearch(genres, page=1, params={}){
+export async function GenreSearch(genres, params={}){
   params ={
+    ...params,
     with_genres:genres.join(",")
   }
-  return Discover(page, params)
+  return Discover(params)
 }

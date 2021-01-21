@@ -1,5 +1,5 @@
 <script>
-import bodymovin from 'lottie-web'
+import lottie from 'lottie-web'
 //import bodymovin from './addons/bodymovin.js';
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
@@ -25,7 +25,7 @@ let SvgCSS = `
 `
 
 onMount(async () => {
-   animation= bodymovin.loadAnimation({
+   animation= lottie.loadAnimation({
     container: container,
     renderer: 'svg',
     loop: false,

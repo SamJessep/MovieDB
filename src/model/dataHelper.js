@@ -1,7 +1,7 @@
 import {
   get
 } from 'svelte/store';
-import {Languages, Countries} from '../stores.js'
+import {Languages, Countries} from '../stores/store.js'
 
 export function GetLanguageText(value, languages){
   for(let l of get(Languages)){

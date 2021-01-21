@@ -1,20 +1,20 @@
 <script>
   import QuickButton from './QuickButton.svelte'
   import GenreButton from './GenreButton.svelte'
-  import {Popular, Latest, GetWatchList} from './model/TMDbAPI'
-  import {User} from './stores.js'
+  import {Popular, Latest, GetWatchList} from '../model/TMDbAPI'
+  import {User} from '../stores/store.js'
 
   let buttons = [{
       text: "My Watchlist",
-      click: GetWatchList
+      url: `/${$User.username}/Watchlist`
     },
     {
       text: "Popular",
-      click: Popular
+      url: '/Discover/Popular'
     },
     {
       text: "Recent Releases",
-      click: Latest
+      url: '/Discover/Latest'
     }
   ]
 </script>
@@ -22,7 +22,7 @@
 <nav on:loadResults>
   {#each buttons as btn}
     {#if btn.text != "My Watchlist" || $User.session_id != null}
-      <QuickButton on:loadResults buttonText={btn.text} buttonClick={btn.click}/>
+      <QuickButton text={btn.text} url={btn.url}/>
     {/if}
   {/each}
   <GenreButton/>

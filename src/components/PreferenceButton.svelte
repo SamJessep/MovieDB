@@ -1,7 +1,7 @@
 <script>
-  import {GetCountries, GetLanguages} from './model/api_config.js';
-  import {Config} from './config.js';
-  import {Preferences} from './stores.js'
+  import {GetCountries, GetLanguages} from '../model/api_config.js';
+  import {Config} from '../config.js';
+  import {Preferences} from '../stores/store.js'
   import Selector from './form/Selector.svelte'
   import Popup from './Popup.svelte'
   let isOpen = false;

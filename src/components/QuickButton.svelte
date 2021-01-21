@@ -1,19 +1,17 @@
 <script>
-export let buttonText;
-export let buttonClick;
-import { createEventDispatcher } from 'svelte';
-const dispatch = createEventDispatcher();
+import {push} from 'svelte-spa-router'
+export let text;
+export let url = null;
 
-async function ButtonClicked(){
-  var res = await buttonClick();
-  dispatch('loadResults',{
-    results:res
-  })
+function ButtonClick(){
+  if(url){
+    push(url)
+  }
 }
 </script>
 
-<button on:click={ButtonClicked} id="quickButton">
-  {buttonText}
+<button on:click={ButtonClick} id="quickButton">
+  {text}
 </button>
 
 <style>

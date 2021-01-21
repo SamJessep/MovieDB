@@ -1,5 +1,5 @@
 import {Config} from "../config.js";
-import {User} from '../stores.js'
+import {User} from '../stores/store.js'
 import {get} from 'svelte/store';
 
 export async function CreateRequestToken(){
