@@ -1,5 +1,6 @@
 <script>
-import bodymovin from './addons/bodymovin.js';
+import bodymovin from 'lottie-web'
+//import bodymovin from './addons/bodymovin.js';
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();

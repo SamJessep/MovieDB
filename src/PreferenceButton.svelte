@@ -1,5 +1,5 @@
 <script>
-  import {GetCountries, GetLanguages} from './model/TMDbAPI.js';
+  import {GetCountries, GetLanguages} from './model/api_config.js';
   import {Config} from './config.js';
   import {Preferences} from './stores.js'
   import Selector from './form/Selector.svelte'

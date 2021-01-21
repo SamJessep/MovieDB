@@ -3,7 +3,7 @@ import {
   readable,
   derived
 } from 'svelte/store'
-import {GetCountries, GetLanguages} from './model/TMDbAPI.js'
+import {GetCountries, GetLanguages} from './model/api_config.js'
 
 let prefrences = JSON.parse(localStorage.getItem("Preferences")) || {
   country: "NZ",
@@ -32,7 +32,12 @@ User.subscribe(userData=>{
 
 Preferences.subscribe(val => localStorage.setItem("Preferences", JSON.stringify(val)));
 
-
+export const RequestParams = derived(Preferences, $Preferences => {
+  return {
+    ...$Preferences,
+    language: $Preferences.language + "-" + $Preferences.country
+  }
+});
 
 (async function CacheRegionData(){
   const languages = await GetLanguages()

@@ -2,7 +2,8 @@
 	import TopBar from './TopBar.svelte';
 	import DiscoverBar from './DiscoverBar.svelte';
 	import Card from './ResultCard.svelte';
-	import {GetCountries, GetLanguages, Trending} from './model/TMDbAPI.js'
+	import {GetCountries, GetLanguages} from './model/api_config.js'
+	import {Trending} from './model/TMDbAPI.js'
 	import {Languages, Countries} from './stores.js'
 
 	var LoadedResults = [];

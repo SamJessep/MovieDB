@@ -1,5 +1,6 @@
 import {Config} from "../config.js";
 import {User} from '../stores.js'
+import {get} from 'svelte/store';
 
 export async function CreateRequestToken(){
   const rawResponse = await fetch(Config.BASE_URL+"authentication/token/new", {
