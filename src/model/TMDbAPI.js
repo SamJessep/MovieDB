@@ -4,13 +4,13 @@ import {User, RequestParams} from "../stores/store.js"
 import {ParamsToString} from '../util.js'
 
 
-export async function Search(query, params = {}) {
+async function Send(url, params, method="GET"){
   params = {
-    query: encodeURI(query),
     ...get(RequestParams),
     ...params
   };
-  var res = await fetch(Config.BASE_URL + "search/multi?" + ParamsToString(params),{
+
+  var res = await fetch(url + ParamsToString(params),{
     method:'get',
     headers: {
       'Accept': 'application/json',
@@ -18,9 +18,15 @@ export async function Search(query, params = {}) {
       'Authorization': 'Bearer '+Config.API_KEY_V4
     }
   });
-  res = await res.json()
-  console.log(res)
-  return res;
+  return await res.json()
+}
+
+export async function Search(query, params = {}) {
+  params = {
+    query: encodeURI(query),
+    ...params
+  };
+  return await Send(Config.BASE_URL + "search/multi?", params)
 }
 
 export async function Discover(params={}){
@@ -28,15 +34,7 @@ export async function Discover(params={}){
     ...get(RequestParams),
     ...params
   };
-  var res = await fetch(Config.BASE_URL + "discover/movie?" + ParamsToString(params),{
-    method:'get',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=utf-8',
-      'Authorization': 'Bearer '+Config.API_KEY_V4
-    }
-  });
-  return res.json();
+  return await Send(Config.BASE_URL + "discover/movie?", params)
 }
 
 export async function Latest(params={}){
@@ -49,37 +47,19 @@ export async function Latest(params={}){
 }
 
 export async function Popular(params={}){
-  console.log(params)
   return Discover(params)
 }
 
 export async function Trending(media_type="movie", time_window="week"){
-  let res = await fetch(Config.BASE_URL+`trending/${media_type}/${time_window}`,{
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=utf-8',
-      'Authorization': 'Bearer '+Config.API_KEY_V4
-    }
-  })
-    return res.json()
+  return await Send(Config.BASE_URL+`trending/${media_type}/${time_window}`)
 }
 
 export async function GetWatchList(params={sort_direction:"created_at.desc"}){
   params = {
-    ...get(RequestParams),
     ...params,
     session_id: get(User).session_id
   }
-  let res = await fetch(Config.BASE_URL+`/account/${get(User).account_id}/watchlist/movies?${ParamsToString(params)}`,{
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=utf-8',
-      'Authorization': 'Bearer '+Config.API_KEY_V4
-    }
-  })
-  return res.json()
+  return await Send(Config.BASE_URL+`/account/${get(User).account_id}/watchlist/movies?`, params)
 }
 
 export async function AddToWatchlist(media_id, media_type="movie", add=true){
@@ -106,15 +86,7 @@ export async function IsOnWatchlist(item_id, media_type="movie"){
   let params ={
     session_id:get(User).session_id
   }
-  let res = await fetch(Config.BASE_URL+`${media_type}/${item_id}/account_states?${ParamsToString(params)}`,{
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=utf-8',
-      'Authorization': 'Bearer '+Config.API_KEY_V4
-    }
-  })
-  res = await res.json()
+  let res = await Send(Config.BASE_URL+`${media_type}/${item_id}/account_states?`, params)
   return res.watchlist
 }
 

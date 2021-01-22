@@ -11,9 +11,16 @@ let CurrentResults = []
 let totalResults = 0;
 let totalPages;
 let currentPage = 1
-onMount(async () => CurrentResults = await LoadPage(1));
+
+$: if(FetchMethod) Start();
+// onMount(async () => CurrentResults = await LoadPage(1));
+
+async function Start(){
+  CurrentResults = await LoadPage(1)
+}
 
 async function LoadPage(page){
+  console.log(CurrentResults)
   let res = await FetchMethod({...MethodParams, page:page})
   totalPages = res.total_pages;
   currentPage = res.page;
@@ -54,7 +61,6 @@ const getSlidingWindow = isScrollDown => {
 }
 
 const recycleDOM = async (firstIndex) => {
-  console.log(currentPage)
 	for (let i = 0; i < pageSize; i++) {
   	const tile = document.querySelector("#card-" + i);
   }
@@ -129,7 +135,6 @@ const botSentCallback = async entry => {
     if(currentPage<totalPages){
       currentPage++;
       CurrentResults = [...CurrentResults,...await LoadPage(currentPage)]
-      console.log(CurrentResults)
     }
     recycleDOM(firstIndex);
   }
@@ -144,7 +149,6 @@ const initIntersectionObserver = () => {
   }
 
   const callback = entries => {
-    console.log(entries)
     entries.forEach(entry => {
       if (entry.target.id === 'scroll-top') {
         topSentCallback(entry);
@@ -180,10 +184,11 @@ const initIntersectionObserver = () => {
   height: 50vh;
   width: 100%;
   background-color: #ff000033;
+  z-index: -1;
 }
 
 .scroll-block.top{
-  position: absolute;  
+  position: absolute;
 }
 
 .scroll-block.bottom{

@@ -4,7 +4,7 @@
 </script>
 
 <main>
-	<Router {routes}/>
+	<Router {routes} restoreScrollState={true}/>
 </main>
 
 <style>
