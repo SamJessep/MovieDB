@@ -18,7 +18,11 @@ async function Send(url, params, method="GET"){
       'Authorization': 'Bearer '+Config.API_KEY_V4
     }
   });
-  return await res.json()
+  res = await res.json()
+  if(res.results){
+    res.results = res.results.map(r=>{return {media_type:"movie", ...r}})
+  }
+  return res;
 }
 
 export async function Search(query, params = {}) {

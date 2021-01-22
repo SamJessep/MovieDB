@@ -33,7 +33,7 @@ if(params.includes("LoggedIn")){
   startSession()
 }
 async function startSession(){
-  var querySTR = util.QueryToJSON(params)
+  var querySTR = QueryToJSON(params)
   try{
     if(querySTR['LoggedIn']){
       let token = localStorage.getItem("authToken")

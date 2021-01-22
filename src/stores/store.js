@@ -6,7 +6,7 @@ import {
 import {GetCountries, GetLanguages} from '../model/api_config.js'
 
 let prefrences = JSON.parse(localStorage.getItem("Preferences")) || {
-  country: "NZ",
+  region: "NZ",
   language: "en",
   include_adult: false
 };
@@ -35,7 +35,7 @@ Preferences.subscribe(val => localStorage.setItem("Preferences", JSON.stringify(
 export const RequestParams = derived(Preferences, $Preferences => {
   return {
     ...$Preferences,
-    language: $Preferences.language + "-" + $Preferences.country
+    language: $Preferences.language + "-" + $Preferences.region
   }
 });
 

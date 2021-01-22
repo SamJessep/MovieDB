@@ -1,18 +1,20 @@
 <script>
+import {QueryToJSON} from '../util.js'
 import Card from './Card.svelte'
 import { onMount } from 'svelte';
+import {location, querystring} from 'svelte-spa-router'
+import { slide } from 'svelte/transition';
+import { quintOut } from 'svelte/easing';
 
 export let FetchMethod;
-export let MethodParams =[{}];
-
-let startParams = MethodParams[0]
+export let MethodParams =[];
 
 let CurrentResults = []
 let totalResults = 0;
 let totalPages;
 let currentPage = 1
 
-$: if(FetchMethod) Start();
+$: if(MethodParams || FetchMethod) Start();
 // onMount(async () => CurrentResults = await LoadPage(1));
 
 async function Start(){
@@ -20,8 +22,7 @@ async function Start(){
 }
 
 async function LoadPage(page){
-  console.log(CurrentResults)
-  let res = await FetchMethod({...MethodParams, page:page})
+  let res = await FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)})
   totalPages = res.total_pages;
   currentPage = res.page;
   totalResults = res.total_results;
@@ -60,35 +61,10 @@ const getSlidingWindow = isScrollDown => {
   return firstIndex;
 }
 
-const recycleDOM = async (firstIndex) => {
-	for (let i = 0; i < pageSize; i++) {
-  	const tile = document.querySelector("#card-" + i);
-  }
-}
 
 const getNumFromStyle = numStr => Number(numStr.substring(0, numStr.length - 2));
 
-const adjustPaddings = isScrollDown => {
-	const container = document.querySelector(".card-list");
-  const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
-  const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
-  const remPaddingsVal = 500*2//(pageSize / 2);
-	// if (isScrollDown) {
-  // 	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
-  //   container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
-  // } else {
-  // 	container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
-  //   container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
-  //
-  // }
-}
-
 const topSentCallback = entry => {
-	if (currentIndex === 0) {
-		const container = document.querySelector(".card-list");
-  	container.style.paddingTop = "0px";
-  	container.style.paddingBottom = "0px";
-  }
   const currentY = entry.boundingClientRect.top;
   const currentRatio = entry.intersectionRatio;
   const isIntersecting = entry.isIntersecting;
@@ -102,12 +78,10 @@ const topSentCallback = entry => {
   ) {
     console.log("load top")
     const firstIndex = getSlidingWindow(false);
-    adjustPaddings(false);
     currentIndex = firstIndex;
     if(currentPage>1){
       currentPage--;
     }
-    recycleDOM(firstIndex);
   }
 
   topSentinelPreviousY = currentY;
@@ -130,13 +104,11 @@ const botSentCallback = async entry => {
   ) {
     console.log("load bottom")
     const firstIndex = getSlidingWindow(true);
-    adjustPaddings(true);
     currentIndex = firstIndex;
     if(currentPage<totalPages){
       currentPage++;
       CurrentResults = [...CurrentResults,...await LoadPage(currentPage)]
     }
-    recycleDOM(firstIndex);
   }
 
   bottomSentinelPreviousY = currentY;
@@ -164,9 +136,9 @@ const initIntersectionObserver = () => {
 }
 
 </script>
-<div id="cardContainer" class="card-list">
+<div id="cardContainer" class="card-list" transition:slide={{delay: 250, duration: 300, easing: quintOut }}>
 <div id="scroll-top" class="scroll-block top"/>
-{#each CurrentResults as result, index (result.id)}
+{#each CurrentResults.filter(r=>r.media_type == "movie" || r.media_type == "tv") as result, index (result.id)}
   <Card Result={result} cardId={"card-"+index} on:mount={CardMounted}/>
 {/each}
 <div id="scroll-bottom" class="scroll-block bottom"/>
@@ -183,7 +155,7 @@ const initIntersectionObserver = () => {
 .scroll-block{
   height: 50vh;
   width: 100%;
-  background-color: #ff000033;
+
   z-index: -1;
 }
 

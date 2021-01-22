@@ -17,7 +17,7 @@
       <div id="controls">
         <fieldset>
           <legend>Region</legend>
-          <Selector bind:bindedValue={$Preferences.country} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
+          <Selector bind:bindedValue={$Preferences.region} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
           <Selector bind:bindedValue={$Preferences.language} fetchItemsFunction={GetLanguages} selectID="languagesSelect" label="Language"/>
         </fieldset>
         <fieldset>
