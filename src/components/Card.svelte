@@ -16,7 +16,6 @@ let OnWatchlist = false;
 IsLoggedIn.subscribe(async (val)=>{
   if(val){
     OnWatchlist = await IsOnWatchlist(Result.id, Result.media_type)
-    console.log("LOGGEDIN"+val, OnWatchlist)
   }})
 
 let placeholderStyles = `

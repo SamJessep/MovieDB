@@ -21,7 +21,6 @@ async function RequestResults(page){
 }
 
 </script>
-<h1>Page: {page}</h1>
 {#await PagePromise}
   <h2>Fetching Results...</h2>
 {:then results}

@@ -1,7 +1,7 @@
 <script>
 import {QueryToJSON} from '../util.js'
 import Card from './Card.svelte'
-import { onMount } from 'svelte';
+import { onMount, onDestroy} from 'svelte';
 import {location, querystring} from 'svelte-spa-router'
 import Page from './Page.svelte'
 
@@ -18,11 +18,19 @@ let pages = [];
 $:currentPage
 $:pages = [...Array(currentPage).keys()].map(p=>p+1)
 
+let loadMoreButton
+$:initIntersectionObserver(loadMoreButton)
+var observer;
 onMount(()=>{
-  initIntersectionObserver()
+  // initIntersectionObserver()
 
 })
-
+onDestroy(()=>{
+  console.log("A")
+  if(observer){
+    observer.disconnect()
+  }
+})
 
 function GetPages(page){
   let promise = FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)}).then(res=>{
@@ -60,14 +68,15 @@ const botSentCallback = async entry => {
   bottomSentinelPreviousRatio = currentRatio;
 }
 
-const initIntersectionObserver = () => {
+const initIntersectionObserver = (loadBottom) => {
+  if(!loadBottom || observer) return
   const callback = entries => {
     entries.forEach(entry => {
         botSentCallback(entry);
     });
   }
 
-  var observer = new IntersectionObserver(callback, {});
+  observer = new IntersectionObserver(callback, {});
   observer.observe(document.querySelector(".scroll-block.bottom"));
 }
 
@@ -84,7 +93,7 @@ const initIntersectionObserver = () => {
     {/if}
   {/each}
 {/await}
-<button class="scroll-block bottom">LOAD MORE</button>
+<button class="scroll-block bottom" bind:this={loadMoreButton}>LOAD MORE</button>
 </div>
 
 <style>

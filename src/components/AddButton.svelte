@@ -11,7 +11,6 @@ let container;
 let animation;
 export let checked = false;
 
-let CHECKED = writable(checked)
 let SvgCSS = `
 .addButton *{
   cursor: pointer;
@@ -45,9 +44,13 @@ onMount(async () => {
     styleElement.innerHTML = SvgCSS;
     container.children[0].prepend(styleElement)
     container.children[0].classList.add("addButton")
-    SetButtonState(checked)
+    if(animation.gotToAndStop){
+      animation.gotToAndStop(27, true)
+    }
   });
 });
+
+$:SetButtonState(checked)
 
 function ButtonClicked(){
   checked = !checked;
@@ -59,9 +62,9 @@ function ButtonClicked(){
 function SetButtonState(on){
   try{
     if(on) {
-      animation.playSegments([14, 27], true);
-    } else {
       animation.playSegments([1, 14], true);
+    } else {
+      animation.playSegments([14, 27], true);
     }
     container.children[0].classList[on?"add":"remove"]("checked");
   }catch{}
