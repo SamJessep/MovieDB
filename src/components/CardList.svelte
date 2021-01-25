@@ -3,93 +3,41 @@ import {QueryToJSON} from '../util.js'
 import Card from './Card.svelte'
 import { onMount } from 'svelte';
 import {location, querystring} from 'svelte-spa-router'
-import { slide } from 'svelte/transition';
-import { quintOut } from 'svelte/easing';
+import Page from './Page.svelte'
 
 export let FetchMethod;
 export let MethodParams =[];
 
-let CurrentResults = []
+let shownResults = []
 let totalResults = 0;
 let totalPages;
 let currentPage = 1
+let PagePromise;
 
-$: if(MethodParams || FetchMethod) Start();
-// onMount(async () => CurrentResults = await LoadPage(1));
+let pages = [];
+$:currentPage
+$:pages = [...Array(currentPage).keys()].map(p=>p+1)
 
-async function Start(){
-  CurrentResults = await LoadPage(1)
+onMount(()=>{
+  initIntersectionObserver()
+
+})
+
+
+function GetPages(page){
+  let promise = FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)}).then(res=>{
+    totalPages = res.total_pages;
+    currentPage = res.page;
+    return res.results.filter(r=>r.media_type == "movie" || r.media_type == "tv")
+  })
+  return promise
 }
 
-async function LoadPage(page){
-  let res = await FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)})
-  totalPages = res.total_pages;
-  currentPage = res.page;
-  totalResults = res.total_results;
-  return res.results
-}
-
-function CardMounted(e){
-  if(e.detail.id == 'card-19'){
-    initIntersectionObserver();
-  }
-}
-
-
-let topSentinelPreviousY = 0;
-let topSentinelPreviousRatio = 0;
 let bottomSentinelPreviousY = 0;
 let bottomSentinelPreviousRatio = 0;
 
-let pageSize = 20;
-let currentIndex = 0;
-
-const getSlidingWindow = isScrollDown => {
-	const increment = pageSize / 2;
-	let firstIndex;
-
-  if (isScrollDown) {
-  	firstIndex = currentIndex + increment;
-  } else {
-    firstIndex = currentIndex - increment;
-  }
-
-  if (firstIndex < 0) {
-  	firstIndex = 0;
-  }
-
-  return firstIndex;
-}
-
-
-const getNumFromStyle = numStr => Number(numStr.substring(0, numStr.length - 2));
-
-const topSentCallback = entry => {
-  const currentY = entry.boundingClientRect.top;
-  const currentRatio = entry.intersectionRatio;
-  const isIntersecting = entry.isIntersecting;
-
-  // conditional check for Scrolling up
-  if (
-    currentY > topSentinelPreviousY &&
-    isIntersecting &&
-    currentRatio >= topSentinelPreviousRatio &&
-    currentIndex !== 0
-  ) {
-    console.log("load top")
-    const firstIndex = getSlidingWindow(false);
-    currentIndex = firstIndex;
-    if(currentPage>1){
-      currentPage--;
-    }
-  }
-
-  topSentinelPreviousY = currentY;
-  topSentinelPreviousRatio = currentRatio;
-}
-
 const botSentCallback = async entry => {
-	if (currentIndex === totalResults - pageSize) {
+	if (currentPage === totalPages) {
   	return;
   }
   const currentY = entry.boundingClientRect.top;
@@ -103,11 +51,8 @@ const botSentCallback = async entry => {
     isIntersecting
   ) {
     console.log("load bottom")
-    const firstIndex = getSlidingWindow(true);
-    currentIndex = firstIndex;
     if(currentPage<totalPages){
       currentPage++;
-      CurrentResults = [...CurrentResults,...await LoadPage(currentPage)]
     }
   }
 
@@ -116,35 +61,37 @@ const botSentCallback = async entry => {
 }
 
 const initIntersectionObserver = () => {
-  const options = {
-  	//root: document.querySelector(".card-list")
-  }
-
   const callback = entries => {
     entries.forEach(entry => {
-      if (entry.target.id === 'scroll-top') {
-        topSentCallback(entry);
-      } else if (entry.target.id === `scroll-bottom`) {
         botSentCallback(entry);
-      }
     });
   }
 
-  var observer = new IntersectionObserver(callback, options);
-  observer.observe(document.querySelector("#scroll-top"));
-  observer.observe(document.querySelector("#scroll-bottom"));
+  var observer = new IntersectionObserver(callback, {});
+  observer.observe(document.querySelector(".scroll-block.bottom"));
 }
 
 </script>
-<div id="cardContainer" class="card-list" transition:slide={{delay: 250, duration: 300, easing: quintOut }}>
-<div id="scroll-top" class="scroll-block top"/>
-{#each CurrentResults.filter(r=>r.media_type == "movie" || r.media_type == "tv") as result, index (result.id)}
-  <Card Result={result} cardId={"card-"+index} on:mount={CardMounted}/>
-{/each}
-<div id="scroll-bottom" class="scroll-block bottom"/>
+<div id="cardContainer" class="card-list">
+{#await GetPages(1)}
+  <h2>Fetching Results...</h2>
+{:then pageData}
+  {#each pages as page}
+    {#if page==1}
+      <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={[...MethodParams, {page:page, ...QueryToJSON($querystring)}]}/>
+    {:else}
+        <Page page={page} FetchMethod={FetchMethod} MethodParams={[...MethodParams, {page:page, ...QueryToJSON($querystring)}]}/>
+    {/if}
+  {/each}
+{/await}
+<button class="scroll-block bottom">LOAD MORE</button>
 </div>
 
 <style>
+
+h2{
+  color:var(--FontColor)
+}
 
 #cardContainer{
 	display: flex;
@@ -166,5 +113,6 @@ const initIntersectionObserver = () => {
 .scroll-block.bottom{
   position: relative;
   top: -50vh;
+  background-color: red;
 }
 </style>

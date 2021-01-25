@@ -1,6 +1,24 @@
 import {Config} from "../config.js";
-import {User} from '../stores/store.js'
+import {User, IsLoggedIn} from '../stores/userStore.js'
 import {get} from 'svelte/store';
+
+export async function StartLogin(){
+  let res = await CreateRequestToken()
+  const requestToken = res.request_token
+  GetUserApproval(requestToken)
+}
+
+export async function StartSession(){
+  try{
+    let res = await CreateAccessToken(params.request_token)
+    localStorage.setItem("session_id", res.session_id)
+    TryLoadProfile()
+    window.location.href = window.location.origin +"#"+ $location;
+  }
+  catch(e){
+    console.error("user wasn't authenticated correctly", e)
+  }
+}
 
 export async function CreateRequestToken(){
   const rawResponse = await fetch(Config.BASE_URL+"authentication/token/new", {
@@ -15,7 +33,7 @@ export async function CreateRequestToken(){
 }
 
 export function GetUserApproval(token){
-  const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${document.location.origin}?LoggedIn=True`
+  const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${encodeURIComponent(document.location.href)}`
   window.location.replace(url)
 }
 
@@ -38,6 +56,5 @@ export async function CreateAccessToken(AuthToken){
 export async function GetDetails(session_id){
   const rawResponse = await fetch(Config.BASE_URL+"account?session_id="+session_id+"&api_key="+Config.API_KEY);
   const content = await rawResponse.json();
-  User.set({...content,session_id:session_id})
   return content
 }

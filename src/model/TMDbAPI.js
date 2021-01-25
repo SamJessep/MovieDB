@@ -1,6 +1,7 @@
 import {Config} from "../config.js";
 import {get} from 'svelte/store';
-import {User, RequestParams} from "../stores/store.js"
+import {RequestParams} from "../stores/store.js"
+import {User} from '../stores/userStore.js'
 import {ParamsToString} from '../util.js'
 
 
@@ -33,12 +34,12 @@ export async function Search(query, params = {}) {
   return await Send(Config.BASE_URL + "search/multi?", params)
 }
 
-export async function Discover(params={}){
+export async function Discover(params={}, media_type="movie"){
   params = {
     ...get(RequestParams),
     ...params
   };
-  return await Send(Config.BASE_URL + "discover/movie?", params)
+  return await Send(Config.BASE_URL + "discover/"+media_type+"?", params)
 }
 
 export async function Latest(params={}){
@@ -94,10 +95,10 @@ export async function IsOnWatchlist(item_id, media_type="movie"){
   return res.watchlist
 }
 
-export async function GenreSearch(genres, params={}){
+export async function GenreSearch(genres, media_type, params={}){
   params ={
     ...params,
     with_genres:genres.join(",")
   }
-  return Discover(params)
+  return Discover(params, media_type)
 }

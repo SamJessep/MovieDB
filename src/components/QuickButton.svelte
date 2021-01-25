@@ -2,15 +2,16 @@
 import {push} from 'svelte-spa-router'
 export let text;
 export let url = null;
-
 function ButtonClick(){
   if(url){
     push(url)
   }
 }
+export let click = ButtonClick
+
 </script>
 
-<button on:click={ButtonClick} id="quickButton">
+<button on:click={click} id="quickButton">
   {text}
 </button>
 

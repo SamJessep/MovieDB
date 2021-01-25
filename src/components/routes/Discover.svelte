@@ -12,11 +12,13 @@ $: {
 </script>
 
 <AppShell>
-  {#if type == "Popular"}
-    <CardList FetchMethod={Popular}/>
-  {:else if type == "Latest"}
-    <CardList FetchMethod={Latest}/>
-  {:else if type =="Trending"}
-    <CardList FetchMethod={Trending}/>
-  {/if}
+	<div slot="keyed">
+		{#if type == "Popular"}
+		<CardList FetchMethod={Popular}/>
+		{:else if type == "Latest"}
+		<CardList FetchMethod={Latest}/>
+		{:else if type =="Trending"}
+		<CardList FetchMethod={Trending}/>
+		{/if}
+	</div>
 </AppShell>

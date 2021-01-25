@@ -4,13 +4,20 @@ import AddButton from './AddButton.svelte'
 import SvgIcon from './SvgIcon.svelte'
 import {Config} from '../config.js';
 import {AddToWatchlist, IsOnWatchlist} from '../model/TMDbAPI.js'
-import {User} from '../stores/store.js'
+import {User, IsLoggedIn} from '../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
 
 const dispatch = createEventDispatcher();
 
 export let Result;
 export let cardId;
+let OnWatchlist = false;
+
+IsLoggedIn.subscribe(async (val)=>{
+  if(val){
+    OnWatchlist = await IsOnWatchlist(Result.id, Result.media_type)
+    console.log("LOGGEDIN"+val, OnWatchlist)
+  }})
 
 let placeholderStyles = `
   svg#SVGID{
@@ -40,12 +47,6 @@ let mediaTypeStyles = `
 
 let title = Result.title || Result.original_title || Result.name;
 
-onMount(async () => {
-  dispatch('mount', {
-    id: cardId
-  });
-})
-
 export function GetImageUrl(){
   //Update to get best size for screen size
   return Config.BASE_IMAGE_URL + "original/"+Result.poster_path
@@ -72,13 +73,7 @@ export function AddToList(event){
     </div>
   {/if}
   <div class='toolbar'>
-  {#if $User.session_id}
-    {#await IsOnWatchlist(Result.id, Result.media_type)}
-      <div class="placeholderAddButton"/>
-    {:then onWatchlist}
-      <AddButton checked={onWatchlist} on:addClicked={AddToList}/>
-    {/await}
-  {/if}
+    <AddButton checked={OnWatchlist} on:addClicked={AddToList}/>
     <p>{title}</p>
     {#if Result.media_type}
       <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>

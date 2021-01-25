@@ -1,5 +1,7 @@
 <script>
 import QuickButton from './QuickButton.svelte'
+import {push} from 'svelte-spa-router'
+
 export let isOpen = false;
 let root;
 
@@ -52,11 +54,12 @@ export function Click(e){
 }
 
 export function GenreSelected(id, type){
-  push(`Genre/${type}/${id}`)
+  push(`/Genre/${type}/${id}`)
+  isOpen = false
 }
 </script>
 <div id="root" bind:this={root}>
-  <QuickButton text="Genre"/>
+  <QuickButton text="Genre" click={ToggleGenreContainer}/>
   <div id="container" class:isOpen={isOpen}>
   {#each genresPromises as genreType}
     {#await genreType.promise}
@@ -99,21 +102,24 @@ export function GenreSelected(id, type){
   visibility: hidden;
   opacity: 0;
   transition: 0.4s;
+  right: 0;
 }
 
 #container.isOpen{
   visibility: visible;
   opacity: 1;
   background-color: var(--BackgroundColor);
-  padding: 0.5rem 3rem;
   border-radius: 5px;
   box-shadow: 0px 0px 12px 0px grey;
-  text-align: center;
-}
+  }
 
 .genreContainer{
   display: flex;
   flex-direction: column;
+}
+
+.genreContainer>summary{
+  padding: 0.5rem 4rem;
 }
 
 details, details *{

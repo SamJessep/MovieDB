@@ -1,51 +1,32 @@
 <script>
 import Popup from './Popup.svelte'
-import {CreateRequestToken, GetUserApproval, CreateAccessToken, GetDetails} from '../model/account.js'
-import {Languages, Countries, User} from '../stores/store.js'
+import { onMount } from 'svelte';
+import {StartLogin, StartSession, GetDetails} from '../model/account.js'
+import {Languages, Countries} from '../stores/store.js'
+import {User, IsLoggedIn} from "../stores/userStore.js"
 import {GetLanguageText, GetCountryText} from '../model/dataHelper.js'
-import { onDestroy } from 'svelte';
 import {QueryToJSON} from '../util.js'
+import {location, querystring} from 'svelte-spa-router'
 
 let LoginOpen = false;
 let profilePromise
-TryLoadProfile()
+onMount(()=>{
+  TryLoadProfile()
 
-function LoggedIn(){
-  return !(localStorage.getItem("session_id") == "undefined" || localStorage.getItem("session_id") == null)
-}
+})
 
 function TryLoadProfile(){
   let id = localStorage.getItem("session_id")
-  if(LoggedIn()){
+  if(id){
     profilePromise = GetDetails(id)
+    profilePromise.then(user=>localStorage.setItem("user", JSON.stringify({...user, session_id:id})))
   }
 }
 
-async function login(){
-  let res = await CreateRequestToken()
-  const requestToken = res.request_token
-  localStorage.setItem('authToken', requestToken);
-  GetUserApproval(requestToken)
-}
 
-var params = location.search.substring(1);
-if(params.includes("LoggedIn")){
-  startSession()
-}
-async function startSession(){
-  var querySTR = QueryToJSON(params)
-  try{
-    if(querySTR['LoggedIn']){
-      let token = localStorage.getItem("authToken")
-      let res = await CreateAccessToken(token)
-      localStorage.setItem("session_id", res.session_id)
-      TryLoadProfile()
-    }
-    window.location.href = window.location.origin + window.location.pathname;
-  }
-  catch(e){
-    console.error("user wasn't authenticated correctly", e)
-  }
+var params = QueryToJSON(window.location.search.substring(1)) || $querystring;
+if(params["approved"]){
+  StartSession()
 }
 
 async function LogOut(){
@@ -55,10 +36,10 @@ async function LogOut(){
 
 </script>
 
-{#if LoggedIn()}
+{#if $IsLoggedIn}
   <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen}>My Account</button>
 {:else}
-  <button id="openLogin" on:click={login}>Login</button>
+  <button id="openLogin" on:click={StartLogin()}>Login</button>
 {/if}
 <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
   <div slot="contents">
@@ -76,7 +57,7 @@ async function LogOut(){
       <p>Country: <b>{GetCountryText(profile.iso_3166_1)}</b></p>
     {:catch e}
       <p>error loading profile
-        <button>click here to try again</button>
+        <button on:click={TryLoadProfile}>click here to try again</button>
       </p>
     {/await}
     <button on:click={LogOut}>Log Out</button>

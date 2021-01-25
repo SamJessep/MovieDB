@@ -2,11 +2,11 @@
   import QuickButton from './QuickButton.svelte'
   import GenreButton from './GenreButton.svelte'
   import {Popular, Latest, GetWatchList} from '../model/TMDbAPI'
-  import {User, IsLoggedIn} from '../stores/store.js'
-
+  import {User, IsLoggedIn} from '../stores/userStore.js'
+  
   let buttons = [{
       text: "My Watchlist",
-      url: `/${$User.username}/Watchlist`,
+      url: `/${$User ? $User.username : null}/Watchlist`,
       needsLogin: true
     },
     {

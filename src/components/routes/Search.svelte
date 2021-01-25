@@ -7,5 +7,7 @@ export let params = {}
 
 </script>
 <AppShell>
-  <CardList FetchMethod={Search} MethodParams={[params.query]} />
+  <div slot="keyed">
+    <CardList FetchMethod={Search} MethodParams={[params.query]} />
+  </div>
 </AppShell>

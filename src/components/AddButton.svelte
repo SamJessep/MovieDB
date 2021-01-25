@@ -1,6 +1,8 @@
 <script>
 import lottie from 'lottie-web'
+import {writable} from 'svelte/store'
 //import bodymovin from './addons/bodymovin.js';
+import {IsLoggedIn} from '../stores/userStore.js'
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();
@@ -8,6 +10,8 @@ const dispatch = createEventDispatcher();
 let container;
 let animation;
 export let checked = false;
+
+let CHECKED = writable(checked)
 let SvgCSS = `
 .addButton *{
   cursor: pointer;
@@ -41,26 +45,26 @@ onMount(async () => {
     styleElement.innerHTML = SvgCSS;
     container.children[0].prepend(styleElement)
     container.children[0].classList.add("addButton")
-    SetSvgClass()
-    animation.goToAndStop(checked?14:27, true)
+    SetButtonState(checked)
   });
 });
 
 function ButtonClicked(){
-  if(checked) {
-    animation.playSegments([14, 27], true);
-  } else {
-    animation.playSegments([1, 14], true);
-  }
   checked = !checked;
-  SetSvgClass()
   dispatch('addClicked',{
     checked: checked
   })
 }
 
-function SetSvgClass(){
-  container.children[0].classList[checked?"add":"remove"]("checked");
+function SetButtonState(on){
+  try{
+    if(on) {
+      animation.playSegments([14, 27], true);
+    } else {
+      animation.playSegments([1, 14], true);
+    }
+    container.children[0].classList[on?"add":"remove"]("checked");
+  }catch{}
 }
 
 
