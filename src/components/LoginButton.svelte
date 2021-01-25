@@ -39,7 +39,7 @@ async function LogOut(){
 {#if $IsLoggedIn}
   <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen}>My Account</button>
 {:else}
-  <button id="openLogin" on:click={StartLogin()}>Login</button>
+  <button id="openLogin" on:click={StartLogin}>Login</button>
 {/if}
 <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
   <div slot="contents">
