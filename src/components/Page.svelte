@@ -6,9 +6,7 @@ import {location, querystring} from 'svelte-spa-router'
 
 export let FetchMethod;
 export let MethodParams =[];
-
 export let page;
-
 let shownResults = []
 export let PagePromise = RequestResults(page)
 

@@ -12,7 +12,7 @@ let shownResults = []
 let totalResults = 0;
 let totalPages;
 let currentPage = 1
-let PagePromise;
+let resultPromise;
 
 let pages = [];
 $:currentPage
@@ -22,11 +22,9 @@ let loadMoreButton
 $:initIntersectionObserver(loadMoreButton)
 var observer;
 onMount(()=>{
-  // initIntersectionObserver()
-
+  resultPromise = GetPages(currentPage)
 })
 onDestroy(()=>{
-  console.log("A")
   if(observer){
     observer.disconnect()
   }
@@ -77,23 +75,23 @@ const initIntersectionObserver = (loadBottom) => {
   }
 
   observer = new IntersectionObserver(callback, {});
-  observer.observe(document.querySelector(".scroll-block.bottom"));
+  observer.observe(loadBottom);
 }
 
 </script>
 <div id="cardContainer" class="card-list">
-{#await GetPages(1)}
+{#await resultPromise}
   <h2>Fetching Results...</h2>
 {:then pageData}
   {#each pages as page}
     {#if page==1}
-      <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={[...MethodParams, {page:page, ...QueryToJSON($querystring)}]}/>
+      <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
     {:else}
-        <Page page={page} FetchMethod={FetchMethod} MethodParams={[...MethodParams, {page:page, ...QueryToJSON($querystring)}]}/>
+        <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
     {/if}
   {/each}
 {/await}
-<button class="scroll-block bottom" bind:this={loadMoreButton}>LOAD MORE</button>
+<div class="scroll-block bottom" bind:this={loadMoreButton}/>
 </div>
 
 <style>
@@ -122,6 +120,5 @@ h2{
 .scroll-block.bottom{
   position: relative;
   top: -50vh;
-  background-color: red;
 }
 </style>

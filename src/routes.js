@@ -12,8 +12,8 @@ const routes = {
     // Using named parameters, with last being optional
     '/search/:query': Search,
     '/genre/:media_type/:genre_id': GenreSearch,
-    '/discover/:discoverType?*': Discover,
-    '/:User/Watchlist': Watchlist,
+    '/discover/:media_type/:discoverType?*': Discover,
+    '/:User/:media_type/Watchlist': Watchlist,
     // Catch-all
     // This is optional, but if present it must be the last
     '*': NotFound,

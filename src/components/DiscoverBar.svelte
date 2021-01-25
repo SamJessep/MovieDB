@@ -3,20 +3,20 @@
   import GenreButton from './GenreButton.svelte'
   import {Popular, Latest, GetWatchList} from '../model/TMDbAPI'
   import {User, IsLoggedIn} from '../stores/userStore.js'
-  
+
   let buttons = [{
       text: "My Watchlist",
-      url: `/${$User ? $User.username : null}/Watchlist`,
+      url: `/${$User ? $User.username : null}/movie/Watchlist`,
       needsLogin: true
     },
     {
       text: "Popular",
-      url: '/Discover/Popular',
+      url: '/Discover/movie/Popular',
       needsLogin: false
     },
     {
       text: "Recent Releases",
-      url: '/Discover/Latest',
+      url: '/Discover/movie/Latest',
       needsLogin: false
     }
   ]

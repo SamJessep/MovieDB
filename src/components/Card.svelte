@@ -6,6 +6,7 @@ import {Config} from '../config.js';
 import {AddToWatchlist, IsOnWatchlist} from '../model/TMDbAPI.js'
 import {User, IsLoggedIn} from '../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
+import { fly,fade } from 'svelte/transition';
 
 const dispatch = createEventDispatcher();
 
@@ -62,7 +63,7 @@ export function AddToList(event){
 }
 
 </script>
-<button class="resultCard nonStandard" id={cardId}>
+<button class="resultCard nonStandard" id={cardId} transition:fade>
   {#if Result.poster_path}
     <img class="poster" src={GetImageUrl()} alt={title+" poster"} on:click={LoadResultPage}/>
   {:else}
