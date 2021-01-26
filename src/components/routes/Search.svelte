@@ -8,6 +8,6 @@ export let params = {}
 </script>
 <AppShell>
   <div slot="keyed">
-    <CardList FetchMethod={Search} MethodParams={[params.query]} />
+    <CardList FetchMethod={Search} MethodParams={[params.query, params.media_type]} />
   </div>
 </AppShell>

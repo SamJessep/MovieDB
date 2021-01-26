@@ -11,7 +11,7 @@ async function Send(url, params, media_type){
     ...params
   };
 
-  var res = await fetch(url + ParamsToString(params),{
+  var res = await fetch(url + "?" + ParamsToString(params),{
     method:'get',
     headers: {
       'Accept': 'application/json',
@@ -26,12 +26,12 @@ async function Send(url, params, media_type){
   return res;
 }
 
-export async function Search(query, params = {}) {
+export async function Search(query, search_type="multi", params = {}) {
   params = {
     query: encodeURI(query),
     ...params
   };
-  return await Send(Config.BASE_URL + "search/multi?", params)
+  return await Send(`${Config.BASE_URL}search/${search_type}`, params)
 }
 
 export async function Discover(media_type, params={}){
@@ -39,7 +39,7 @@ export async function Discover(media_type, params={}){
     ...get(RequestParams),
     ...params
   };
-  return await Send(Config.BASE_URL + "discover/"+media_type+"?", params, media_type)
+  return await Send(Config.BASE_URL + "discover/"+media_type, params, media_type)
 }
 
 export async function Latest(media_type, params={}){
@@ -64,7 +64,7 @@ export async function GetWatchList(media_type, params={sort_direction:"created_a
     ...params,
     session_id: get(User).session_id
   }
-  return await Send(Config.BASE_URL+`/account/${get(User).account_id}/watchlist/movies?`, params, media_type)
+  return await Send(Config.BASE_URL+`/account/${get(User).account_id}/watchlist/movies`, params, media_type)
 }
 
 export async function AddToWatchlist(media_id, media_type="movie", add=true){
@@ -91,7 +91,7 @@ export async function IsOnWatchlist(item_id, media_type="movie"){
   let params ={
     session_id:get(User).session_id
   }
-  let res = await Send(Config.BASE_URL+`${media_type}/${item_id}/account_states?`, params)
+  let res = await Send(Config.BASE_URL+`${media_type}/${item_id}/account_states`, params)
   return res.watchlist
 }
 

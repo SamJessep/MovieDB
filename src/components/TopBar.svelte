@@ -5,6 +5,7 @@
 	import LoginButton from './LoginButton.svelte'
 	import SvgIcon from './SvgIcon.svelte'
 	import {push} from 'svelte-spa-router'
+	import SearchBar from './SearchBar.svelte'
 
 	export let PlaceHolder = "Search...";
 	let ResultSuggestions = writable([]);
@@ -90,38 +91,9 @@
 	}
 
 </script>
-	<LoginButton/>
 	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={()=>push('/')}/>
-	<PreferencesButton/>
-	<div id="search" bind:this={SearchSection}>
-		<div id="searchBar">
-			<input
-				id="searchBarInput"
-				placeholder={PlaceHolder}
-				list="resultSuggestions"
-				on:keyup={KeyPressed}
-				on:focus={KeyPressed}
-				on:click={()=>SelectedIndex = -1}
-				bind:value={SearchValue}
-			/>
-			<div id="suggestions">
-				{#each $ResultSuggestions as suggestion, index}
-					<button
-						class="nonStandard"
-						on:click={SelectReccomendation}
-						on:mouseover={()=>SelectedIndex=index}
-						on:focus={()=>SelectedIndex=index}
-						class:selected={SelectedIndex==index}
-						value={suggestion.value}
-					>{@html suggestion.innerHtml}</button>
-				{/each}
-			</div>
-		</div>
-		<button id="searchButtonContainer" class="svgContainer" bind:this={SearchButton}  on:click={(e)=>SendSearch(SearchValue)} href="#">
-			<SvgIcon src="images/search.svg" styles={SearchButtonStyles} />
-		</button>
-	</div>
-<svelte:window on:keydown={DocumentKeyPressed} on:click={DocumentClick} on:focusin={DocumentFocusStart}/>
+	<SearchBar/>
+<!-- <svelte:window on:keydown={DocumentKeyPressed} on:click={DocumentClick} on:focusin={DocumentFocusStart}/> -->
 <style>
 	#logo {
 		max-width: 50vw;
@@ -131,7 +103,7 @@
 		margin: 0 auto 4rem auto;
 	}
 
-	#search {
+	/* #search {
 		position: relative;
 		display: flex;
 		justify-content: center;
@@ -166,7 +138,7 @@
 	#searchBar>input:active {
 		border-bottom: solid var(--AccentColor, green) 0.5vmin;
 		outline: none;
-	}
+	} */
 
 	#suggestions{
 		position: absolute;

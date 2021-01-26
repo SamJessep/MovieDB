@@ -11,6 +11,7 @@ const routes = {
 
     // Using named parameters, with last being optional
     '/search/:query': Search,
+    '/search/:media_type/:query': Search,
     '/genre/:media_type/:genre_id': GenreSearch,
     '/discover/:media_type/:discoverType?*': Discover,
     '/:User/:media_type/Watchlist': Watchlist,
