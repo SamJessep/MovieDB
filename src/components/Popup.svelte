@@ -7,8 +7,8 @@ export let HasDefaultClose;
 let closeStyles = `
 svg#SVGID{
   fill: var(--FontColor, black);
-  width: 3vmin;
-  height: 3vmin;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 1vmin 0;
   transition: fill 0.5s;
 }
@@ -34,18 +34,20 @@ svg#SVGID:hover{
 
 #dialogBackground{
   z-index: -1;
-  position: absolute;
+  position: fixed;
   top:0;
   left:0;
   width: 100vw;
   height: 100vh;
   background-color: transparent;
   transition: background-color 1s;
+  pointer-events: none;
 }
 
 #dialogBackground.open{
+  pointer-events: all;
   display: block;
-  z-index: 1;
+  z-index: 4;
   background-color: #000000d4;
   transition: background-color 1s;
 }
@@ -78,7 +80,7 @@ dialog[open]{
   right: 0.5rem;
   top: 0rem;
   background-color: transparent;
-  font-size: var(--BaseFontSize, 3vmin);
+  font-size: var(--HeaderFontSize, 3rem);
   border: none;
   color: white;
   font-weight: 700;

@@ -1,4 +1,4 @@
-import {Config} from "../config.js";
+import Config from "../config.js";
 import {get} from 'svelte/store';
 import {RequestParams} from "../stores/store.js"
 import {User} from '../stores/userStore.js'
@@ -31,6 +31,7 @@ export async function Search(query, search_type="multi", params = {}) {
     query: encodeURI(query),
     ...params
   };
+  console.log(query, search_type, params)
   return await Send(`${Config.BASE_URL}search/${search_type}`, params)
 }
 

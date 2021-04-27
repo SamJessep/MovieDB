@@ -34,8 +34,9 @@ function GetPages(page){
   let promise = FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)}).then(res=>{
     totalPages = res.total_pages;
     currentPage = res.page;
-    return res.results.filter(r=>r.media_type == "movie" || r.media_type == "tv")
+    return res.results.filter(r=>!r['media_type'] || r.media_type == "movie" || r.media_type == "tv")
   })
+  promise.then(r=>console.log(MethodParams))
   return promise
 }
 

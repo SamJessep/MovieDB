@@ -39,7 +39,8 @@ function clickTab(tabName){
 
 function SendSearch(query){
   if(query != ""){
-    push('/Search/movie/'+query)
+    let searchType = $tabs.find(t=>t.active).search_type;
+    push(`/Search/${searchType}/${query}`)
   }
 }
 
@@ -69,7 +70,10 @@ function KeyPressed(e){
 }
 
 function DocumentClick(e){
-  if(!SearchArea.contains(e.target))searchOpen = false
+  if(!SearchArea.contains(e.target)){
+    searchOpen = false
+    clickTab("All");
+  }
 }
 
 async function LoadSugestions(){
@@ -91,10 +95,10 @@ async function LoadSugestions(){
 </script>
 
 
-<div id="search" class="panel" bind:this={SearchArea}>
+<div id="searchBarContainer" class="panel" bind:this={SearchArea}>
   <div class="panel-block">
     <p class="control has-icons-left is-large">
-      <input class="input is-large SB" type="search" placeholder="Search MovieDB" bind:value={searchValue} on:focus={()=>{s_index = -1; searchOpen=true}}/>
+      <input class="input is-large SB" type="search" placeholder="Search MovieDB" bind:value={searchValue} on:focus={()=>{s_index = -1; searchOpen=true}} on:search={()=>{SendSearch(searchValue)}}/>
       <span class="icon is-left">
         <i class="fas fa-search" aria-hidden="true"></i>
       </span>
@@ -106,9 +110,11 @@ async function LoadSugestions(){
           <button class:is-active={tab.active} class="nonStandard section" on:click={()=>clickTab(tab.name)} on:focus={s_index=index}>{tab.name}</button>
       {/each}
     </p>
+    <p class="results">
       {#each $tabs.filter(t=>t.active)[0].sugestions as sugestion}
         <button class="panel-block suggestion-btn nonStandard" on:click={()=>SelectSuggestion(sugestion)}>{sugestion}</button>
       {/each}
+    </p>
   </div>
   </div>
   <svelte:window on:click={DocumentClick} on:keyup={KeyPressed} on:keydown={(e)=>{
@@ -117,18 +123,31 @@ async function LoadSugestions(){
 
 <style>
 
-  #search{
-    max-width: 85vw;
+  #searchBarContainer{
+    flex-grow:1;
     margin: auto;
+    position: relative;
   }
 
-  #search>div{
+  #searchBarContainer>div{
     border:none;
   }
 
   .isOpen{
     display: block;
   }
+
+  .results{
+    border-radius: 0 0 1rem 1rem;
+  }
+
+  #datalist{
+    position: absolute;
+    width: 100%;
+    background-color: rgb(58, 58, 58);
+    
+  }
+
   #datalist:not(.isOpen){
     display: none;
   }
@@ -139,10 +158,18 @@ async function LoadSugestions(){
     border: none;
   }
 
+  .panel-tabs{
+    border-bottom: 0.15rem solid white;
+  }
+
   .panel-tabs>button.section{
     font-size: var(--HeaderFontSize);
-    padding: 0;
+    padding: 0.5rem;
     outline: none;
+  }
+
+  button:hover{
+    background-color: rgb(44, 44, 44);
   }
 
   .panel-tabs>button.section.is-active, button.nonStandard:active, button.nonStandard:focus{

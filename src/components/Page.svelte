@@ -25,7 +25,9 @@ async function RequestResults(page){
   {#each results as result, index (result.id)}
     <Card Result={result} cardId={"card-"+index}/>
   {:else}
-    <h2>No Results :(</h2>
+    {#if page==1}
+      <h2>No Results :(</h2>      
+    {/if}
   {/each}
 {:catch error}
   <pre>{error}</pre>

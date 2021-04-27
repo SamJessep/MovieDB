@@ -1,15 +1,29 @@
 <script>
   import {GetCountries, GetLanguages} from '../model/api_config.js';
-  import {Config} from '../config.js';
+  import Config from '../config.js';
   import {Preferences} from '../stores/store.js'
   import Selector from './form/Selector.svelte'
   import Popup from './Popup.svelte'
+  import SvgIcon from './SvgIcon.svelte'
+
   let isOpen = false;
+
+  let cogStyles = `
+svg#SVGID{
+  fill: var(--FontColor, black);
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 1vmin 0;
+  transition: fill 0.5s;
+}
+svg#SVGID:hover{
+  fill: var(--AccentColor, green);
+}`;
 </script>
 
 <div>
-  <button on:click={()=>isOpen=!isOpen}>
-    Preferences
+  <button on:click={()=>isOpen=!isOpen} class="icon-btn">
+    <SvgIcon src="images/cog.svg" styles={cogStyles}/>
   </button>
   <Popup bind:MenuOpen={isOpen} HasDefaultClose=true>
     <div slot="contents">
@@ -30,12 +44,6 @@
   </Popup>
 </div>
 <style>
-  button{
-    position: absolute;
-    top:1rem;
-    right: 1rem;
-  }
-
   fieldset{
     min-width: 33%
   }

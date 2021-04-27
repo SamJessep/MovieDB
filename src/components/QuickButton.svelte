@@ -1,7 +1,9 @@
 <script>
-import {push} from 'svelte-spa-router'
+import {push, link} from 'svelte-spa-router'
 export let text;
-export let url = null;
+export let url = "#";
+export let isActive = false;
+
 function ButtonClick(){
   if(url){
     push(url)
@@ -11,27 +13,18 @@ export let click = ButtonClick
 
 </script>
 
-<button on:click={click} id="quickButton">
-  {text}
-</button>
+<li class:is-active={isActive} class="quickBtn">
+  <a href={url}>
+    {text}
+  </a>
+</li>
 
 <style>
-button{
-  background-color: transparent;
-  color: var(--FontColor,black);
-  border: none;
-  margin: 1.5vmin 0;
-  padding: 0;
-  cursor: pointer;
+.quickBtn{
+  font-size: var(--HeaderFontSize);
+  border-radius: 0.2rem;
 }
-
-#quickButton:hover{
-  font-weight:600;
-  color:var(--AccentColor, green);
-}
-
-#quickButton:active{
-  color:var(--SelectedColor, lightgreen);
-  background-color:transparent;
+.quickBtn:hover{
+  background-color: var(--SelectedColor);
 }
 </style>

@@ -22,14 +22,20 @@
   ]
 </script>
 
-<nav on:loadResults>
-  {#each buttons as btn}
-    {#if $IsLoggedIn || !btn.needsLogin}
-      <QuickButton text={btn.text} url={btn.url}/>
-    {/if}
-  {/each}
-  <GenreButton/>
-</nav>
+<div class="hero-foot">
+  <nav class="tabs is-boxed is-fullwidth" on:loadResults>
+    <div class="container">
+      <ul>
+        {#each buttons as btn}
+          {#if $IsLoggedIn || !btn.needsLogin}
+            <QuickButton text={btn.text} url={"/#"+btn.url}/>
+          {/if}
+        {/each}
+        <GenreButton/>
+      </ul>
+    </div>
+  </nav>
+</div>
 
 <style>
 *{
@@ -41,6 +47,12 @@
 nav{
   display:flex;
   justify-content:space-evenly;
-  padding-top: 1rem;
+  background-color: rgba(0, 0, 0, 0.705);
+  border-radius: 0 1rem 0 0;
+}
+
+.hero-foot{
+  position: fixed;
+  bottom: 0;
 }
 </style>

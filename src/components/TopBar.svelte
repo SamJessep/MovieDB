@@ -4,7 +4,7 @@
 	import PreferencesButton from './PreferenceButton.svelte'
 	import LoginButton from './LoginButton.svelte'
 	import SvgIcon from './SvgIcon.svelte'
-	import {push} from 'svelte-spa-router'
+	import {push, link} from 'svelte-spa-router'
 	import SearchBar from './SearchBar.svelte'
 
 	export let PlaceHolder = "Search...";
@@ -91,75 +91,38 @@
 	}
 
 </script>
-	<img id="logo" src="images/MDB_logo.png" alt="App logo" on:click={()=>push('/')}/>
-	<SearchBar/>
-<!-- <svelte:window on:keydown={DocumentKeyPressed} on:click={DocumentClick} on:focusin={DocumentFocusStart}/> -->
+
+<div class="hero-head">
+	<header class="navbar">
+		<div class="container">
+			<div class="navbar-brand">
+				<a href="/" class="navbar-item" id="logoBtn">
+					<img id="logo" src="images/MDB_logo.png" alt="App logo"/>
+				</a>
+				<SearchBar/>
+				<LoginButton/>
+				<PreferencesButton/>
+			</div>
+		</div>
+	</header>
+</div>
+
 <style>
 	#logo {
-		max-width: 50vw;
-		max-height: 20vh;
+		max-width: 5rem;
+		max-height: 5rem;
 		display: block;
 		cursor: pointer;
-		margin: 0 auto 4rem auto;
 	}
 
-	/* #search {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		text-align: center;
+	.navbar-brand{
+		width: 100%;
+	}
+	header.navbar{
+		background-color: black;
 	}
 
-#searchButtonContainer{
-	display: flex;
-  align-items: center;
-  outline: none;
-	border: none;
-	background-color: transparent;
-}
-
-#searchButtonContainer:active{
-	background-color: transparent;
-}
-
-	#search input {
-		width: 80vw;
-		height: 10vmin;
-		display: block;
-		font-size: 7vmin;
-		border: none;
-		border-bottom: solid var(--FontColor, black) 0.5vmin;
-		margin: 0 2vmin 0 0;
-		padding: 1vmin;
+	#logoBtn:hover{
+		background-color: transparent;
 	}
-
-	#searchBar input:hover,
-	#searchBar>input:focus,
-	#searchBar>input:active {
-		border-bottom: solid var(--AccentColor, green) 0.5vmin;
-		outline: none;
-	} */
-
-	#suggestions{
-		position: absolute;
-		width: 80vw;
-	}
-
-	#suggestions>button{
-		background-color:var(--SecondBackgroundColor, grey);
-		color:var(--FontColor, white);
-		border-radius: 1vmin;
-		font-size: var(--BaseFontSize, 2vmin);
-		padding: 1rem 0;
-		margin: 0.5rem 0;
-		display: block;
-    width: 100%;
-	}
-
-#suggestions>button.selected{
-		color:var(--AccentColor, green) !important;
-		background-color:var(--SecondBackgroundColor, green);
-		outline: none;
-	}
-
 </style>

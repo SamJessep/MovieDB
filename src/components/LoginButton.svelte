@@ -1,12 +1,13 @@
 <script>
 import Popup from './Popup.svelte'
 import { onMount } from 'svelte';
-import {StartLogin, StartSession, GetDetails} from '../model/account.js'
+import Account from '../model/account.js'
 import {Languages, Countries} from '../stores/store.js'
 import {User, IsLoggedIn} from "../stores/userStore.js"
 import {GetLanguageText, GetCountryText} from '../model/dataHelper.js'
 import {QueryToJSON} from '../util.js'
 import {location, querystring} from 'svelte-spa-router'
+import SvgIcon from "./SvgIcon.svelte"
 
 let LoginOpen = false;
 let profilePromise
@@ -18,7 +19,7 @@ onMount(()=>{
 function TryLoadProfile(){
   let id = localStorage.getItem("session_id")
   if(id){
-    profilePromise = GetDetails(id)
+    profilePromise = Account.GetDetails(id)
     profilePromise.then(user=>localStorage.setItem("user", JSON.stringify({...user, session_id:id})))
   }
 }
@@ -26,20 +27,33 @@ function TryLoadProfile(){
 
 var params = QueryToJSON(window.location.search.substring(1)) || $querystring;
 if(params["approved"]){
-  StartSession()
+  Account.StartSession()
 }
 
 async function LogOut(){
 
 }
 
+let userBtnStyles = `
+svg#SVGID{
+  fill: var(--FontColor, black);
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 1vmin 0;
+  transition: fill 0.5s;
+}
+svg#SVGID:hover{
+  fill: var(--AccentColor, green);
+}`;
 
 </script>
 
 {#if $IsLoggedIn}
-  <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen}>My Account</button>
+  <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn">
+    <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
+  </button>
 {:else}
-  <button id="openLogin" on:click={StartLogin}>Login</button>
+  <button id="openLogin" on:click={Account.StartLogin}>Login</button>
 {/if}
 <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
   <div slot="contents">
@@ -67,14 +81,7 @@ async function LogOut(){
 
 <style>
 
-#openLogin{
-  position: absolute;
-  top:1rem;
-  left: 1rem;
-}
-
 div[slot="contents"]{
   text-align: center;
 }
-
 </style>
