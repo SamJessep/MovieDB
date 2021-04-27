@@ -28,7 +28,7 @@
       <ul>
         {#each buttons as btn}
           {#if $IsLoggedIn || !btn.needsLogin}
-            <QuickButton text={btn.text} url={"/#"+btn.url}/>
+            <QuickButton text={btn.text} url={btn.url}/>
           {/if}
         {/each}
         <GenreButton/>

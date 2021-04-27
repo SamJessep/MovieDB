@@ -36,7 +36,6 @@ function GetPages(page){
     currentPage = res.page;
     return res.results.filter(r=>!r['media_type'] || r.media_type == "movie" || r.media_type == "tv")
   })
-  promise.then(r=>console.log(MethodParams))
   return promise
 }
 

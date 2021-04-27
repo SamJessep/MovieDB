@@ -4,22 +4,11 @@ import {get} from 'svelte/store';
 
 export default class Account{
   static async StartLogin(){
-    let res = await CreateRequestToken()
+    let res = await Account.CreateRequestToken()
     const requestToken = res.request_token
-    GetUserApproval(requestToken)
+    Account.GetUserApproval(requestToken)
   }
   
-  static async StartSession(){
-    try{
-      let res = await CreateAccessToken(params.request_token)
-      localStorage.setItem("session_id", res.session_id)
-      TryLoadProfile()
-      window.location.href = window.location.origin +"#"+ $location;
-    }
-    catch(e){
-      console.error("user wasn't authenticated correctly", e)
-    }
-  }
   
   static async CreateRequestToken(){
     const rawResponse = await fetch(Config.BASE_URL+"authentication/token/new", {

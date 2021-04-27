@@ -1,9 +1,10 @@
 import {
   writable,
   readable,
-  derived
+  derived,
+  get
 } from 'svelte/store'
-import {Preferences} from './store.js'
+import {Preferences, Settings, UseAccountSettings} from './store.js'
 
 
 export const User = writable()
@@ -16,12 +17,12 @@ User.set(JSON.parse(localStorage.getItem("user")) ?? false)
 User.subscribe(userData=>{
   if(userData){
     Preferences.update(p=>{
-      return {
+      return get(Settings).useAccountSettings ? {
         ...p,
         region:userData.iso_3166_1,
         language:userData.iso_639_1,
         include_adult:userData.include_adult
-      }
+      }:{...p}
     })
   }
 })

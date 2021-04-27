@@ -1,6 +1,7 @@
 <script>
 import QuickButton from './QuickButton.svelte'
 import {push} from 'svelte-spa-router'
+import Popup from "./Popup.svelte"
 
 export let isOpen = false;
 let root;
@@ -60,28 +61,32 @@ export function GenreSelected(id, type){
 </script>
 <div id="root" bind:this={root}>
   <QuickButton text="Genre" click={ToggleGenreContainer}/>
-  <div id="container" class:isOpen={isOpen}>
-  {#each genresPromises as genreType}
-    {#await genreType.promise}
-      <p>Loading {genreType.name} genres...</p>
-    {:then genres}
-    <details class="genreContainer">
-      <summary class="genreSectionHeader">{genreType.name}</summary>
-      {#each genres as genre}
-        <p id={genre.id} on:click={GenreSelected(genre.id, genreType.name)}>{genre.name}</p>
+  <Popup bind:MenuOpen={isOpen} HasDefaultClose={true}>
+    <div slot="contents">
+      {#each genresPromises as genreType}
+        {#await genreType.promise}
+          <p>Loading {genreType.name} genres...</p>
+        {:then genres}
+        <details class="genreContainer">
+          <summary class="genreSectionHeader">{genreType.name}</summary>
+          {#each genres as genre}
+            <p id={genre.id} on:click={GenreSelected(genre.id, genreType.name)}>{genre.name}</p>
+          {/each}
+          </details>
+        {:catch error}
+          <div>
+            Opps Genres couldn't be loaded
+            <button class="inlineBtn" on:click={Refresh}>Click here to try again</button>
+            <details>
+              <summary>click here for more info</summary>
+              <pre>{error}</pre>
+            </details>
+          </div>
+        {/await}
       {/each}
-      </details>
-    {:catch error}
-      <div>
-        Opps Genres couldn't be loaded
-        <button class="inlineBtn" on:click={Refresh}>Click here to try again</button>
-        <details>
-          <summary>click here for more info</summary>
-          <pre>{error}</pre>
-        </details>
-      </div>
-    {/await}
-  {/each}
+    </div>
+  </Popup>
+  <div id="container" class:isOpen={isOpen}>
   </div>
 </div>
 

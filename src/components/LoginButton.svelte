@@ -24,10 +24,23 @@ function TryLoadProfile(){
   }
 }
 
+async function StartSession(requestToken){
+    try{
+      let res = await Account.CreateAccessToken(requestToken)
+      console.log(res)
+      localStorage.setItem("session_id", res.session_id)
+      TryLoadProfile()
+      window.location.href = window.location.origin +"#"+ $location;
+    }
+    catch(e){
+      console.error("user wasn't authenticated correctly", e)
+    }
+  }
 
-var params = QueryToJSON(window.location.search.substring(1)) || $querystring;
+
+  var params = QueryToJSON($querystring)
 if(params["approved"]){
-  Account.StartSession()
+  StartSession(params.request_token)
 }
 
 async function LogOut(){

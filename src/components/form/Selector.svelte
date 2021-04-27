@@ -3,11 +3,13 @@ export let bindedValue;
 export let fetchItemsFunction;
 export let selectID;
 export let label;
+
 let GetItems = fetchItemsFunction();
 
 function Retry(){
   GetItems = fetchItemsFunction();
 }
+
 </script>
 
 <label for={selectID}>{label}</label>

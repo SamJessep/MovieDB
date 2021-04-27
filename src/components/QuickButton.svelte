@@ -14,17 +14,27 @@ export let click = ButtonClick
 </script>
 
 <li class:is-active={isActive} class="quickBtn">
-  <a href={url}>
-    {text}
-  </a>
+  <button on:click={click}>{text}</button>
 </li>
 
 <style>
-.quickBtn{
+button{
+ background-color: transparent;
+ border:none; 
+}
+
+.quickBtn>button:active{
+  background-color: transparent;
+}
+
+.quickBtn>a{
+  color:white;
+}
+li.quickBtn{
   font-size: var(--HeaderFontSize);
   border-radius: 0.2rem;
 }
-.quickBtn:hover{
-  background-color: var(--SelectedColor);
+li.quickBtn:hover, .quickBtn>a:hover, .quickBtn>a:active{
+  background-color: var(--AccentColor);
 }
 </style>
