@@ -1,49 +1,63 @@
 <script>
 import Popup from '../../../general/Popup.svelte'
-import { onMount } from 'svelte';
 import Account from '../../../../model/account'
-import {User, IsLoggedIn} from "../../../../stores/userStore.js"
+import {IsLoggedIn, clearLocalStorage, User} from "../../../../stores/userStore.js"
 import {GetLanguageText, GetCountryText} from '../../../../model/dataHelper'
 import {QueryToJSON} from '../../../../util'
-import {location, querystring} from 'svelte-spa-router'
+import {location, push, querystring, replace} from 'svelte-spa-router'
 import SvgIcon from "../../../general/SvgIcon.svelte"
 
 let LoginOpen = false;
 let profilePromise
-onMount(()=>{
-  TryLoadProfile()
-
-})
 
 function TryLoadProfile(){
   let id = localStorage.getItem("session_id")
+  console.log(id)
   if(id){
     profilePromise = Account.GetDetails(id)
-    profilePromise.then(user=>localStorage.setItem("user", JSON.stringify({...user, session_id:id})))
+    profilePromise.then(user=>{
+      let userData = {...user, session_id:id}
+      localStorage.setItem("user", JSON.stringify(userData))
+      User.set(userData)
+      window.location.href = window.location.origin +"#"+ $location;
+      return userData
+    })
   }
 }
 
 async function StartSession(requestToken){
     try{
       let res = await Account.CreateAccessToken(requestToken)
-      console.log(res)
       localStorage.setItem("session_id", res.session_id)
       TryLoadProfile()
-      window.location.href = window.location.origin +"#"+ $location;
     }
     catch(e){
       console.error("user wasn't authenticated correctly", e)
     }
   }
 
-
-  var params = QueryToJSON($querystring)
+let regularQS = QueryToJSON(window.location.search.slice(1))
+let hashQS = QueryToJSON($querystring)
+var params = JSON.stringify(regularQS) == "{}" ? hashQS : regularQS
+console.log($User, $IsLoggedIn)
 if(params["approved"]){
   StartSession(params.request_token)
 }
 
-async function LogOut(){
+if($IsLoggedIn){
+  TryLoadProfile()
+}
 
+async function LogOut(){
+  //Delete session on TMDB
+  let sessionID = localStorage.getItem("session_id")
+  Account.Logout(sessionID)
+  //Delete session & account from local storage
+  clearLocalStorage()
+  //Refresh page
+  window.location.reload()
+  //Show toast
+  alert("logged out")
 }
 
 let userBtnStyles = `
@@ -61,11 +75,11 @@ svg#SVGID:hover{
 </script>
 <div>
   {#if $IsLoggedIn}
-    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn">
+    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn" aria-label="My Account">
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </button>
   {:else}
-    <button id="openLogin" on:click={Account.StartLogin}>Login</button>
+    <button id="openLogin" on:click={Account.StartLogin} class="icon-btn login-btn">Login</button>
   {/if}
   <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
     <div slot="contents">
@@ -96,5 +110,9 @@ svg#SVGID:hover{
 
 div[slot="contents"]{
   text-align: center;
+}
+
+.login-btn:hover, .login-btn:focus{
+  color:var(--AccentColor)
 }
 </style>

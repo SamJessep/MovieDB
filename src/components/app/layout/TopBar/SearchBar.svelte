@@ -6,30 +6,25 @@ import { writable } from 'svelte/store'
 //UI components
 import ErrorSmall from '../../../general/ErrorSmall.svelte';
 
-let tabs = writable([
-  {
-    name: "All",
-    search_type:"multi",
-    sugestions:[],
-    active:false
-  },
-  {
-    name: "Movie",
-    search_type: "movie",
-    sugestions:[],
-    active:true
-  },
-  {
-    name: "TV",
-    search_type: "tv",
-    sugestions:[],
-    active:false
+class tab {
+  constructor(name, search_type, suggestions, active){
+    this.name = name
+    this.search_type = search_type
+    this.suggestions = suggestions
+    this.active = active;
   }
+}
+
+let tabs = writable([
+  new tab("All", "multi", [], true),
+  new tab("Movie", "movie", [], false),
+  new tab("TV", "tv", [], false)
 ])
+
 let SearchArea
 let searchValue = "";
-let old_searchValue = "";
-let s_index = -1;
+let oldSearchValue = "";
+let suggestionIndex = -1;
 let searchOpen = false;
 
 function clickTab(tabName){
@@ -38,7 +33,7 @@ function clickTab(tabName){
     t.active = t.name == tabName
   }
   tabs.set(tmpTabs)
-  LoadSugestions()
+  Loadsuggestions()
 }
 
 function SendSearch(query){
@@ -53,25 +48,33 @@ function SelectSuggestion(suggestion){
   searchValue = suggestion;
   SendSearch(suggestion)
 }
+
 function KeyPressed(e){
   searchOpen=searchValue != "";
   if(!SearchArea.contains(document.activeElement)) return
   let btns = document.querySelectorAll(".suggestion-btn")
-  if(searchValue != old_searchValue){
-      LoadSugestions()
+  if(searchValue != oldSearchValue){
+      Loadsuggestions()
   }
   else if(e.code == "ArrowUp"){
-    s_index = s_index>0? s_index-1 : btns.length-1;
-    btns[s_index].focus()
+    suggestionIndex = suggestionIndex>0? suggestionIndex-1 : btns.length-1;
+    btns[suggestionIndex].focus()
   }
   else if(e.code == "ArrowDown"){
-    s_index = s_index>=btns.length-1? 0 : s_index+1;
-    btns[s_index].focus()
+    suggestionIndex = suggestionIndex>=btns.length-1? 0 : suggestionIndex+1;
+    btns[suggestionIndex].focus()
   }
-  else if(e.code == "Enter" && s_index>=0 && s_index<btns.length){
-    btns[s_index].click()
+  else if(e.code == "Enter"){
+    //If suggestion is focused via tab or arrow keys => enter
+    if(suggestionIndex>=0 && suggestionIndex<btns.length){
+      btns[suggestionIndex].click()
+    }
+    //No suggestion is focused via tab or arrow keys => enter
+    if(suggestionIndex == -1){
+      SendSearch(searchValue)
+    }
   }
-  old_searchValue = searchValue
+  oldSearchValue = searchValue
 }
 
 function DocumentClick(e){
@@ -81,13 +84,13 @@ function DocumentClick(e){
   }
 }
 
-async function LoadSugestions(){
+async function Loadsuggestions(){
   //If search blank, dont search
   if(searchValue == "") return
 
   let tmpTabs = $tabs;
   let activeTab = tmpTabs.find(t=>t.active);
-  activeTab.sugestions=Search(searchValue, activeTab.search_type).then(res=>
+  activeTab.suggestions=Search(searchValue, activeTab.search_type).then(res=>
    res.results.splice(0,5).map(r=>r.title || r.original_title || r.name)
   )
   tabs.set(tmpTabs)
@@ -103,7 +106,7 @@ async function LoadSugestions(){
         class="input is-large SB"
         placeholder="Search MovieDB"
         bind:value={searchValue} 
-        on:focus={()=>{s_index = -1; searchOpen=searchValue!=""}} 
+        on:focus={()=>{suggestionIndex = -1; searchOpen=searchValue!=""}} 
         on:search={()=>{SendSearch(searchValue)}}
       />
       <span class="icon is-left">
@@ -114,15 +117,15 @@ async function LoadSugestions(){
   <div id="datalist" class:isOpen={searchOpen}>
     <p class="panel-tabs">
       {#each $tabs as tab,index (tab.name)}
-          <button class:is-active={tab.active} class="nonStandard section" on:click={()=>clickTab(tab.name)} on:focus={s_index=index}>{tab.name}</button>
+          <button class:is-active={tab.active} class="nonStandard section" on:click={()=>clickTab(tab.name)} on:focus={suggestionIndex=index}>{tab.name}</button>
       {/each}
     </p>
     <p class="results">
-      {#await $tabs.find(t=>t.active).sugestions}
+      {#await $tabs.find(t=>t.active).suggestions}
         <div class="panel-block info-message">Loading...</div>
-      {:then sugestions}
-        {#each sugestions as sugestion}
-          <button class="panel-block suggestion-btn nonStandard" on:click={()=>SelectSuggestion(sugestion)}>{sugestion}</button>
+      {:then suggestions}
+        {#each suggestions as suggestion}
+          <button class="panel-block suggestion-btn nonStandard" on:click={()=>SelectSuggestion(suggestion)}>{suggestion}</button>
           {:else}
             <div class="panel-block info-message">No Suggestions</div>
         {/each}
@@ -192,8 +195,11 @@ async function LoadSugestions(){
   button:hover{
     background-color: rgb(44, 44, 44);
   }
-
-  .panel-tabs>button.section.is-active, button.nonStandard:active, button.nonStandard:focus{
+  .panel-tabs>button.section.is-active{
+    color: var(--SelectedColor);
+  }
+  
+  .panel-tabs>button.section.is-active:focus, button.nonStandard:active, button.nonStandard:focus{
     color: var(--AccentColor);
   }
 

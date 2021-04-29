@@ -8,6 +8,17 @@ export default class Account{
     const requestToken = res.request_token
     Account.GetUserApproval(requestToken)
   }
+
+  static async Logout(sessionId){
+    const res = await fetch(Config.BASE_URL+"authentication/session?api_key="+Config.API_KEY, {
+      method: "DELETE", 
+      body: {
+        "session_id": sessionId
+      }
+    })
+    console.log("DELETE", res)
+    return res
+  }
   
   
   static async CreateRequestToken(){
@@ -18,7 +29,6 @@ export default class Account{
       }
     });
     const content = await rawResponse.json();
-    console.log(content)
     return content
   }
   
@@ -38,7 +48,6 @@ export default class Account{
       body: JSON.stringify({"request_token": AuthToken})
     });
     const content = await rawResponse.json();
-    console.log(content)
     return content
   }
   

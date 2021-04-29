@@ -1,14 +1,21 @@
 <script>
   import {GetCountries, GetLanguages} from '../../../../model/api_config';
   import {Preferences, Settings} from '../../../../stores/store'
-  import {User} from '../../../../stores/userStore'
+  import {User,IsLoggedIn} from '../../../../stores/userStore'
   import Selector from '../../../form/Selector.svelte'
   import Popup from '../../../general/Popup.svelte'
   import SvgIcon from '../../../general/SvgIcon.svelte'
 
   let isOpen = false;
+  let madeChanges = false;
 
-  let cogStyles = `
+  const initialSettings = JSON.stringify($Settings);
+
+  Settings.subscribe(s=>{
+    madeChanges = initialSettings !==  JSON.stringify(s);
+  })
+
+  let settingsStyles = `
 svg#SVGID{
   fill: var(--FontColor, black);
   width: 3.5rem;
@@ -20,33 +27,42 @@ svg#SVGID:hover{
   fill: var(--AccentColor, green);
 }`;
 
+let confirmStyles = `
+svg#SVGID{
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 1vmin 0;
+}
+`;
+
 function resetAccountPreferences(){
   User.update(u=>u)
 }
 
-Preferences.subscribe(p=>console.log("PP", p))
 </script>
 
 <div>
-  <button on:click={()=>isOpen=!isOpen} class="icon-btn">
-    <SvgIcon src="images/cog.svg" styles={cogStyles}/>
+  <button on:click={()=>isOpen=!isOpen} class="icon-btn" aria-label="Settings">
+    <SvgIcon src="images/cog.svg" styles={settingsStyles}/>
   </button>
   <Popup bind:MenuOpen={isOpen} HasDefaultClose=true>
     <div slot="contents">
       <h1>Preferences</h1>
       <div id="controls">
-        <fieldset>
-          <legend>Use account settings</legend>
-          <label>Yes
-            <input type="radio" name="useAccountSettings" checked={$Settings.useAccountSettings} on:change={val=>{
-              $Settings.useAccountSettings=val.target.checked
-              if(val.target.checked)resetAccountPreferences();
-              }}/>
-          </label>
-          <label>No
-            <input type="radio" name="useAccountSettings" checked={!$Settings.useAccountSettings} on:change={val=>$Settings.useAccountSettings=!val.target.checked}/>
-          </label>
-        </fieldset>
+        {#if $IsLoggedIn}
+          <fieldset>
+            <legend>Use account settings</legend>
+            <label>Yes
+              <input type="radio" name="useAccountSettings" checked={$Settings.useAccountSettings} on:change={val=>{
+                $Settings.useAccountSettings=val.target.checked
+                if(val.target.checked)resetAccountPreferences();
+                }}/>
+            </label>
+            <label>No
+              <input type="radio" name="useAccountSettings" checked={!$Settings.useAccountSettings} on:change={val=>$Settings.useAccountSettings=!val.target.checked}/>
+            </label>
+          </fieldset>
+        {/if}
         <fieldset disabled={$Settings.useAccountSettings}>
           <legend>Region</legend>
           <Selector bind:bindedValue={$Preferences.region} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
@@ -57,6 +73,13 @@ Preferences.subscribe(p=>console.log("PP", p))
           <label for="include_adult" class="checkControl">include adult</label>
           <input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult}/>
         </fieldset>
+      </div>
+      <div class="confirm-section" class:visable={madeChanges}>
+        <small>Your changes have been saved</small>
+        <button aria-label="Save" class="icon-btn sync" on:click={e=>window.location.reload()}>
+          <SvgIcon src="images/sync.svg" styles={confirmStyles}/>
+          <p>click to update the page</p>
+        </button>
       </div>
     </div>
   </Popup>
@@ -74,5 +97,37 @@ Preferences.subscribe(p=>console.log("PP", p))
   .checkControl{
     display: inline-block;
     cursor: pointer;
+  }
+  .confirm-section{
+    display: flex;
+    align-items: center;
+    float: right;
+  }
+
+  .confirm-section>button{
+    padding: 0;
+    margin: 0;
+    transition: color 0.5s;
+    cursor: pointer;
+  }
+
+  .confirm-section>button:hover{
+    color: var(--AccentColor, green);
+  }
+  
+  .sync>p{
+    margin: auto;
+  }
+
+  .sync{
+    display: flex;
+  }
+
+  .confirm-section.visable{
+    display: flex;
+  }
+  
+  .confirm-section{
+    display: none;
   }
 </style>

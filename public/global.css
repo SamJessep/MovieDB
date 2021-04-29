@@ -2,8 +2,8 @@
     --BackgroundColor: #f7f7f7;
     --SecondBackgroundColor: #eaeaeae6;
     --FontColor: #333333;
-    --AccentColor: #00d474;
-		--SelectedColor: lightgreen;
+    --AccentColor: hsl(153, 100%, 42%);
+		--SelectedColor: hsl(153, 100%, 22%);
     --VideoBackground: #000000f0;
     --ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
     --ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);

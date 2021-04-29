@@ -6,12 +6,18 @@ import {
 import {Preferences, Settings} from './store.js'
 
 
-export const User = writable()
+export const User = writable(false)
 export const IsLoggedIn = derived(User, $User => {
   return $User && $User.session_id != null
 })
 
-User.set(JSON.parse(localStorage.getItem("user")) ?? false)
+export function clearLocalStorage(){
+  localStorage.clear("session_id")
+  localStorage.clear("user")
+  User.set(false)
+}
+
+User.set(JSON.parse(localStorage.getItem("user")))
 
 User.subscribe(userData=>{
   if(userData){

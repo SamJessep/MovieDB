@@ -31,7 +31,11 @@ li.quickBtn{
   font-size: var(--HeaderFontSize);
   border-radius: 0.2rem;
 }
-li.quickBtn:hover, .quickBtn:hover, .quickBtn:active{
+li.quickBtn:hover, .quickBtn:hover, .quickBtn:focus{
   background-color: var(--AccentColor);
+}
+
+.quickBtn+button:active{
+  background-color: var(--SelectedColor);
 }
 </style>
