@@ -1,11 +1,10 @@
 <script>
-  import { } from 'os';
-import {GetCountries, GetLanguages} from '../model/api_config.js';
-  import {Preferences, Settings} from '../stores/store.js'
-  import {User} from '../stores/userStore'
-  import Selector from './form/Selector.svelte'
-  import Popup from './Popup.svelte'
-  import SvgIcon from './SvgIcon.svelte'
+  import {GetCountries, GetLanguages} from '../../../../model/api_config';
+  import {Preferences, Settings} from '../../../../stores/store'
+  import {User} from '../../../../stores/userStore'
+  import Selector from '../../../form/Selector.svelte'
+  import Popup from '../../../general/Popup.svelte'
+  import SvgIcon from '../../../general/SvgIcon.svelte'
 
   let isOpen = false;
 

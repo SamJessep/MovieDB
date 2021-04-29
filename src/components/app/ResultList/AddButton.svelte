@@ -1,8 +1,5 @@
 <script>
 import lottie from 'lottie-web'
-import {writable} from 'svelte/store'
-//import bodymovin from './addons/bodymovin.js';
-import {IsLoggedIn} from '../stores/userStore.js'
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();

@@ -1,6 +1,5 @@
 <script>
-import {QueryToJSON} from '../util.js'
-import Card from './Card.svelte'
+import {QueryToJSON} from '../../../util'
 import { onMount, onDestroy} from 'svelte';
 import {location, querystring} from 'svelte-spa-router'
 import Page from './Page.svelte'

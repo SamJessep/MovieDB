@@ -1,7 +1,7 @@
 <script>
 import QuickButton from './QuickButton.svelte'
 import {push} from 'svelte-spa-router'
-import Popup from "./Popup.svelte"
+import Popup from "../../../general/Popup.svelte"
 
 export let isOpen = false;
 let root;

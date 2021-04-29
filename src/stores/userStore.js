@@ -1,10 +1,9 @@
 import {
   writable,
-  readable,
   derived,
   get
 } from 'svelte/store'
-import {Preferences, Settings, UseAccountSettings} from './store.js'
+import {Preferences, Settings} from './store.js'
 
 
 export const User = writable()

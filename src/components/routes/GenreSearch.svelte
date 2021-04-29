@@ -1,9 +1,7 @@
 <script>
-import AppShell from '../AppShell.svelte'
-import CardList from '../CardList.svelte'
+import AppShell from '../app/layout/AppShell.svelte'
+import CardList from '../app/ResultList/CardList.svelte'
 import {GenreSearch} from '../../model/TMDbAPI.js'
-import {querystring, location} from 'svelte-spa-router'
-import {QueryToJSON} from '../../util.js'
 
 export let params = {}
 let genres;

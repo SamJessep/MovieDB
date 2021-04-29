@@ -1,7 +1,6 @@
 <script>
-	import TopBar from './TopBar.svelte';
-	import DiscoverBar from './DiscoverBar.svelte';
-	import {Trending} from '../model/TMDbAPI.js'
+	import TopBar from './TopBar/TopBar.svelte';
+	import DiscoverBar from './BottomBar/DiscoverBar.svelte';
 	import {querystring, location} from 'svelte-spa-router'
 </script>
 

@@ -1,10 +1,9 @@
 <script>
 	import { writable, derived } from 'svelte/store'
-	import {Search} from '../model/TMDbAPI.js';
+	import {Search} from '../../../../model/TMDbAPI';
 	import PreferencesButton from './PreferenceButton.svelte'
 	import LoginButton from './LoginButton.svelte'
-	import SvgIcon from './SvgIcon.svelte'
-	import {push, link} from 'svelte-spa-router'
+	import {push} from 'svelte-spa-router'
 	import SearchBar from './SearchBar.svelte'
 
 	export let PlaceHolder = "Search...";

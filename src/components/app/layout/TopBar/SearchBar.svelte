@@ -1,7 +1,11 @@
 <script>
 import {push} from 'svelte-spa-router'
-import {Search} from '../model/TMDbAPI.js';
+import {Search} from '../../../../model/TMDbAPI';
 import { writable } from 'svelte/store'
+
+//UI components
+import ErrorSmall from '../../../general/ErrorSmall.svelte';
+
 let tabs = writable([
   {
     name: "All",
@@ -50,6 +54,7 @@ function SelectSuggestion(suggestion){
   SendSearch(suggestion)
 }
 function KeyPressed(e){
+  searchOpen=searchValue != "";
   if(!SearchArea.contains(document.activeElement)) return
   let btns = document.querySelectorAll(".suggestion-btn")
   if(searchValue != old_searchValue){
@@ -77,18 +82,14 @@ function DocumentClick(e){
 }
 
 async function LoadSugestions(){
-  let tmpTabs = $tabs
-  tabs.set(tmpTabs.map(t=>{return {...t,sugestions:["Loading..."]}}))
-  let tabName = $tabs.filter(t=>t.active)[0].name
-  for(let tab of tmpTabs){
-    if(tab.name != tabName) continue
-    if(searchValue == ""){
-      tab.sugestions = []
-      continue
-    }
-    let res = await Search(searchValue, tab.search_type)
-    tab.sugestions = res.results.splice(0,5).map(r=>r.title || r.original_title || r.name)
-  }
+  //If search blank, dont search
+  if(searchValue == "") return
+
+  let tmpTabs = $tabs;
+  let activeTab = tmpTabs.find(t=>t.active);
+  activeTab.sugestions=Search(searchValue, activeTab.search_type).then(res=>
+   res.results.splice(0,5).map(r=>r.title || r.original_title || r.name)
+  )
   tabs.set(tmpTabs)
 }
 
@@ -98,7 +99,13 @@ async function LoadSugestions(){
 <div id="searchBarContainer" class="panel" bind:this={SearchArea}>
   <div class="panel-block">
     <p class="control has-icons-left is-large">
-      <input class="input is-large SB" type="search" placeholder="Search MovieDB" bind:value={searchValue} on:focus={()=>{s_index = -1; searchOpen=true}} on:search={()=>{SendSearch(searchValue)}}/>
+      <input 
+        class="input is-large SB"
+        placeholder="Search MovieDB"
+        bind:value={searchValue} 
+        on:focus={()=>{s_index = -1; searchOpen=searchValue!=""}} 
+        on:search={()=>{SendSearch(searchValue)}}
+      />
       <span class="icon is-left">
         <i class="fas fa-search" aria-hidden="true"></i>
       </span>
@@ -111,9 +118,17 @@ async function LoadSugestions(){
       {/each}
     </p>
     <p class="results">
-      {#each $tabs.filter(t=>t.active)[0].sugestions as sugestion}
-        <button class="panel-block suggestion-btn nonStandard" on:click={()=>SelectSuggestion(sugestion)}>{sugestion}</button>
-      {/each}
+      {#await $tabs.find(t=>t.active).sugestions}
+        <div class="panel-block info-message">Loading...</div>
+      {:then sugestions}
+        {#each sugestions as sugestion}
+          <button class="panel-block suggestion-btn nonStandard" on:click={()=>SelectSuggestion(sugestion)}>{sugestion}</button>
+          {:else}
+            <div class="panel-block info-message">No Suggestions</div>
+        {/each}
+      {:catch error}
+        <ErrorSmall userMessage="Failed loading suggestions" errorMessage={error.message} />
+      {/await}
     </p>
   </div>
   </div>
@@ -166,6 +181,12 @@ async function LoadSugestions(){
     font-size: var(--HeaderFontSize);
     padding: 0.5rem;
     outline: none;
+  }
+
+  .info-message{
+    color:white;
+    font-size: var(--BodyFontSize, 1rem);
+    user-select: none;
   }
 
   button:hover{

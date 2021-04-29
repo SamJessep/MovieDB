@@ -1,8 +1,7 @@
 <script>
   import QuickButton from './QuickButton.svelte'
   import GenreButton from './GenreButton.svelte'
-  import {Popular, Latest, GetWatchList} from '../model/TMDbAPI'
-  import {User, IsLoggedIn} from '../stores/userStore.js'
+  import {User, IsLoggedIn} from '../../../../stores/userStore'
 
   let buttons = [{
       text: "My Watchlist",

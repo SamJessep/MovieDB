@@ -27,14 +27,11 @@ button{
   background-color: transparent;
 }
 
-.quickBtn>a{
-  color:white;
-}
 li.quickBtn{
   font-size: var(--HeaderFontSize);
   border-radius: 0.2rem;
 }
-li.quickBtn:hover, .quickBtn>a:hover, .quickBtn>a:active{
+li.quickBtn:hover, .quickBtn:hover, .quickBtn:active{
   background-color: var(--AccentColor);
 }
 </style>

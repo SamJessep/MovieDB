@@ -128,3 +128,7 @@ button.icon-btn{
 button.icon-btn:not(:disabled):active{
 	background-color: transparent;
 }
+
+.error{
+	color:red;
+}

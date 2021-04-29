@@ -1,5 +1,6 @@
 <script>
-import {SvgIDS} from '../stores/store.js';
+import {SvgIDS} from '../../stores/store';
+
 export let src;
 export let styles = "";
 

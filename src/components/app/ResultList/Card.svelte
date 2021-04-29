@@ -1,12 +1,11 @@
 <script>
-import { onMount } from 'svelte';
 import AddButton from './AddButton.svelte'
-import SvgIcon from './SvgIcon.svelte'
-import Config from '../config.js';
-import {AddToWatchlist, IsOnWatchlist} from '../model/TMDbAPI.js'
-import {User, IsLoggedIn} from '../stores/userStore.js'
+import SvgIcon from '../../general/SvgIcon.svelte'
+import Config from '../../../config';
+import {AddToWatchlist, IsOnWatchlist} from '../../../model/TMDbAPI.js'
+import {IsLoggedIn} from '../../../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
-import { fly,fade } from 'svelte/transition';
+import { fade } from 'svelte/transition';
 
 const dispatch = createEventDispatcher();
 

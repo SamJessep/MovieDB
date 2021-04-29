@@ -1,8 +1,7 @@
 <script>
-import AppShell from '../AppShell.svelte'
-import CardList from '../CardList.svelte'
+import AppShell from '../app/layout/AppShell.svelte'
+import CardList from '../app/ResultList/CardList.svelte'
 import {Latest, Popular, Trending} from '../../model/TMDbAPI.js'
-import { onMount } from 'svelte';
 
 export let params = {}
 let media_type;

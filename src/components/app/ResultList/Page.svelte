@@ -1,8 +1,7 @@
 <script>
-import {QueryToJSON} from '../util.js'
-import Card from './Card.svelte'
-import { onMount } from 'svelte';
-import {location, querystring} from 'svelte-spa-router'
+import {QueryToJSON} from '../../../util'
+import Card from '../ResultList/Card.svelte'
+import {querystring} from 'svelte-spa-router'
 
 export let FetchMethod;
 export let MethodParams =[];
