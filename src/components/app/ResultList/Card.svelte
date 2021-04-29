@@ -6,6 +6,7 @@ import {AddToWatchlist, IsOnWatchlist} from '../../../model/TMDbAPI.js'
 import {IsLoggedIn} from '../../../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
 import { fade } from 'svelte/transition';
+import {GetBestImageSize} from "../../../model/dataHelper.js"
 
 const dispatch = createEventDispatcher();
 
@@ -48,7 +49,8 @@ let title = Result.title || Result.original_title || Result.name;
 
 export function GetImageUrl(){
   //Update to get best size for screen size
-  return Config.BASE_IMAGE_URL + "original/"+Result.poster_path
+  let size = GetBestImageSize("poster", window.innerWidth/3)
+  return Config.BASE_IMAGE_URL + size + "/"+Result.poster_path
 }
 
 export function LoadResultPage(el){

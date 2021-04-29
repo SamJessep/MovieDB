@@ -63,12 +63,12 @@ function resetAccountPreferences(){
             </label>
           </fieldset>
         {/if}
-        <fieldset disabled={$Settings.useAccountSettings}>
+        <fieldset disabled={$Settings.useAccountSettings && $IsLoggedIn}>
           <legend>Region</legend>
           <Selector bind:bindedValue={$Preferences.region} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
           <Selector bind:bindedValue={$Preferences.language} fetchItemsFunction={GetLanguages} selectID="languagesSelect" label="Language"/>
         </fieldset>
-        <fieldset disabled={$Settings.useAccountSettings}>
+        <fieldset disabled={$Settings.useAccountSettings && $IsLoggedIn}>
           <legend>Other</legend>
           <label for="include_adult" class="checkControl">include adult</label>
           <input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult}/>
