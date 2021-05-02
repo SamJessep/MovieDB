@@ -14,6 +14,14 @@ export let Result;
 export let cardId;
 let OnWatchlist = false;
 
+let poster;
+
+const imgLoad = e=>{
+  let image = e.target
+  image.src=image.dataset.src
+  image.classList.remove("loading")
+}
+
 IsLoggedIn.subscribe(async (val)=>{
   if(val){
     OnWatchlist = await IsOnWatchlist(Result.id, Result.media_type)
@@ -23,16 +31,9 @@ let placeholderStyles = `
   svg#SVGID{
     width:50%;
     height:50%;
-    fill:var(--FontColor, black);
     transition: fill 0.3s;
     margin: auto;
-  }
-
-  *:hover>svg#SVGID, *:focus>svg#SVGID{
-    fill:var(--AccentColor, green);
-  }
-  *:active>svg#SVGID{
-    fill:var(--SelectedColor, green);
+    fill:var(--FontColor);
   }
 `
 let mediaTypeStyles = `
@@ -47,10 +48,19 @@ let mediaTypeStyles = `
 
 let title = Result.title || Result.original_title || Result.name;
 
-export function GetImageUrl(){
+export function GetImageUrls(){
   //Update to get best size for screen size
-  let size = GetBestImageSize("poster", window.innerWidth/3)
-  return Config.BASE_IMAGE_URL + size + "/"+Result.poster_path
+  let final = GetBestImageSize("poster", RemToPx(22))
+  let initial = GetBestImageSize("poster", 0);
+  return {
+    initial:Config.BASE_IMAGE_URL + initial + "/"+Result.poster_path,
+    final:Config.BASE_IMAGE_URL + final + "/"+Result.poster_path
+  }
+}
+const ImageUrl = GetImageUrls()
+
+function RemToPx(rem) {    
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 
 export function LoadResultPage(el){
@@ -65,16 +75,19 @@ export function AddToList(event){
 
 </script>
 <button class="resultCard nonStandard" id={cardId} transition:fade>
-  {#if Result.poster_path}
-    <img class="poster" src={GetImageUrl()} alt={title+" poster"} on:click={LoadResultPage}/>
-  {:else}
-    <div class="placeholder_container poster" on:click={LoadResultPage}>
-        <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
-        <small>No Poster</small>
-    </div>
-  {/if}
+    {#if Result.poster_path}
+    <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster loading" loading="lazy" on:load={imgLoad} />
+      <!-- <div style={posterBackgroundStyles} class="poster"/> -->
+    {:else}
+      <div class="placeholder_container poster" on:click={LoadResultPage}>
+          <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
+          <small>No Poster</small>
+      </div>
+    {/if}
   <div class='toolbar'>
-    <AddButton checked={OnWatchlist} on:addClicked={AddToList}/>
+    {#if $IsLoggedIn}
+      <AddButton checked={OnWatchlist} on:addClicked={AddToList}/>
+    {/if}
     <p>{title}</p>
     {#if Result.media_type}
       <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
@@ -82,15 +95,11 @@ export function AddToList(event){
   </div>
 </button>
 <style>
-.placeholderAddButton{
-  display: block;
-  width: 50px;
-  height: 50px;
-}
-
 .toolbar{
   display: grid;
   grid-template-columns: 16% 68% 16%;
+  width: 100%;
+  min-height: 50px;
 }
 
 .toolbar>p{
@@ -100,16 +109,18 @@ export function AddToList(event){
 }
 
 .resultCard{
-  height: auto;
-  margin: 1%;
-  flex: 1 0 36%;
-  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background-color: var(--SecondBackgroundColor);
   outline: none;
   border:none;
   color: var(--FontColor, black);
   border-radius: 10px;
   padding: 0.3rem;
+  margin: 1rem;
+  width: 22rem;
 }
 
 .resultCard:hover, .resultCard:focus, .resultCard:active{
@@ -118,9 +129,12 @@ export function AddToList(event){
 
 .poster{
   width: 100%;
-  height: auto;
-  min-height: 26rem;
-  cursor: pointer;
+  height: 30rem;
+  transition: filter 0.5s;
+}
+
+.poster.loading{
+  filter:blur(0.5rem);
 }
 
 .placeholder_container{

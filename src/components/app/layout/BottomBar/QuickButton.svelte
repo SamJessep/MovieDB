@@ -20,11 +20,15 @@ export let click = ButtonClick
 <style>
 button{
  background-color: transparent;
- border:none; 
+ border:none;
+ color: var(--FontColor);
+ font-size: var(--HeaderFontSize);
+ padding: 1rem;
 }
 
-.quickBtn>button:active{
+.quickBtn>button:active, .quickBtn>button:focus{
   background-color: transparent;
+  outline: none;
 }
 
 li.quickBtn{
@@ -33,9 +37,5 @@ li.quickBtn{
 }
 li.quickBtn:hover, .quickBtn:hover, .quickBtn:focus{
   background-color: var(--AccentColor);
-}
-
-.quickBtn+button:active{
-  background-color: var(--SelectedColor);
 }
 </style>

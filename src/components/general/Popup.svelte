@@ -47,7 +47,7 @@ svg#SVGID:hover{
 #dialogBackground.open{
   pointer-events: all;
   display: block;
-  z-index: 4;
+  z-index: 5;
   background-color: #000000d4;
   transition: background-color 1s;
 }

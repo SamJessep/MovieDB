@@ -5,6 +5,7 @@
 	import LoginButton from './LoginButton.svelte'
 	import {push} from 'svelte-spa-router'
 	import SearchBar from './SearchBar.svelte'
+	import MobileMenu from './MobileMenu.svelte'
 
 	export let PlaceHolder = "Search...";
 	let ResultSuggestions = writable([]);
@@ -99,14 +100,24 @@
 					<img id="logo" src="images/MDB_logo.png" alt="App logo"/>
 				</a>
 				<SearchBar/>
-				<LoginButton/>
-				<PreferencesButton/>
+				<MobileMenu let:isMobile>
+					<LoginButton isMobile={isMobile}/>
+					<PreferencesButton isMobile={isMobile}/>
+				</MobileMenu>
 			</div>
 		</div>
 	</header>
 </div>
 
 <style>
+
+.hero-head{
+		position: sticky;
+		top:0;
+		width: 100%;
+		z-index: 1;
+	}
+
 	#logo {
 		max-width: 5rem;
 		max-height: 5rem;
@@ -116,6 +127,7 @@
 
 	.navbar-brand{
 		width: 100%;
+		align-items: center;
 	}
 	header.navbar{
 		background-color: black;

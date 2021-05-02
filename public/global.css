@@ -1,9 +1,12 @@
 :root{
     --BackgroundColor: #f7f7f7;
     --SecondBackgroundColor: #eaeaeae6;
-    --FontColor: #333333;
+    --FontColor: #ffffff;
     --AccentColor: hsl(153, 100%, 42%);
 		--SelectedColor: hsl(153, 100%, 22%);
+		--PanelColor:rgb(58, 58, 58);
+		--PanelHover:rgb(44, 44, 44);
+		--PanelDarkHover:rgb(19, 19, 19);
     --VideoBackground: #000000f0;
     --ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
     --ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);
@@ -31,7 +34,7 @@ p{
   font-size: var(--BodyFontSize, 2vmin);
 }
 
-input, select, button:not(.nonStandard) {
+input, select{
 	background-color: var(--SecondBackgroundColor, white);
 	color: var(--FontColor, black);
 }
@@ -64,11 +67,28 @@ a:visited {
 	color: rgb(0,80,160);
 }
 
+button{
+	background-color: transparent;
+	border: solid 0.1rem var(--FontColor);
+	padding: 0.5rem 1rem;
+	color:var(--FontColor);
+}
+
+button:hover{
+	border: solid 0.1rem var(--AccentColor);
+}
+
+button:focus{
+	border: solid 0.1rem var(--SelectedColor);
+	color: var(--SelectedColor);
+	outline: none;
+}
+
 label {
 	display: block;
 }
 
-input, button:not(.nonStandard), select, textarea {
+input, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
 	-webkit-padding: 0.4em 0;
@@ -81,24 +101,6 @@ input, button:not(.nonStandard), select, textarea {
 
 input:disabled {
 	color: #ccc;
-}
-
-button:not(.nonStandard) {
-	color: var(--FontColor, white);
-	background-color: var(--BackgroundColor, black);
-	outline: none;
-}
-
-button:not(.nonStandard):disabled {
-	color: grey;
-}
-
-button:not(:disabled):not(.nonStandard):active {
-	background-color: #ddd;
-}
-
-button:not(.nonStandard):focus, button:not(.nonStandard):active, button:not(.nonStandard):hover{
-	border-color: var(--AccentColor, green);
 }
 
 .inline{
@@ -122,13 +124,37 @@ p.selected>.searchReccomendation{
 button.icon-btn{
 	border: none;
 	background-color: transparent;
-	height: 100%;
+	margin: auto;
+	color: var(--FontColor);
 }
 
-button.icon-btn:not(:disabled):active{
+.icon-btn:active{
 	background-color: transparent;
+	outline: none;
+	color: var(--AccentColor);
 }
 
 .error{
 	color:red;
+}
+
+.roundedBtn{
+	border: none;
+	background-color: transparent;
+	color: var(--FontColor);
+	transition: border-radius,background-color 0.25s;
+}
+
+.roundedBtn:hover, .roundedBtn:focus{
+	background-color: var(--PanelHover);
+	border-radius: 2rem;
+}
+
+.roundedBtn.dark:hover, .roundedBtn.dark:focus{
+	background-color: var(--PanelDarkHover);
+}
+  
+.roundedBtn:focus, .roundedBtn:active{
+	color: var(--AccentColor);
+	outline: none;
 }

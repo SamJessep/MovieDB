@@ -6,7 +6,9 @@ import {GetLanguageText, GetCountryText} from '../../../../model/dataHelper'
 import {QueryToJSON} from '../../../../util'
 import {location, push, querystring, replace} from 'svelte-spa-router'
 import SvgIcon from "../../../general/SvgIcon.svelte"
+import MobileButton from './MobileButton.svelte'
 
+export let isMobile = false;
 let LoginOpen = false;
 let profilePromise
 
@@ -62,24 +64,28 @@ async function LogOut(){
 
 let userBtnStyles = `
 svg#SVGID{
-  fill: var(--FontColor, black);
   width: 3.5rem;
   height: 3.5rem;
   padding: 1vmin 0;
   transition: fill 0.5s;
-}
-svg#SVGID:hover{
-  fill: var(--AccentColor, green);
 }`;
 
 </script>
 <div>
   {#if $IsLoggedIn}
-    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn" aria-label="My Account">
+    {#if isMobile}
+    <MobileButton title="My Account" click={()=>LoginOpen=!LoginOpen}>
+      <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
+    </MobileButton>
+    {:else}
+    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn roundedBtn dark" aria-label="My Account">
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </button>
+    {/if}
   {:else}
-    <button id="openLogin" on:click={Account.StartLogin} class="icon-btn login-btn">Login</button>
+    <button id="openLogin" on:click={Account.StartLogin} class="icon-btn roundedBtn dark login-btn">
+        Login ICON
+    </button>
   {/if}
   <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
     <div slot="contents">
@@ -114,5 +120,16 @@ div[slot="contents"]{
 
 .login-btn:hover, .login-btn:focus{
   color:var(--AccentColor)
+}
+
+.icon-btn{
+  display: flex;
+  align-items: center;
+}
+
+h1.title{
+  color:white;
+  margin: auto;
+  font-size: var(--HeaderFontSize);
 }
 </style>

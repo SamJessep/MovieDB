@@ -5,9 +5,11 @@
   import Selector from '../../../form/Selector.svelte'
   import Popup from '../../../general/Popup.svelte'
   import SvgIcon from '../../../general/SvgIcon.svelte'
+  import MobileButton from './MobileButton.svelte'
 
   let isOpen = false;
   let madeChanges = false;
+  export let isMobile = false;
 
   const initialSettings = JSON.stringify($Settings);
 
@@ -17,14 +19,10 @@
 
   let settingsStyles = `
 svg#SVGID{
-  fill: var(--FontColor, black);
   width: 3.5rem;
   height: 3.5rem;
   padding: 1vmin 0;
   transition: fill 0.5s;
-}
-svg#SVGID:hover{
-  fill: var(--AccentColor, green);
 }`;
 
 let confirmStyles = `
@@ -42,9 +40,16 @@ function resetAccountPreferences(){
 </script>
 
 <div>
-  <button on:click={()=>isOpen=!isOpen} class="icon-btn" aria-label="Settings">
-    <SvgIcon src="images/cog.svg" styles={settingsStyles}/>
-  </button>
+  {#if isMobile}
+    <MobileButton title="Preferences" click={()=>isOpen=!isOpen}>
+      <SvgIcon src="images/cog.svg" styles={settingsStyles}/>
+    </MobileButton>
+  {:else}
+    <button on:click={()=>isOpen=!isOpen} class="icon-btn roundedBtn dark" aria-label="Settings">
+      <SvgIcon src="images/cog.svg" styles={settingsStyles}/>
+    </button>
+  {/if}
+  
   <Popup bind:MenuOpen={isOpen} HasDefaultClose=true>
     <div slot="contents">
       <h1>Preferences</h1>

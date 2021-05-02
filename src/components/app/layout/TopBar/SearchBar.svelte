@@ -109,7 +109,7 @@ async function Loadsuggestions(){
         on:focus={()=>{suggestionIndex = -1; searchOpen=searchValue!=""}} 
         on:search={()=>{SendSearch(searchValue)}}
       />
-      <span class="icon is-left">
+      <span class="icon is-left" id="searchIcon">
         <i class="fas fa-search" aria-hidden="true"></i>
       </span>
     </p>
@@ -140,6 +140,10 @@ async function Loadsuggestions(){
   }/>
 
 <style>
+/* Fix search icon showing through overlays */
+  #searchIcon{
+    z-index: 0;
+  }
 
   #searchBarContainer{
     flex-grow:1;
