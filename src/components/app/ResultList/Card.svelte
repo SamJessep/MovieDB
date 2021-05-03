@@ -7,6 +7,9 @@ import {IsLoggedIn} from '../../../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
 import { fade } from 'svelte/transition';
 import {GetBestImageSize} from "../../../model/dataHelper.js"
+import {GetSCSSVars} from "../../../util";
+
+const scssVars = GetSCSSVars();
 
 const dispatch = createEventDispatcher();
 
@@ -36,7 +39,7 @@ let placeholderStyles = `
 let mediaTypeStyles = `
     display:block;
     width:30px;
-    fill:white;
+    fill:${scssVars.FontColor};
     transition: fill 0.3s;
     margin: auto;
 `
@@ -45,7 +48,7 @@ let title = Result.title || Result.original_title || Result.name;
 
 export function GetImageUrls(){
   //Update to get best size for screen size
-  let final = GetBestImageSize("poster", RemToPx(22))
+  let final = GetBestImageSize("poster", RemToPx(21))
   let initial = GetBestImageSize("poster", 0);
   return {
     initial:Config.BASE_IMAGE_URL + initial + "/"+Result.poster_path,
@@ -115,7 +118,7 @@ export function AddToList(event){
   border-radius: 10px;
   padding: 0.3rem;
   margin: 1rem;
-  width: 22rem;
+  width: 21rem;
 }
 
 .resultCard:hover, .resultCard:focus, .resultCard:active{
@@ -124,7 +127,6 @@ export function AddToList(event){
 
 .poster{
   cursor: pointer;
-  width: 100%;
   height: 30rem;
   transition: filter 0.5s;
 }
