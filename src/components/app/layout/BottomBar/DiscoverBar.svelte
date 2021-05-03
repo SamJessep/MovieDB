@@ -36,11 +36,11 @@
   </nav>
 </div>
 
-<style>
+<style lang="scss">
 *{
-  color: var(--FontColor, white);
-  font-size: var(--BaseFontSize);
-  outline-color: var(--AccentColor);
+  color: $FontColor, white;
+  font-size: $BaseFontSize;
+  outline-color: $AccentColor;
 }
 
 nav{

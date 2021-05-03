@@ -28,22 +28,17 @@ IsLoggedIn.subscribe(async (val)=>{
   }})
 
 let placeholderStyles = `
-  svg#SVGID{
     width:50%;
     height:50%;
     transition: fill 0.3s;
     margin: auto;
-    fill:var(--FontColor);
-  }
 `
 let mediaTypeStyles = `
-  svg#SVGID{
     display:block;
     width:30px;
-    fill:var(--FontColor, black);
+    fill:white;
     transition: fill 0.3s;
     margin: auto;
-  }
 `
 
 let title = Result.title || Result.original_title || Result.name;
@@ -94,7 +89,7 @@ export function AddToList(event){
     {/if}
   </div>
 </button>
-<style>
+<style lang="scss">
 .toolbar{
   display: grid;
   grid-template-columns: 16% 68% 16%;
@@ -113,10 +108,10 @@ export function AddToList(event){
   flex-direction: column;
   align-items: center;
 
-  background-color: var(--SecondBackgroundColor);
+  background-color: $SecondBackgroundColor;
   outline: none;
-  border:none;
-  color: var(--FontColor, black);
+  border:none !important;
+  color: $FontColor;
   border-radius: 10px;
   padding: 0.3rem;
   margin: 1rem;
@@ -124,10 +119,11 @@ export function AddToList(event){
 }
 
 .resultCard:hover, .resultCard:focus, .resultCard:active{
-  box-shadow: 0px 0px 20px 3px var(--AccentColor);
+  box-shadow: 0px 0px 20px 3px $AccentColor;
 }
 
 .poster{
+  cursor: pointer;
   width: 100%;
   height: 30rem;
   transition: filter 0.5s;
@@ -138,7 +134,7 @@ export function AddToList(event){
 }
 
 .placeholder_container{
-  background-color: var(--SecondBackgroundColor, grey);
+  background-color: $SecondBackgroundColor;
   display: flex;
   justify-content: center;
   flex-direction: column;

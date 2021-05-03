@@ -63,12 +63,10 @@ async function LogOut(){
 }
 
 let userBtnStyles = `
-svg#SVGID{
   width: 3.5rem;
   height: 3.5rem;
   padding: 1vmin 0;
-  transition: fill 0.5s;
-}`;
+  transition: fill 0.5s;`;
 
 </script>
 <div>
@@ -106,20 +104,20 @@ svg#SVGID{
           <button on:click={TryLoadProfile}>click here to try again</button>
         </p>
       {/await}
-      <button on:click={LogOut}>Log Out</button>
+      <button on:click={LogOut} class="standard">Log Out</button>
     {/if}
     </div>
   </Popup>
 </div>
 
-<style>
+<style lang="scss">
 
 div[slot="contents"]{
   text-align: center;
 }
 
 .login-btn:hover, .login-btn:focus{
-  color:var(--AccentColor)
+  color:$AccentColor
 }
 
 .icon-btn{
@@ -130,6 +128,6 @@ div[slot="contents"]{
 h1.title{
   color:white;
   margin: auto;
-  font-size: var(--HeaderFontSize);
+  font-size: $HeaderFontSize;
 }
 </style>

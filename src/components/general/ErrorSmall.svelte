@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
 .error-container{
   padding-left: 1rem;
 }
@@ -27,7 +27,7 @@ button{
   color:white;
   border: none;
   outline: none;
-  color: var(--AccentColor, blue);
+  color: $AccentColor;
 }
 
 #advancedTab{

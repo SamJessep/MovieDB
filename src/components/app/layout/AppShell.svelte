@@ -14,7 +14,7 @@
 	<DiscoverBar/>
 </section>
 
-<style>
+<style lang="scss">
 
 	.app-background{
 		background: rgb(2,0,36);

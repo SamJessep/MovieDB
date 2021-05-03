@@ -139,7 +139,7 @@ async function Loadsuggestions(){
     if(SearchArea.contains(e.target) && e.code == "ArrowUp" || e.code == "ArrowDown") e.preventDefault()}
   }/>
 
-<style>
+<style lang="scss">
 /* Fix search icon showing through overlays */
   #searchIcon{
     z-index: 0;
@@ -166,8 +166,7 @@ async function Loadsuggestions(){
   #datalist{
     position: absolute;
     width: 100%;
-    background-color: rgb(58, 58, 58);
-    
+    background-color: $PanelColor;
   }
 
   #datalist:not(.isOpen){
@@ -176,41 +175,42 @@ async function Loadsuggestions(){
 
   button.nonStandard{
     background: none;
-    color: var(--FontColor);
+    color: $FontColor;
     border: none;
   }
 
   .panel-tabs{
-    border-bottom: 0.15rem solid white;
+    border-bottom: 0.15rem solid $FontColor;
   }
 
   .panel-tabs>button.section{
-    font-size: var(--HeaderFontSize);
+    font-size: $HeaderFontSize;
     padding: 0.5rem;
     outline: none;
   }
 
   .info-message{
     color:white;
-    font-size: var(--BodyFontSize, 1rem);
+    font-size: $BodyFontSize;
     user-select: none;
   }
 
   button:hover{
-    background-color: rgb(44, 44, 44);
+    background-color: $PanelHover;
   }
+  
   .panel-tabs>button.section.is-active{
-    color: var(--SelectedColor);
+    color: $SelectedColor;
   }
   
   .panel-tabs>button.section.is-active:focus, button.nonStandard:active, button.nonStandard:focus{
-    color: var(--AccentColor);
+    color: $AccentColor;
   }
 
   button.nonStandard{
     outline: none;
     width: 100%;
-    font-size: var(--BodyFontSize);
-    border-bottom: 0.1rem solid var(--FontColor);
+    font-size: $BodyFontSize;
+    border-bottom: 0.1rem solid $FontColor;
   }
 </style>

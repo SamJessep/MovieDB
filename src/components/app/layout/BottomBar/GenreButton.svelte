@@ -92,7 +92,7 @@ export function GenreSelected(id, type){
 
 <svelte:window on:click={Click}/>
 
-<style>
+<style lang="scss">
 *{
   color:white;
 }
@@ -113,7 +113,7 @@ export function GenreSelected(id, type){
 #container.isOpen{
   visibility: visible;
   opacity: 1;
-  background-color: var(--BackgroundColor);
+  background-color: $BackgroundColor;
   border-radius: 5px;
   box-shadow: 0px 0px 12px 0px grey;
   }
@@ -140,16 +140,16 @@ details, details *{
 }
 
 .genreSectionHeader{
-  font-size: var(--BaseFontSize, 3vmin);
+  font-size: $BaseFontSize, 3vmin;
   outline: none;
 }
 
 details:not([open]) .genreSectionHeader:hover{
-  color: var(--SelectedColor);
+  color: $SelectedColor;
 }
 
 details[open] .genreSectionHeader{
-  color:var(--AccentColor, green);
+  color:$AccentColor;
 }
 
 details p{
@@ -159,8 +159,8 @@ details p{
 }
 
 details p:hover{
-  color:var(--AccentColor, green);
-  background-color:var(--SecondBackgroundColor, grey);;
+  color:$AccentColor;
+  background-color:$SecondBackgroundColor, grey;;
   border-radius: 1vmin;
 }
 </style>

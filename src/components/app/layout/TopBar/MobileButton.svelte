@@ -4,12 +4,11 @@
   export let title = "";
   export let click = ()=>false;
 
-  const chevronStyles = `svg#SVGID{
+  const chevronStyles = `
   width: 3rem;
   height: 3rem;
   padding: 1vmin 0;
-  transition: fill 0.5s;
-}`
+  transition: fill 0.5s;`
 </script>
 
 <button class="nonStandard roundedBtn" on:click={click}>
@@ -18,13 +17,13 @@
   <slot/>
 </button>
 
-<style>
+<style lang="scss">
   button{
-    font-size: var(--HeaderFontSize);
+    font-size: $HeaderFontSize;
     background-color: transparent;
     border: none;
     display: flex;
-    color: var(--FontColor);
+    color: $FontColor;
     width: 100%;
     align-items: center;
     justify-content:flex-end;

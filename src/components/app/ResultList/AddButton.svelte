@@ -2,6 +2,10 @@
 import lottie from 'lottie-web'
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
+import {GetSCSSVars} from "../../../util";
+
+const scssVars = GetSCSSVars()
+
 const dispatch = createEventDispatcher();
 
 let container;
@@ -11,16 +15,16 @@ export let checked = false;
 let SvgCSS = `
 .addButton *{
   cursor: pointer;
-  stroke: var(--FontColor);
+  stroke: ${scssVars.FontColor};
   transition: stroke 0.2s;
 }
 
 .addButton.checked *{
-  stroke: var(--AccentColor);
+  stroke: ${scssVars.AccentColor};
 }
 
-.addButton:hover *{
-  stroke: var(--SelectedColor);
+.addButton:hover *, .addButton:focus *{
+  stroke: ${scssVars.AccentColor};
 }
 `
 
@@ -75,7 +79,7 @@ function SetButtonState(on){
   on:click={ButtonClicked}
 ></div>
 
-<style>
+<style lang="scss">
 div {
   display: block;
   width: 50px;

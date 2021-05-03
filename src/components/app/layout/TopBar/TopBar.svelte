@@ -13,26 +13,7 @@
 	export let SelectedIndex = -1;
 	let MaxResults = 5;
 	let SearchSection;
-	let showSuggestions = false;
-	let SuggestionList;
-	let SearchButtonTabIndex = derived(ResultSuggestions,$ResultSuggestions=>$ResultSuggestions.length+2);
 	let SearchButton;
-	const SearchButtonStyles = `
-		svg#SVGID{
-			width:4vmin;
-			height:4vmin;
-			cursor: pointer;
-			fill:var(--FontColor, black);
-			transition: fill 0.3s;
-		}
-
-		*:hover>svg#SVGID, *:focus>svg#SVGID{
-			fill:var(--AccentColor, green);
-		}
-		*:active>svg#SVGID{
-			fill:var(--SelectedColor, green);
-		}
-	`
 
 	export async function KeyPressed(e){
 		if(e.code == "Enter") SendSearch(e.target.value);
@@ -47,7 +28,7 @@
 					|| result.name).map(name=>{
 						return {
 							value:name,
-							innerHtml:name.replaceAll(new RegExp(e.target.value,"gi"), `<b style="color: var(--SelectedColor, green);" class="searchReccomendation">${e.target.value}</b>`)
+							innerHtml:name.replaceAll(new RegExp(e.target.value,"gi"), `<b style="color: var(--SelectedColor));" class="searchReccomendation">${e.target.value}</b>`)
 						}
 					})
 					.slice(0,MaxResults
@@ -109,8 +90,7 @@
 	</header>
 </div>
 
-<style>
-
+<style lang="scss">
 .hero-head{
 		position: sticky;
 		top:0;

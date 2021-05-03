@@ -25,7 +25,7 @@ function Retry(){
       <p>failed loading<br/><span on:click={Retry} class="link">Click here</span> to try again</p>
     {/await}
 
-<style>
+<style lang="scss">
   select{
     width: 100%;
   }

@@ -93,10 +93,10 @@ const initIntersectionObserver = (loadBottom) => {
 <div class="scroll-block bottom" bind:this={loadMoreButton}/>
 </div>
 
-<style>
+<style lang="scss">
 
 h2{
-  color:var(--FontColor)
+  color:$FontColor
 }
 
 #cardContainer{

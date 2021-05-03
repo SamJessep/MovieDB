@@ -17,12 +17,12 @@ export let click = ButtonClick
   <button on:click={click}>{text}</button>
 </li>
 
-<style>
+<style lang="scss">
 button{
  background-color: transparent;
  border:none;
- color: var(--FontColor);
- font-size: var(--HeaderFontSize);
+ color: $FontColor;
+ font-size: $HeaderFontSize;
  padding: 1rem;
 }
 
@@ -32,10 +32,11 @@ button{
 }
 
 li.quickBtn{
-  font-size: var(--HeaderFontSize);
+  font-size: $HeaderFontSize;
   border-radius: 0.2rem;
+  color: $FontColor;
 }
-li.quickBtn:hover, .quickBtn:hover, .quickBtn:focus{
-  background-color: var(--AccentColor);
+li.quickBtn:hover, .quickBtn:hover, .quickBtn:focus, li.quickBtn.active{
+  background-color: $AccentColor;
 }
 </style>

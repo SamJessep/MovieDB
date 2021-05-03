@@ -15,7 +15,7 @@ function GetSvgID(){
 async function LoadSvgFile(src){
   var svgContents = await fetch(src).then(f=>f.text()).then(f=> f)
   var inner = /<svg[\w\W]{1,}?>([\w\W]*)<\/svg>/.exec(svgContents)[1];
-  return svgContents.replace(inner, "<style>"+styles+"</style>"+inner).replace(/<svg/, `<svg id=${svgID}`);
+  return svgContents.replace(/<svg/, `<svg id=${svgID} style="${styles}"`);
 }
 </script>
 {#await LoadSvgFile(src)}

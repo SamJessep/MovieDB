@@ -1,3 +1,4 @@
+import scssVars from "./styles/_export.scss"
 
 export function QueryToJSON(queryString){
   try{
@@ -14,4 +15,18 @@ export function ParamsToString(params){
   }catch(e){
     return ""
   }
+}
+
+export function ParseSCSS(scssExport){
+  let varLines = scssExport.replace(":export {","").replace("}","").trim().split("\n").map(l=>l.trim())
+  let vars = {}
+  varLines.forEach(l => {
+    let match = l.match(/(.*):(.*);/)
+    vars[match[1].trim()] = match[2].trim()
+  });
+  return vars
+}
+
+export function GetSCSSVars(){
+  return ParseSCSS(scssVars);
 }

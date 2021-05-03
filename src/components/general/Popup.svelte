@@ -5,23 +5,17 @@ export let MenuOpen = false;
 export let HasDefaultClose;
 
 let closeStyles = `
-svg#SVGID{
-  fill: var(--FontColor, black);
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 1vmin 0;
+  width: 2rem;
+  height: 2rem;
   transition: fill 0.5s;
-}
-svg#SVGID:hover{
-  fill: var(--AccentColor, green);
-}
+  padding: 0.4rem;
 `
 </script>
 
 <div id="dialogBackground" class:open={MenuOpen}>
   <dialog open={MenuOpen}>
     {#if HasDefaultClose}
-    <button id="close" on:click={()=>MenuOpen=!MenuOpen}>
+    <button class="close roundedBtn dark" on:click={()=>MenuOpen=!MenuOpen}>
       <SvgIcon src="images/close.svg" styles={closeStyles}/>
     </button>
     {/if}
@@ -30,7 +24,7 @@ svg#SVGID:hover{
   </dialog>
 </div>
 
-<style>
+<style lang="scss">
 
 #dialogBackground{
   z-index: -1;
@@ -55,9 +49,9 @@ svg#SVGID:hover{
 dialog{
   display: none;
   width: 80vw;
-  color: var(--FontColor, black);
-  background-color: var(--BackgroundColor, white);
-  box-shadow: 0.5rem 0.5rem 3px 0px var(--AccentColor, green);
+  color: $FontColor;
+  background-color: $BackgroundColor;
+  box-shadow: 0.5rem 0.5rem 3px 0px $AccentColor;
 
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -75,16 +69,13 @@ dialog[open]{
   transition: top 1s;
 }
 
-#close{
+.close{
+  cursor: pointer;
   position: absolute;
   right: 0.5rem;
   top: 0rem;
-  background-color: transparent;
-  font-size: var(--HeaderFontSize, 3rem);
-  border: none;
-  color: white;
-  font-weight: 700;
-  padding: 0;
+  fill: $FontColor;
+  margin: 0.5rem;
 }
 
 </style>

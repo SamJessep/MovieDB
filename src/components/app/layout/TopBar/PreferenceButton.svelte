@@ -18,19 +18,16 @@
   })
 
   let settingsStyles = `
-svg#SVGID{
   width: 3.5rem;
   height: 3.5rem;
   padding: 1vmin 0;
   transition: fill 0.5s;
-}`;
+`;
 
 let confirmStyles = `
-svg#SVGID{
-  width: 3.5rem;
-  height: 3.5rem;
-  padding: 1vmin 0;
-}
+  width: 2rem;
+  height: 2rem;
+  padding-left: 0.2rem;
 `;
 
 function resetAccountPreferences(){
@@ -81,15 +78,15 @@ function resetAccountPreferences(){
       </div>
       <div class="confirm-section" class:visable={madeChanges}>
         <small>Your changes have been saved</small>
-        <button aria-label="Save" class="icon-btn sync" on:click={e=>window.location.reload()}>
-          <SvgIcon src="images/sync.svg" styles={confirmStyles}/>
+        <button aria-label="Save" class="sync standard" on:click={e=>window.location.reload()}>
           <p>click to update the page</p>
+          <SvgIcon src="images/sync.svg" styles={confirmStyles}/>
         </button>
       </div>
     </div>
   </Popup>
 </div>
-<style>
+<style lang="scss">
   fieldset{
     min-width: 33%
   }
@@ -112,20 +109,21 @@ function resetAccountPreferences(){
   .confirm-section>button{
     padding: 0;
     margin: 0;
-    transition: color 0.5s;
     cursor: pointer;
   }
 
   .confirm-section>button:hover{
-    color: var(--AccentColor, green);
+    color: $AccentColor;
   }
   
   .sync>p{
     margin: auto;
   }
 
-  .sync{
+  button.sync{
     display: flex;
+    padding: 0.4rem;
+    margin-left: 0.4rem;
   }
 
   .confirm-section.visable{

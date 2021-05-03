@@ -9,12 +9,11 @@ export let menuOpen = false;
 let menuElement;
 let buttonElement;
 
-const menuStyles = `svg#SVGID{
+const menuStyles = `
   width: 3.5rem;
   height: 3.5rem;
   padding: 1vmin 0;
   transition: color 0.2s;
-}
 `
 function windowClick(e){
   try{
@@ -44,10 +43,10 @@ checkIfMobile()
 {/if}
 <svelte:window on:click={windowClick}  on:resize={checkIfMobile}/>
 
-<style>
+<style lang="scss">
 .mobileMenu{
   position: fixed;
-  background-color: var(--PanelColor);
+  background-color: $PanelColor;
   right:0;
   top:96px;
   max-width: 75vw;

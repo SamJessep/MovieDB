@@ -7,5 +7,5 @@
 	<Router {routes} restoreScrollState={true}/>
 </main>
 
-<style>
+<style lang="scss">
 </style>
