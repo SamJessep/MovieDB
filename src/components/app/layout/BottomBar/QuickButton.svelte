@@ -2,7 +2,7 @@
 import {push, link} from 'svelte-spa-router'
 export let text;
 export let url = "#";
-export let isActive = false;
+export let active = false;
 
 function ButtonClick(){
   if(url){
@@ -13,8 +13,8 @@ export let click = ButtonClick
 
 </script>
 
-<li class:is-active={isActive} class="quickBtn">
-  <button on:click={click}>{text}</button>
+<li class="quickBtn">
+  <button class:active on:click={click}>{text}</button>
 </li>
 
 <style lang="scss">

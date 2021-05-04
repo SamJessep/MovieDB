@@ -1,8 +1,11 @@
 <script>
   import QuickButton from './QuickButton.svelte'
   import GenreButton from './GenreButton.svelte'
+
+  import {querystring, location} from 'svelte-spa-router'
   import {User, IsLoggedIn} from '../../../../stores/userStore'
 
+  console.log($location)
   let buttons = [{
       text: "My Watchlist",
       url: `/${$User ? $User.username : null}/movie/Watchlist`,
@@ -27,7 +30,7 @@
       <ul>
         {#each buttons as btn}
           {#if $IsLoggedIn || !btn.needsLogin}
-            <QuickButton text={btn.text} url={btn.url}/>
+            <QuickButton text={btn.text} url={btn.url} active={$location.startsWith(btn.url)}/>
           {/if}
         {/each}
         <GenreButton/>

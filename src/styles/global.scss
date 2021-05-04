@@ -58,6 +58,10 @@ color: $SelectedColor;
 outline: none;
 }
 
+button.active{
+  border-bottom: solid $AccentColor 3px;
+}
+
 label {
 display: block;
 }
