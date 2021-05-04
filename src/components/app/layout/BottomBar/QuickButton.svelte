@@ -36,7 +36,7 @@ li.quickBtn{
   border-radius: 0.2rem;
   color: $FontColor;
 }
-li.quickBtn:hover, .quickBtn:hover, .quickBtn:focus, li.quickBtn.active{
-  background-color: $AccentColor;
+li.quickBtn>button:hover, .quickBtn>button:hover, .quickBtn>button:focus{
+  border-bottom: solid $SelectedColor 3px;
 }
 </style>

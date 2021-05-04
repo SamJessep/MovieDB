@@ -20,7 +20,7 @@
   let settingsStyles = `
   width: 3.5rem;
   height: 3.5rem;
-  padding: 1vmin 0;
+  padding: 0.3rem;
   transition: fill 0.5s;
 `;
 

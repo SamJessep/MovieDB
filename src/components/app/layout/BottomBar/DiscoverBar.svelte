@@ -2,10 +2,9 @@
   import QuickButton from './QuickButton.svelte'
   import GenreButton from './GenreButton.svelte'
 
-  import {querystring, location} from 'svelte-spa-router'
+  import {location} from 'svelte-spa-router'
   import {User, IsLoggedIn} from '../../../../stores/userStore'
-
-  console.log($location)
+  
   let buttons = [{
       text: "My Watchlist",
       url: `/${$User ? $User.username : null}/movie/Watchlist`,
@@ -41,7 +40,7 @@
 
 <style lang="scss">
 *{
-  color: $FontColor, white;
+  color: $FontColor;
   font-size: $BaseFontSize;
   outline-color: $AccentColor;
 }

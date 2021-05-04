@@ -14,7 +14,6 @@ let profilePromise
 
 function TryLoadProfile(){
   let id = localStorage.getItem("session_id")
-  console.log(id)
   if(id){
     profilePromise = Account.GetDetails(id)
     profilePromise.then(user=>{
@@ -41,7 +40,6 @@ async function StartSession(requestToken){
 let regularQS = QueryToJSON(window.location.search.slice(1))
 let hashQS = QueryToJSON($querystring)
 var params = JSON.stringify(regularQS) == "{}" ? hashQS : regularQS
-console.log($User, $IsLoggedIn)
 if(params["approved"]){
   StartSession(params.request_token)
 }
@@ -65,7 +63,7 @@ async function LogOut(){
 let userBtnStyles = `
   width: 3.5rem;
   height: 3.5rem;
-  padding: 1vmin 0;
+  padding: 0.3rem;
   transition: fill 0.5s;`;
 
 </script>
@@ -81,8 +79,10 @@ let userBtnStyles = `
     </button>
     {/if}
   {:else}
-    <button id="openLogin" on:click={Account.StartLogin} class="icon-btn roundedBtn dark login-btn">
-        Login ICON
+    <button id="openLogin" on:click={Account.StartLogin} class="roundedBtn dark login-btn">
+      <div>
+        <p>Login</p>
+      </div>  
     </button>
   {/if}
   <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
@@ -116,8 +116,13 @@ div[slot="contents"]{
   text-align: center;
 }
 
-.login-btn:hover, .login-btn:focus{
-  color:$AccentColor
+.login-btn>div{
+  display: flex;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0.3rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon-btn{
