@@ -82,7 +82,7 @@ function SetButtonState(on){
 <style lang="scss">
 div {
   display: block;
-  width: 50px;
+  max-width: 50px;
 }
 
 </style>

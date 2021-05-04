@@ -61,8 +61,8 @@ async function LogOut(){
 }
 
 let userBtnStyles = `
-  width: ${isMobile ? "2rem" : "3.5rem"};
-  height: ${isMobile ? "2rem" : "3.5rem"};
+  width: 3.5rem;
+  height: 3.5rem;
   padding: 0.3rem;
   transition: fill 0.5s;`;
 

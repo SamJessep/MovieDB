@@ -143,4 +143,14 @@ export function AddToList(event){
   flex-direction: column;
 }
 
+@media only screen and (max-width: 750px){
+  .poster{
+    height: auto;
+  }
+
+  .resultCard{
+    width: 15rem;
+  }
+}
+
 </style>

@@ -5,8 +5,8 @@
   export let click = ()=>false;
 
   const chevronStyles = `
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   padding: 1vmin 0;
   transition: fill 0.5s;`
 </script>
@@ -31,8 +31,6 @@
   }
 
   @media only screen and (max-width: 750px){
-    button{
-      font-size: $HeaderFontSize-Mobile;
-    }
+
   }
 </style>
