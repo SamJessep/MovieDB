@@ -16,13 +16,15 @@ const dispatch = createEventDispatcher();
 export let Result;
 export let cardId;
 let OnWatchlist = false;
-
-let poster;
+let loading = true;
 
 const imgLoad = e=>{
   let image = e.target
+  if(image.src == image.dataset.src){
+    loading = false;
+    return
+  }
   image.src=image.dataset.src
-  image.classList.remove("loading")
 }
 
 IsLoggedIn.subscribe(async (val)=>{
@@ -74,7 +76,7 @@ export function AddToList(event){
 </script>
 <button class="resultCard nonStandard" id={cardId} transition:fade>
     {#if Result.poster_path}
-    <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster loading" loading="lazy" on:load={imgLoad} />
+    <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster" class:loading loading="lazy" on:load={imgLoad} />
       <!-- <div style={posterBackgroundStyles} class="poster"/> -->
     {:else}
       <div class="placeholder_container poster" on:click={LoadResultPage}>
@@ -98,12 +100,11 @@ export function AddToList(event){
   grid-template-columns: 16% 68% 16%;
   width: 100%;
   min-height: 50px;
-}
-
-.toolbar>p{
-  display: inline-block;
-  grid-column: 2;
-  margin: auto;
+  &>p{
+    display: inline-block;
+    grid-column: 2;
+    margin: auto;
+  }
 }
 
 .resultCard{
@@ -119,21 +120,21 @@ export function AddToList(event){
   padding: 0.3rem;
   margin: 1rem;
   width: 21rem;
+  &:hover, &:focus{
+    box-shadow: 0px 0px 20px 3px $AccentColor;
+  }
 }
 
-.resultCard:hover, .resultCard:focus, .resultCard:active{
-  box-shadow: 0px 0px 20px 3px $AccentColor;
-}
 
 .poster{
   cursor: pointer;
   height: 30rem;
   transition: filter 0.5s;
+  &.loading{
+    filter: blur(0.5rem);
+  }
 }
 
-.poster.loading{
-  filter:blur(0.5rem);
-}
 
 .placeholder_container{
   background-color: $SecondBackgroundColor;

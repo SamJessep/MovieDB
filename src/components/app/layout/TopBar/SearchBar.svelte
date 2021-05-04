@@ -46,13 +46,14 @@ function SendSearch(query){
 function SelectSuggestion(suggestion){
   searchOpen = false
   searchValue = suggestion;
+  console.log(suggestion, searchValue)
   SendSearch(suggestion)
 }
 
 function KeyPressed(e){
   searchOpen=searchValue != "";
   if(!SearchArea.contains(document.activeElement)) return
-  let btns = document.querySelectorAll(".suggestion-btn")
+  let btns = document.querySelectorAll(".result-item")
   if(searchValue != oldSearchValue){
       Loadsuggestions()
   }
@@ -78,10 +79,11 @@ function KeyPressed(e){
 }
 
 function DocumentClick(e){
-  if(!SearchArea.contains(e.target)){
-    searchOpen = false
-    clickTab("All");
-  }
+  //If user clicks off the search drop down, close it
+  if(SearchArea.contains(e.target)) return
+  if([...e.target.classList].includes("volatile-btn")) return
+  searchOpen = false
+  clickTab("All");
 }
 
 async function Loadsuggestions(){
@@ -117,20 +119,23 @@ async function Loadsuggestions(){
   <div id="datalist" class:isOpen={searchOpen}>
     <p class="panel-tabs">
       {#each $tabs as tab,index (tab.name)}
-          <button class:is-active={tab.active} class="nonStandard section" on:click={()=>clickTab(tab.name)} on:focus={suggestionIndex=index}>{tab.name}</button>
+          <button class:is-active={tab.active} on:click={()=>clickTab(tab.name)} on:focus={suggestionIndex=index}>{tab.name}</button>
       {/each}
     </p>
     <p class="results">
       {#await $tabs.find(t=>t.active).suggestions}
-        <div class="panel-block info-message">Loading...</div>
+        <div class="info-message result-item">Loading...</div>
       {:then suggestions}
         {#each suggestions as suggestion}
-          <button class="panel-block suggestion-btn nonStandard" on:click={()=>SelectSuggestion(suggestion)}>{suggestion}</button>
+          <button class="result-item" on:click={()=>SelectSuggestion(suggestion)}>{suggestion}</button>
           {:else}
-            <div class="panel-block info-message">No Suggestions</div>
+            <div class="info-message result-item">No Suggestions</div>
         {/each}
       {:catch error}
-        <ErrorSmall userMessage="Failed loading suggestions" errorMessage={error.message} />
+      <div class="result-item error-container">
+        <ErrorSmall userMessage="Failed loading suggestions" errorMessage={error.message}/>
+        <button on:click={Loadsuggestions} class="retry-btn volatile-btn">Retry</button>
+      </div>
       {/await}
     </p>
   </div>
@@ -144,49 +149,45 @@ async function Loadsuggestions(){
   #searchIcon{
     z-index: 0;
   }
+  .SB{
+    border-bottom: solid transparent 3px;
+    &:focus{
+      border-bottom: solid $AccentColor 3px;
+    }
+  }
+
 
   #searchBarContainer{
     flex-grow:1;
     margin: auto;
     position: relative;
-  }
-
-  #searchBarContainer>div{
-    border:none;
+    div{
+      border:none;
+    }
   }
 
   .isOpen{
     display: block;
   }
 
-  .results{
-    border-radius: 0 0 1rem 1rem;
-  }
-
   #datalist{
     position: absolute;
     width: 100%;
     background-color: $PanelColor;
-  }
-
-  #datalist:not(.isOpen){
-    display: none;
-  }
-
-  button.nonStandard{
-    background: none;
-    color: $FontColor;
-    border: none;
+    padding-bottom: 1rem;
+    border-radius: 0 0 1rem 1rem;
+    &:not(.isOpen){
+      display: none;
+    }
   }
 
   .panel-tabs{
     border-bottom: 0.15rem solid $FontColor;
-  }
-
-  .panel-tabs>button.section{
-    font-size: $HeaderFontSize;
-    padding: 0.5rem;
-    outline: none;
+    &>button{
+      font-size: $HeaderFontSize;
+      padding: 0.5rem;
+      outline: none;
+    }
   }
 
   .info-message{
@@ -195,22 +196,51 @@ async function Loadsuggestions(){
     user-select: none;
   }
 
-  button:hover{
-    background-color: $PanelHover;
-  }
-  
-  .panel-tabs>button.section.is-active{
-    color: $SelectedColor;
-  }
-  
-  .panel-tabs>button.section.is-active:focus, button.nonStandard:active, button.nonStandard:focus{
-    color: $AccentColor;
+  button:not(.retry-btn){
+    border:none;
+    color: $FontColor;
+    background-color: transparent;
+    width: 100%;
+    border-bottom: solid transparent 3px;
+    &:hover, &:focus{
+      background-color: $PanelHover;
+      border-bottom: solid $SelectedColor 3px;
+      &.result-item{
+        color:$AccentColor;
+      }
+    }
+    &:focus, &:active{
+      border-bottom: solid $SelectedColor 3px;
+      outline: none;
+      &.result-item{
+        color:$AccentColor;
+      }
+    }
+    &.is-active{
+      border-bottom: solid $AccentColor 3px;
+    }
   }
 
-  button.nonStandard{
+  .result-item{
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.5em 0.75em;
     outline: none;
     width: 100%;
     font-size: $BodyFontSize;
-    border-bottom: 0.1rem solid $FontColor;
+    &:not(.retry-btn){
+      border-bottom: 3px solid $FontColor;
+    }
+  }
+
+  .error-container{
+    display:block;
+  }
+
+  .retry-btn{
+    display:block;
+    padding: 0.2rem 2rem;
+    margin: auto;
   }
 </style>

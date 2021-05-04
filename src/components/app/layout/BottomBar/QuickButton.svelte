@@ -18,25 +18,29 @@ export let click = ButtonClick
 </li>
 
 <style lang="scss">
-button{
- background-color: transparent;
- border:none;
- color: $FontColor;
- font-size: $HeaderFontSize;
- padding: 1rem;
-}
-
-.quickBtn>button:active, .quickBtn>button:focus{
-  background-color: transparent;
-  outline: none;
-}
-
-li.quickBtn{
+  
+.quickBtn{
   font-size: $HeaderFontSize;
   border-radius: 0.2rem;
   color: $FontColor;
-}
-li.quickBtn>button:hover, .quickBtn>button:hover, .quickBtn>button:focus{
-  border-bottom: solid $SelectedColor 3px;
+  &>button{
+    background-color: transparent;
+    border:none;
+    color: $FontColor;
+    font-size: $HeaderFontSize;
+    padding: 1rem;
+    border-bottom: solid transparent 3px;
+    &:active, .quickBtn>button:focus{
+      background-color: transparent;
+      outline: none;
+    }
+    &:hover, &:hover, &:focus:not(.active){
+      border-bottom: solid $SelectedColor 3px;
+      background-color: rgba(0, 0, 0, 0.897);
+    }
+    &.active{
+      border-bottom: solid $AccentColor 3px;
+    }
+  }
 }
 </style>

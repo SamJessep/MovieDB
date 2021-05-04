@@ -79,11 +79,17 @@ let userBtnStyles = `
     </button>
     {/if}
   {:else}
+    {#if isMobile}
+    <MobileButton title="Login" click={Account.StartLogin}>
+      <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
+    </MobileButton>
+    {:else}
     <button id="openLogin" on:click={Account.StartLogin} class="roundedBtn dark login-btn">
       <div>
         <p>Login</p>
       </div>  
     </button>
+    {/if}
   {/if}
   <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
     <div slot="contents">
@@ -116,18 +122,17 @@ div[slot="contents"]{
   text-align: center;
 }
 
-.login-btn>div{
-  display: flex;
-  width: 3.5rem;
-  height: 3.5rem;
-  padding: 0.3rem;
-  align-items: center;
-  justify-content: center;
-}
-
-.icon-btn{
+.login-btn{
   display: flex;
   align-items: center;
+  &>div{
+    display: flex;
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0.3rem;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 h1.title{
