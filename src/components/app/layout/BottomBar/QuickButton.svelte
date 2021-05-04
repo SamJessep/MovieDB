@@ -15,6 +15,7 @@ export let click = ButtonClick
 
 <li class="quickBtn">
   <button class:active on:click={click}>{text}</button>
+  <slot/>
 </li>
 
 <style lang="scss">
@@ -42,5 +43,17 @@ export let click = ButtonClick
       border-bottom: solid $AccentColor 3px;
     }
   }
+}
+
+@media only screen and (max-width: 750px){
+  .quickBtn{
+    &>button{
+      font-size: $HeaderFontSize-Mobile;
+      padding: 0.7 auto;
+      width:100%;
+      flex: 1 1 0px;
+    }
+  }
+
 }
 </style>

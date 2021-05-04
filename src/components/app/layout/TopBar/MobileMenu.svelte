@@ -10,8 +10,8 @@ let menuElement;
 let buttonElement;
 
 const menuStyles = `
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 1vmin 0;
   transition: color 0.2s;
 `
@@ -61,6 +61,10 @@ checkIfMobile()
 .mobileMenuButton:hover, .mobileMenuButton:focus{
   border:none;
 }
+@media only screen and (max-width: 750px){
+  .mobileMenu{
+    top:4rem  ;
+  }
 
-
+}
 </style>

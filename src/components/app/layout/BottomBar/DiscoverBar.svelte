@@ -56,4 +56,12 @@ nav{
   position: fixed;
   bottom: 0;
 }
+@media only screen and (max-width: 750px){
+  .hero-foot{
+    width: 100%;
+  }
+  nav{
+    border-radius: 0;
+  }
+}
 </style>

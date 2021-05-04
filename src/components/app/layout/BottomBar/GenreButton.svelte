@@ -59,7 +59,6 @@ export function GenreSelected(id, type){
   isOpen = false
 }
 </script>
-<div id="root" bind:this={root}>
   <QuickButton text="Genre" click={ToggleGenreContainer}/>
   <Popup bind:MenuOpen={isOpen} HasDefaultClose={true}>
     <div slot="contents">
@@ -88,7 +87,6 @@ export function GenreSelected(id, type){
   </Popup>
   <div id="container" class:isOpen={isOpen}>
   </div>
-</div>
 
 <svelte:window on:click={Click}/>
 
@@ -162,5 +160,17 @@ details p:hover{
   color:$AccentColor;
   background-color:$SecondBackgroundColor, grey;;
   border-radius: 1vmin;
+}
+
+@media only screen and (max-width: 750px){
+  .quickBtn{
+    &>button{
+      font-size: $HeaderFontSize-Mobile;
+      padding: 0.7 auto;
+      width:100%;
+      flex: 1 1 0px;
+    }
+  }
+
 }
 </style>

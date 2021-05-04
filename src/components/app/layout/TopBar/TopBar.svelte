@@ -116,4 +116,11 @@
 	#logoBtn:hover{
 		background-color: transparent;
 	}
+
+	@media only screen and (max-width: 750px){
+		#logo{
+			max-width: 3rem;
+			max-height: 3rem;
+		}
+	}
 </style>

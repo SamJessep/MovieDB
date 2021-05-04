@@ -243,4 +243,13 @@ async function Loadsuggestions(){
     padding: 0.2rem 2rem;
     margin: auto;
   }
+
+  @media only screen and (max-width: 750px){
+		#searchIcon{
+			font-size: 1rem;
+		}
+    .SB{
+      font-size: 1rem;
+    }
+	}
 </style>

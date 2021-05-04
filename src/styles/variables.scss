@@ -11,8 +11,13 @@ $PanelDarkHover:rgb(19, 19, 19);
 $VideoBackground: #000000f0;
 $ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
 $ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);
+
+
 $BodyFontSize: 1rem;
 $HeaderFontSize: 1.2rem;
 $BaseFontSize: 0.8rem;
-$StarWidth: 5vmin;
 
+$StarWidth: 5vmin;
+$BodyFontSize-Mobile: 0.8rem;
+$HeaderFontSize-Mobile: 1rem;
+$BaseFontSize-Mobile: 0.6rem;
