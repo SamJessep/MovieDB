@@ -145,11 +145,11 @@ export function AddToList(event){
 
 @media only screen and (max-width: 750px){
   .poster{
-    height: auto;
+    height: 14rem;
   }
 
   .resultCard{
-    width: 15rem;
+    width: 10rem;
   }
 }
 
