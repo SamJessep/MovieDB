@@ -40,10 +40,9 @@ let placeholderStyles = `
 `
 let mediaTypeStyles = `
     display:block;
-    width:30px;
     fill:${scssVars.FontColor};
     transition: fill 0.3s;
-    margin: auto;
+    margin: auto 0.2rem;
 `
 
 let title = Result.title || Result.original_title || Result.name;
@@ -150,6 +149,7 @@ export function AddToList(event){
 
   .resultCard{
     width: 10rem;
+    margin: 0.4rem;
   }
 }
 
