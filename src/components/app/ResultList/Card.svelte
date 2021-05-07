@@ -99,6 +99,7 @@ export function AddToList(event){
   grid-template-columns: 16% 68% 16%;
   width: 100%;
   min-height: 50px;
+  flex-grow:1;
   &>p{
     display: inline-block;
     grid-column: 2;
@@ -106,6 +107,9 @@ export function AddToList(event){
   }
 }
 
+:root{
+  --cardWidth: 21rem;
+}
 .resultCard{
   display: flex;
   flex-direction: column;
@@ -118,7 +122,7 @@ export function AddToList(event){
   border-radius: 10px;
   padding: 0.3rem;
   margin: 1rem;
-  width: 21rem;
+  width: var(--cardWidth, 21rem);
   &:hover, &:focus{
     box-shadow: 0px 0px 20px 3px $AccentColor;
   }
@@ -127,7 +131,7 @@ export function AddToList(event){
 
 .poster{
   cursor: pointer;
-  height: 30rem;
+  min-height: calc(21rem * (513 / 342));
   transition: filter 0.5s;
   &.loading{
     filter: blur(0.5rem);
@@ -143,12 +147,16 @@ export function AddToList(event){
 }
 
 @media only screen and (max-width: 750px){
+  :root {
+    --cardWidth: 10rem;
+  }
+
   .poster{
-    height: 14rem;
+    min-height: calc(10rem * (513 / 342));;
   }
 
   .resultCard{
-    width: 10rem;
+    width: var(--cardWidth);
     margin: 0.4rem;
   }
 }

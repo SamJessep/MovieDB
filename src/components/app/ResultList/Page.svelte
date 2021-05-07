@@ -2,6 +2,7 @@
 import {QueryToJSON} from '../../../util'
 import Card from '../ResultList/Card.svelte'
 import {querystring} from 'svelte-spa-router'
+import LoadingIcon from './LoadingIcon.svelte';
 
 export let FetchMethod;
 export let MethodParams =[];
@@ -19,7 +20,7 @@ async function RequestResults(page){
 
 </script>
 {#await PagePromise}
-  <h2>Fetching Results...</h2>
+  <LoadingIcon/>
 {:then results}
   {#each results as result, index (result.id)}
     <Card Result={result} cardId={"card-"+index}/>

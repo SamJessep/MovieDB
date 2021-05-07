@@ -3,6 +3,7 @@ import {QueryToJSON} from '../../../util'
 import { onMount, onDestroy} from 'svelte';
 import {location, querystring} from 'svelte-spa-router'
 import Page from './Page.svelte'
+import LoadingIcon from './LoadingIcon.svelte';
 
 export let FetchMethod;
 export let MethodParams =[];
@@ -80,7 +81,7 @@ const initIntersectionObserver = (loadBottom) => {
 </script>
 <div id="cardContainer" class="card-list">
 {#await resultPromise}
-  <h2>Fetching Results...</h2>
+  <!-- <LoadingIcon/> -->
 {:then pageData}
   {#each pages as page}
     {#if page==1}

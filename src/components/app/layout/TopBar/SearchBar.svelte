@@ -2,6 +2,8 @@
 import {push} from 'svelte-spa-router'
 import {Search} from '../../../../model/TMDbAPI';
 import { writable } from 'svelte/store'
+import { slide, fly } from 'svelte/transition';
+import { fade } from 'svelte/transition';
 
 //UI components
 import ErrorSmall from '../../../general/ErrorSmall.svelte';
@@ -57,15 +59,17 @@ function KeyPressed(e){
   if(searchValue != oldSearchValue){
       Loadsuggestions()
   }
-  else if(e.code == "ArrowUp"){
+  //Up Arrow
+  else if(e.keyCode == 38){
     suggestionIndex = suggestionIndex>0? suggestionIndex-1 : btns.length-1;
     btns[suggestionIndex].focus()
   }
-  else if(e.code == "ArrowDown"){
+  //Down Arrow
+  else if(e.keyCode == 40){
     suggestionIndex = suggestionIndex>=btns.length-1? 0 : suggestionIndex+1;
     btns[suggestionIndex].focus()
   }
-  else if(e.code == "Enter"){
+  else if(e.keyCode == 13){
     //If suggestion is focused via tab or arrow keys => enter
     if(suggestionIndex>=0 && suggestionIndex<btns.length){
       btns[suggestionIndex].click()
@@ -116,7 +120,8 @@ async function Loadsuggestions(){
       </span>
     </p>
   </div>
-  <div id="datalist" class:isOpen={searchOpen}>
+  {#if searchOpen}
+  <div id="datalist" transition:slide>
     <p class="panel-tabs">
       {#each $tabs as tab,index (tab.name)}
           <button class:is-active={tab.active} on:click={()=>clickTab(tab.name)} on:focus={suggestionIndex=index}>{tab.name}</button>
@@ -124,21 +129,22 @@ async function Loadsuggestions(){
     </p>
     <p class="results">
       {#await $tabs.find(t=>t.active).suggestions}
-        <div class="info-message result-item">Loading...</div>
+        <div class="info-message result-item" in:fade>Loading...</div>
       {:then suggestions}
         {#each suggestions as suggestion}
-          <button class="result-item" on:click={()=>SelectSuggestion(suggestion)}>{suggestion}</button>
+          <button class="result-item" on:click={()=>SelectSuggestion(suggestion)} in:fade>{suggestion}</button>
           {:else}
-            <div class="info-message result-item">No Suggestions</div>
+            <div class="info-message result-item" in:fade>No Suggestions</div>
         {/each}
       {:catch error}
-      <div class="result-item error-container">
+      <div class="result-item error-container" in:fade>
         <ErrorSmall userMessage="Failed loading suggestions" errorMessage={error.message}/>
         <button on:click={Loadsuggestions} class="retry-btn volatile-btn">Retry</button>
       </div>
       {/await}
     </p>
   </div>
+  {/if}
   </div>
   <svelte:window on:click={DocumentClick} on:keyup={KeyPressed} on:keydown={(e)=>{
     if(SearchArea.contains(e.target) && e.code == "ArrowUp" || e.code == "ArrowDown") e.preventDefault()}
@@ -166,19 +172,12 @@ async function Loadsuggestions(){
     }
   }
 
-  .isOpen{
-    display: block;
-  }
-
   #datalist{
     position: absolute;
     width: 100%;
     background-color: $PanelColor;
     padding-bottom: 1rem;
     border-radius: 0 0 1rem 1rem;
-    &:not(.isOpen){
-      display: none;
-    }
   }
 
   .panel-tabs{
