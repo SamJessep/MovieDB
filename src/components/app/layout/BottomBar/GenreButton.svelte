@@ -147,7 +147,7 @@ details p:hover{
   border-radius: 1vmin;
 }
 
-@media only screen and (max-width: 750px){
+@media only screen and (max-width: $MobileWidth){
   .quickBtn{
     &>button{
       font-size: $HeaderFontSize-Mobile;

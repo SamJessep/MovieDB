@@ -30,3 +30,7 @@ export function ParseSCSS(scssExport){
 export function GetSCSSVars(){
   return ParseSCSS(scssVars);
 }
+
+export function IsMobile(){
+  return window.innerWidth <= Number(GetSCSSVars().MobileWidth.split("px")[0])
+}

@@ -42,15 +42,17 @@ checkIfMobile()
 <slot/>
 {/if}
 <svelte:window on:click={windowClick}  on:resize={checkIfMobile}/>
-
+<svelte:options accessors={true}/>
 <style lang="scss">
 .mobileMenu{
   position: fixed;
   background-color: $PanelColor;
   right:0;
   top:96px;
-  max-width: 75vw;
   border-radius: 0 0 0 2rem;
+
+  width: 60vw;
+  // height: 100vh;
 }
 
 .mobileMenuButton{
@@ -61,7 +63,7 @@ checkIfMobile()
 .mobileMenuButton:hover, .mobileMenuButton:focus{
   border:none;
 }
-@media only screen and (max-width: 750px){
+@media only screen and (max-width: $MobileWidth){
   .mobileMenu{
     top:4rem  ;
   }

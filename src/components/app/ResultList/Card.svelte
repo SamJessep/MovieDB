@@ -7,7 +7,7 @@ import {IsLoggedIn} from '../../../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
 import { fade } from 'svelte/transition';
 import {GetBestImageSize} from "../../../model/dataHelper.js"
-import {GetSCSSVars} from "../../../util";
+import {GetSCSSVars, IsMobile} from "../../../util";
 
 const scssVars = GetSCSSVars();
 
@@ -15,7 +15,8 @@ const dispatch = createEventDispatcher();
 
 export let Result;
 export let cardId;
-let OnWatchlist = false;
+let OnWatchlist;
+let addButton;
 let loading = true;
 
 const imgLoad = e=>{
@@ -30,6 +31,7 @@ const imgLoad = e=>{
 IsLoggedIn.subscribe(async (val)=>{
   if(val){
     OnWatchlist = await IsOnWatchlist(Result.id, Result.media_type)
+    addButton.SetButtonReady(OnWatchlist);
   }})
 
 let placeholderStyles = `
@@ -42,7 +44,7 @@ let mediaTypeStyles = `
     display:block;
     fill:${scssVars.FontColor};
     transition: fill 0.3s;
-    margin: auto 0.2rem;
+    margin: var(--MediaIconPadding, auto 0.25rem);
 `
 
 let title = Result.title || Result.original_title || Result.name;
@@ -73,7 +75,7 @@ export function AddToList(event){
 }
 
 </script>
-<button class="resultCard nonStandard" id={cardId} transition:fade>
+<button class="resultCard nonStandard" id={cardId} transition:fade title={title}>
     {#if Result.poster_path}
     <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster" class:loading loading="lazy" on:load={imgLoad} />
       <!-- <div style={posterBackgroundStyles} class="poster"/> -->
@@ -85,7 +87,7 @@ export function AddToList(event){
     {/if}
   <div class='toolbar'>
     {#if $IsLoggedIn}
-      <AddButton checked={OnWatchlist} on:addClicked={AddToList}/>
+      <AddButton checked={OnWatchlist} on:addClicked={AddToList} bind:this={addButton}/>
     {/if}
     <p>{title}</p>
     {#if Result.media_type}
@@ -95,15 +97,23 @@ export function AddToList(event){
 </button>
 <style lang="scss">
 .toolbar{
+  --MediaIconPadding: auto 0.5rem;
   display: grid;
   grid-template-columns: 16% 68% 16%;
   width: 100%;
-  min-height: 50px;
+  height: 50px;
   flex-grow:1;
   &>p{
-    display: inline-block;
     grid-column: 2;
     margin: auto;
+    display: block;
+    display: -webkit-box;
+    max-height: 2.6em;
+    line-height: 1.3em;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -146,13 +156,20 @@ export function AddToList(event){
   flex-direction: column;
 }
 
-@media only screen and (max-width: 750px){
+@media only screen and (max-width: $MobileWidth){
   :root {
     --cardWidth: 10rem;
   }
 
+  .toolbar{
+    --MediaIconPadding: auto 0.25rem;
+  }
+
   .poster{
-    min-height: calc(10rem * (513 / 342));;
+    max-width: 100%;
+    height: calc(10rem * (513 / 342));
+    min-width: none;
+    min-height: 0;
   }
 
   .resultCard{

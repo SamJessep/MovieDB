@@ -26,11 +26,11 @@
     color: $FontColor;
     width: 100%;
     align-items: center;
-    justify-content:flex-end;
+    justify-content:space-between;
     border-radius: 0rem;
   }
 
-  @media only screen and (max-width: 750px){
+  @media only screen and (max-width: $MobileWidth){
 
   }
 </style>

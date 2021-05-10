@@ -266,7 +266,7 @@ var searchBarFocused = false
     margin: auto;
   }
 
-  @media only screen and (max-width: 750px){
+  @media only screen and (max-width: $MobileWidth){
 		#searchIcon{
 			font-size: 1rem;
 		}

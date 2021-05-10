@@ -56,7 +56,7 @@ nav{
   position: fixed;
   bottom: 0;
 }
-@media only screen and (max-width: 750px){
+@media only screen and (max-width: $MobileWidth){
   .hero-foot{
     width: 100%;
   }

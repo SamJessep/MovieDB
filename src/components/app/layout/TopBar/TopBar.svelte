@@ -73,11 +73,12 @@
 
 	var header;
 	var prevScrollpos = window.pageYOffset;
+	var mobileMenu;
 	function Scroll(e){
 		var currentScrollPos = window.pageYOffset;
 		if (prevScrollpos > currentScrollPos) {
 			header.style.top = "0";
-		} else {
+		} else if(!mobileMenu.menuOpen){
 			header.style.top = `-${header.offsetHeight}px`;
 		}
 		prevScrollpos = currentScrollPos;
@@ -93,7 +94,7 @@
 					<img id="logo" src="images/MDB_logo.png" alt="App logo"/>
 				</a>
 				<SearchBar/>
-				<MobileMenu let:isMobile>
+				<MobileMenu let:isMobile bind:this={mobileMenu}>
 					<LoginButton isMobile={isMobile}/>
 					<PreferencesButton isMobile={isMobile}/>
 				</MobileMenu>
@@ -131,7 +132,7 @@
 		background-color: transparent;
 	}
 
-	@media only screen and (max-width: 750px){
+	@media only screen and (max-width: $MobileWidth){
 		#logo{
 			max-width: 3rem;
 			max-height: 3rem;

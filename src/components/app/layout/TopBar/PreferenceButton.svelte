@@ -77,6 +77,27 @@ function resetAccountPreferences(){
           <label for="include_adult" class="checkControl">include adult</label>
           <input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult}/>
         </fieldset>
+        <fieldset>
+          <legend>Crap Filter</legend>
+          <label>Must have poster
+            <input type="checkbox"/>
+          </label>
+          <label>Minimum rating
+            <select>
+              <option selected>Disabled</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+        </fieldset>
       </div>
       {#if madeChanges}
         <div class="confirm-section" transition:slide>
@@ -94,6 +115,9 @@ function resetAccountPreferences(){
 <style lang="scss">
   h1{
     font-size: $TitleFontSize;
+  }
+  label{
+    display: block;
   }
   fieldset{
     legend{

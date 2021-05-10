@@ -10,20 +10,27 @@ const dispatch = createEventDispatcher();
 
 let container;
 let animation;
-export let checked = false;
+export let checked;
+let buttonReady = false;
 
 let SvgCSS = `
 .addButton *{
   cursor: pointer;
-  stroke: ${scssVars.FontColor};
+  stroke: transparent;
   transition: stroke 0.2s;
+  pointer-events:none;
 }
 
-.addButton.checked *{
+.addButton.ready *{
+  stroke: ${scssVars.FontColor};
+  pointer-events:all;
+}
+
+.addButton.ready.checked *{
   stroke: ${scssVars.AccentColor};
 }
 
-.addButton:hover *, .addButton:focus *{
+.addButton.ready:hover *, .addButton.ready:focus *{
   stroke: ${scssVars.AccentColor};
 }
 `
@@ -40,27 +47,33 @@ onMount(async () => {
       className: 'addButton',
     }
   })
+
   animation.addEventListener("DOMLoaded", ()=>{
     var styleElement = document.createElement("style")
     styleElement.innerHTML = SvgCSS;
     container.children[0].prepend(styleElement)
     container.children[0].classList.add("addButton")
-    if(animation.gotToAndStop){
-      animation.gotToAndStop(27, true)
-    }
-  });
+    });
 });
-
-$:SetButtonState(checked)
 
 function ButtonClicked(){
   checked = !checked;
+  SetButtonState(checked)
   dispatch('addClicked',{
     checked: checked
   })
 }
 
+export function SetButtonReady(on){
+  buttonReady = true;
+  container.children[0].classList.add("ready")
+  animation.goToAndStop(on ? 14:27, true)
+  container.children[0].classList[on?"add":"remove"]("checked");
+}
+
 function SetButtonState(on){
+  if(!buttonReady)return
+  console.log("BUTTON "+ (on?"ON":"OFF"), on)
   try{
     if(on) {
       animation.playSegments([1, 14], true);

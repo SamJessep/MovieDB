@@ -37,7 +37,7 @@ const ShouldShowButton = ()=>{
     }
   }
 
-  @media only screen and (max-width: 750px){
+  @media only screen and (max-width: $MobileWidth){
     .container{
       bottom: 4rem;
     }
