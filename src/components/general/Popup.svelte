@@ -14,18 +14,22 @@ let closeStyles = `
 
 <div id="dialogBackground" class:open={MenuOpen}>
   <dialog open={MenuOpen}>
-    {#if HasDefaultClose}
-    <button class="close roundedBtn dark" on:click={()=>MenuOpen=!MenuOpen}>
-      <SvgIcon src="images/close.svg" styles={closeStyles}/>
-    </button>
-    {/if}
-    <slot name="contents"/>
-    <slot name="closeButton"/>
+    <div class="container">
+      {#if HasDefaultClose}
+      <button class="close roundedBtn dark" on:click={()=>MenuOpen=!MenuOpen}>
+        <SvgIcon src="images/close.svg" styles={closeStyles}/>
+      </button>
+      {/if}
+      <slot name="contents"/>
+      <slot name="closeButton"/>
+    </div>
   </dialog>
 </div>
 
 <style lang="scss">
-
+.container{
+  position: relative;
+}
 #dialogBackground{
   z-index: -1;
   position: fixed;
@@ -40,15 +44,17 @@ let closeStyles = `
 
 #dialogBackground.open{
   pointer-events: all;
-  display: block;
+  display: grid;
   z-index: 5;
   background-color: #000000d4;
   transition: background-color 1s;
 }
 
 dialog{
+  position: initial;
   display: none;
   width: 80vw;
+  max-height: 90vh;
   color: $FontColor;
   background-color: $BackgroundColor;
   box-shadow: 0.5rem 0.5rem 3px 0px $AccentColor;
@@ -64,7 +70,6 @@ dialog{
 
 dialog[open]{
   display: block;
-  top:-100vh;
   top:25%;
   transition: top 1s;
 }
@@ -72,8 +77,8 @@ dialog[open]{
 .close{
   cursor: pointer;
   position: absolute;
-  right: 0.5rem;
-  top: 0rem;
+  right: -1rem;
+  top: -1rem;
   fill: $FontColor;
   margin: 0.5rem;
 }

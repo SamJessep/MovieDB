@@ -28,5 +28,16 @@ function Retry(){
 <style lang="scss">
   select{
     width: 100%;
+    background-color: $PanelColor;
+    padding: 0.25rem;
+    color: $FontColor;
+    border-radius: 0.2rem;
+    border: solid $PanelHover 2px;
+  }
+
+  select:focus{
+    outline:none;
+    border-radius: 0.2rem;
+    border: solid $AccentColor 2px;
   }
 </style>

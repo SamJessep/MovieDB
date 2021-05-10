@@ -1,7 +1,7 @@
 <script>
-import AppShell from '../app/layout/AppShell.svelte'
-import CardList from '../app/ResultList/CardList.svelte'
-import {Search} from '../../model/TMDbAPI.js'
+import AppShell from '../components/app/layout/AppShell.svelte'
+import CardList from '../components/app/ResultList/CardList.svelte'
+import {Search} from '../model/TMDbAPI.js'
 
 export let params = {}
 

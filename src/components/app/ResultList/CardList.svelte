@@ -4,6 +4,7 @@ import { onMount, onDestroy} from 'svelte';
 import {location, querystring} from 'svelte-spa-router'
 import Page from './Page.svelte'
 import LoadingIcon from './LoadingIcon.svelte';
+import ScrollButton from './ScrollButton.svelte';
 
 export let FetchMethod;
 export let MethodParams =[];
@@ -80,18 +81,19 @@ const initIntersectionObserver = (loadBottom) => {
 
 </script>
 <div id="cardContainer" class="card-list">
-{#await resultPromise}
-  <!-- <LoadingIcon/> -->
-{:then pageData}
-  {#each pages as page}
-    {#if page==1}
-      <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
-    {:else}
-        <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
-    {/if}
-  {/each}
-{/await}
-<div class="scroll-block bottom" bind:this={loadMoreButton}/>
+  {#await resultPromise}
+    <!-- <LoadingIcon/> -->
+  {:then pageData}
+    {#each pages as page}
+      {#if page==1}
+        <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
+      {:else}
+          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
+      {/if}
+    {/each}
+  {/await}
+  <div class="scroll-block bottom" bind:this={loadMoreButton}/>
+  <ScrollButton/>
 </div>
 
 <style lang="scss">

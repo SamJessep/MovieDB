@@ -6,6 +6,7 @@
   import Popup from '../../../general/Popup.svelte'
   import SvgIcon from '../../../general/SvgIcon.svelte'
   import MobileButton from './MobileButton.svelte'
+  import {slide} from "svelte/transition"
 
   let isOpen = false;
   let madeChanges = false;
@@ -50,10 +51,11 @@ function resetAccountPreferences(){
   <Popup bind:MenuOpen={isOpen} HasDefaultClose=true>
     <div slot="contents">
       <h1>Preferences</h1>
-      <div id="controls">
+      <div id="controlsContainer">
         {#if $IsLoggedIn}
           <fieldset>
-            <legend>Use account settings</legend>
+            <legend></legend>
+            <h2>Use account settings</h2>
             <label>Yes
               <input type="radio" name="useAccountSettings" checked={$Settings.useAccountSettings} on:change={val=>{
                 $Settings.useAccountSettings=val.target.checked
@@ -76,24 +78,38 @@ function resetAccountPreferences(){
           <input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult}/>
         </fieldset>
       </div>
-      <div class="confirm-section" class:visable={madeChanges}>
-        <small>Your changes have been saved</small>
-        <button aria-label="Save" class="sync standard" on:click={e=>window.location.reload()}>
-          <p>click to update the page</p>
-          <SvgIcon src="images/sync.svg" styles={confirmStyles}/>
-        </button>
-      </div>
+      {#if madeChanges}
+        <div class="confirm-section" transition:slide>
+          <small>Your changes have been saved</small>
+          <button aria-label="Save" class="sync standard" on:click={e=>window.location.reload()}>
+            <p>click to update the page</p>
+            <SvgIcon src="images/sync.svg" styles={confirmStyles}/>
+          </button>
+        </div>
+      {/if}
+      
     </div>
   </Popup>
 </div>
 <style lang="scss">
+  h1{
+    font-size: $TitleFontSize;
+  }
   fieldset{
-    min-width: 33%
+    legend{
+      font-size: $HeaderFontSize;
+    }
+    // border-bottom: solid $FontColor 1px;
+    margin-bottom: 1rem;
   }
 
-  #controls{
-    display: flex;
-    justify-content: space-evenly;
+  #controlsContainer{
+    max-height: 75vh;
+    overflow-y: auto;
+    fieldset{
+      width: 100%;
+      padding: 0 0.25rem;
+    }
   }
 
   .checkControl{
@@ -104,12 +120,16 @@ function resetAccountPreferences(){
     display: flex;
     align-items: center;
     float: right;
+    height: 2.8rem;
   }
 
   .confirm-section>button{
     padding: 0;
     margin: 0;
     cursor: pointer;
+    background-color: transparent;
+    color: $AccentColor2;
+    border:none;
   }
 
   .confirm-section>button:hover{
@@ -126,11 +146,9 @@ function resetAccountPreferences(){
     margin-left: 0.4rem;
   }
 
-  .confirm-section.visable{
-    display: flex;
+  *:focus{
+    outline: solid #00d676 2px;
   }
-  
-  .confirm-section{
-    display: none;
-  }
+
+
 </style>

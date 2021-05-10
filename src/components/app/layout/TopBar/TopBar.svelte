@@ -71,9 +71,21 @@
 		push('/Search/'+query)
 	}
 
+	var header;
+	var prevScrollpos = window.pageYOffset;
+	function Scroll(e){
+		var currentScrollPos = window.pageYOffset;
+		if (prevScrollpos > currentScrollPos) {
+			header.style.top = "0";
+		} else {
+			header.style.top = `-${header.offsetHeight}px`;
+		}
+		prevScrollpos = currentScrollPos;
+	}
+
 </script>
 
-<div class="hero-head">
+<div class="hero-head header" bind:this={header}>
 	<header class="navbar">
 		<div class="container">
 			<div class="navbar-brand">
@@ -89,13 +101,15 @@
 		</div>
 	</header>
 </div>
+<svelte:window on:scroll={Scroll}/>
 
 <style lang="scss">
-.hero-head{
+.header{
 		position: sticky;
 		top:0;
 		width: 100%;
 		z-index: 1;
+		transition: top 0.3s;
 	}
 
 	#logo {

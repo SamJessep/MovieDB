@@ -5,7 +5,6 @@
 </script>
 
 <section class="hero app-background is-fullheight">
-  <!-- Hero head: will stick at the top -->
   <TopBar/>
 	{#key $querystring, $location}
 			<slot name="keyed"/>

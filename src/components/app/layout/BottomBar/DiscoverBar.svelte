@@ -48,7 +48,7 @@
 nav{
   display:flex;
   justify-content:space-evenly;
-  background-color: rgba(0, 0, 0, 0.705);
+  background-color: $TransparentPanel;
   border-radius: 0 1rem 0 0;
 }
 

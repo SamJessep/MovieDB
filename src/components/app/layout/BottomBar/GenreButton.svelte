@@ -40,20 +40,6 @@ export function ToggleGenreContainer(){
   isOpen = !isOpen;
 }
 
-export function Click(e){
-  //Close genre drop down if user clicks elsewhere
-  if (!e.target.matches('#root') && !root.contains(e.target)) {
-    if(isOpen){
-      //Close inner lists
-      isOpen = false;
-      var containers = document.getElementsByClassName("genreContainer")
-      for(let i = 0; i<containers.length; i++){
-        containers[i].open = false;
-      }
-    }
-  }
-}
-
 export function GenreSelected(id, type){
   push(`/Genre/${type}/${id}`)
   isOpen = false
@@ -88,7 +74,6 @@ export function GenreSelected(id, type){
   <div id="container" class:isOpen={isOpen}>
   </div>
 
-<svelte:window on:click={Click}/>
 
 <style lang="scss">
 *{

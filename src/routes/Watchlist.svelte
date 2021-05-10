@@ -1,8 +1,8 @@
 <script>
-import AppShell from '../app/layout/AppShell.svelte'
-import CardList from '../app/ResultList/CardList.svelte'
-import {GetWatchList} from '../../model/TMDbAPI.js'
-import {IsLoggedIn} from '../../stores/userStore.js'
+import AppShell from '../components/app/layout/AppShell.svelte'
+import CardList from '../components/app/ResultList/CardList.svelte'
+import {GetWatchList} from '../model/TMDbAPI.js'
+import {IsLoggedIn} from '../stores/userStore.js'
 
 export let params = {}
 let media_type;

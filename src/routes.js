@@ -1,9 +1,9 @@
-import Home from './components/routes/Home.svelte'
-import Search from './components/routes/Search.svelte'
-import GenreSearch from './components/routes/GenreSearch.svelte'
-import Discover from './components/routes/Discover.svelte'
-import Watchlist from './components/routes/Watchlist.svelte'
-import NotFound from './components/routes/NotFound.svelte'
+import Home from './routes/Home.svelte'
+import Search from './routes/Search.svelte'
+import GenreSearch from './routes/GenreSearch.svelte'
+import Discover from './routes/Discover.svelte'
+import Watchlist from './routes/Watchlist.svelte'
+import NotFound from './routes/NotFound.svelte'
 
 const routes = {
     // Exact path

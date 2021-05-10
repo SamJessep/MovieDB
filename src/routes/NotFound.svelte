@@ -1,5 +1,5 @@
 <script>
-import AppShell from '../app/layout/AppShell.svelte'
+import AppShell from '../components/app/layout/AppShell.svelte'
 export let params = {}
 </script>
 

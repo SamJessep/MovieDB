@@ -24,6 +24,7 @@ let tabs = writable([
 ])
 
 let SearchArea
+let SearchField
 let searchValue = "";
 let oldSearchValue = "";
 let suggestionIndex = -1;
@@ -54,6 +55,9 @@ function SelectSuggestion(suggestion){
 
 function KeyPressed(e){
   searchOpen=searchValue != "";
+  if(e.keyCode == 32 && e.ctrlKey){
+    SearchField.focus()
+  }
   if(!SearchArea.contains(document.activeElement)) return
   let btns = document.querySelectorAll(".result-item")
   if(searchValue != oldSearchValue){
@@ -102,6 +106,7 @@ async function Loadsuggestions(){
   tabs.set(tmpTabs)
 }
 
+var searchBarFocused = false
 </script>
 
 
@@ -111,12 +116,17 @@ async function Loadsuggestions(){
       <input 
         class="input is-large SB"
         placeholder="Search MovieDB"
+        bind:this={SearchField}
         bind:value={searchValue} 
-        on:focus={()=>{suggestionIndex = -1; searchOpen=searchValue!=""}} 
+        on:focus={()=>{suggestionIndex = -1; searchOpen=searchValue!=""; searchBarFocused=true}} 
+        on:blur={()=>searchBarFocused=false}
         on:search={()=>{SendSearch(searchValue)}}
       />
       <span class="icon is-left" id="searchIcon">
         <i class="fas fa-search" aria-hidden="true"></i>
+      </span>
+      <span class="shortcut" class:shown={!searchBarFocused}>
+        <kbd>Ctrl</kbd> + <kbd>Space</kbd>
       </span>
     </p>
   </div>
@@ -159,6 +169,19 @@ async function Loadsuggestions(){
     border-bottom: solid transparent 3px;
     &:focus{
       border-bottom: solid $AccentColor 3px;
+    }
+  }
+
+  .shortcut{
+    position: absolute;
+    top: 0;
+    right: 0px;
+    height: 100%;
+    padding-right: 1rem;
+    display:none;
+    &.shown{
+      display: flex;
+      align-items: center;
     }
   }
 
@@ -249,6 +272,9 @@ async function Loadsuggestions(){
 		}
     .SB{
       font-size: 1rem;
+    }
+    .shortcut.shown{
+      display:none;
     }
 	}
 </style>
