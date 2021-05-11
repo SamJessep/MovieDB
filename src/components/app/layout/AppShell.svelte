@@ -1,14 +1,13 @@
 <script>
 	import TopBar from './TopBar/TopBar.svelte';
 	import DiscoverBar from './BottomBar/DiscoverBar.svelte';
-	import {querystring, location} from 'svelte-spa-router'
 </script>
 
 <section class="hero app-background is-fullheight">
   <TopBar/>
-	{#key $querystring, $location}
-			<slot/>
-	{/key}
+	<main>
+		<slot/>
+	</main>
 	<DiscoverBar/>
 </section>
 

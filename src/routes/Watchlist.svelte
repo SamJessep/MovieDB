@@ -8,10 +8,9 @@ let media_type;
 
 $:media_type = params.media_type.toLowerCase()
 </script>
-<main>
-  {#if $IsLoggedIn}
-    <CardList FetchMethod={GetWatchList} MethodParams={[media_type]}/>
-  {:else}
-    <button>Login</button>
-  {/if}
-</main>
+
+{#if $IsLoggedIn}
+  <CardList FetchMethod={GetWatchList} MethodParams={[media_type]}/>
+{:else}
+  <button>Login</button>
+{/if}

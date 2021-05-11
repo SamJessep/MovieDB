@@ -5,4 +5,4 @@ let focused = false;
 $:focused
 </script>
 
-<main></main>
+<div/>

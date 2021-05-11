@@ -31,7 +31,7 @@ const imgLoad = e=>{
 IsLoggedIn.subscribe(async (val)=>{
   if(val){
     OnWatchlist = await IsOnWatchlist(Result.id, Result.media_type)
-    addButton.SetButtonReady(OnWatchlist);
+    if(addButton) addButton.SetButtonReady(OnWatchlist);
   }})
 
 let placeholderStyles = `

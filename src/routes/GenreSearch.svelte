@@ -10,6 +10,5 @@ $:genres = params.genre_id.split(',')
 $:media_type = params.media_type.toLowerCase()
 
 </script>
-<main>
-  <CardList FetchMethod={GenreSearch} MethodParams={[genres,media_type]}/>
-</main>
+
+<CardList FetchMethod={GenreSearch} MethodParams={[genres,media_type]}/>

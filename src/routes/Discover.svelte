@@ -11,12 +11,10 @@ $: {
 $:media_type = params.media_type.toLowerCase()
 </script>
 
-<main>
-	{#if type == "Popular"}
-	<CardList FetchMethod={Popular} MethodParams={[media_type]}/>
-	{:else if type == "Latest"}
-	<CardList FetchMethod={Latest} MethodParams={[media_type]}/>
-	{:else if type =="Trending"}
-	<CardList FetchMethod={Trending} MethodParams={[media_type]}/>
-	{/if}
-</main>
+{#if type == "Popular"}
+<CardList FetchMethod={Popular} MethodParams={[media_type]}/>
+{:else if type == "Latest"}
+<CardList FetchMethod={Latest} MethodParams={[media_type]}/>
+{:else if type =="Trending"}
+<CardList FetchMethod={Trending} MethodParams={[media_type]}/>
+{/if}
