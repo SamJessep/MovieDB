@@ -1,5 +1,8 @@
 <script>
 import {push, link} from 'svelte-spa-router'
+import { createEventDispatcher } from 'svelte';
+
+const dispatch = createEventDispatcher();
 export let text;
 export let url = "#";
 export let active = false;
@@ -8,6 +11,7 @@ function ButtonClick(){
   if(url){
     push(url)
   }
+  dispatch('quick_button_clicked', text)
 }
 export let click = ButtonClick
 

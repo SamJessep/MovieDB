@@ -97,13 +97,32 @@ function DocumentClick(e){
 async function Loadsuggestions(){
   //If search blank, dont search
   if(searchValue == "") return
+  const searchRegex = new RegExp(`(${searchValue.replaceAll(' ', '\\s?')})`, 'i')
 
   let tmpTabs = $tabs;
   let activeTab = tmpTabs.find(t=>t.active);
-  activeTab.suggestions=Search(searchValue, activeTab.search_type).then(res=>
-   res.results.splice(0,5).map(r=>r.title || r.original_title || r.name)
+  activeTab.suggestions=Search(searchValue, activeTab.search_type).then(
+    res=>res.results
+    .splice(0,5)
+    .map(r=>r.title || r.original_title || r.name)
+    .map(r=>{
+      return{
+        text:r,
+        parts:r.split(searchRegex).map(p=>{
+        return {
+          highlighted: searchRegex.test(p),
+          text: p
+        }
+      })
+      }
+    }
+    )
   )
   tabs.set(tmpTabs)
+}
+
+export function Clear(){
+  searchValue = ""
 }
 
 var searchBarFocused = false
@@ -142,7 +161,17 @@ var searchBarFocused = false
         <div class="info-message result-item" in:fade>Loading...</div>
       {:then suggestions}
         {#each suggestions as suggestion}
-          <button class="result-item" on:click={()=>SelectSuggestion(suggestion)} in:fade>{suggestion}</button>
+          <button class="result-item" on:click={()=>SelectSuggestion(suggestion.text)} in:fade>
+            <p>
+              {#each suggestion.parts as suggestionPart}
+                {#if suggestionPart.highlighted}
+                  <span class="highlighted">{suggestionPart.text}</span>
+                {:else}
+                  {suggestionPart.text}
+                {/if}
+              {/each}
+            </p>
+          </button>
           {:else}
             <div class="info-message result-item" in:fade>No Suggestions</div>
         {/each}
@@ -170,6 +199,10 @@ var searchBarFocused = false
     &:focus{
       border-bottom: solid $AccentColor 3px;
     }
+  }
+
+  .highlighted{
+    color: $AccentColor;
   }
 
   .shortcut{

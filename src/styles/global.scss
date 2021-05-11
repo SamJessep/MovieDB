@@ -12,24 +12,23 @@ outline: none;
 }
 
 .error{
-color:red;
+  color:red;
 }
 
 .roundedBtn{
-  border: none;
+  border: transparent;
+  border-radius: 2rem;
   background-color: transparent;
   color: $FontColor;
   transition: border-radius,background-color 0.25s;
   &:hover, &:focus{
     background-color: $PanelHover;
     border-radius: 2rem;
-    &.dark{
-      background-color: $PanelDarkHover;
-    }
-  }
-  &:focus{
     color: $AccentColor;
     fill: $AccentColor;
     outline: none;
+    &.dark{
+      background-color: $PanelDarkHover;
+    }
   }
 }

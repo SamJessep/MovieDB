@@ -17,7 +17,10 @@ const menuStyles = `
 `
 function windowClick(e){
   try{
-    if(!(menuElement.contains(e.target) || buttonElement.contains(e.target))) menuOpen=false;
+    if(!(menuElement.contains(e.target) || buttonElement.contains(e.target))){
+      menuOpen=false;
+      buttonElement.blur()
+    }
   }catch(e){}
 }
 
@@ -35,11 +38,11 @@ checkIfMobile()
 </button>
 {#if menuOpen}
 <div class="mobileMenu" bind:this={menuElement} transition:fly={{x:window.outerWidth}}>
-  <slot {isMobile}></slot>
+  <slot {isMobile} />
 </div>
 {/if}
 {:else}
-<slot/>
+  <slot/>
 {/if}
 <svelte:window on:click={windowClick}  on:resize={checkIfMobile}/>
 <svelte:options accessors={true}/>
@@ -50,18 +53,12 @@ checkIfMobile()
   right:0;
   top:96px;
   border-radius: 0 0 0 2rem;
-
   width: 60vw;
-  // height: 100vh;
 }
 
 .mobileMenuButton{
   padding: 0;
   margin: auto;
-}
-
-.mobileMenuButton:hover, .mobileMenuButton:focus{
-  border:none;
 }
 @media only screen and (max-width: $MobileWidth){
   .mobileMenu{

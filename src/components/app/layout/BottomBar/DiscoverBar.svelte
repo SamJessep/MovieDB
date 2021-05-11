@@ -4,6 +4,10 @@
 
   import {location} from 'svelte-spa-router'
   import {User, IsLoggedIn} from '../../../../stores/userStore'
+
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
   
   let buttons = [{
       text: "My Watchlist",
@@ -29,7 +33,7 @@
       <ul>
         {#each buttons as btn}
           {#if $IsLoggedIn || !btn.needsLogin}
-            <QuickButton text={btn.text} url={btn.url} active={$location.startsWith(btn.url)}/>
+            <QuickButton text={btn.text} url={btn.url} active={$location.startsWith(btn.url)} on:quick_button_clicked={(e)=>dispatch(e.type, e.detail)}/>
           {/if}
         {/each}
         <GenreButton/>

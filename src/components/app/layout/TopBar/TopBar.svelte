@@ -14,6 +14,7 @@
 	let MaxResults = 5;
 	let SearchSection;
 	let SearchButton;
+	export let searchBar = null;
 
 	export async function KeyPressed(e){
 		if(e.code == "Enter") SendSearch(e.target.value);
@@ -86,31 +87,32 @@
 
 </script>
 
-<div class="hero-head header" bind:this={header}>
-	<header class="navbar">
-		<div class="container">
-			<div class="navbar-brand">
-				<a href="/" class="navbar-item" id="logoBtn">
-					<img id="logo" src="images/MDB_logo.png" alt="App logo"/>
-				</a>
-				<SearchBar/>
-				<MobileMenu let:isMobile bind:this={mobileMenu}>
-					<LoginButton isMobile={isMobile}/>
-					<PreferencesButton isMobile={isMobile}/>
-				</MobileMenu>
-			</div>
-		</div>
-	</header>
-</div>
+<header bind:this={header}>
+	<div class="brand">
+		<a href="/" class="navbar-item" id="logoBtn">
+			<img id="logo" src="images/MDB_logo.png" alt="App logo"/>
+		</a>
+	</div>
+	<SearchBar bind:this={searchBar}/>
+	<MobileMenu let:isMobile bind:this={mobileMenu}>
+		<LoginButton isMobile={isMobile}/>
+		<PreferencesButton isMobile={isMobile}/>
+	</MobileMenu>
+</header>
+
+<svelte:options accessors={true}/>
 <svelte:window on:scroll={Scroll}/>
 
 <style lang="scss">
-.header{
-		position: sticky;
-		top:0;
-		width: 100%;
-		z-index: 1;
-		transition: top 0.3s;
+	header{
+			position: sticky;
+			top:0;
+			width: 100%;
+			z-index: 1;
+			transition: top 0.3s;
+			display: flex;
+			align-items: center;
+			padding: 0 3rem;
 	}
 
 	#logo {
@@ -120,11 +122,11 @@
 		cursor: pointer;
 	}
 
-	.navbar-brand{
-		width: 100%;
+	.brand{
+		display: flex;
 		align-items: center;
 	}
-	header.navbar{
+	header{
 		background-color: black;
 	}
 
@@ -133,6 +135,9 @@
 	}
 
 	@media only screen and (max-width: $MobileWidth){
+		header{
+			padding: 0;
+		}
 		#logo{
 			max-width: 3rem;
 			max-height: 3rem;

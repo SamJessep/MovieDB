@@ -1,14 +1,16 @@
 <script>
 	import TopBar from './TopBar/TopBar.svelte';
 	import DiscoverBar from './BottomBar/DiscoverBar.svelte';
+	
+	let topBar;
 </script>
 
 <section class="hero app-background is-fullheight">
-  <TopBar/>
+  <TopBar bind:this={topBar}/>
 	<main>
 		<slot/>
 	</main>
-	<DiscoverBar/>
+	<DiscoverBar on:quick_button_clicked={()=>topBar.searchBar.Clear()}/>
 </section>
 
 <style lang="scss">

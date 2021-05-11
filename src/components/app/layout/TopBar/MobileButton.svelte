@@ -25,9 +25,13 @@
     display: flex;
     color: $FontColor;
     width: 100%;
+    height: 3.5rem;
     align-items: center;
     justify-content:space-between;
-    border-radius: 0rem;
+    &.roundedBtn{
+      border-radius: 0rem;
+      border: none;
+    }
   }
 
   @media only screen and (max-width: $MobileWidth){
