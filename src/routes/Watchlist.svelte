@@ -1,5 +1,4 @@
 <script>
-import AppShell from '../components/app/layout/AppShell.svelte'
 import CardList from '../components/app/ResultList/CardList.svelte'
 import {GetWatchList} from '../model/TMDbAPI.js'
 import {IsLoggedIn} from '../stores/userStore.js'
@@ -9,11 +8,10 @@ let media_type;
 
 $:media_type = params.media_type.toLowerCase()
 </script>
-
-<AppShell>
+<main>
   {#if $IsLoggedIn}
     <CardList FetchMethod={GetWatchList} MethodParams={[media_type]}/>
   {:else}
     <button>Login</button>
   {/if}
-</AppShell>
+</main>

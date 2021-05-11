@@ -43,11 +43,11 @@ function SendSearch(query){
   if(query != ""){
     let searchType = $tabs.find(t=>t.active).search_type;
     push(`/Search/${searchType}/${query}`)
+    searchOpen = false;
   }
 }
 
 function SelectSuggestion(suggestion){
-  searchOpen = false
   searchValue = suggestion;
   console.log(suggestion, searchValue)
   SendSearch(suggestion)

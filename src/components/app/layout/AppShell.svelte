@@ -7,9 +7,8 @@
 <section class="hero app-background is-fullheight">
   <TopBar/>
 	{#key $querystring, $location}
-			<slot name="keyed"/>
+			<slot/>
 	{/key}
-	<slot/>
 	<DiscoverBar/>
 </section>
 

@@ -1,11 +1,12 @@
 <script>
+	import AppShell from '../components/app/layout/AppShell.svelte'
 	import Router from 'svelte-spa-router'
 	import routes from './routes.js'
 </script>
 
-<main>
+<AppShell>
 	<Router {routes} restoreScrollState={true}/>
-</main>
+</AppShell>
 
 <style lang="scss">
 </style>
