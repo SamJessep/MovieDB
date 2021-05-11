@@ -3,6 +3,9 @@ import {QueryToJSON} from '../../../util'
 import Card from '../ResultList/Card.svelte'
 import {querystring} from 'svelte-spa-router'
 import LoadingIcon from './LoadingIcon.svelte';
+import { createEventDispatcher } from 'svelte';
+
+const dispatch = createEventDispatcher();
 
 export let FetchMethod;
 export let MethodParams =[];
@@ -15,6 +18,7 @@ async function RequestResults(page){
     shownResults = res.results.filter(r=>r.media_type == "movie" || r.media_type == "tv")
     return shownResults
   })
+  promise.then(_=>dispatch('loaded'))
   return promise
 }
 

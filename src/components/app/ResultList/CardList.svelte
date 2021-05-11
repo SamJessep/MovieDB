@@ -14,6 +14,7 @@ let totalResults = 0;
 let totalPages;
 let currentPage = 1
 let resultPromise;
+let loading = false;
 
 let pages = [];
 $:currentPage
@@ -31,12 +32,17 @@ onDestroy(()=>{
   }
 })
 
+function loaded(){
+  loading=false;
+}
+
 function GetPages(page){
   let promise = FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)}).then(res=>{
     totalPages = res.total_pages;
     currentPage = res.page;
     return res.results.filter(r=>!r['media_type'] || r.media_type == "movie" || r.media_type == "tv")
   })
+  promise.then(_=>loaded())
   return promise
 }
 
@@ -58,8 +64,14 @@ const botSentCallback = async entry => {
     isIntersecting
   ) {
     console.log("load bottom")
-    if(currentPage<totalPages){
+    if(currentPage<totalPages)
+    {
+      console.log(loading)
+    }
+    if(currentPage<totalPages && !loading){
       currentPage++;
+      loading = true;
+      console.log("loading")
     }
   }
 
@@ -86,9 +98,9 @@ const initIntersectionObserver = (loadBottom) => {
   {:then pageData}
     {#each pages as page}
       {#if page==1}
-        <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
+        <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={MethodParams} on:loaded{loaded}/>
       {:else}
-          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams}/>
+          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} on:loaded={loaded}/>
       {/if}
     {/each}
   {/await}
