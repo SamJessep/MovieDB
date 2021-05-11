@@ -6,6 +6,7 @@ import LoadingIcon from './LoadingIcon.svelte';
 import { createEventDispatcher } from 'svelte';
 import { onMount } from 'svelte';
 
+
 const dispatch = createEventDispatcher();
 
 export let FetchMethod;
