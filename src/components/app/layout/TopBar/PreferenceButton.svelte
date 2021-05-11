@@ -43,7 +43,7 @@ function resetAccountPreferences(){
       <SvgIcon src="images/cog.svg" styles={settingsStyles}/>
     </MobileButton>
   {:else}
-    <button on:click={()=>isOpen=!isOpen} class="icon-btn roundedBtn dark" aria-label="Settings">
+    <button on:click={()=>isOpen=!isOpen} class="icon-btn roundedBtn dark" aria-label="Settings" title="Preferences">
       <SvgIcon src="images/cog.svg" styles={settingsStyles}/>
     </button>
   {/if}

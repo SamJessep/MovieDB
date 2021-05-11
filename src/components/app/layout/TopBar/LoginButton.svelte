@@ -74,7 +74,7 @@ let userBtnStyles = `
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </MobileButton>
     {:else}
-    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn roundedBtn dark" aria-label="My Account">
+    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn roundedBtn dark" aria-label="My Account" title="My Account">
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </button>
     {/if}
@@ -84,7 +84,7 @@ let userBtnStyles = `
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </MobileButton>
     {:else}
-    <button id="openLogin" on:click={Account.StartLogin} class="roundedBtn dark login-btn">
+    <button id="openLogin" on:click={Account.StartLogin} class="roundedBtn dark login-btn" title="Login">
       <div>
         <p>Login</p>
       </div>  
