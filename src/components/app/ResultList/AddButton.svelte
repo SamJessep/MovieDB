@@ -49,11 +49,12 @@ onMount(async () => {
   })
 
   animation.addEventListener("DOMLoaded", ()=>{
+    if(!container) return
     var styleElement = document.createElement("style")
     styleElement.innerHTML = SvgCSS;
     container.children[0].prepend(styleElement)
     container.children[0].classList.add("addButton")
-    });
+  });
 });
 
 function ButtonClicked(){

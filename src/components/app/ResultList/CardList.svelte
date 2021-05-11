@@ -14,14 +14,22 @@ let totalResults = 0;
 let totalPages;
 let currentPage = 1
 let resultPromise;
-let loading = false;
-
+let loading = true;
 let pages = [];
-$:currentPage
-$:pages = [...Array(currentPage).keys()].map(p=>p+1)
+let cardContainer;
+let scrollByY = 0;
 
-let loadMoreButton
-$:initIntersectionObserver(loadMoreButton)
+$:currentPage
+$:{
+  pages = [...Array(currentPage).keys()].map(p=>p+1)
+  pages = pages.slice(pages.length-2)
+}
+
+
+let loadBottom
+let loadTop
+
+$:initIntersectionObserver(loadTop, loadBottom)
 var observer;
 onMount(()=>{
   resultPromise = GetPages(currentPage)
@@ -46,65 +54,63 @@ function GetPages(page){
   return promise
 }
 
-let bottomSentinelPreviousY = 0;
-let bottomSentinelPreviousRatio = 0;
-
-const botSentCallback = async entry => {
+const intersectCallback = async entry => {
 	if (currentPage === totalPages) {
   	return;
   }
-  const currentY = entry.boundingClientRect.top;
-  const currentRatio = entry.intersectionRatio;
-  const isIntersecting = entry.isIntersecting;
-
+  const overlapBottom = entry.target == loadBottom && entry.isIntersecting
+  const overlapTop = entry.target == loadTop && entry.isIntersecting
   // conditional check for Scrolling down
-  if (
-    currentY < bottomSentinelPreviousY &&
-    currentRatio > bottomSentinelPreviousRatio &&
-    isIntersecting
-  ) {
-    console.log("load bottom")
-    if(currentPage<totalPages)
-    {
-      console.log(loading)
-    }
+  if (overlapBottom) {
     if(currentPage<totalPages && !loading){
+      console.log("load bottom")
       currentPage++;
       loading = true;
-      console.log("loading")
+    }
+  }
+  
+  //Check for load top
+  if (overlapTop) {
+    if(pages[0]>1 && !loading){
+      console.log("load top")
+      currentPage--;
+      loading = true;
     }
   }
 
-  bottomSentinelPreviousY = currentY;
-  bottomSentinelPreviousRatio = currentRatio;
 }
 
-const initIntersectionObserver = (loadBottom) => {
-  if(!loadBottom || observer) return
+const initIntersectionObserver = (topDiv, bottomDiv) => {
+  if(!topDiv || !bottomDiv || observer) return
   const callback = entries => {
     entries.forEach(entry => {
-        botSentCallback(entry);
+      intersectCallback(entry);
     });
   }
-
-  observer = new IntersectionObserver(callback, {});
-  observer.observe(loadBottom);
+  var options = {
+      root: null, // Page as root
+      rootMargin: "0px",
+      threshold: 1.0
+    };
+  observer = new IntersectionObserver(callback, options);
+  observer.observe(topDiv);
+  observer.observe(bottomDiv);
 }
 
 </script>
-<div id="cardContainer" class="card-list">
+<div class="card-list" bind:this={cardContainer}>
+  <div class="scroll-block top" bind:this={loadTop}/>
   {#await resultPromise}
-    <!-- <LoadingIcon/> -->
   {:then pageData}
-    {#each pages as page}
+    {#each pages as page (page)}
       {#if page==1}
         <Page page={page} PagePromise={page==1?pageData:null} FetchMethod={FetchMethod} MethodParams={MethodParams} on:loaded{loaded}/>
       {:else}
-          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} on:loaded={loaded}/>
+        <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} on:loaded={loaded}/>
       {/if}
     {/each}
   {/await}
-  <div class="scroll-block bottom" bind:this={loadMoreButton}/>
+  <div class="scroll-block bottom" bind:this={loadBottom}/>
   <ScrollButton/>
 </div>
 
@@ -112,12 +118,6 @@ const initIntersectionObserver = (loadBottom) => {
 
 h2{
   color:$FontColor
-}
-
-#cardContainer{
-	display: flex;
-	justify-content: space-evenly;
-	flex-wrap: wrap;
 }
 
 .scroll-block{
@@ -129,6 +129,7 @@ h2{
 
 .scroll-block.top{
   position: absolute;
+  background-color: red;
 }
 
 .scroll-block.bottom{
