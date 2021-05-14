@@ -31,7 +31,6 @@ $:{
 
 let loadBottom
 let loadTop
-
 // $:initIntersectionObserver(loadTop, loadBottom)
 var observer;
 var currentPageObserver;
@@ -58,6 +57,7 @@ onMount(()=>{
       target_page_queued = queue.includes(currentPage)
     })
   }else{
+    window.scrollTo(0,0)
     initIntersectionObserver(loadTop, loadBottom)
   }
 })
@@ -123,11 +123,13 @@ const checkForNewPage = entry => {
   }
 }
 
+var pageLoaderEnabled = true;
+
 const initIntersectionObserver = (topDiv, bottomDiv) => {
   if(!topDiv || !bottomDiv) return
   const callback = entries => {
     entries.forEach(entry => {
-      checkForPageLoad(entry);
+      if(pageLoaderEnabled) checkForPageLoad(entry);
     });
   }
   var options = {
@@ -158,7 +160,9 @@ const initPageObserver = (pages) => {
 }
 
 function scrollClicked(){
+  pageLoaderEnabled = false;
   currentPage = 1
+  setTimeout(e=>pageLoaderEnabled=true,1000)
 }
 </script>
 <div class="card-list" bind:this={cardContainer}>
@@ -190,8 +194,6 @@ h2{
 
 .scroll-block.top{
   position: absolute;
-  // background-color: red;
-  z-index:10;
   top:0;
   left:0;
 }

@@ -144,7 +144,7 @@ var searchBarFocused = false
       <span class="icon is-left" id="searchIcon">
         <i class="fas fa-search" aria-hidden="true"></i>
       </span>
-      <span class="shortcut" class:shown={!searchBarFocused}>
+      <span class="shortcut" class:shown={!searchBarFocused && searchValue == ""}>
         <kbd>Ctrl</kbd> + <kbd>Space</kbd>
       </span>
     </p>

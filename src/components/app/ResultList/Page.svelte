@@ -24,7 +24,7 @@ async function RequestResults(page){
     shownResults = res.results.filter(r=>r.media_type == "movie" || r.media_type == "tv")
     return shownResults
   })
-  promise.then(_=>{LoadQueue.update(val=>val.filter(v=>v!=page)); loading=false})
+  promise.then(_=>{LoadQueue.update(val=>val.filter(v=>v!=page)); loading=false;})
   return promise
 }
 
