@@ -3,6 +3,7 @@ import SvgIcon from "../../general/SvgIcon.svelte"
 import {GetSCSSVars} from "../../../util";
 import {fade} from 'svelte/transition'
 
+export let Message="Loading";
 const scssVars = GetSCSSVars();
 const loadStyles = `
   --color-1:${scssVars.AccentColor};
@@ -10,7 +11,7 @@ const loadStyles = `
 </script>
 <div transition:fade>
   <SvgIcon src="images/load.svg" styles={loadStyles}/>
-  <p>Loading </p>
+  <p>{Message} </p>
 </div>
 
 <style lang="scss">

@@ -5,18 +5,11 @@ import Discover from './routes/Discover.svelte'
 import Watchlist from './routes/Watchlist.svelte'
 import NotFound from './routes/NotFound.svelte'
 
-const routes = {
-    // Exact path
-    '/': Home,
-
-    // Using named parameters, with last being optional
-    '/search/:query': Search,
-    '/search/:media_type/:query': Search,
-    '/genre/:media_type/:genre_id': GenreSearch,
-    '/discover/:media_type/:discoverType?*': Discover,
-    '/:User/:media_type/Watchlist': Watchlist,
-    // Catch-all
-    // This is optional, but if present it must be the last
-    '*': NotFound,
-}
+const routes =  new Map()
+routes.set('/', Home)
+routes.set(/^\/Search\/(?<mediatype>(?:movie|multi|tv))?\/?(?<query>[^\/]*)\/?(?<page>\d+)?$/, Search)
+routes.set('/genre/:media_type/:genre_id/:page?', GenreSearch)
+routes.set('/discover/:media_type/:discoverType/:page?*', Discover)
+routes.set('/:User/:media_type/Watchlist/:page?', Watchlist)
+routes.set('*', NotFound)
 export default routes

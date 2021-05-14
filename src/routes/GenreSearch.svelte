@@ -11,4 +11,4 @@ $:media_type = params.media_type.toLowerCase()
 
 </script>
 
-<CardList FetchMethod={GenreSearch} MethodParams={[genres,media_type]}/>
+<CardList FetchMethod={GenreSearch} MethodParams={[genres,media_type]} StartPage={params.page ?? 1}/>

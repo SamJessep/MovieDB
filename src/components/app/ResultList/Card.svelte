@@ -15,6 +15,7 @@ const dispatch = createEventDispatcher();
 
 export let Result;
 export let cardId;
+export let Loaded = true;
 let OnWatchlist;
 let addButton;
 let loading = true;
@@ -76,6 +77,7 @@ export function AddToList(event){
 
 </script>
 <button class="resultCard nonStandard" id={cardId} transition:fade title={title}>
+  {#if Loaded}
     {#if Result.poster_path}
     <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster" class:loading loading="lazy" on:load={imgLoad} />
       <!-- <div style={posterBackgroundStyles} class="poster"/> -->
@@ -94,6 +96,7 @@ export function AddToList(event){
       <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
     {/if}
   </div>
+  {/if}
 </button>
 <style lang="scss">
 .toolbar{
@@ -133,6 +136,7 @@ export function AddToList(event){
   padding: 0.3rem;
   margin: 1rem;
   width: var(--cardWidth, 21rem);
+  height: 35.225rem;
   &:hover, &:focus{
     box-shadow: 0px 0px 20px 3px $AccentColor;
   }

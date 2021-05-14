@@ -1,10 +1,14 @@
 <script>
 import {fade} from 'svelte/transition'
 import SvgIcon from "../../general/SvgIcon.svelte";
+import {createEventDispatcher} from 'svelte'
+
+const dispatch = createEventDispatcher();
 const scrollStyles =`fill: currentcolor`
 var ShowButton = false;
 
 const ScrollToTop = ()=>{
+  dispatch('clicked')
   window.scrollTo(0,0)
 }
 

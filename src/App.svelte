@@ -6,7 +6,7 @@
 </script>
 
 <AppShell>
-	<Router {routes} restoreScrollState={true}/>	
+	<Router {routes} restoreScrollState={false}/>	
 </AppShell>
 
 <style lang="scss">
