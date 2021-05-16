@@ -178,6 +178,7 @@ export function AddToList(event){
 
   .resultCard{
     width: var(--cardWidth);
+    height: 16.77rem;
     margin: 0.4rem;
   }
 }
