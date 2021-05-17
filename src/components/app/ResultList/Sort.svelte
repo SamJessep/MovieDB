@@ -30,7 +30,6 @@
   function changeSort(selected){
     const params = new URLSearchParams($querystring)
     if(selected === "NONE"){
-      console.log("REMOVING SORT")
       params.delete(SORT_KEY)
     }
     else if(params.get(SORT_KEY) != selected){

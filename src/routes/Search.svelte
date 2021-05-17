@@ -6,5 +6,5 @@ export let params = {}
 
 </script>
 {#key $querystring, params.groups.query}
-    <CardList FetchMethod={Search} MethodParams={[decodeURI(params.groups.query), params.groups.media_type]} StartPage={params.groups.page || 1}/>
+    <CardList FetchMethod={Search} MethodParams={[decodeURI(params.groups.query), params.groups.mediatype]} StartPage={params.groups.page || 1}/>
 {/key}

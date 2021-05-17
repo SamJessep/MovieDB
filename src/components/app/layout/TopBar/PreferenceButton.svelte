@@ -15,6 +15,7 @@
   const initialSettings = JSON.stringify($Settings);
 
   Settings.subscribe(s=>{
+    console.log(s)
     madeChanges = initialSettings !==  JSON.stringify(s);
   })
 
@@ -33,6 +34,13 @@ let confirmStyles = `
 
 function resetAccountPreferences(){
   User.update(u=>u)
+}
+
+const GetRatings = async()=>{
+  return new Promise((resolve, reject) => {
+    let options = [...Array(10).keys()].map(i=>{ return {text:i+1, value:i+1}})
+    resolve([{text:"Disabled", value:"Disabled"}, ...options]) 
+  })
 }
 
 </script>
@@ -72,31 +80,15 @@ function resetAccountPreferences(){
           <Selector bind:bindedValue={$Preferences.region} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
           <Selector bind:bindedValue={$Preferences.language} fetchItemsFunction={GetLanguages} selectID="languagesSelect" label="Language"/>
         </fieldset>
-        <fieldset disabled={$Settings.useAccountSettings && $IsLoggedIn}>
-          <legend>Other</legend>
-          <label for="include_adult" class="checkControl">include adult</label>
-          <input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult}/>
-        </fieldset>
         <fieldset>
-          <legend>Crap Filter</legend>
+          <legend>Filtering</legend>
+          <label class="checkControl">
+            include adult<input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult} disabled={$Settings.useAccountSettings && $IsLoggedIn}/>
+          </label>
           <label>Must have poster
-            <input type="checkbox"/>
+            <input type="checkbox" bind:checked={$Preferences.must_have_poster}/>
           </label>
-          <label>Minimum rating
-            <select>
-              <option selected>Disabled</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </label>
+          <Selector bind:bindedValue={$Preferences["vote_average.gte"]} fetchItemsFunction={GetRatings} selectID="minRating" label="Minimum rating"/>
         </fieldset>
       </div>
       {#if madeChanges}
@@ -122,6 +114,10 @@ function resetAccountPreferences(){
   fieldset{
     legend{
       font-size: $HeaderFontSize;
+      margin-bottom: 0.5rem;
+    }
+    *:not(legend){
+      margin-left: 0.4rem;
     }
     // border-bottom: solid $FontColor 1px;
     margin-bottom: 1rem;
@@ -172,6 +168,10 @@ function resetAccountPreferences(){
 
   *:focus{
     outline: solid #00d676 2px;
+  }
+
+  label{
+    margin: 0.25rem 0;
   }
 
 

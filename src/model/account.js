@@ -16,7 +16,6 @@ export default class Account{
         "session_id": sessionId
       }
     })
-    console.log("DELETE", res)
     return res
   }
   

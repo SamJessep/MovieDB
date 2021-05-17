@@ -11,7 +11,7 @@ import Sort from './Sort.svelte'
 export let FetchMethod;
 export let MethodParams =[];
 export let StartPage;
-export let DefaultSort;
+export let DefaultSort = "None";
 export let UseResultSort = true;
 
 let totalResults = 0;
@@ -209,5 +209,14 @@ h2{
 .scroll-block.bottom{
   position: relative;
   top: -50vh;
+}
+
+.card-list{
+  margin: 0 15rem;
+}
+@media only screen and (max-width: $MobileWidth){
+  .card-list{
+    margin: 0;
+  }
 }
 </style>

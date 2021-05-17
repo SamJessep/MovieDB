@@ -40,4 +40,8 @@ function Retry(){
     border-radius: 0.2rem;
     border: solid $AccentColor 2px;
   }
+  label{
+    margin: 0.25rem 0;
+    display: block;
+  }
 </style>

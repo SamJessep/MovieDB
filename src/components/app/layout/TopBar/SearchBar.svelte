@@ -6,7 +6,6 @@ import { slide, fly } from 'svelte/transition';
 import { fade } from 'svelte/transition';
 
 import {querystring, location} from 'svelte-spa-router'
-console.log($querystring, $location)
 
 //UI components
 import ErrorSmall from '../../../general/ErrorSmall.svelte';
@@ -45,7 +44,6 @@ function clickTab(tabName){
 function SendSearch(query){
   if(query != ""){
     let searchType = $tabs.find(t=>t.active).search_type;
-    console.log(searchType)
     push(`/Search/${searchType}/${query}`)
     SearchField.blur()
   }
@@ -53,7 +51,6 @@ function SendSearch(query){
 
 function SelectSuggestion(suggestion){
   searchValue = suggestion;
-  console.log(suggestion, searchValue)
   SendSearch(suggestion)
 }
 
