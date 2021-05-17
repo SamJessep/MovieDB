@@ -11,7 +11,6 @@ Javascript Web app using
     - [ ] rating range
     - [ ] select multiple genres
     - [ ] select media type e.g. movie/tv/any
-  - [ ] Sort results 
   - [ ] Implement more preferences
     - [ ] Junk filter; only if results with posters, only results that have release in users country
     - [ ] Color themes, Dark mode/Light mode
@@ -25,6 +24,7 @@ Javascript Web app using
   - [ ] Link to streaming platforms
   
   ### Done
+  - [x] Sort results 
   - [x] Import search feature
   - [x] Implement setting section
   - [x] Implement account login via TMDb

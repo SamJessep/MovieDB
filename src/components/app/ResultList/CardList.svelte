@@ -1,14 +1,18 @@
 <script>
 import {QueryToJSON} from '../../../util'
 import { onMount, onDestroy, afterUpdate} from 'svelte';
-import {location, push, querystring, replace} from 'svelte-spa-router'
-import Page from './Page.svelte'
-import ScrollButton from './ScrollButton.svelte';
+import {location, querystring, replace} from 'svelte-spa-router'
 import {LoadQueue, Loaded} from '../../../stores/resultsStore';
+
+import ScrollButton from './ScrollButton.svelte';
+import Page from './Page.svelte'
+import Sort from './Sort.svelte'
 
 export let FetchMethod;
 export let MethodParams =[];
 export let StartPage;
+export let DefaultSort;
+export let UseResultSort = true;
 
 let totalResults = 0;
 let totalPages;
@@ -119,7 +123,7 @@ const checkForNewPage = entry => {
     let regexRes = /\/(?<page>\d+)/.exec($location)
     let newLocation = regexRes ? $location.replace("/"+regexRes.groups.page,"/"+page) :
      $location + ($location.endsWith("/") ? "" : "/" )+currentPage
-    replace(newLocation)
+    replace(newLocation+($querystring ? `?${$querystring}`:""))
   }
 }
 
@@ -165,17 +169,21 @@ function scrollClicked(){
   setTimeout(e=>pageLoaderEnabled=true,1000)
 }
 </script>
+{#if UseResultSort}
+  <Sort defaultSelected={DefaultSort}/>
+{/if}
 <div class="card-list" bind:this={cardContainer}>
-  
   <div class="scroll-block top" bind:this={loadTop} style={"top:"+loadTopY+"px"}/>
-  {#await resultPromise}
-  {:then pageData}
-    {#each pages as page (page)}
-      {#if loadedPages.includes(page) || page<=currentPage}
-        <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} Active={loadedPages.includes(page)}/>
-      {/if}
-    {/each}
-  {/await}
+  {#key $querystring}
+    {#await resultPromise}
+    {:then pageData}
+      {#each pages as page (page)}
+        {#if loadedPages.includes(page) || page<=currentPage}
+          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} Active={loadedPages.includes(page)}/>
+        {/if}
+      {/each}
+    {/await}
+  {/key}
   <div class="scroll-block bottom" bind:this={loadBottom}/>
   <ScrollButton on:clicked={scrollClicked}/>
 </div>

@@ -5,7 +5,7 @@
 	let topBar;
 </script>
 
-<section class="hero app-background is-fullheight">
+<section class="app-background">
   <TopBar bind:this={topBar}/>
 	<main>
 		<slot/>
@@ -16,6 +16,7 @@
 <style lang="scss">
 
 	.app-background{
+		min-height: 100vh;
 		background-color: rgb(25, 65, 25);
 	}
 </style>
