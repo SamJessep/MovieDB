@@ -17,7 +17,6 @@ let SvgCSS = `
 .addButton *{
   cursor: pointer;
   stroke: transparent;
-  transition: stroke 0.2s;
   pointer-events:none;
 }
 
@@ -68,6 +67,7 @@ function ButtonClicked(){
 export function SetButtonReady(on){
   buttonReady = true;
   container.children[0].classList.add("ready")
+  container.style.opacity=100
   animation.goToAndStop(on ? 14:27, true)
   container.children[0].classList[on?"add":"remove"]("checked");
 }
@@ -97,6 +97,8 @@ function SetButtonState(on){
 div {
   display: block;
   max-width: 50px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
 </style>

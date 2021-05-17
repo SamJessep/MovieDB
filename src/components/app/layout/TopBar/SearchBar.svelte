@@ -5,6 +5,9 @@ import { writable } from 'svelte/store'
 import { slide, fly } from 'svelte/transition';
 import { fade } from 'svelte/transition';
 
+import {querystring, location} from 'svelte-spa-router'
+console.log($querystring, $location)
+
 //UI components
 import ErrorSmall from '../../../general/ErrorSmall.svelte';
 
@@ -42,8 +45,9 @@ function clickTab(tabName){
 function SendSearch(query){
   if(query != ""){
     let searchType = $tabs.find(t=>t.active).search_type;
+    console.log(searchType)
     push(`/Search/${searchType}/${query}`)
-    searchOpen = false;
+    SearchField.blur()
   }
 }
 
@@ -121,6 +125,14 @@ async function Loadsuggestions(){
   tabs.set(tmpTabs)
 }
 
+function SearchFieldFocusChanged(event){
+  if(event.type === "blur"){
+    suggestionIndex = -1;
+  }
+  searchOpen = searchValue!="" && event.type === "focus";
+  searchBarFocused = event.type === "focus";
+}
+
 export function Clear(){
   searchValue = ""
 }
@@ -137,8 +149,8 @@ var searchBarFocused = false
         placeholder="Search MovieDB"
         bind:this={SearchField}
         bind:value={searchValue} 
-        on:focus={()=>{suggestionIndex = -1; searchOpen=searchValue!=""; searchBarFocused=true}} 
-        on:blur={()=>searchBarFocused=false}
+        on:focus={SearchFieldFocusChanged} 
+        on:blur={SearchFieldFocusChanged}
         on:search={()=>{SendSearch(searchValue)}}
       />
       <span class="icon is-left" id="searchIcon">
