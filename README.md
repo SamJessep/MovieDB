@@ -4,13 +4,15 @@ Javascript Web app using
   - Svelte framework for creating UI
   - NodeJs for backend services
 
-## To do
-  ### Must Do's
+## Tasks
+  ### Major Features
   - [ ] Add advanced search to quick bar
     - [ ] choose date range
     - [ ] rating range
     - [ ] select multiple genres
     - [ ] select media type e.g. movie/tv/any
+  - [ ] Revamp genre search
+    - [ ] use tag input for genre select multiple
   - [ ] Implement more preferences
     - [ ] Junk filter
       - [x]  only if results with posters
@@ -20,11 +22,17 @@ Javascript Web app using
   - [ ] Recreate details page
     - [ ] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
   - [ ] Re-create backend services with nodejs
-  ### Maybe's
+  ### Minor/Possible Features
   - [ ] Save preferences to mongo db
   - [ ] Implement movie Tinder ?
   - [ ] signup to recive notification when movie is available to download
   - [ ] Link to streaming platforms
+
+  ## Bug Fixes
+  - [ ] Infinate loop when changing pages sometimes
+  - [ ] Janky animation for sort element
+  - [ ] Some performace issues on mobile
+  - [ ] Fix image sizing, some posters are different sizes and get stretched
   
   ### Done
   - [x] Sort results 
