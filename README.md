@@ -12,7 +12,10 @@ Javascript Web app using
     - [ ] select multiple genres
     - [ ] select media type e.g. movie/tv/any
   - [ ] Implement more preferences
-    - [ ] Junk filter; only if results with posters, only results that have release in users country
+    - [ ] Junk filter
+      - [x]  only if results with posters
+      - [ ]  only results with local releases
+      - [ ]  only results below specific age rating
     - [ ] Color themes, Dark mode/Light mode
   - [ ] Recreate details page
     - [ ] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
