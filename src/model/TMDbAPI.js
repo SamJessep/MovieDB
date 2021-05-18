@@ -109,3 +109,7 @@ export async function GenreSearch(genres, media_type, params={}){
   }
   return Discover(media_type, params)
 }
+
+export async function GetWatchProviders(media_type,region, language="en-US"){
+  return await Send(Config.BASE_URL+`watch/providers/${media_type}?watch_region=${region}&language=${language}`)
+}

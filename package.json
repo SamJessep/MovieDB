@@ -25,6 +25,7 @@
     "svelte-preprocess": "^4.7.3"
   },
   "dependencies": {
+    "flatpickr": "^4.6.9",
     "intersection-observer": "^0.12.0",
     "lottie-web": "^5.7.5",
     "sirv-cli": "^1.0.0",

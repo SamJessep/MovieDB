@@ -12,7 +12,7 @@ function Retry(){
 
 </script>
 
-<label for={selectID}>{label}</label>
+<label for={selectID}>{label}
     {#await GetItems}
       <p>Loading...</p>
     {:then Items}
@@ -24,6 +24,7 @@ function Retry(){
     {:catch}
       <p>failed loading<br/><span on:click={Retry} class="link">Click here</span> to try again</p>
     {/await}
+  </label>
 
 <style lang="scss">
   select{
