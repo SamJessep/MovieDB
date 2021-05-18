@@ -1,6 +1,6 @@
 import Config from "../config.js";
 import {get} from 'svelte/store';
-import {RequestParams} from "../stores/store.js"
+import {RequestParams, Preferences} from "../stores/store.js"
 import {User} from '../stores/userStore.js'
 import {ParamsToString} from '../util.js'
 
@@ -10,6 +10,9 @@ async function Send(url, params, media_type){
     ...get(RequestParams),
     ...params
   };
+  //Remove null params
+  params = Object.fromEntries(
+    Object.entries(params).filter(([key, value]) => value !== null) )
 
   var res = await fetch(url + "?" + ParamsToString(params),{
     method:'get',
@@ -22,6 +25,10 @@ async function Send(url, params, media_type){
   res = await res.json()
   if(res.results){
     res.results = res.results.map(r=>{return {media_type:media_type, ...r}})
+    //Filter results if dont have poster and feature is enabled
+    if(get(Preferences).must_have_poster){
+      res.results = res.results.filter(r=>r.poster_path !== null)
+    }
   }
   return res;
 }

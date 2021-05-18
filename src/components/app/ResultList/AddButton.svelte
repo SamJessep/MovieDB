@@ -1,8 +1,10 @@
 <script>
 import lottie from 'lottie-web'
-import { onMount } from 'svelte';
+import { onMount, onDestroy } from 'svelte';
 import { createEventDispatcher } from 'svelte';
 import {GetSCSSVars} from "../../../util";
+import {IsLoggedIn} from '../../../stores/userStore'
+import {IsOnWatchlist} from '../../../model/TMDbAPI'
 
 const scssVars = GetSCSSVars()
 
@@ -10,8 +12,12 @@ const dispatch = createEventDispatcher();
 
 let container;
 let animation;
-export let checked;
+let checked;
 let buttonReady = false;
+
+export let Result;
+
+var StopListeningToLoginChange
 
 let SvgCSS = `
 .addButton *{
@@ -54,7 +60,16 @@ onMount(async () => {
     container.children[0].prepend(styleElement)
     container.children[0].classList.add("addButton")
   });
+
+  StopListeningToLoginChange = IsLoggedIn.subscribe(async (loggedIn)=>{
+    if(loggedIn){
+      checked = await IsOnWatchlist(Result.id, Result.media_type)
+      SetButtonReady(checked);
+    }
+  })
 });
+
+onDestroy(()=>StopListeningToLoginChange())
 
 function ButtonClicked(){
   checked = !checked;

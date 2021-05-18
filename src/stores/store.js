@@ -7,9 +7,11 @@ import {
 import {GetCountries, GetLanguages} from '../model/api_config.js'
 let defaultSettings = {
   Preferences:{
-    region: "NZ",
-    language: "en",
-    include_adult: false,
+    RequestParams:{
+      region: "NZ",
+      language: "en",
+      include_adult: false,
+    }
   },
   useAccountSettings: true
 }
@@ -34,8 +36,8 @@ Settings.subscribe(s=>{
 
 export const RequestParams = derived(Preferences, $Preferences => {
   return {
-    ...$Preferences,
-    language: $Preferences.language + "-" + $Preferences.region
+    ...$Preferences.RequestParams,
+    language: $Preferences.RequestParams.language + "-" + $Preferences.RequestParams.region
   }
 });
 

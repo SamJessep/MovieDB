@@ -39,7 +39,7 @@ function resetAccountPreferences(){
 const GetRatings = async()=>{
   return new Promise((resolve, reject) => {
     let options = [...Array(10).keys()].map(i=>{ return {text:i+1, value:i+1}})
-    resolve([{text:"Disabled", value:"Disabled"}, ...options]) 
+    resolve([{text:"Disabled", value:null}, ...options]) 
   })
 }
 
@@ -77,18 +77,18 @@ const GetRatings = async()=>{
         {/if}
         <fieldset disabled={$Settings.useAccountSettings && $IsLoggedIn}>
           <legend>Region</legend>
-          <Selector bind:bindedValue={$Preferences.region} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
-          <Selector bind:bindedValue={$Preferences.language} fetchItemsFunction={GetLanguages} selectID="languagesSelect" label="Language"/>
+          <Selector bind:bindedValue={$Preferences.RequestParams.region} fetchItemsFunction={GetCountries} selectID="countriesSelect" label="Country"/>
+          <Selector bind:bindedValue={$Preferences.RequestParams.language} fetchItemsFunction={GetLanguages} selectID="languagesSelect" label="Language"/>
         </fieldset>
         <fieldset>
           <legend>Filtering</legend>
           <label class="checkControl">
-            include adult<input id="include_adult" type="checkbox" bind:checked={$Preferences.include_adult} disabled={$Settings.useAccountSettings && $IsLoggedIn}/>
+            include adult<input id="include_adult" type="checkbox" bind:checked={$Preferences.RequestParams.include_adult} disabled={$Settings.useAccountSettings && $IsLoggedIn}/>
           </label>
           <label>Must have poster
             <input type="checkbox" bind:checked={$Preferences.must_have_poster}/>
           </label>
-          <Selector bind:bindedValue={$Preferences["vote_average.gte"]} fetchItemsFunction={GetRatings} selectID="minRating" label="Minimum rating"/>
+          <Selector bind:bindedValue={$Preferences.RequestParams["vote_average.gte"]} fetchItemsFunction={GetRatings} selectID="minRating" label="Minimum rating"/>
         </fieldset>
       </div>
       {#if madeChanges}

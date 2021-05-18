@@ -16,8 +16,6 @@ const dispatch = createEventDispatcher();
 export let Result;
 export let cardId;
 export let Loaded = true;
-let OnWatchlist;
-let addButton;
 let loading = true;
 
 const imgLoad = e=>{
@@ -29,11 +27,6 @@ const imgLoad = e=>{
   image.src=image.dataset.src
 }
 
-IsLoggedIn.subscribe(async (val)=>{
-  if(val){
-    OnWatchlist = await IsOnWatchlist(Result.id, Result.media_type)
-    if(addButton) addButton.SetButtonReady(OnWatchlist);
-  }})
 
 let placeholderStyles = `
     width:50%;
@@ -89,7 +82,7 @@ export function AddToList(event){
     {/if}
   <div class='toolbar'>
     {#if $IsLoggedIn}
-      <AddButton checked={OnWatchlist} on:addClicked={AddToList} bind:this={addButton}/>
+      <AddButton on:addClicked={AddToList} {Result}/>
     {/if}
     <p>{title}</p>
     {#if Result.media_type}
