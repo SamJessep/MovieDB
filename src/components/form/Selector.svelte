@@ -9,6 +9,7 @@ export let selectID;
 export let label;
 export let name = selectID;
 export let multiple=false;
+export let size = 5;
 export let placeholder="Select a value"
 export let mandatoryChoice = false;
 
@@ -34,7 +35,7 @@ const change = e=>{
       <p>Loading...</p>
     {:then Items}
     {#if multiple}
-    <select id={selectID} {multiple} {name} bind:this={selectElement}>
+    <select id={selectID} {multiple} {name} size={size>Items.length?Items.length:size} bind:this={selectElement}>
       {#each Items as item}
         <option selected={item.value == bindedValue} value={item.value}>{item.text}</option>
       {/each}
@@ -72,6 +73,7 @@ const change = e=>{
     display:flex;
   }
   select{
+    display: block;
     max-width: 100%;
     flex-grow: 1;
     background-color: $PanelColor;
@@ -79,6 +81,7 @@ const change = e=>{
     color: $FontColor;
     border-radius: 0.2rem;
     border: solid $PanelHover 2px;
+    overflow-y: auto;
   }
 
   select[multiple]{

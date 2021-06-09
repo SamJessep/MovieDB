@@ -4,6 +4,7 @@ import {Search} from '../../../../model/TMDbAPI';
 import { writable } from 'svelte/store'
 import { slide, fly } from 'svelte/transition';
 import { fade } from 'svelte/transition';
+import debounce from 'lodash/debounce'
 
 import {querystring, location} from 'svelte-spa-router'
 
@@ -95,7 +96,7 @@ function DocumentClick(e){
   clickTab("All");
 }
 
-async function Loadsuggestions(){
+const Loadsuggestions = debounce(async ()=>{
   //If search blank, dont search
   if(searchValue == "") return
   const searchRegex = new RegExp(`(${searchValue.replaceAll(' ', '\\s?')})`, 'i')
@@ -120,7 +121,7 @@ async function Loadsuggestions(){
     )
   )
   tabs.set(tmpTabs)
-}
+}, 200)
 
 function SearchFieldFocusChanged(event){
   if(event.type === "blur"){

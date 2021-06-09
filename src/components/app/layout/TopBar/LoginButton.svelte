@@ -110,7 +110,7 @@ let userBtnStyles = `
           <button on:click={TryLoadProfile}>click here to try again</button>
         </p>
       {/await}
-      <button on:click={LogOut} class="standard">Log Out</button>
+      <button on:click={LogOut} class="logout-btn">Log Out</button>
     {/if}
     </div>
   </Popup>
@@ -133,6 +133,10 @@ div[slot="contents"]{
     align-items: center;
     justify-content: center;
   }
+}
+
+.logout-btn{
+  @include darkBtnOutline;
 }
 
 h1.title{

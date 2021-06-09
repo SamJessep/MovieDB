@@ -14,7 +14,7 @@ let closeStyles = `
 
 <div id="dialogBackground" class:open={MenuOpen}>
   <dialog open={MenuOpen}>
-    <div class="container">
+    <div class="popup-container">
       {#if HasDefaultClose}
       <button class="close roundedBtn dark" on:click={()=>MenuOpen=!MenuOpen}>
         <SvgIcon src="images/close.svg" styles={closeStyles}/>
@@ -27,7 +27,7 @@ let closeStyles = `
 </div>
 
 <style lang="scss">
-.container{
+.popup-container{
   position: relative;
 }
 #dialogBackground{

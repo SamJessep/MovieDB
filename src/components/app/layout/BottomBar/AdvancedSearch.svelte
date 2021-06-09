@@ -242,7 +242,7 @@ const selectMediaType = e=>{
       <Selector selectID={formItem.name} name={formItem.name} fetchItemsFunction={()=>formItem.get_options()} label={formItem.label} multiple={formItem.multiple} bind:this={formItem.instance} mandatoryChoice={formItem.mandatoryChoice}>
         {#if formItem.name == formItems[0].name}
         <div class="dirWrapper">
-        <label class="dirLabel" for="sort_dir">Sort direction</label>  
+        <label class="dirLabel" for="sort_dir">Sort direction:</label>  
           <select id="sort_dir">
             <option value="desc">High to Low</option>
             <option value="asc">Low to High</option>

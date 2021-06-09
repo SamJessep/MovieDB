@@ -2,10 +2,13 @@
 import QuickButton from './QuickButton.svelte'
 import {push} from 'svelte-spa-router'
 import Popup from "../../../general/Popup.svelte"
+import Selector from '../../../form/Selector.svelte';
 
 export let isOpen = false;
 let root;
-
+let movieSelect;
+let tvSelect;
+let media_type = "movie";
 export let genresPromises = [
   {
     name:'Tv',
@@ -28,7 +31,7 @@ export async function GetMovieGenres(){
 async function GetGenres(url){
   return await fetch(url)
   .then(data=>data.json())
-  .then(json=>json.genres);
+  .then(json=>json.genres.map(genre=>{return {text:genre.name, value:genre.id}}));
 }
 
 export function Refresh(){
@@ -40,35 +43,51 @@ export function ToggleGenreContainer(){
   isOpen = !isOpen;
 }
 
-export function GenreSelected(id, type){
-  push(`/Genre/${type}/${id}`)
-  isOpen = false
+export function GenreSearch(){
+  let selector;
+  if(media_type == "tv"){
+    selector = tvSelect
+  }else if (media_type == "movie"){
+    selector = movieSelect
+  }
+
+  let genreIds = selector.getSelectedOptions().join(",");
+  if(genreIds === ""){
+    alert("Please select at least one genre")
+  }else{
+    push(`/Genre/${media_type}/${genreIds}`)
+    isOpen = false
+  }
 }
 </script>
   <QuickButton text="Genre" click={ToggleGenreContainer}/>
   <Popup bind:MenuOpen={isOpen} HasDefaultClose={true}>
     <div slot="contents">
-      {#each genresPromises as genreType}
-        {#await genreType.promise}
-          <p>Loading {genreType.name} genres...</p>
-        {:then genres}
-        <details class="genreContainer">
-          <summary class="genreSectionHeader">{genreType.name}</summary>
-          {#each genres as genre}
-            <p id={genre.id} on:click={GenreSelected(genre.id, genreType.name)}>{genre.name}</p>
-          {/each}
-          </details>
-        {:catch error}
-          <div>
-            Opps Genres couldn't be loaded
-            <button class="inlineBtn" on:click={Refresh}>Click here to try again</button>
-            <details>
-              <summary>click here for more info</summary>
-              <pre>{error}</pre>
-            </details>
-          </div>
-        {/await}
-      {/each}
+      <Selector on:select={e=>{media_type=e.detail.selected[0].value}} selectID={"media_type"} name={"media_type"} fetchItemsFunction={()=>[{text:"Movies", value:"movie"},{text:"TV", value:"tv"}]} label={"Media Type"} mandatoryChoice={true}/>
+      {#if media_type == "movie"}
+        <Selector 
+          selectID={"movieGenreSelect"} 
+          name={"movieGenreSelect"} 
+          fetchItemsFunction={GetMovieGenres} 
+          label={"Movie Genres"} 
+          multiple={true} 
+          bind:this={movieSelect} 
+          mandatoryChoice={false}
+          size=100
+        />
+      {:else if media_type == "tv"}
+        <Selector 
+          selectID={"tvGenreSelect"} 
+          name={"tvGenreSelect"} 
+          fetchItemsFunction={GetTVGenres} 
+          label={"TV Genres"} 
+          multiple={true} 
+          bind:this={tvSelect} 
+          mandatoryChoice={false}
+          size=100
+        />
+      {/if}
+      <button class="searchBtn" on:click={GenreSearch}>Search</button>
     </div>
   </Popup>
   <div id="container" class:isOpen={isOpen}>
@@ -80,71 +99,12 @@ export function GenreSelected(id, type){
   color:white;
 }
 
-.inlineBtn{
-  display: inline;
+div[slot="contents"]{
+  max-height: 75vh;
+  overflow-y: auto;
 }
-
-#container{
-  position: absolute;
-  display: block;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.4s;
-  right: 0;
-}
-
-#container.isOpen{
-  visibility: visible;
-  opacity: 1;
-  background-color: $BackgroundColor;
-  border-radius: 5px;
-  box-shadow: 0px 0px 12px 0px grey;
-  }
-
-.genreContainer{
-  display: flex;
-  flex-direction: column;
-}
-
-.genreContainer>summary{
-  padding: 0.5rem 4rem;
-}
-
-details, details *{
-  cursor: pointer;
-  transition: 0.5s;
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
-
-.genreSectionHeader{
-  font-size: $BaseFontSize, 3vmin;
-  outline: none;
-}
-
-details:not([open]) .genreSectionHeader:hover{
-  color: $SelectedColor;
-}
-
-details[open] .genreSectionHeader{
-  color:$AccentColor;
-}
-
-details p{
-  padding: 0.5rem 0.4rem;
-  text-align: center;
-  margin: 0.1rem 0;
-}
-
-details p:hover{
-  color:$AccentColor;
-  background-color:$SecondBackgroundColor, grey;;
-  border-radius: 1vmin;
+.searchBtn{
+  @include darkBtnOutline;
 }
 
 @media only screen and (max-width: $MobileWidth){

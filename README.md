@@ -10,7 +10,7 @@ Javascript Web app using
     - [x] choose date range
     - [ ] rating range
     - [x] select multiple genres
-    - [ ] select media type e.g. movie/tv/any
+    - [x] select media type e.g. movie/tv/
   - [ ] Revamp genre search
     - [ ] use tag input for genre select multiple
   - [ ] Implement more preferences
