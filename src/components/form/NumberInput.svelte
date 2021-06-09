@@ -9,7 +9,7 @@
 
 <label for={id}>{label}</label>
 <span>
-  <input {name} {id} type="number" {min} {max} bind:value={bindedValue}/> Minute{bindedValue>1 ? "s":""}
+  <input {name} {id} type="number" {min} {max} placeholder="0" bind:value={bindedValue}/> Minute{bindedValue>1 ? "s":""}
 </span>
 
 <style lang="scss">

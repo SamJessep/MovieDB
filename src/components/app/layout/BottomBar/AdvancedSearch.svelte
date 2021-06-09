@@ -1,33 +1,3 @@
-<!-- 
-"sort_by"X
-"certification_country"
-"certification"
-"certification.lte"
-"certification.gte"
-"include_video"
-"primary_release_year"
-"primary_release_date.gte"
-"primary_release_date.lte"
-"with_release_type"
-"vote_count.gte"
-"vote_count.lte"
-"vote_average.gte"
-"vote_average.lte"
-"with_cast"
-"with_crew"
-"with_people"
-"with_companies"
-"with_genres"
-"without_genres"
-"with_keywords"
-"without_keywords"
-"with_runtime.gte"
-"with_runtime.lte"
-"with_original_language"
-"with_watch_providers"
-"watch_region"
-"with_watch_monetization_types"
- -->
 <script>
 import { GetWatchProviders, SearchPeople, SearchCompany, SearchKeywords,GetGenres } from "../../../../model/TMDbAPI";
 import {push} from "svelte-spa-router";
@@ -48,11 +18,12 @@ class formItem{
   }
 } 
 class select extends formItem{
-  constructor(name,label, options, multiple=false){
+  constructor(name,label, options, multiple=false, isMandatory=false){
     super(name,label,"select")
     this.options = options
     this.selected = options[0]
     this.multiple=multiple
+    this.mandatoryChoice=isMandatory
   }
 
   get_selected(){
@@ -183,7 +154,7 @@ const formItems = [
     {value:"original_title", text:"Title"},
     {value:"vote_average", text:"Rating" },
     {value:"vote_count", text:"Rating Count" }
-  ]),
+  ],false,true),
   new defaultselect(),
   new select("primary_release_year","Release Year", generateYearsList()),
   new datepicker("primary_release_date.lte","Release Date Less than", {minDate:"1900-01", maxDate:"today"}), 
@@ -231,18 +202,19 @@ const submit = e=>{
       delete returnParams[key]
     }
   }
-
+  console.table(returnParams)
   const queryString = new URLSearchParams(returnParams).toString();
   const url = queryString == "" ? "/Discover/movie/Advanced" : "/Discover/movie/Advanced?"+queryString 
-  push(url)
+  // push(url)
 }
 </script>
 
 
 <form action="" class="advancedSearchForm" on:submit|preventDefault={submit}>
   {#each formItems as formItem}
+  <div class:controlWrapper={formItem.type!=null}>
     {#if formItem.type === "select"}
-      <Selector name={formItem.name} bindedValue={formItem.selected} fetchItemsFunction={()=>formItem.get_options()} label={formItem.label} multiple={formItem.multiple} bind:this={formItem.instance}>
+      <Selector selectID={formItem.name} name={formItem.name} fetchItemsFunction={()=>formItem.get_options()} label={formItem.label} multiple={formItem.multiple} bind:this={formItem.instance} mandatoryChoice={formItem.mandatoryChoice}>
         {#if formItem.name == formItems[0].name}
         <div class="dirWrapper">
         <label class="dirLabel" for="sort_dir">Sort direction</label>  
@@ -262,6 +234,7 @@ const submit = e=>{
     {:else if formItem.type === "searchTag"}
       <SearchTag name={formItem.name} label={formItem.label} getSuggestions={formItem.getSuggestions} id={formItem.name} placeholder={formItem.placeholder} bind:this={formItem.instance}/>
     {/if}
+  </div>
   {/each}
   <button class="searchBtn">Search</button>
 </form>
@@ -280,6 +253,10 @@ const submit = e=>{
       margin: 0 0.4rem;
       flex-grow:1;
     }
+  }
+
+  .controlWrapper{
+    margin-bottom: 0.25rem;
   }
 
   .searchBtn{
@@ -313,6 +290,29 @@ const submit = e=>{
     margin-left: 10px;
     border: solid $PanelHover 2px;
     display: flex;
+  }
+
+  @media only screen and (max-width: $MobileWidth){
+    form{
+      max-width: 90%;
+      margin: auto;
+    }
+
+    select{
+      min-width: auto;
+      font-size: $BaseFontSize-Mobile;
+    }
+
+    .dirLabel{
+      padding: 0 5px;
+      font-size: $BaseFontSize-Mobile;
+    }
+
+    .dirWrapper{
+      margin-left: 5px;
+      border: solid $PanelHover 2px;
+    }
+
   }
 
 </style>
