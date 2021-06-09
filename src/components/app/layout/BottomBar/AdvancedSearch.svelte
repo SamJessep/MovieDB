@@ -205,7 +205,7 @@ const submit = e=>{
   console.table(returnParams)
   const queryString = new URLSearchParams(returnParams).toString();
   const url = queryString == "" ? "/Discover/movie/Advanced" : "/Discover/movie/Advanced?"+queryString 
-  // push(url)
+  push(url)
 }
 </script>
 
@@ -219,8 +219,8 @@ const submit = e=>{
         <div class="dirWrapper">
         <label class="dirLabel" for="sort_dir">Sort direction</label>  
           <select id="sort_dir">
-            <option value="asc">High to Low</option>
-            <option value="desc">Low to High</option>
+            <option value="desc">High to Low</option>
+            <option value="asc">Low to High</option>
           </select>
         </div>
         {/if}  
@@ -280,12 +280,14 @@ const submit = e=>{
   }
 
   .dirLabel{
-    background-color: $PanelColor;
+    margin:auto;
     color: $FontColor;   
     padding: 0 10px;
+    white-space: nowrap;
   }
 
   .dirWrapper{
+    background-color: $PanelColor;
     border-radius: 0.2rem;
     margin-left: 10px;
     border: solid $PanelHover 2px;

@@ -113,6 +113,7 @@ function removeItem(id){
 }
 
 .searchField{
+  width: 100%;
   background-color: $PanelColor;
   padding: 0.25rem;
   color: $FontColor;

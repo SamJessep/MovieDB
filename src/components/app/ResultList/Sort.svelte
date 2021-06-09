@@ -20,7 +20,7 @@
   ]
   export let defaultSelected = "NONE";
   let selected = defaultSelected;
-
+  disabledOptions = disabledOptions.filter(disabledOption=>disabledOption != defaultSelected.split('.')[0]);
   const SORT_KEY = "sort_by"
 
   $:{
