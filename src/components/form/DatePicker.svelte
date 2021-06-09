@@ -32,4 +32,10 @@
       border: solid $AccentColor 2px;
     }
   }
+  ::-webkit-calendar-picker-indicator { 
+    filter: invert(100%);
+    &:hover{
+      filter: invert(61%) sepia(92%) saturate(3194%) hue-rotate(116deg) brightness(105%) contrast(101%);
+    }
+  }
 </style>

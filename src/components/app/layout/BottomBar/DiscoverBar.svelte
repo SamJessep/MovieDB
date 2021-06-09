@@ -23,6 +23,11 @@
       text: "Recent Releases",
       url: '/Discover/movie/Latest',
       needsLogin: false
+    },
+    {
+      text: "Advanced Search",
+      url: '/AdvancedSearch',
+      needsLogin: false
     }
   ]
 </script>

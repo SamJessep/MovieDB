@@ -6,5 +6,4 @@ let focused = false;
 $:focused
 </script>
 <div>
-  <AdvancedSearch/>
 </div>
