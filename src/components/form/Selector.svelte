@@ -1,4 +1,8 @@
 <script>
+import { createEventDispatcher } from 'svelte';
+
+const dispatch = createEventDispatcher();
+
 export let bindedValue = "";
 export let fetchItemsFunction;
 export let selectID;
@@ -18,6 +22,11 @@ function Retry(){
 export function getSelectedOptions(){
   return Array.from(selectElement.selectedOptions).map(option=>option.value)
 }
+
+const change = e=>{
+  hasSelectedPlaceholder=e.target.selectedOptions[0].value == ""
+  dispatch('select', {event:e, selected:e.target.selectedOptions});
+}
 </script>
 
 <label for={selectID}>{label}
@@ -32,7 +41,15 @@ export function getSelectedOptions(){
     </select>
     {:else}
     <div class="twoselect">
-      <select id={selectID} bind:value={bindedValue} {name} bind:this={selectElement} class:off={hasSelectedPlaceholder} class:hasPlaceholder={!mandatoryChoice} on:change={e=>hasSelectedPlaceholder=e.target.selectedOptions[0].value == ""}>
+      <select 
+        id={selectID} 
+        bind:value={bindedValue} 
+        {name} 
+        bind:this={selectElement} 
+        class:off={hasSelectedPlaceholder} 
+        class:hasPlaceholder={!mandatoryChoice} 
+        on:change={change}
+      >
         {#if !mandatoryChoice}
           <option selected value="">{placeholder}</option>
         {/if}

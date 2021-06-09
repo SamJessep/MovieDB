@@ -19,7 +19,6 @@
 <svelte:options accessors/>
 
 <style lang="scss">
-
   input{
     background-color: $PanelColor;
     padding: 0.25rem;

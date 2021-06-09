@@ -115,7 +115,7 @@ function generateYearsList(){
 }
 
 function formatWatchProviders(){
-  return GetWatchProviders("movie", "NZ").then(r=>{
+  return GetWatchProviders(media_type, "NZ").then(r=>{
     console.log(r.results)
     return r.results.map(p=>{return {value:p.provider_id, text:p.provider_name, icon:p.logo_path}})
   })
@@ -134,7 +134,7 @@ async function GetCompanySuggestions(query){
 }
 
 async function GetGenreSuggestions(query){
-  const res = await GetGenres("movie");
+  const res = await GetGenres(media_type);
   const genres = res.genres.map(genre=>{return {text:genre.name, value:genre.id}})
   return genres;
 }
@@ -145,7 +145,20 @@ async function GetKeywordSuggestions(query){
   return keywords;
 }
 
-const formItems = [
+var media_type="movie"
+const tvItems = [
+  new select("sort_by","Sort", [
+    {value:"popularity", text:"Popularity"},
+    {value:"release_date", text:"Release Date" },
+    {value:"revenue", text:"Revenue" },
+    {value:"primary_release_date", text:"Primary Release Date"},
+    {value:"original_title", text:"Title"},
+    {value:"vote_average", text:"Rating" },
+    {value:"vote_count", text:"Rating Count" }
+  ],false,true),
+  new defaultselect(),
+]
+const movieItems = [
   new select("sort_by","Sort", [
     {value:"popularity", text:"Popularity"},
     {value:"release_date", text:"Release Date" },
@@ -183,16 +196,19 @@ const formItems = [
     {text:"Rent", value:"rent"},
     {text:"Buy", value:"buy"}
   ], true)
-]  
+]
+
+var formItems = movieItems
 
 const submit = e=>{
   const els = e.target.elements;
-  const keys = Object.keys(els).filter(key=>!key.match(/^\d/))
+  const keys = Object.keys(els).filter(key=>!key.match(/^\d/) && key!= "media_type")
   let kvPairs = keys.map(k=>{return {key:k,element:els[k]}})
   let returnParams = {};
   for(let i = 0; i<kvPairs.length; i++){
     const vEl = formItems[i];
     const aEl = kvPairs[i].element
+    console.log(vEl, aEl)
     kvPairs[i].value = vEl.getValue(aEl)
     returnParams[kvPairs[i].key] = kvPairs[i].value
   }
@@ -202,15 +218,24 @@ const submit = e=>{
       delete returnParams[key]
     }
   }
-  console.table(returnParams)
   const queryString = new URLSearchParams(returnParams).toString();
-  const url = queryString == "" ? "/Discover/movie/Advanced" : "/Discover/movie/Advanced?"+queryString 
+  const url = queryString == "" ? `/Discover/${media_type}/Advanced` : `/Discover/${media_type}/Advanced?${queryString}` 
   push(url)
+}
+
+const selectMediaType = e=>{
+  media_type = e.detail.selected[0].value
+  if(media_type === "tv"){
+    formItems = tvItems
+  }else if (media_type === "movie"){
+    formItems = movieItems
+  }
 }
 </script>
 
 
 <form action="" class="advancedSearchForm" on:submit|preventDefault={submit}>
+  <Selector on:select={selectMediaType} selectID={"media_type"} name={"media_type"} fetchItemsFunction={()=>[{text:"Movies", value:"movie"},{text:"TV", value:"tv"}]} label={"Media Type"} mandatoryChoice={true}/>
   {#each formItems as formItem}
   <div class:controlWrapper={formItem.type!=null}>
     {#if formItem.type === "select"}

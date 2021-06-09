@@ -6,10 +6,10 @@ Javascript Web app using
 
 ## Tasks
   ### Major Features
-  - [ ] Add advanced search to quick bar
-    - [ ] choose date range
+  - [x] Add advanced search to quick bar
+    - [x] choose date range
     - [ ] rating range
-    - [ ] select multiple genres
+    - [x] select multiple genres
     - [ ] select media type e.g. movie/tv/any
   - [ ] Revamp genre search
     - [ ] use tag input for genre select multiple
@@ -33,6 +33,7 @@ Javascript Web app using
   - [ ] Janky animation for sort element
   - [ ] Some performace issues on mobile
   - [ ] Fix image sizing, some posters are different sizes and get stretched
+  - [ ] Reloading a discover page resets the sort type
   
   ### Done
   - [x] Sort results 
