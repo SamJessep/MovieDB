@@ -29,10 +29,12 @@
 "with_watch_monetization_types"
  -->
 <script>
-import { GetWatchProviders } from "../../../../model/TMDbAPI";
+import { GetWatchProviders, SearchPeople, SearchCompany, SearchKeywords,GetGenres } from "../../../../model/TMDbAPI";
+import {push} from "svelte-spa-router";
 
 import Checkbox from "../../../form/Checkbox.svelte"
 import DatePicker from "../../../form/DatePicker.svelte"
+import NumberInput from "../../../form/NumberInput.svelte";
 import SearchTag from "../../../form/SearchTag.svelte"
 import Selector from "../../../form/Selector.svelte"
 import AddButton from "../../ResultList/AddButton.svelte"
@@ -42,7 +44,7 @@ class formItem{
     this.label = label
     this.name = name
     this.type = type
-    this.value
+    this.instance
   }
 } 
 class select extends formItem{
@@ -58,8 +60,28 @@ class select extends formItem{
   }
 
   get_options(){
-    console.log(typeof(this.options))
     return this.options
+  }
+  getValue(el){
+    let val = this.instance.getSelectedOptions().join(",");
+    return val == "" ? null : val;
+  }
+}
+
+class selectAsync extends select{
+  constructor(name,label, fetchMethod, multiple=false){
+    super(name,label,[0],multiple)
+    this.getOptionsAsync = fetchMethod
+  }
+
+  async get_options(){
+    return await this.getOptionsAsync();
+  }
+}
+
+class defaultselect extends formItem{
+  getValue(el){
+    return el.selectedOptions[0].value
   }
 }
 
@@ -68,12 +90,8 @@ class datepicker extends formItem{
     super(name,label,"date")
     this.options = options
   }
-}
-
-class range{
-  constructor(formItemLow, formItemHigh){
-    this.type="range"
-    this.items = [formItemLow, formItemHigh]
+  getValue(el){
+    return this.instance.value == "" ? null : this.instance.value;
   }
 }
 
@@ -83,11 +101,22 @@ class checkbox extends formItem{
     this.checked = checked
   }
 
+  getValue(el){
+    return null;
+  }
+
 }
 
 class searchTag extends formItem{
-  constructor(name, label){
+  constructor(name, label, placeholder, getSuggestionMethod){
     super(name, label, "searchTag")
+    this.getSuggestions = getSuggestionMethod
+    this.placeholder = placeholder
+  }
+
+  getValue(el){
+    let val = this.instance.selected.map(item=>item.id).join(",")
+    return val == "" ? null : val
   }
 }
 
@@ -98,6 +127,20 @@ class numberInput extends formItem{
     this.min = min
     this.max = max
   }
+
+  getValue(el){
+    return el.value == "" ? null : el.value;
+  }
+}
+
+function generateYearsList(){
+  const currentYear = new Date().getFullYear();
+  const firstYear = 1895;
+  let yearsList = []
+  for(let year = currentYear; year>=firstYear; year--){
+    yearsList.push({text:year, value:year})
+  }
+  return yearsList;
 }
 
 function formatWatchProviders(){
@@ -105,6 +148,30 @@ function formatWatchProviders(){
     console.log(r.results)
     return r.results.map(p=>{return {value:p.provider_id, text:p.provider_name, icon:p.logo_path}})
   })
+}
+
+async function GetPeopleSuggestions(query){
+  const res = await SearchPeople(query);
+  const people = res.results.map(person=>{return {text:person.name, id:person.id}})
+  return people;
+}
+
+async function GetCompanySuggestions(query){
+  const res = await SearchCompany(query);
+  const companies = res.results.map(company=>{return {text:company.name, id:company.id}})
+  return companies;
+}
+
+async function GetGenreSuggestions(query){
+  const res = await GetGenres("movie");
+  const genres = res.genres.map(genre=>{return {text:genre.name, value:genre.id}})
+  return genres;
+}
+
+async function GetKeywordSuggestions(query){
+  const res = await SearchKeywords(query);
+  const keywords = res.results.map(item=>{return {text:item.name, id:item.id}})
+  return keywords;
 }
 
 const formItems = [
@@ -117,11 +184,10 @@ const formItems = [
     {value:"vote_average", text:"Rating" },
     {value:"vote_count", text:"Rating Count" }
   ]),
-  new datepicker("primary_release_year","Release Year", {minDate:"1900-01", maxDate:"today"}),
-  new range( 
-    new datepicker("primary_release_date.lte","Release Date Less than", {minDate:"1900-01", maxDate:"today"}), 
-    new datepicker("primary_release_date.gte","Release Date Greater than", {minDate:"1900-01", maxDate:"today"})
-  ),
+  new defaultselect(),
+  new select("primary_release_year","Release Year", generateYearsList()),
+  new datepicker("primary_release_date.lte","Release Date Less than", {minDate:"1900-01", maxDate:"today"}), 
+  new datepicker("primary_release_date.gte","Release Date Greater than", {minDate:"1900-01", maxDate:"today"}),
   new select("with_release_type", "Release Type", [
     {value:"1", text:"Premiere"},
     {value:"2", text:"Theatrical (limited)"},
@@ -130,16 +196,14 @@ const formItems = [
     {value:"5", text:"Physical"},
     {value:"6", text:"TV"}
   ], true),
-  new searchTag("with_cast", "With Cast"),
-  new searchTag("with_crew", "With Crew"),
-  new searchTag("with_people", "With People"),
-  new searchTag("with_companies", "With Companies"),
-  new searchTag("with_genres", "With Genres"),
-  new searchTag("with_keywords", "With Keywords"),
-  new range(
-    new numberInput("with_runtime.gte", "Run time longer than", 0,500),
-    new numberInput("with_runtime.lte", "Run time shorter than", 0,500)
-  ),
+  new searchTag("with_cast", "With Cast", "Start typing to get cast suggestions", GetPeopleSuggestions),
+  new searchTag("with_crew", "With Crew", "Start typing to get crew suggestions", GetPeopleSuggestions),
+  new searchTag("with_people", "With People", "Start typing to get suggestions", GetPeopleSuggestions),
+  new searchTag("with_companies", "With Companies","Start typing to get company suggestions", GetCompanySuggestions),
+  new selectAsync("with_genres", "With Genres", GetGenreSuggestions, true),
+  new searchTag("with_keywords", "With Keywords","Start typing to get keyword suggestions", GetKeywordSuggestions),
+  new numberInput("with_runtime.gte", "Run time longer than", 0,500),
+  new numberInput("with_runtime.lte", "Run time shorter than", 0,500),
   new select("with_watch_providers", "Available on", formatWatchProviders(), true),
   new select("with_watch_monetization_types", "with monetization types", [
     {text:"Flatrate", value:"flatrate"},
@@ -149,40 +213,60 @@ const formItems = [
     {text:"Buy", value:"buy"}
   ], true)
 ]  
+
+const submit = e=>{
+  const els = e.target.elements;
+  const keys = Object.keys(els).filter(key=>!key.match(/^\d/))
+  let kvPairs = keys.map(k=>{return {key:k,element:els[k]}})
+  let returnParams = {};
+  for(let i = 0; i<kvPairs.length; i++){
+    const vEl = formItems[i];
+    const aEl = kvPairs[i].element
+    kvPairs[i].value = vEl.getValue(aEl)
+    returnParams[kvPairs[i].key] = kvPairs[i].value
+  }
+  returnParams.sort_by = returnParams.sort_by+"."+returnParams.sort_dir;
+  for(let key in returnParams){
+    if(returnParams[key] == null || key == "sort_dir"){
+      delete returnParams[key]
+    }
+  }
+
+  const queryString = new URLSearchParams(returnParams).toString();
+  const url = queryString == "" ? "/Discover/movie/Advanced" : "/Discover/movie/Advanced?"+queryString 
+  push(url)
+}
 </script>
 
 
-<form action="" class="advancedSearchForm">
+<form action="" class="advancedSearchForm" on:submit|preventDefault={submit}>
   {#each formItems as formItem}
     {#if formItem.type === "select"}
-      <Selector bindedValue={formItem.selected} fetchItemsFunction={()=>formItem.get_options()} label={formItem.label}/>
+      <Selector name={formItem.name} bindedValue={formItem.selected} fetchItemsFunction={()=>formItem.get_options()} label={formItem.label} multiple={formItem.multiple} bind:this={formItem.instance}>
+        {#if formItem.name == formItems[0].name}
+        <div class="dirWrapper">
+        <label class="dirLabel" for="sort_dir">Sort direction</label>  
+          <select id="sort_dir">
+            <option value="asc">High to Low</option>
+            <option value="desc">Low to High</option>
+          </select>
+        </div>
+        {/if}  
+      </Selector>
     {:else if formItem.type === "checkbox"}
-      <Checkbox label={formItem.label} value={formItem.name} checked={formItem.checked}/>
+      <Checkbox label={formItem.label} value={formItem.name} checked={formItem.checked} bind:this={formItem.instance}/>
     {:else if formItem.type === "date"}
-      <DatePicker label={formItem.label} options={formItem.options}/>
-    {:else if formItem.type === "range"}
-      {#each formItem.items as formItem}
-        {#if formItem.type === "select"}
-          <Selector bindedValue={formItem.selected} fetchItemsFunction={()=>formItem.get_options()} label={formItem.label}/>
-        {:else if formItem.type === "checkbox"}
-          <Checkbox label={formItem.label} value={formItem.name} checked={formItem.checked}/>
-        {:else if formItem.type === "date"}
-          <DatePicker label={formItem.label} options={formItem.options}/>
-        {:else if formItem.type === "numberInput"}
-          <label>
-            {formItem.label}
-            <input type="number" min={formItem.min} max={formItem.max} bind:value={formItem.value}/>Minute{formItem.value>1 ? "s":""}
-          </label>
-        {/if}
-      {/each}
+      <DatePicker name={formItem.name} id={formItem.name} label={formItem.label} options={formItem.options} bind:this={formItem.instance}/>
+    {:else if formItem.type === "numberInput"}
+    <NumberInput name={formItem.name} label={formItem.label} id={formItem.name} min={formItem.min} max={formItem.max} bindedValue={formItem.value} bind:this={formItem.instance}/>
     {:else if formItem.type === "searchTag"}
-      <SearchTag label={formItem.label}/>
+      <SearchTag name={formItem.name} label={formItem.label} getSuggestions={formItem.getSuggestions} id={formItem.name} placeholder={formItem.placeholder} bind:this={formItem.instance}/>
     {/if}
   {/each}
-  <button>Search</button>
+  <button class="searchBtn">Search</button>
 </form>
 
-<style>
+<style lang="scss">
   form{
     color:$FontColor;
     display: flex;
@@ -197,4 +281,38 @@ const formItems = [
       flex-grow:1;
     }
   }
+
+  .searchBtn{
+    @include darkBtnOutline;
+  }
+
+  select{
+    width: 100%;
+    background-color: $PanelColor;
+    padding: 0.25rem;
+    color: $FontColor;
+    border-radius: 0.2rem;
+    border: solid transparent 2px;
+    min-width: 20ch;
+  }
+
+  select:focus{
+    outline:none;
+    border-radius: 0.2rem;
+    border: solid $AccentColor 2px;
+  }
+
+  .dirLabel{
+    background-color: $PanelColor;
+    color: $FontColor;   
+    padding: 0 10px;
+  }
+
+  .dirWrapper{
+    border-radius: 0.2rem;
+    margin-left: 10px;
+    border: solid $PanelHover 2px;
+    display: flex;
+  }
+
 </style>

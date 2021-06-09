@@ -5,13 +5,31 @@
   //Props
   export let options;
   export let label;
+  export let id;
+  export let name;
+  export let value = "";
   
   let el
   onMount(()=>{
     flatpickr(el,options)
   })
 </script>
-<label>
-{label}
-  <input bind:this={el} placeholder="Select a date"/>
-</label>
+<label for={id}>{label}</label>
+<input {id} {name} bind:this={el} placeholder="Select a date" bind:value={value}/>
+<svelte:options accessors/>
+
+<style lang="scss">
+
+  input{
+    background-color: $PanelColor;
+    padding: 0.25rem;
+    color: $FontColor;
+    border-radius: 0.2rem;
+    border: solid $PanelHover 2px;
+    &:focus{
+      outline:none;
+      border-radius: 0.2rem;
+      border: solid $AccentColor 2px;
+    }
+  }
+</style>

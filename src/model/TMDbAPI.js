@@ -33,6 +33,27 @@ async function Send(url, params, media_type){
   return res;
 }
 
+async function SendClean(url, params){
+  params = {
+    ...get(RequestParams),
+    ...params
+  };
+  //Remove null params
+  params = Object.fromEntries(
+    Object.entries(params).filter(([key, value]) => value !== null) )
+
+  var res = await fetch(url + "?" + ParamsToString(params),{
+    method:'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': 'Bearer '+Config.API_KEY_V4
+    }
+  });
+  res = await res.json()
+  return res;
+}
+
 export async function Search(query, search_type="multi", params = {}) {
   params = {
     query: encodeURI(query),
@@ -112,4 +133,23 @@ export async function GenreSearch(genres, media_type, params={}){
 
 export async function GetWatchProviders(media_type,region, language="en-US"){
   return await Send(Config.BASE_URL+`watch/providers/${media_type}?watch_region=${region}&language=${language}`)
+}
+
+export async function SearchPeople(query, page=1){
+  query = encodeURI(query)
+  return await SendClean(Config.BASE_URL+`search/person?query=${query}&page=${page}`)
+}
+
+export async function SearchCompany(query, page=1){
+  query = encodeURI(query)
+  return await SendClean(Config.BASE_URL+`search/company?query=${query}&page=${page}`)
+}
+
+export async function SearchKeywords(query, page=1){
+  query = encodeURI(query)
+  return await SendClean(Config.BASE_URL+`search/keyword?query=${query}&page=${page}`)
+}
+
+export async function GetGenres(media_type="movie"){
+  return await SendClean(Config.BASE_URL+`genre/${media_type.toLocaleLowerCase()}/list`)
 }
