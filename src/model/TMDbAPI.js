@@ -33,11 +33,12 @@ async function Send(url, params, media_type){
   return res;
 }
 
-async function SendClean(url, params){
-  params = {
+async function SendClean(url, params, usePreferences=true){
+  params = usePreferences ? {
     ...get(RequestParams),
     ...params
-  };
+  } : 
+  {...params};
   //Remove null params
   params = Object.fromEntries(
     Object.entries(params).filter(([key, value]) => value !== null) )
@@ -52,6 +53,19 @@ async function SendClean(url, params){
   });
   res = await res.json()
   return res;
+}
+
+async function Post(url, body){
+  const rawResponse = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': 'Bearer '+Config.API_KEY_V4
+    },
+    body: JSON.stringify(body)
+  });
+  return await rawResponse.json();
 }
 
 export async function Search(query, search_type="multi", params = {}) {
@@ -112,6 +126,7 @@ export async function AddToWatchlist(media_id, media_type="movie", add=true){
       "watchlist": add
     })
   });
+  rawResponse.then(res=>console.log(res))
   return await rawResponse.json();
 }
 
@@ -152,4 +167,16 @@ export async function SearchKeywords(query, page=1){
 
 export async function GetGenres(media_type="movie"){
   return await SendClean(Config.BASE_URL+`genre/${media_type.toLocaleLowerCase()}/list`)
+}
+
+export async function GetDetails(id,media_type="movie"){
+  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}`,{append_to_response:"release_dates"})
+}
+
+export async function GetImages(id,media_type="movie"){
+  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/images`, [],false)
+}
+
+export async function Rate(id,session_id,rating,media_type="movie"){
+  return await Post(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`,{value:rating})
 }

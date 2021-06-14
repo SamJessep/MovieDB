@@ -6,8 +6,9 @@ import {AddToWatchlist, IsOnWatchlist} from '../../../model/TMDbAPI.js'
 import {IsLoggedIn} from '../../../stores/userStore.js'
 import { createEventDispatcher } from 'svelte';
 import { fade } from 'svelte/transition';
-import {GetBestImageSize} from "../../../model/dataHelper.js"
+import {GetBestImageSize, RemToPx} from "../../../model/dataHelper.js"
 import {GetSCSSVars, IsMobile} from "../../../util";
+import { push } from 'svelte-spa-router';
 
 const scssVars = GetSCSSVars();
 
@@ -54,10 +55,6 @@ export function GetImageUrls(){
 }
 const ImageUrl = GetImageUrls()
 
-function RemToPx(rem) {    
-    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-}
-
 export function LoadResultPage(el){
   alert("Clicked "+ title)
 }
@@ -68,8 +65,17 @@ export function AddToList(event){
   AddToWatchlist(Result.id, media_type, checked)
 }
 
+var addButton;
+
+const selectCard = e=>{
+  const shouldShowDetailsPage = !addButton.container.contains(e.target);
+  if(shouldShowDetailsPage){
+    push(`/${Result.media_type}/${Result.id}`)
+  }
+}
+
 </script>
-<button class="resultCard nonStandard" id={cardId} transition:fade title={title}>
+<button class="resultCard nonStandard" id={cardId} transition:fade title={title} on:click={selectCard}>
   {#if Loaded}
     {#if Result.poster_path}
     <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster" class:loading loading="lazy" on:load={imgLoad} />
@@ -82,7 +88,7 @@ export function AddToList(event){
     {/if}
   <div class='toolbar'>
     {#if $IsLoggedIn}
-      <AddButton on:addClicked={AddToList} {Result}/>
+      <AddButton on:addClicked={AddToList} {Result} bind:this={addButton}/>
     {/if}
     <p>{title}</p>
     {#if Result.media_type}

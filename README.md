@@ -11,7 +11,7 @@ Javascript Web app using
     - [ ] rating range
     - [x] select multiple genres
     - [x] select media type e.g. movie/tv/
-  - [ ] Revamp genre search
+  - [x] Revamp genre search
     - [ ] use tag input for genre select multiple
   - [ ] Implement more preferences
     - [ ] Junk filter
@@ -32,7 +32,7 @@ Javascript Web app using
   - [ ] Infinate loop when changing pages sometimes
   - [ ] Janky animation for sort element
   - [ ] Some performace issues on mobile
-  - [ ] Fix image sizing, some posters are different sizes and get stretched
+  - [x] Fix image sizing, some posters are different sizes and get stretched
   - [ ] Reloading a discover page resets the sort type
   
   ### Done

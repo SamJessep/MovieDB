@@ -7,6 +7,7 @@ import {LoadQueue, Loaded} from '../../../stores/resultsStore';
 import ScrollButton from './ScrollButton.svelte';
 import Page from './Page.svelte'
 import Sort from './Sort.svelte'
+import ErrorSmall from '../../general/ErrorSmall.svelte';
 
 export let FetchMethod;
 export let MethodParams =[];
@@ -181,7 +182,15 @@ function scrollClicked(){
         {#if loadedPages.includes(page) || page<=currentPage}
           <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} Active={loadedPages.includes(page)}/>
         {/if}
+      {:else}
+        <div class="center_container">
+          <h2>No results found</h2>
+        </div>
       {/each}
+    {:catch error}
+    <div class="center_container">
+      <ErrorSmall userMessage="Opps somthing went wrong" errorMessage={error}/>
+    </div>
     {/await}
   {/key}
   <div class="scroll-block bottom" bind:this={loadBottom}/>
@@ -191,7 +200,8 @@ function scrollClicked(){
 <style lang="scss">
 
 h2{
-  color:$FontColor
+  color:$FontColor;
+  font-size: $HeaderFontSize;
 }
 
 .scroll-block{
@@ -213,6 +223,11 @@ h2{
 
 .card-list{
   margin: 0 15rem;
+}
+
+.center_container{
+  display:flex;
+  justify-content: center;
 }
 @media only screen and (max-width: $MobileWidth){
   .card-list{

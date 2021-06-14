@@ -19,6 +19,7 @@ export function GetCountryText(value){
 }
 
 export function GetBestImageSize(imageType, width){
+  if(width == 0) return Config.imageSizes[imageType][0]
   let selectedSize = Config.imageSizes[imageType].map(s=>{
     let size = Number(s.replace("w", ""))
     return {
@@ -26,6 +27,10 @@ export function GetBestImageSize(imageType, width){
       difference:Math.abs(width-size)
     }
   }).sort((a,b)=>a.difference>b.difference?1:-1)[0]
-
   return selectedSize.difference > 500 ? "original" : selectedSize.name;
+}
+
+
+export function RemToPx(rem) {    
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }

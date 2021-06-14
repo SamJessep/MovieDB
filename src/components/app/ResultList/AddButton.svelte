@@ -10,7 +10,7 @@ const scssVars = GetSCSSVars()
 
 const dispatch = createEventDispatcher();
 
-let container;
+export let container;
 let animation;
 let checked;
 let buttonReady = false;
@@ -107,7 +107,7 @@ function SetButtonState(on){
   bind:this={container}
   on:click={ButtonClicked}
 ></div>
-
+<svelte:options accessors/>
 <style lang="scss">
 div {
   display: block;

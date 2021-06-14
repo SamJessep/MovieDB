@@ -9,11 +9,15 @@ $SelectedColor: hsl(153, 100%, 22%);
 $PanelColor:rgb(58, 58, 58);
 $PanelHover:rgb(44, 44, 44);
 $TransparentPanel:rgba(0, 0, 0, 0.705);
+$TransparentBackground:hsla(0, 0%, 0%, 0.329);
+$TransparentBackgroundHover:hsla(0, 0%, 0%, 0.529);
 $PanelDarkHover:rgb(19, 19, 19);
 $VideoBackground: #000000f0;
 $ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
 $ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);
 $AppBackground: #194119;
+$RatingGood: yellow;
+$RatingBlank: rgb(131, 131, 131);
 
 
 $BodyFontSize: 1rem;
