@@ -16,6 +16,7 @@ const loadStyles = `
 
 <style lang="scss">
   div{
+    z-index: 10;
     position: absolute;
     width:100%;
     display: flex;

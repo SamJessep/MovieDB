@@ -116,7 +116,6 @@ function generateYearsList(){
 
 function formatWatchProviders(){
   return GetWatchProviders(media_type, "NZ").then(r=>{
-    console.log(r.results)
     return r.results.map(p=>{return {value:p.provider_id, text:p.provider_name, icon:p.logo_path}})
   })
 }
@@ -208,7 +207,6 @@ const submit = e=>{
   for(let i = 0; i<kvPairs.length; i++){
     const vEl = formItems[i];
     const aEl = kvPairs[i].element
-    console.log(vEl, aEl)
     kvPairs[i].value = vEl.getValue(aEl)
     returnParams[kvPairs[i].key] = kvPairs[i].value
   }

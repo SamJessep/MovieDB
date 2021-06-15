@@ -1,23 +1,27 @@
 <script>
-import {Preferences} from "../../../stores/store";
+import {Preferences, Certifications} from "../../../stores/store";
 import ErrorSmall from "../../general/ErrorSmall.svelte";
+export let media_type
+export let releaseDates;
+let usingLocalReleaseDate = true;
+let certificationCountry;
+let releaseDate= releaseDates.find(rd=>rd.iso_3166_1 == $Preferences.RequestParams.region);
+if(releaseDate == null){
+  usingLocalReleaseDate=false
+  releaseDate = releaseDates.find(rd=>rd.iso_3166_1 == "US")
+  if(releaseDate == null) releaseDate = releaseDates[0]
+}
+certificationCountry = releaseDate.iso_3166_1
 
-  export let media_type
-  export let releaseDates;
-  let usingLocalReleaseDate = true;
-  let releaseDate= releaseDates.find(rd=>rd.iso_3166_1 == $Preferences.region);
-  if(releaseDate == null){
-    usingLocalReleaseDate=false
-    releaseDate = releaseDates.find(rd=>rd.iso_3166_1 == "US")
-  }
+const certification_meaning = $Certifications[media_type][certificationCountry].find(c=>c.certification === releaseDate.release_dates[0].certification).meaning
 </script>
 <div>
-  <h2>{releaseDate.release_dates[0].certification}</h2>
+  <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>
   {#if !usingLocalReleaseDate}
   <ErrorSmall
     compact={true}
-    userMessage={"showing US certification"} 
-    errorMessage={`a certification was not found for this ${media_type == "movie" ? "movie" : "tv show"} in your region (${$Preferences.region})`}/>
+    userMessage={`showing ${certificationCountry} certification`} 
+    errorMessage={`a certification was not found for this ${media_type == "movie" ? "movie" : "tv show"} in your region (${$Preferences.RequestParams.region})`}/>
   {/if}
 </div>
 
@@ -25,4 +29,21 @@ import ErrorSmall from "../../general/ErrorSmall.svelte";
   div{
     display: flex;
   }
+
+  abbr{
+    text-decoration: underline $AccentColor;
+    &:hover {
+      cursor: help;
+    }
+  }
+
+  @media (pointer: coarse){
+    abbr{
+      text-decoration: none;
+      &:hover {
+        cursor: none;
+      }
+    }
+  }
+
 </style>

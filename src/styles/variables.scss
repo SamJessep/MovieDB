@@ -16,7 +16,8 @@ $VideoBackground: #000000f0;
 $ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
 $ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);
 $AppBackground: #194119;
-$RatingGood: yellow;
+$RatingGood: gold;
+$RatingUser: $AccentColor;
 $RatingBlank: rgb(131, 131, 131);
 
 
@@ -38,16 +39,3 @@ $MobileWidth: 750px;
 
 $ButtonBorder: solid 2px $FontColor;
 $ButtonBorderHover: solid 2px $AccentColor;
-
-@mixin darkBtnOutline {
-  border-radius: 0.2rem;
-  padding: 0.3rem;
-  font-size: $BodyFontSize;
-  background-color: $PanelColor;
-  color: $FontColor;
-  transition: border 0.2s;
-  border: $ButtonBorder;
-  &:hover{
-    border: $ButtonBorderHover;
-  }
-}

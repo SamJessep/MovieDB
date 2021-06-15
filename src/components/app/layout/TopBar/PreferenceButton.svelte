@@ -15,7 +15,6 @@
   const initialSettings = JSON.stringify($Settings);
 
   Settings.subscribe(s=>{
-    console.log(s)
     madeChanges = initialSettings !==  JSON.stringify(s);
   })
 

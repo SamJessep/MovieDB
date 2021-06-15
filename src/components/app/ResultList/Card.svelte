@@ -68,7 +68,12 @@ export function AddToList(event){
 var addButton;
 
 const selectCard = e=>{
-  const shouldShowDetailsPage = !addButton.container.contains(e.target);
+  let shouldShowDetailsPage
+  try{
+    shouldShowDetailsPage = !addButton.container.contains(e.target);
+  }catch{
+    shouldShowDetailsPage=true
+  }
   if(shouldShowDetailsPage){
     push(`/${Result.media_type}/${Result.id}`)
   }

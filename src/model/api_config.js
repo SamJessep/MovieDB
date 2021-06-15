@@ -28,3 +28,17 @@ export async function GetLanguages() {
   localStorage.setItem("Languages", JSON.stringify(languages))
   return languages
 }
+
+export async function GetCertifications() {
+  let localCertifications = localStorage.getItem("Certifications")
+  if(localCertifications) return JSON.parse(localCertifications)
+  let paramString = "api_key=" + Config.API_KEY;
+  let certificationsMovies = await fetch(Config.BASE_URL + "certification/movie/list?" + paramString).then(r =>r.json()).then(r=>r.certifications)
+  let certificationsTv = await fetch(Config.BASE_URL + "certification/tv/list?" + paramString).then(r =>r.json()).then(r=>r.certifications)
+  const certifications = {
+    "tv":certificationsTv,
+    "movie":certificationsMovies
+  }
+  localStorage.setItem("Certifications", JSON.stringify(certifications))
+  return certifications
+}

@@ -75,3 +75,27 @@ option:hover {
   box-shadow: 0 0 10px 100px $AccentColor inset;
   background-color: $AccentColor;
 }
+
+
+@mixin darkBtnOutline {
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  font-size: $BodyFontSize;
+  background-color: $PanelColor;
+  color: $FontColor;
+  transition: border 0.2s;
+  border: $ButtonBorder;
+  &:hover{
+    border: $ButtonBorderHover;
+  }
+}
+
+@mixin placeholder {
+  background-color: #80808094;
+  filter: blur(1px);
+  border-radius: 0.5rem;
+}
+
+h2{
+  font-size: $HeaderFontSize;
+}

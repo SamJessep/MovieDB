@@ -1,8 +1,11 @@
 <script>
+import LoadingIcon from "../app/ResultList/LoadingIcon.svelte";
 import SvgIcon from "./SvgIcon.svelte";
+import {fade} from 'svelte/transition'
 
 export let images=[]
 export let useLazy=false;
+export let ghost = false;
 let activeImageIndex = 0;
 let previewContainer;
 
@@ -11,21 +14,26 @@ const control_btn_styles = `
   height: 2rem;
   transition: color 0.2s;`
 
-let imgIndex = 0;
-while(images[imgIndex]!=undefined){
-  const i1 = images[imgIndex];
-  const matches = images.filter(i2=>i2.initial==i1.initial)
-  if(matches.length>1){
-    images.splice(imgIndex,1);
+const removeDuplicateImages = ()=>{
+  let imgIndex = 0;
+  while(images[imgIndex]!=undefined){
+    const i1 = images[imgIndex];
+    const matches = images.filter(i2=>i2.initial==i1.initial)
+    if(matches.length>1){
+      images.splice(imgIndex,1);
+    }
+    imgIndex++;
   }
-  imgIndex++;
-}
 
-if(useLazy){
+}
+$:{
+  if(useLazy && !ghost){
+  removeDuplicateImages()
   images = images.map(i=>{
     i.loaded = false;
     return i;
   })
+}
 }
 
 const imgLoad = e=>{
@@ -44,7 +52,7 @@ const selectImage = index=>{
     block:"end"
   }
   activeImageIndex = index
-  previewContainer.querySelectorAll("button>img")[index].scrollIntoView(scrollOptions)
+  previewContainer.querySelectorAll(".preview_nav button")[index].scrollIntoView(scrollOptions)
 }
 
 const imgNext = ()=>{
@@ -61,12 +69,15 @@ const imgBack = ()=>{
   selectImage(newIndex)
 }
 </script>
-
-<div class="image_slider_container">
+<div class="image_slider_container" class:ghost>
   <button class="controls back" on:click={imgBack}>
     <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles}/>
   </button>
-  <div class="active_image_container">
+  <div class="active_image_container" class:ghost>
+    {#if ghost}
+      <LoadingIcon Message="Fetching images"/>
+    {/if}
+    <div class="image_container">
     {#each images as image,index}
       {#if useLazy}
         <img 
@@ -75,31 +86,36 @@ const imgBack = ()=>{
           alt={index == 0 ? "main image" : ""} 
           class:loading={!image.loaded}
           class:active={activeImageIndex == index}
-          loading="lazy" 
+          loading={index>5?"lazy":"eager"} 
           on:load={imgLoad}
         />
       {:else}
         <img src={image}/>
       {/if}
     {/each}
+    </div>
   </div>
   <button class="controls next" on:click={imgNext}>
     <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles}/>
   </button>
   <div class="preview_nav" bind:this={previewContainer}>
+    {#if ghost}
+      {#each [1,2,3,4,5,6,7,8] as previews}
+      <div class:ghost></div>
+      {/each}
+    {/if}
     {#each images as image,index}
-    <button on:click={()=>selectImage(index)}>
-      {#if useLazy}
-        <img src={image.initial} class:active={activeImageIndex==index}/>
-      {:else}
-        <img src={image}/>
-      {/if}
-    </button>
+    <button 
+      on:click={()=>selectImage(index)} 
+      style={`background-image: url(${useLazy ? image.initial : image})`} 
+      class:active={activeImageIndex==index}
+    />
     {/each}
   </div>
 </div>
 
 <style lang="scss">
+
 img{
   transition: filter 0.5s;
   &.loading{
@@ -108,6 +124,7 @@ img{
 }
 
 .image_slider_container{
+  height: 100%;
   display: grid;
   grid-template-columns: 3rem 1fr 3rem;
   grid-template-rows: 1fr min-content;
@@ -119,15 +136,19 @@ img{
     display: flex;
     justify-content: center;
   }
-  .active_image_container>img{
-    min-width: 0;
-    min-height: 0;
-    max-width: 100%;
-    max-height: 100%;
-    margin: auto;
-    display: none;
-    &.active{
-      display: block;
+  .active_image_container>.image_container{
+    display: flex;
+    &>img{
+      align-self: center;
+      min-width: 0;
+      min-height: 0;
+      max-width: 100%;
+      max-height: 100%;
+      margin: auto;
+      display: none;
+      &.active{
+        display: block;
+      }
     }
   }
 }
@@ -138,23 +159,41 @@ img{
   display: flex;
   overflow-x: scroll;
   button{
-    margin: 0;
+    background-color: gray;
+    margin: 0.5rem 0.1rem;
     padding: 0;
-    display: contents;
     cursor: pointer;
-  }
-  img{
-    height: auto;
+    border: none;
+    outline: none;
+    background-size:cover;
+    background-position:center;
     width: 5rem;
+    height: 3rem;
+    min-width: 5rem;
     border-radius: 0.25rem;
-    margin: 0 0.1rem;
     &.active{
       border: solid 2px $AccentColor;
     }
     &:hover{
       border: solid 2px $SelectedColor;
     }
-    border: solid 2px transparent;
+    border: solid 2px $FontColor;
+  }
+  div.ghost{
+    border: solid 2px $FontColor;
+    height: 3rem;
+    margin: 0 0.1rem;
+    padding: 0;
+    cursor: progress;
+    border: none;
+    outline: none;
+    background-size:cover;
+    background-position:center;
+    width: 5rem;
+    height: 3rem;
+    min-width: 5rem;
+    border-radius: 0.25rem;
+    @include placeholder;
   }
 }
 
@@ -173,6 +212,15 @@ img{
   &.next{
     grid-area: next;
     transform: rotate(180deg);
+  }
+}
+
+.ghost{
+  .active_image_container .image_container{
+  @include placeholder;
+  margin: 0.5rem;
+  min-height: 0;
+  width: 100%;
   }
 }
 

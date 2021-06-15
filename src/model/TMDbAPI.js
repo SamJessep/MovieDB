@@ -180,3 +180,11 @@ export async function GetImages(id,media_type="movie"){
 export async function Rate(id,session_id,rating,media_type="movie"){
   return await Post(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`,{value:rating})
 }
+
+export async function GetRecommendedResults(id, media_type){
+  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/recommendations`)
+}
+
+export async function GetReviews(id, media_type){
+  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/reviews`)
+}
