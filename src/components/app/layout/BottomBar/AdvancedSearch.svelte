@@ -144,6 +144,19 @@ async function GetKeywordSuggestions(query){
   return keywords;
 }
 
+const ratingItems = [
+  {value:1, text:1},
+  {value:2, text:2},
+  {value:3, text:3},
+  {value:4, text:4},
+  {value:5, text:5},
+  {value:6, text:6},
+  {value:7, text:7},
+  {value:8, text:8},
+  {value:9, text:9},
+  {value:10, text:10}
+]
+
 var media_type="movie"
 const tvItems = [
   new select("sort_by","Sort", [
@@ -168,6 +181,8 @@ const movieItems = [
     {value:"vote_count", text:"Rating Count" }
   ],false,true),
   new defaultselect(),
+  new select("vote_average.gte", "Rating greater than", ratingItems, false),
+  new select("vote_average.lte", "Rating less than", ratingItems, false),
   new select("primary_release_year","Release Year", generateYearsList()),
   new datepicker("primary_release_date.lte","Release Date Less than", {minDate:"1900-01", maxDate:"today"}), 
   new datepicker("primary_release_date.gte","Release Date Greater than", {minDate:"1900-01", maxDate:"today"}),

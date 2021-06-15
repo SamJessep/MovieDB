@@ -6,11 +6,12 @@ Javascript Web app using
 
 ## Tasks
   ### Major Features
-  - [x] Add advanced search to quick bar
-    - [x] choose date range
-    - [ ] rating range
-    - [x] select multiple genres
-    - [x] select media type e.g. movie/tv/
+  - [ ] implement toasts
+  - [ ] add features to details page
+    - [ ] download as torrent
+    - [ ] streaming torrent functionality
+    - [ ] watch trailer
+    - [ ] add genres
   - [x] Revamp genre search
     - [ ] use tag input for genre select multiple
   - [ ] Implement more preferences
@@ -20,6 +21,9 @@ Javascript Web app using
       - [ ]  only results below specific age rating
     - [ ] Color themes, Dark mode/Light mode
   - [ ] Recreate details page
+    - [x] add basic info, title, release date, runtime
+    - [x] add related results
+    - [x] add reviews
     - [ ] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
   - [ ] Re-create backend services with nodejs
   ### Minor/Possible Features
@@ -34,6 +38,7 @@ Javascript Web app using
   - [ ] Some performace issues on mobile
   - [x] Fix image sizing, some posters are different sizes and get stretched
   - [ ] Reloading a discover page resets the sort type
+  - [ ] fix popup dialog
   
   ### Done
   - [x] Sort results 
@@ -49,3 +54,8 @@ Javascript Web app using
   - [x] Fix search algorithm & make sure its accurate
   - [x] Add user accounts
   - [x] Save movies to list
+  - [x] Add advanced search to quick bar
+    - [x] choose date range
+    - [x] rating range
+    - [x] select multiple genres
+    - [x] select media type e.g. movie/tv/
