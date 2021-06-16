@@ -1,5 +1,6 @@
 <script>
   import {GetVideos} from '../../../../model/TMDbAPI'
+import StreamPlayer from './StreamPlayer.svelte';
   import YouTubePlayer from './YouTubePlayer.svelte'
   export let media_type;
   export let title;
@@ -7,6 +8,7 @@
 
   let popupOpen = false;
   let shownVideo;
+  let videoContainer;
 
   let trailer
   (async()=>{
@@ -19,10 +21,11 @@
     popupOpen = true;
   }
 
-  const hideVideo = ()=>{
-    popupOpen = false;
-    shownVideo = "";
-    console.log("CLOSE VIDEO", shownVideo, popupOpen)
+  const hideVideo = e=>{
+    if(!videoContainer.contains(e.target)){
+      popupOpen = false;
+      shownVideo = "";
+    }
   }
 </script>
 
@@ -32,11 +35,11 @@
 <button>Download</button>
 
 <div class="video_popup" class:popupOpen on:click={hideVideo}>
-  <div class="video_container">
+  <div class="video_container" bind:this={videoContainer}>
     {#if shownVideo == "YouTube"}
         <YouTubePlayer video_id={trailer.key} width={"100%"} height={"100%"} shown={popupOpen}/>
     {:else if shownVideo == "Stream"}
-      STREAM
+      <StreamPlayer width={"100%"} height={"100%"} shown={popupOpen}/>
     {/if}
   </div>
 </div>
@@ -71,6 +74,7 @@
       width: 75%;
       height: 75%;
       background-color: $TransparentPanel;
+      display: flex;
     }
   }
 
