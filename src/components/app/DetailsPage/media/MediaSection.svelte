@@ -59,7 +59,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $TransparentBackground;
+    background-color: $TransparentBackgroundHover;
     opacity: 0;
     transition: opacity 0.4s;
     &.popupOpen{
@@ -70,7 +70,16 @@
     .video_container{
       width: 75%;
       height: 75%;
-      background-color: blue;
+      background-color: $TransparentPanel;
+    }
+  }
+
+  @media only screen and (max-width: $MobileWidth){
+    .video_popup{
+      .video_container{
+        width: 95%;
+        height: 40%;
+      }
     }
   }
 
