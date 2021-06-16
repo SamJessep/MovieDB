@@ -8,7 +8,7 @@ import StarRating from "./StarRating.svelte";
 import ReleaseDate from "./ReleaseDate.svelte";
 import RelatedResults from "./RelatedResults.svelte";
 import Reviews from "./Reviews.svelte";
-import MediaSection from "./MediaSection.svelte";
+import MediaSection from "./media/MediaSection.svelte";
 
 export let media_type;
 export let data;
@@ -53,7 +53,7 @@ getImages().then(i=>{
   <p class="synopsis">{data.overview}</p>
 </section>
 <section class="media">
-  <MediaSection title={data.title} {media_type}/>
+  <MediaSection title={data.title} {media_type} id={data.id}/>
 </section>
 <section class="reviews">
   <Reviews id={data.id} {media_type}/>

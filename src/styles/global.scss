@@ -85,8 +85,12 @@ option:hover {
   color: $FontColor;
   transition: border 0.2s;
   border: $ButtonBorder;
-  &:hover{
+  &:hover:not(:disabled){
     border: $ButtonBorderHover;
+    cursor: pointer;
+  }
+  &:disabled{
+    background-color: grey;
   }
 }
 
