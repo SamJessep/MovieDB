@@ -39,5 +39,5 @@
 
 
 <iframe id="player" type="text/html" {width} {height} title="Movie trailer"
-  src={`http://www.youtube.com/embed/${video_id}?enablejsapi=1&origin=${window.location.origin}`}
+  src={`https://www.youtube.com/embed/${video_id}?enablejsapi=1&origin=${window.location.origin}`}
   frameborder="0"></iframe>
