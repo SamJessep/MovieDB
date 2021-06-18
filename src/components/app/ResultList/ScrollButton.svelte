@@ -2,6 +2,7 @@
 import {fade} from 'svelte/transition'
 import SvgIcon from "../../general/SvgIcon.svelte";
 import {createEventDispatcher} from 'svelte'
+import debounce from 'lodash/debounce'
 
 const dispatch = createEventDispatcher();
 const scrollStyles =`fill: currentcolor`
@@ -22,7 +23,7 @@ const ShouldShowButton = ()=>{
   <SvgIcon src="images/top.svg" styles={scrollStyles}/>
 </div>
 {/if}
-<svelte:window on:scroll={()=>{ShowButton = ShouldShowButton()}}/>
+<svelte:window on:scroll={debounce(()=>{ShowButton = ShouldShowButton()},1000)}/>
 
 <style lang="scss">
   .container{

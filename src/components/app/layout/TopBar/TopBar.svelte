@@ -6,6 +6,7 @@
 	import {push} from 'svelte-spa-router'
 	import SearchBar from './SearchBar.svelte'
 	import MobileMenu from './MobileMenu.svelte'
+	import throttle from 'lodash/throttle'
 
 	export let searchBar = null;
 
@@ -13,7 +14,7 @@
 	var header;
 	var prevScrollpos = window.pageYOffset;
 	var mobileMenu;
-	function Scroll(e){
+	const Scroll = throttle((e)=>{
 		var currentScrollPos = window.pageYOffset;
 		if (prevScrollpos > currentScrollPos) {
 			header.style.top = "0";
@@ -21,7 +22,7 @@
 			header.style.top = `-${header.offsetHeight}px`;
 		}
 		prevScrollpos = currentScrollPos;
-	}
+	},500)
 
 </script>
 

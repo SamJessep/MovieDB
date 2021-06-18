@@ -7,30 +7,28 @@ Javascript Web app using
 ## Tasks
   ### Major Features
   - [ ] implement toasts
-  - [ ] add features to details page
-    - [ ] download as torrent
-    - [ ] streaming torrent functionality
-    - [ ] watch trailer
-    - [ ] add genres
-  - [x] Revamp genre search
-    - [ ] use tag input for genre select multiple
   - [ ] Implement more preferences
-    - [ ] Junk filter
-      - [x]  only if results with posters
-      - [ ]  only results with local releases
-      - [ ]  only results below specific age rating
-    - [ ] Color themes, Dark mode/Light mode
+    - [ ] preference tabs
   - [ ] Recreate details page
     - [x] add basic info, title, release date, runtime
     - [x] add related results
     - [x] add reviews
-    - [ ] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
+    - [x] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
+    - [ ] download as torrent
+    - [ ] streaming torrent functionality
+    - [ ] watch trailer
+    - [ ] add genres
   - [ ] Re-create backend services with nodejs
   ### Minor/Possible Features
   - [ ] Save preferences to mongo db
   - [ ] Implement movie Tinder ?
   - [ ] signup to recive notification when movie is available to download
   - [ ] Link to streaming platforms
+  - [ ] Junk filter
+      - [x]  only if results with posters
+      - [ ]  only results with local releases
+      - [ ]  only results below specific age rating
+    - [ ] Color themes, Dark mode/Light mode
 
   ## Bug Fixes
   - [ ] Infinate loop when changing pages sometimes
@@ -59,3 +57,4 @@ Javascript Web app using
     - [x] rating range
     - [x] select multiple genres
     - [x] select media type e.g. movie/tv/
+  - [x] Revamp genre search
