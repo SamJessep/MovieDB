@@ -2,7 +2,7 @@
 export let src;
 export let styles = "";
 export let cache = true;
-let name = /\/([\d\w]*)\.svg/g.exec(src)[1]
+let name = /([^\/]*).svg/g.exec(src)[1]
 
 async function LoadSvgFile(src){
   var svgContents = await fetch(src).then(f=>f.text()).then(f=> f)
