@@ -14,6 +14,7 @@ let closeStyles = `
 
 <div id="dialogBackground" class:open={MenuOpen}>
   <dialog open={MenuOpen}>
+    {#if MenuOpen}
     <div class="popup-container">
       {#if HasDefaultClose}
       <button class="close roundedBtn dark" on:click={()=>MenuOpen=!MenuOpen}>
@@ -23,6 +24,7 @@ let closeStyles = `
       <slot name="contents"/>
       <slot name="closeButton"/>
     </div>
+    {/if}
   </dialog>
 </div>
 

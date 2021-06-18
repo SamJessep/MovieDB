@@ -5,6 +5,7 @@
 	import {querystring, location} from 'svelte-spa-router'
 </script>
 
+<defs id="svg_refs" />
 <AppShell>
 	<Router {routes} restoreScrollState={false}/>	
 </AppShell>
