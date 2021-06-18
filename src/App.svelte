@@ -11,4 +11,7 @@
 </AppShell>
 
 <style lang="scss">
+	:global(body){
+		background-color: $AppBackground;
+	}
 </style>

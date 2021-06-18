@@ -19,6 +19,5 @@
 
 	.app-background{
 		min-height: 100vh;
-		background-color: $AppBackground;
 	}
 </style>
