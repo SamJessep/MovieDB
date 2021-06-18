@@ -70,7 +70,7 @@ const imgBack = ()=>{
 }
 </script>
 <div class="image_slider_container" class:ghost>
-  <button class="controls back" on:click={imgBack}>
+  <button class="controls back" on:click={imgBack} aria-label="previous image">
     <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles}/>
   </button>
   <div class="active_image_container" class:ghost>
@@ -95,7 +95,7 @@ const imgBack = ()=>{
     {/each}
     </div>
   </div>
-  <button class="controls next" on:click={imgNext}>
+  <button class="controls next" on:click={imgNext} aria-label="next image">
     <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles}/>
   </button>
   <div class="preview_nav" bind:this={previewContainer}>
@@ -109,6 +109,7 @@ const imgBack = ()=>{
       on:click={()=>selectImage(index)} 
       style={`background-image: url(${useLazy ? image.initial : image})`} 
       class:active={activeImageIndex==index}
+      aria-label={"image "+index}
     />
     {/each}
   </div>

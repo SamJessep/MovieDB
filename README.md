@@ -37,6 +37,7 @@ Javascript Web app using
   - [x] Fix image sizing, some posters are different sizes and get stretched
   - [ ] Reloading a discover page resets the sort type
   - [ ] fix popup dialog
+  - [ ] Add to fav button breaks nearly half the time
   
   ### Done
   - [x] Sort results 
