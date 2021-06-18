@@ -42,6 +42,11 @@
 <svelte:window on:scroll={Scroll}/>
 
 <style lang="scss">
+	#logo{
+		width: 80px;
+		height: 80px;
+	}
+
 	header{
 			position: sticky;
 			top:0;
@@ -70,6 +75,11 @@
 	}
 
 	@media only screen and (max-width: $MobileWidth){
+		#logo{
+			width: 48px;
+			height: 48px;
+		}
+
 		header{
 			padding: 0;
 		}

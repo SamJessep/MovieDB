@@ -82,15 +82,17 @@ const selectCard = e=>{
 </script>
 <button class="resultCard nonStandard" id={cardId} transition:fade title={title} on:click={selectCard}>
   {#if Loaded}
+  <div class="poster-container">
     {#if Result.poster_path}
-    <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster" class:loading loading="lazy" on:load={imgLoad} />
-      <!-- <div style={posterBackgroundStyles} class="poster"/> -->
+    <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />
     {:else}
-      <div class="placeholder_container poster" on:click={LoadResultPage}>
+      <div class="placeholder_container poster aspect-ratio-box-inside" on:click={LoadResultPage}>
           <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
           <small>No Poster</small>
       </div>
     {/if}
+    
+  </div>
   <div class='toolbar'>
     {#if $IsLoggedIn}
       <AddButton on:addClicked={AddToList} {Result} bind:this={addButton}/>
@@ -103,6 +105,22 @@ const selectCard = e=>{
   {/if}
 </button>
 <style lang="scss">
+.poster-container{
+  height: 0;
+  overflow: hidden;
+  padding-top:  513px / 342px * 100%;
+  position: relative;
+  width:100%;
+}
+
+.aspect-ratio-box-inside {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .toolbar{
   --MediaIconPadding: auto 0.5rem;
   display: grid;
@@ -149,7 +167,6 @@ const selectCard = e=>{
 
 .poster{
   cursor: pointer;
-  min-height: calc(21rem * (513 / 342));
   transition: filter 0.5s;
   &.loading{
     filter: blur(0.5rem);
@@ -171,13 +188,6 @@ const selectCard = e=>{
 
   .toolbar{
     --MediaIconPadding: auto 0.25rem;
-  }
-
-  .poster{
-    max-width: 100%;
-    height: calc(10rem * (513 / 342));
-    min-width: none;
-    min-height: 0;
   }
 
   .resultCard{
