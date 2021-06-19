@@ -60,7 +60,7 @@ export function GenreSearch(){
   }
 }
 </script>
-  <QuickButton text="Genre" click={ToggleGenreContainer}/>
+  <QuickButton text="Genre Search" click={ToggleGenreContainer}/>
   <Popup bind:MenuOpen={isOpen} HasDefaultClose={true}>
     <div slot="contents">
       <Selector on:select={e=>{media_type=e.detail.selected[0].value}} selectID={"media_type"} name={"media_type"} fetchItemsFunction={()=>[{text:"Movies", value:"movie"},{text:"TV", value:"tv"}]} label={"Media Type"} mandatoryChoice={true}/>

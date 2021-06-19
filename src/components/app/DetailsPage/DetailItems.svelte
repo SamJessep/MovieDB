@@ -9,9 +9,11 @@ import ReleaseDate from "./ReleaseDate.svelte";
 import RelatedResults from "./RelatedResults.svelte";
 import Reviews from "./Reviews.svelte";
 import MediaSection from "./media/MediaSection.svelte";
+import {GetSCSSVars} from '../../../util'
 
 export let media_type;
 export let data;
+const scss = GetSCSSVars()
 
 
 
@@ -23,8 +25,10 @@ const getImages = async ()=>{
 }
 
 const getLazyImage = path => {
+  const isDesktop = window.innerWidth > scss.MobileWidth;
+  const imageGallaryWidth = window.innerWidth*(isDesktop ? 0.45 : 0.9) 
   let initialSize = GetBestImageSize("backdrop", 0);
-  let finalSize = GetBestImageSize("backdrop", RemToPx(10000))
+  let finalSize = GetBestImageSize("backdrop", imageGallaryWidth)
   return {
     initial:Config.BASE_IMAGE_URL + initialSize + path,
     final:Config.BASE_IMAGE_URL + finalSize + path
@@ -49,7 +53,7 @@ getImages().then(i=>{
   <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
   <Certification releaseDates={data.release_dates.results} {media_type}/>
   <p class="runtime">{data.runtime} minutes</p>
-  <StarRating rating={data.vote_average} ratings={data.vote_count} {media_type} id={data.id}/>
+  <StarRating rating={data.vote_average} ratingCount={data.vote_count} {media_type} id={data.id}/>
   <p class="synopsis">{data.overview}</p>
 </section>
 <section class="media">

@@ -14,7 +14,6 @@ export let MethodParams =[];
 export let StartPage;
 export let DefaultSort = "None";
 export let UseResultSort = true;
-
 let totalResults = 0;
 let totalPages;
 let currentPage = StartPage;
@@ -171,7 +170,7 @@ function scrollClicked(){
 }
 </script>
 {#if UseResultSort}
-  <Sort defaultSelected={DefaultSort}/>
+  <Sort defaultSelected={QueryToJSON($querystring).sort_by ?? DefaultSort}/>
 {/if}
 <div class="card-list" bind:this={cardContainer}>
   <div class="scroll-block top" bind:this={loadTop} style={"top:"+loadTopY+"px"}/>

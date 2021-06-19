@@ -4,12 +4,19 @@ import SvgIcon from '../../general/SvgIcon.svelte'
 import Config from '../../../config';
 import {AddToWatchlist, IsOnWatchlist} from '../../../model/TMDbAPI.js'
 import {IsLoggedIn} from '../../../stores/userStore.js'
-import { createEventDispatcher } from 'svelte';
+import { createEventDispatcher, onMount } from 'svelte';
 import { fade } from 'svelte/transition';
 import {GetBestImageSize, RemToPx} from "../../../model/dataHelper.js"
 import {GetSCSSVars, IsMobile} from "../../../util";
 import { push } from 'svelte-spa-router';
 
+var poster_container
+onMount(()=>{
+  if(poster_container){
+    const maxPosterWidth = poster_container.getBoundingClientRect().width
+    ImageUrl =  GetImageUrls(maxPosterWidth)
+  } 
+})
 const scssVars = GetSCSSVars();
 
 const dispatch = createEventDispatcher();
@@ -44,16 +51,17 @@ let mediaTypeStyles = `
 
 let title = Result.title || Result.original_title || Result.name;
 
-export function GetImageUrls(){
+export function GetImageUrls(max_width){
+  
   //Update to get best size for screen size
-  let final = GetBestImageSize("poster", RemToPx(21))
+  let final = GetBestImageSize("poster", max_width)
   let initial = GetBestImageSize("poster", 0);
   return {
     initial:Config.BASE_IMAGE_URL + initial + "/"+Result.poster_path,
     final:Config.BASE_IMAGE_URL + final + "/"+Result.poster_path
   }
 }
-const ImageUrl = GetImageUrls()
+var ImageUrl
 
 export function LoadResultPage(el){
   alert("Clicked "+ title)
@@ -82,9 +90,11 @@ const selectCard = e=>{
 </script>
 <button class="resultCard nonStandard" id={cardId} transition:fade title={title} on:click={selectCard}>
   {#if Loaded}
-  <div class="poster-container">
+  <div class="poster-container" bind:this={poster_container}>
     {#if Result.poster_path}
-    <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />
+      {#if ImageUrl != undefined}
+        <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />
+      {/if}
     {:else}
       <div class="placeholder_container poster aspect-ratio-box-inside" on:click={LoadResultPage}>
           <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
@@ -125,8 +135,8 @@ const selectCard = e=>{
   --MediaIconPadding: auto 0.5rem;
   display: grid;
   grid-template-columns: 16% 68% 16%;
+  grid-template-rows: min-content;
   width: 100%;
-  height: 50px;
   flex-grow:1;
   &>p{
     grid-column: 2;
@@ -158,7 +168,6 @@ const selectCard = e=>{
   padding: 0.3rem;
   margin: 1rem;
   width: var(--cardWidth, 21rem);
-  height: 35.225rem;
   &:hover, &:focus{
     box-shadow: 0px 0px 20px 3px $AccentColor;
   }

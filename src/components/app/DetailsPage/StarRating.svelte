@@ -6,9 +6,9 @@ import {User, IsLoggedIn} from '../../../stores/userStore'
 import SvgIcon from "../../general/SvgIcon.svelte";
 
 export let rating;
-export let count;
 export let id;
 export let media_type;
+export let ratingCount;
 
 let voted = false;
 let ratingElement
@@ -50,31 +50,35 @@ const rateElement = async rating=>{
 }
 </script>
 
-<div class="rating_container" on:mouseleave={()=>stopPreview()}>
-  <div class="bg">
-    {#each [1,2,3,4,5] as rating}
-    <span on:mouseover={()=>previewRating(rating)} on:click={()=>rateElement(rating)}>
-      <SvgIcon src="images/star_outline.svg" {styles}/>
-    </span>
-    {/each}
-  </div>
+<div class="rating_wrapper">
+  <div class="rating_container" on:mouseleave={()=>stopPreview()}>
+    <div class="bg">
+      {#each [1,2,3,4,5] as rating}
+      <span on:mouseover={()=>previewRating(rating)} on:click={()=>rateElement(rating)}>
+        <SvgIcon src="images/star_outline.svg" {styles}/>
+      </span>
+      {/each}
+    </div>
+    
+    
+    <div class="fg" bind:this={ratingElement}>
+      {#each [1,2,3,4,5] as rating}
+      <span on:mouseover={()=>previewRating(rating)} on:click={()=>rateElement(rating)}>
+        <SvgIcon src="images/star_filled.svg" {styles}/>
+      </span>
+      {/each}
+    </div>
   
-  
-  <div class="fg" bind:this={ratingElement}>
-    {#each [1,2,3,4,5] as rating}
-    <span on:mouseover={()=>previewRating(rating)} on:click={()=>rateElement(rating)}>
-      <SvgIcon src="images/star_filled.svg" {styles}/>
-    </span>
-    {/each}
+    <div class="fg-user" bind:this={ratingElementUser} class:voted>
+      {#each [1,2,3,4,5] as rating}
+      <span>
+        <SvgIcon src="images/star_filled.svg" {styles}/>
+      </span>
+      {/each}
+    </div>
   </div>
+  <span title={"this "+(media_type=="movie "?"movie":"tv show")+" has "+ratingCount+" ratings"}>{ratingCount}</span>
 
-  <div class="fg-user" bind:this={ratingElementUser} class:voted>
-    {#each [1,2,3,4,5] as rating}
-    <span>
-      <SvgIcon src="images/star_filled.svg" {styles}/>
-    </span>
-    {/each}
-  </div>
 </div>
 
 <style lang="scss">
@@ -111,5 +115,15 @@ const rateElement = async rating=>{
 .rating_container{
   position: relative;
   width: fit-content;
+}
+
+.rating_wrapper{
+  display: flex;
+  align-items: center;
+  &>span{
+    margin-left: 0.5rem;
+    text-decoration: underline $AccentColor;
+    cursor: help;
+  }
 }
 </style>

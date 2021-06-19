@@ -30,22 +30,64 @@
       needsLogin: false
     }
   ]
+
+  var discoverPopupOpen = false
+  var isMobile;
+  var popupElement;
+  var popup_btn;
+
+  const openPopup = ()=>{
+    discoverPopupOpen = !discoverPopupOpen
+  }
+  
+  const checkIfMobile = e=>{
+    isMobile=window.innerWidth<=750;
+    discoverPopupOpen=false;
+  }
+  const tryCloseMenu = e=>{
+    if(popupElement == null) return
+    console.log(e.target)
+    if(!popup_btn.contains(e.target)){
+      discoverPopupOpen = false
+    }
+    if(popupElement.contains(e.target)){
+      discoverPopupOpen=false
+    }
+  }
+
+  checkIfMobile()
 </script>
 
 <div class="hero-foot">
   <nav class="tabs is-boxed is-fullwidth" on:loadResults>
     <div class="container">
       <ul>
-        {#each buttons as btn}
-          {#if $IsLoggedIn || !btn.needsLogin}
-            <QuickButton text={btn.text} url={btn.url} active={$location.startsWith(btn.url)} on:quick_button_clicked={(e)=>dispatch(e.type, e.detail)}/>
+        {#if isMobile}
+        <div class="flex-btn" bind:this={popup_btn}>
+          <QuickButton text="Discover" on:quick_button_clicked={openPopup} url={null}/>
+          {#if discoverPopupOpen}
+            <div class="popup" bind:this={popupElement} style={"width:"+popup_btn.getBoundingClientRect().width+"px;"}>
+              {#each buttons as btn}
+                {#if $IsLoggedIn || !btn.needsLogin}
+                  <QuickButton text={btn.text} url={btn.url} active={$location.startsWith(btn.url)} on:quick_button_clicked={(e)=>dispatch(e.type, e.detail)}/>
+                {/if}
+              {/each}
+            </div>
           {/if}
-        {/each}
+        </div>
+        {:else}
+          {#each buttons as btn}
+            {#if $IsLoggedIn || !btn.needsLogin}
+              <QuickButton text={btn.text} url={btn.url} active={$location.startsWith(btn.url)} on:quick_button_clicked={(e)=>dispatch(e.type, e.detail)}/>
+            {/if}
+          {/each}
+          {/if}
         <GenreButton/>
       </ul>
     </div>
   </nav>
 </div>
+<svelte:window on:resize={checkIfMobile} on:click={tryCloseMenu}/>
 
 <style lang="scss">
 *{
@@ -54,11 +96,25 @@
   outline-color: $AccentColor;
 }
 
+.popup{
+  position: absolute;
+  bottom: 100%;
+  background-color: $TransparentPanel;
+}
+
+.flex-btn{
+  flex:1;
+}
+
 nav{
   display:flex;
   justify-content:space-evenly;
   background-color: $TransparentPanel;
   border-radius: 0 1rem 0 0;
+  &.tabs{
+    overflow-x: visible;
+    overflow: visible;
+  }
 }
 
 .hero-foot{

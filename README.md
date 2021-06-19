@@ -59,3 +59,4 @@ Javascript Web app using
     - [x] select multiple genres
     - [x] select media type e.g. movie/tv/
   - [x] Revamp genre search
+  - [x] Modified bottom bar for mobile

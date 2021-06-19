@@ -12,8 +12,11 @@ if(releaseDate == null){
   if(releaseDate == null) releaseDate = releaseDates[0]
 }
 certificationCountry = releaseDate.iso_3166_1
+var certification_meaning = ""
+if(releaseDate.release_dates[0].certification != ""){
+   certification_meaning = $Certifications[media_type][certificationCountry].find(c=>c.certification === releaseDate.release_dates[0].certification).meaning
 
-const certification_meaning = $Certifications[media_type][certificationCountry].find(c=>c.certification === releaseDate.release_dates[0].certification).meaning
+}
 </script>
 <div>
   <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>

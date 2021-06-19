@@ -10,7 +10,7 @@ const scssVars = GetSCSSVars()
 
 const dispatch = createEventDispatcher();
 
-export let container;
+export let container = null;
 let animation;
 let checked;
 let buttonReady = false;

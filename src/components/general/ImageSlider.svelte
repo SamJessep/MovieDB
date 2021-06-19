@@ -83,14 +83,14 @@ const imgBack = ()=>{
         <img 
           src={image.initial} 
           data-src={image.final} 
-          alt={index == 0 ? "main image" : ""} 
+          alt={index == 0 ? "main image" : "image"+index} 
           class:loading={!image.loaded}
           class:active={activeImageIndex == index}
           loading={index>5?"lazy":"eager"} 
           on:load={imgLoad}
         />
       {:else}
-        <img src={image}/>
+        <img src={image} alt={"image"+index}/>
       {/if}
     {/each}
     </div>

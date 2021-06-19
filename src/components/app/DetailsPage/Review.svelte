@@ -15,7 +15,7 @@ const styles = `
 `
 const src = "images/user.svg";
 
-const profileImageSize = GetBestImageSize("profile", 200) 
+const profileImageSize = GetBestImageSize("profile", 56) 
 const getProfileImageUrl = path=>{
   return path.startsWith("/http") ? path.substr(1) : Config.BASE_IMAGE_URL+profileImageSize+path
 }
@@ -49,6 +49,7 @@ const getProfileImageUrl = path=>{
 
   
   li{
+    overflow: auto;
     margin-bottom: 1rem;
     background-color: $TransparentPanel;
     border-radius: 0.5rem;
@@ -67,8 +68,8 @@ const getProfileImageUrl = path=>{
     img{
       color:$FontColor;
       margin: auto;
-      max-width: 3.5rem;
-      height: auto;
+      width: 56px;
+      height: 56px;
       border-radius: 0.5rem;
     }
     p.quote{
