@@ -28,6 +28,7 @@ export let click = ButtonClick
   font-size: $HeaderFontSize;
   border-radius: 0.2rem;
   color: $FontColor;
+  flex:1;
   &>button{
     background-color: transparent;
     border:none;

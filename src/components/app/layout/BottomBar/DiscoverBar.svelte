@@ -46,7 +46,6 @@
   }
   const tryCloseMenu = e=>{
     if(popupElement == null) return
-    console.log(e.target)
     if(!popup_btn.contains(e.target)){
       discoverPopupOpen = false
     }

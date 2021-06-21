@@ -26,6 +26,8 @@ export let cardId;
 export let Loaded = true;
 let loading = true;
 
+var toolbarElement;
+
 const imgLoad = e=>{
   let image = e.target
   if(image.src == image.dataset.src){
@@ -69,7 +71,7 @@ export function LoadResultPage(el){
 
 export function AddToList(event){
   var checked = event.detail.checked;
-  var media_type = Result.media_type || "movie"
+  var media_type = Result.media_type
   AddToWatchlist(Result.id, media_type, checked)
 }
 
@@ -78,7 +80,7 @@ var addButton;
 const selectCard = e=>{
   let shouldShowDetailsPage
   try{
-    shouldShowDetailsPage = !addButton.container.contains(e.target);
+    shouldShowDetailsPage = !toolbarElement.contains(e.target);
   }catch{
     shouldShowDetailsPage=true
   }
@@ -103,9 +105,9 @@ const selectCard = e=>{
     {/if}
     
   </div>
-  <div class='toolbar'>
+  <div class='toolbar' bind:this={toolbarElement}>
     {#if $IsLoggedIn}
-      <AddButton on:addClicked={AddToList} {Result} bind:this={addButton}/>
+      <AddButton on:clicked={AddToList} {Result} bind:this={addButton} id={"AddButton_"+Result.id}/>
     {/if}
     <p>{title}</p>
     {#if Result.media_type}
@@ -135,7 +137,7 @@ const selectCard = e=>{
   --MediaIconPadding: auto 0.5rem;
   display: grid;
   grid-template-columns: 16% 68% 16%;
-  grid-template-rows: min-content;
+  padding-bottom: 0.5rem;
   width: 100%;
   flex-grow:1;
   &>p{
@@ -166,6 +168,7 @@ const selectCard = e=>{
   color: $FontColor;
   border-radius: 10px;
   padding: 0.3rem;
+  padding-bottom: 0;
   margin: 1rem;
   width: var(--cardWidth, 21rem);
   &:hover, &:focus{

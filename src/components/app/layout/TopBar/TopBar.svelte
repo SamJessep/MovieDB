@@ -58,6 +58,7 @@
 			align-items: center;
 			padding: 0 3rem;
 			background-color: black;
+			height: 96px;
 	}
 
 	
@@ -83,6 +84,7 @@
 
 		header{
 			padding: 0;
+			height: 64px;
 		}
 		.brand img{
 			max-width: 3rem;

@@ -126,8 +126,7 @@ export async function AddToWatchlist(media_id, media_type="movie", add=true){
       "watchlist": add
     })
   });
-  rawResponse.then(res=>console.log(res))
-  return await rawResponse.json();
+  return rawResponse.json();
 }
 
 export async function IsOnWatchlist(item_id, media_type="movie"){

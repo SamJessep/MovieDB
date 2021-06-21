@@ -1,119 +1,97 @@
 <script>
-import lottie from 'lottie-web'
-import { onMount, onDestroy } from 'svelte';
+import AnimatedIcon from "../../general/AnimatedIcon.svelte";
+import {GetSCSSVars} from '../../../util'
+import { onMount } from "svelte";
+import { IsOnWatchlist } from "../../../model/TMDbAPI";
 import { createEventDispatcher } from 'svelte';
-import {GetSCSSVars} from "../../../util";
-import {IsLoggedIn} from '../../../stores/userStore'
-import {IsOnWatchlist} from '../../../model/TMDbAPI'
 
-const scssVars = GetSCSSVars()
-
-const dispatch = createEventDispatcher();
-
-export let container = null;
-let animation;
-let checked;
-let buttonReady = false;
-
+export let id;
 export let Result;
 
-var StopListeningToLoginChange
+const scss = GetSCSSVars();
+const dispatch = createEventDispatcher();
+const styles = `
+  #ID *{
+    stroke: ${scss.FontColor};
+    opacity: 0%;
+    transition: 0.25s stroke;
+  }
 
-let SvgCSS = `
-.addButton *{
-  cursor: pointer;
-  stroke: transparent;
-  pointer-events:none;
-}
+  #ID:hover *{
+    stroke: ${scss.AccentColor};
+  }
 
-.addButton.ready *{
-  stroke: ${scssVars.FontColor};
-  pointer-events:all;
-}
+  #ID.on *{
+    stroke: ${scss.AccentColor};
+  }
 
-.addButton.ready.checked *{
-  stroke: ${scssVars.AccentColor};
-}
-
-.addButton.ready:hover *, .addButton.ready:focus *{
-  stroke: ${scssVars.AccentColor};
-}
+  #ID.ready *{
+    transition: 0.5s opacity;
+    opacity:100%;
+  }
 `
 
-onMount(async () => {
-   animation= lottie.loadAnimation({
-    container: container,
-    renderer: 'svg',
-    loop: false,
-    autoplay: false,
-    path: 'https://assets2.lottiefiles.com/packages/lf20_nsj7v44e.json',
-    rendererSettings: {
-      id:'addButton',
-      className: 'addButton',
+var AddIcon
+var isOnWatchlist;
+var recivedWatchlist = false
+const toggleWatchlist = e =>{
+  if(recivedWatchlist){
+    if(isOnWatchlist){
+      AddIcon.Play(16,28)
+      AddIcon.RemoveClass("on")
+    }else{
+      AddIcon.Play(0,16)
+      AddIcon.AddClass("on")
     }
-  })
+    isOnWatchlist=!isOnWatchlist;
+    dispatch("clicked", {checked:isOnWatchlist})
+  }
+}
+const CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
 
-  animation.addEventListener("DOMLoaded", ()=>{
-    if(!container) return
-    var styleElement = document.createElement("style")
-    styleElement.innerHTML = SvgCSS;
-    container.children[0].prepend(styleElement)
-    container.children[0].classList.add("addButton")
-  });
 
-  StopListeningToLoginChange = IsLoggedIn.subscribe(async (loggedIn)=>{
-    if(loggedIn){
-      checked = await IsOnWatchlist(Result.id, Result.media_type)
-      SetButtonReady(checked);
+const showButtonState = ()=>{
+  CheckIfOnWatchList.then(onWatchList=>{
+    if(!AddIcon) return
+    isOnWatchlist = onWatchList
+    recivedWatchlist = true;
+    if(onWatchList){
+      AddIcon.GoTo(16)
+      AddIcon.AddClass("on")
+    }else{
+      AddIcon.GoTo(0)
+      AddIcon.RemoveClass("on")
     }
-  })
-});
-
-onDestroy(()=>StopListeningToLoginChange())
-
-function ButtonClicked(){
-  checked = !checked;
-  SetButtonState(checked)
-  dispatch('addClicked',{
-    checked: checked
+    AddIcon.AddClass("ready")
   })
 }
-
-export function SetButtonReady(on){
-  buttonReady = true;
-  container.children[0].classList.add("ready")
-  container.style.opacity=100
-  animation.goToAndStop(on ? 14:27, true)
-  container.children[0].classList[on?"add":"remove"]("checked");
-}
-
-function SetButtonState(on){
-  if(!buttonReady)return
-  console.log("BUTTON "+ (on?"ON":"OFF"), on)
-  try{
-    if(on) {
-      animation.playSegments([1, 14], true);
-    } else {
-      animation.playSegments([14, 27], true);
-    }
-    container.children[0].classList[on?"add":"remove"]("checked");
-  }catch{}
-}
-
 
 </script>
+<button on:click={toggleWatchlist} aria-label={isOnWatchlist ? `Remove ${Result.title} from your watchlist` : `Add ${Result.title} to your watchlist`}>
+  {#if !recivedWatchlist}
+    <div class="buttonPlaceHolder" />
+  {/if}
+  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/add.json" {styles} {id} on:ready={showButtonState} speed={1.25} fadeIn={true}/>
+</button>
 
-<div
-  bind:this={container}
-  on:click={ButtonClicked}
-></div>
-<svelte:options accessors/>
+
 <style lang="scss">
-div {
-  display: block;
-  max-width: 50px;
-  opacity: 0;
-  transition: opacity 0.2s;
+
+button{
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: inherit;
+  margin: auto;
+}
+
+.buttonPlaceHolder{
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 </style>

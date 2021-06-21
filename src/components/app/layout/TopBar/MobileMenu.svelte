@@ -2,24 +2,28 @@
 import SvgIcon from "../../../general/SvgIcon.svelte";
 import { slide, fly } from 'svelte/transition';
 import { quintOut } from 'svelte/easing';
+import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
+import {GetSCSSVars} from '../../../../util'
+import LoginButton from "./LoginButton.svelte";
 
 export let isMobile = false;
 export let menuOpen = false;
 
 let menuElement;
 let buttonElement;
+const scss = GetSCSSVars();
+var MenuIcon;
 
 const menuStyles = `
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 1vmin 0;
-  transition: color 0.2s;
+  svg *{
+    stroke: ${scss.FontColor}
+  }
 `
+
 function windowClick(e){
   try{
     if(!(menuElement.contains(e.target) || buttonElement.contains(e.target))){
-      menuOpen=false;
-      buttonElement.blur()
+      CloseMenu()
     }
   }catch(e){}
 }
@@ -29,12 +33,22 @@ function checkIfMobile(e){
   menuOpen=false;
 }
 
+const OpenMenu = ()=>{
+  menuOpen=true
+  MenuIcon.Play(0,60)
+}
+
+const CloseMenu = ()=>{
+  menuOpen=false
+  MenuIcon.Play(60,0)
+}
+
 checkIfMobile()
 </script>
 
 {#if isMobile}
-<button class="roundedBtn dark mobileMenuButton" on:click={e=>menuOpen=!menuOpen} bind:this={buttonElement}>
-  <SvgIcon src="images/menu.svg" styles={menuStyles}/>
+<button class="roundedBtn dark mobileMenuButton" on:click={()=>menuOpen?CloseMenu():OpenMenu()} bind:this={buttonElement}>
+  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={3}/>
 </button>
 {#if menuOpen}
 <div class="mobileMenu" bind:this={menuElement} transition:fly={{x:window.outerWidth}}>
