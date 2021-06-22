@@ -7,6 +7,7 @@ import {QueryToJSON} from '../../../../util'
 import {location, push, querystring, replace} from 'svelte-spa-router'
 import SvgIcon from "../../../general/SvgIcon.svelte"
 import MobileButton from './MobileButton.svelte'
+import AnimatedIcon from '../../../general/AnimatedIcon.svelte'
 
 export let isMobile = false;
 let LoginOpen = false;
@@ -80,9 +81,15 @@ let userBtnStyles = `
     {/if}
   {:else}
     {#if isMobile}
-    <MobileButton title="Login" click={Account.StartLogin}>
-      <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
-    </MobileButton>
+      {#if params["approved"]}
+        <MobileButton title="Loading" disabled={false}>
+          <AnimatedIcon src="images/animatedIcons/loading.json" autoplay={true} loop={true}/>
+        </MobileButton>
+      {:else}
+        <MobileButton title="Login" click={Account.StartLogin}>
+          <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
+        </MobileButton>
+      {/if}
     {:else}
     <button id="openLogin" on:click={Account.StartLogin} class="roundedBtn dark login-btn" title="Login">
       <div>

@@ -2,12 +2,12 @@
 import AddButton from './AddButton.svelte'
 import SvgIcon from '../../general/SvgIcon.svelte'
 import Config from '../../../config';
-import {AddToWatchlist, IsOnWatchlist} from '../../../model/TMDbAPI.js'
+import {AddToWatchlist} from '../../../model/TMDbAPI.js'
 import {IsLoggedIn} from '../../../stores/userStore.js'
-import { createEventDispatcher, onMount } from 'svelte';
+import { onMount } from 'svelte';
 import { fade } from 'svelte/transition';
-import {GetBestImageSize, RemToPx} from "../../../model/dataHelper.js"
-import {GetSCSSVars, IsMobile} from "../../../util";
+import {GetBestImageSize} from "../../../model/dataHelper.js"
+import {GetSCSSVars, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
 
 var poster_container
@@ -18,8 +18,6 @@ onMount(()=>{
   } 
 })
 const scssVars = GetSCSSVars();
-
-const dispatch = createEventDispatcher();
 
 export let Result;
 export let cardId;
@@ -48,7 +46,8 @@ let mediaTypeStyles = `
     display:block;
     fill:${scssVars.FontColor};
     transition: fill 0.3s;
-    margin: var(--MediaIconPadding, auto 0.25rem);
+    width:100%;
+    height:100%;
 `
 
 let title = Result.title || Result.original_title || Result.name;
@@ -69,10 +68,20 @@ export function LoadResultPage(el){
   alert("Clicked "+ title)
 }
 
-export function AddToList(event){
+export async function AddToList(event){
   var checked = event.detail.checked;
   var media_type = Result.media_type
-  AddToWatchlist(Result.id, media_type, checked)
+  try{
+    const res = await AddToWatchlist(Result.id, media_type, checked)
+    if(res.success){
+      PostToast(`${checked?"Added":"Removed"} ${title} to watchlist`, {duration:10000})
+    }else{
+      PostToast("Opps somthing went wrong", {duration:10000})
+    }
+
+  }catch(e){
+    PostToast("Opps somthing went wrong", {duration:10000, theme:"error"})
+  }
 }
 
 var addButton;
@@ -110,9 +119,11 @@ const selectCard = e=>{
       <AddButton on:clicked={AddToList} {Result} bind:this={addButton} id={"AddButton_"+Result.id}/>
     {/if}
     <p>{title}</p>
-    {#if Result.media_type}
-      <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
-    {/if}
+    <div class="mediaIcon">
+      {#if Result.media_type}
+        <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
+      {/if}
+    </div>
   </div>
   {/if}
 </button>
@@ -137,7 +148,6 @@ const selectCard = e=>{
   --MediaIconPadding: auto 0.5rem;
   display: grid;
   grid-template-columns: 16% 68% 16%;
-  padding-bottom: 0.5rem;
   width: 100%;
   flex-grow:1;
   &>p{
@@ -151,6 +161,9 @@ const selectCard = e=>{
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  & .mediaIcon{
+    margin: 0.5rem;
   }
 }
 
@@ -199,7 +212,9 @@ const selectCard = e=>{
   }
 
   .toolbar{
-    --MediaIconPadding: auto 0.25rem;
+    & .mediaIcon{
+      margin: 0.25rem;
+    }
   }
 
   .resultCard{

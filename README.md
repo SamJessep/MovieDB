@@ -6,9 +6,6 @@ Javascript Web app using
 
 ## Tasks
   ### Major Features
-  - [ ] implement toasts
-  - [ ] Implement more preferences
-    - [ ] preference tabs
   - [ ] Recreate details page
     - [x] add basic info, title, release date, runtime
     - [x] add related results
@@ -19,6 +16,8 @@ Javascript Web app using
     - [ ] watch trailer
     - [ ] add genres
   - [ ] Re-create backend services with nodejs
+  - [ ] Implement more preferences
+    - [ ] preference tabs
   ### Minor/Possible Features
   - [ ] Save preferences to mongo db
   - [ ] Implement movie Tinder ?
@@ -32,11 +31,13 @@ Javascript Web app using
 
   ## Bug Fixes
   - [ ] Infinate loop when changing pages sometimes
+    - [ ] implement better page check algorithm
   - [ ] Janky animation for sort element
   - [ ] Some performace issues on mobile
-  - [x] Fix image sizing, some posters are different sizes and get stretched
-  - [x] Reloading a discover page resets the sort type
   - [ ] fix popup dialog
+  - [x] implement toasts
+  - [x] Reloading a discover page resets the sort type
+  - [x] Fix image sizing, some posters are different sizes and get stretched
   - [x] Add to fav button breaks nearly half the time
   
   ### Done

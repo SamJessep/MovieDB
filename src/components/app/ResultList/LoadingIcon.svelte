@@ -18,10 +18,11 @@ const loadStyles = `
   div{
     z-index: 10;
     position: absolute;
-    width:100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    max-height: 100%;
   }
   p{
     color: $FontColor;

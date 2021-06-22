@@ -75,7 +75,9 @@ const imgBack = ()=>{
   </button>
   <div class="active_image_container" class:ghost>
     {#if ghost}
+    <div class="loading_container">
       <LoadingIcon Message="Fetching images"/>
+    </div>
     {/if}
     <div class="image_container">
     {#each images as image,index}
@@ -222,6 +224,17 @@ img{
   margin: 0.5rem;
   min-height: 0;
   width: 100%;
+  }
+  &.active_image_container{
+    position: relative;
+    &>.loading_container{
+      top:10%;
+      position: absolute;
+      height: 80%;
+      width:100%;
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 

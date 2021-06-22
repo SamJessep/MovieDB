@@ -15,7 +15,7 @@ const scss = GetSCSSVars();
 var MenuIcon;
 
 const menuStyles = `
-  svg *{
+  #ID *{
     stroke: ${scss.FontColor}
   }
 `
@@ -48,7 +48,7 @@ checkIfMobile()
 
 {#if isMobile}
 <button class="roundedBtn dark mobileMenuButton" on:click={()=>menuOpen?CloseMenu():OpenMenu()} bind:this={buttonElement}>
-  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={3}/>
+  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={3} id="mobile_menu_svg"/>
 </button>
 {#if menuOpen}
 <div class="mobileMenu" bind:this={menuElement} transition:fly={{x:window.outerWidth}}>
@@ -73,6 +73,8 @@ checkIfMobile()
 .mobileMenuButton{
   padding: 0;
   margin: auto;
+  width: 56px;
+  height: 56px;
 }
 @media only screen and (max-width: $MobileWidth){
   .mobileMenu{

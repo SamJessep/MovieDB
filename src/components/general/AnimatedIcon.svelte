@@ -9,17 +9,20 @@
   export let styles = ""
   export let speed = 1
   export let id;
+  export let autoplay = false
+  export let loop = false;
   
 	const dispatch = createEventDispatcher();
   var animation
   var container
+  var lastFrameEnter
 
   onMount(async () => {
     const options = {
       container: container,
       renderer: 'svg',
-      loop: false,
-      autoplay: false,
+      loop: loop,
+      autoplay: autoplay,
       path: src,
       rendererSettings: {
         className: className   
@@ -29,23 +32,31 @@
       options.rendererSettings.id=id
     }
     animation= lottie.loadAnimation(options)
-
     animation.setSpeed(speed)
-
+    animation.onComplete = ()=>dispatch('complete')
+    // animation.onEnterFrame = ()=>{
+    //   const currentFrame = Math.floor(animation.currentFrame)
+    //   if(lastFrameEnter != currentFrame){
+    //     dispatch('frameEnter', {frame:currentFrame})
+    //     lastFrameEnter = currentFrame;
+    //   }
+    // }
     animation.addEventListener("DOMLoaded", ()=>{
+      console.log(animation.getDuration(), src)
       // add styles
       let stylesElement = document.createElement("style")
       if(id){
         styles = styles.split("#ID").join("#"+id)
       }
       stylesElement.innerHTML = styles
-      container.querySelector("svg").prepend(stylesElement)
+      if(container)container.querySelector("svg").prepend(stylesElement)
 
       dispatch("ready")
     })
   })
 
   export const Play = (start,end)=>{
+    console.log("playing", src, start+"-"+end)
     animation.playSegments([start,end], true)
   }
 
@@ -69,5 +80,7 @@
 <style lang="scss">
   div{
     display: inherit;
+    width: 100%;
+    height: 100%;
   }
 </style>

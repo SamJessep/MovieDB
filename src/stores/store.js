@@ -27,6 +27,7 @@ export const SvgIDS = writable(0);
 export const Languages = writable([]);
 export const Countries = writable([]);
 export const Certifications = writable([])
+export const ToastsQueue = writable([])
 
 Preferences.subscribe(p => {
   Settings.update(s=>{return {...s, Preferences:p}})

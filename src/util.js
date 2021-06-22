@@ -1,4 +1,6 @@
 import scssVars from "./styles/_export.scss"
+import {ToastsQueue} from './stores/store'
+import { get } from "svelte/store";
 
 export function QueryToJSON(queryString){
   try{
@@ -33,4 +35,16 @@ export function GetSCSSVars(){
 
 export function IsMobile(){
   return window.innerWidth <= Number(GetSCSSVars().MobileWidth.split("px")[0])
+}
+
+export function PostToast(message, options={duration:3000}){
+  const newToast = {
+    message: message,
+    autoDissmiss: true,
+    ...options
+  }
+  ToastsQueue.update(toaster=>{
+    toaster.push(newToast)
+    return toaster
+  })
 }

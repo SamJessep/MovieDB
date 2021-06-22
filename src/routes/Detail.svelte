@@ -3,6 +3,8 @@
   import DetailItems from '../components/app/DetailsPage/DetailItems.svelte'
   import {GetDetails} from '../model/TMDbAPI'
   export let params = {}
+
+  window.scrollY = 0;
 </script>
 {#await GetDetails(params.id, params.media_type)}
   <!-- <h1>LOADING...</h1> -->

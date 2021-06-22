@@ -71,7 +71,7 @@ const showButtonState = ()=>{
   {#if !recivedWatchlist}
     <div class="buttonPlaceHolder" />
   {/if}
-  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/add.json" {styles} {id} on:ready={showButtonState} speed={1.25} fadeIn={true}/>
+  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/add.json" {styles} {id} on:ready={showButtonState} speed={1.25} />
 </button>
 
 
@@ -79,19 +79,24 @@ const showButtonState = ()=>{
 
 button{
   padding: 0;
-  margin: 0;
+  margin: 0.5rem;
   background: transparent;
   border: none;
   cursor: pointer;
   position: relative;
   display: inherit;
-  margin: auto;
 }
 
 .buttonPlaceHolder{
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+@media only screen and (max-width: $MobileWidth){
+  button{
+    margin: 0.25rem;
+  }
 }
 
 </style>

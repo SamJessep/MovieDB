@@ -3,6 +3,7 @@
 
   export let title = "";
   export let click = ()=>false;
+  export let disabled = false
 
   const chevronStyles = `
   width: 3rem;
@@ -11,13 +12,20 @@
   transition: fill 0.5s;`
 </script>
 
-<button class="nonStandard roundedBtn" on:click={click}>
+<button class="nonStandard roundedBtn" on:click={()=>{if(!disabled)click()}}>
   <SvgIcon src="images/chevron-left.svg" styles={chevronStyles} />
   <h1>{title}</h1>
-  <slot/>
+  <div class="icon">
+    <slot/>
+  </div>
 </button>
 
 <style lang="scss">
+  .icon{
+    width: 56px;
+    height: 56px;
+  }
+
   button{
     font-size: $HeaderFontSize;
     background-color: transparent;
