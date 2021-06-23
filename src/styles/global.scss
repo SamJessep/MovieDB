@@ -99,6 +99,21 @@ option:hover {
   border-radius: 0.5rem;
 }
 
+@mixin link{
+  color:$AccentColor;
+  &:hover{
+    color:$SelectedColor;
+  }
+}
+
+@mixin resetbutton{
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 h2{
   font-size: $HeaderFontSize;
 }

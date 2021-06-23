@@ -191,3 +191,7 @@ export async function GetReviews(id, media_type){
 export async function GetVideos(id, media_type){
   return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/videos`)
 }
+
+export async function GetResultWatchProviders(id, media_type){
+  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/watch/providers`)
+}

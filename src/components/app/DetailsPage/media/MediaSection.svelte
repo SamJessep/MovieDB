@@ -1,6 +1,7 @@
 <script>
   import {GetVideos} from '../../../../model/TMDbAPI'
-import StreamPlayer from './StreamPlayer.svelte';
+  import StreamPlayer from './StreamPlayer.svelte';
+  import WatchProviders from './WatchProviders.svelte';
   import YouTubePlayer from './YouTubePlayer.svelte'
   export let media_type;
   export let title;
@@ -28,7 +29,7 @@ import StreamPlayer from './StreamPlayer.svelte';
     }
   }
 </script>
-
+<WatchProviders {id} {media_type}/>
 <div class="btn_container">
 <button on:click={()=>showVideo("YouTube")} disabled={trailer == null}>Trailer</button>
 <button on:click={()=>showVideo("Stream")}>Stream</button>
@@ -48,6 +49,7 @@ import StreamPlayer from './StreamPlayer.svelte';
 <style lang="scss">
   .btn_container{
     display:flex;
+    margin-top: 1rem;
   }
   button{
     @include darkBtnOutline;

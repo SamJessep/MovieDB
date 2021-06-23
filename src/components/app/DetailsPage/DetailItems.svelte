@@ -56,7 +56,7 @@ getImages().then(i=>{
   <StarRating rating={data.vote_average} ratingCount={data.vote_count} {media_type} id={data.id}/>
   <p class="synopsis">{data.overview}</p>
 </section>
-<section class="media">
+<section class="media_section">
   <MediaSection title={data.title} {media_type} id={data.id}/>
 </section>
 <section class="reviews">
@@ -98,7 +98,7 @@ getImages().then(i=>{
     .reviews{
       grid-area: reviews;
     }
-    .media{
+    .media_section{
       grid-area: media;
     }
   }
