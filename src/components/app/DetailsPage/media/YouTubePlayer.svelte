@@ -26,7 +26,6 @@
       },
       events: {
         'onReady': (event)=>{
-          console.log("READY", shown, event)
           if(shown) event.target.playVideo();
         }
       }

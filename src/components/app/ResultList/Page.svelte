@@ -11,6 +11,8 @@ export let MethodParams =[];
 export let page;
 export let PagePromise = []
 export let Active;
+
+export let topPage;
 let shownResults = []
 let loading = true;
 
@@ -32,8 +34,12 @@ afterUpdate(async ()=>{
   if(!loading) LoadQueue.update(val=>val.filter(v=>v!=page))
 })
 
+
 </script>
 <div class="page" class:loading={loading||!Active} class:Active data-page={page} id={"page-"+page}>
+  {#if !Active}
+    <div style="min-height: 150vh;"/>
+  {/if}
   {#await PagePromise}
   {#if page != 1}
     <LoadingIcon/>
@@ -41,7 +47,7 @@ afterUpdate(async ()=>{
   {:then results}
   {#if Active}
     {#each results as result, index (result.id)}
-      <Card Result={result} cardId={"card-"+index}/>
+      <Card Result={result} cardId={"card-"+index} {page} className={"card-"+index}/>
     {:else}
       {#if page==1}
         <h2>No Results :(</h2>      
@@ -55,11 +61,14 @@ afterUpdate(async ()=>{
 
 <style lang="scss">
   .page{
-    display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    &.Active{
+      display: contents;
+    }
     &.loading{
-      min-height: 5955px;
+      display: block;
+      width: 100%;
     }
   }
 </style>

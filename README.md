@@ -11,10 +11,11 @@ Javascript Web app using
     - [x] add related results
     - [x] add reviews
     - [x] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
+    - [x] watch trailer
+    - [x] watch providers
+    - [x] add genres
     - [ ] download as torrent
     - [ ] streaming torrent functionality
-    - [ ] watch trailer
-    - [ ] add genres
   - [ ] Re-create backend services with nodejs
   - [ ] Implement more preferences
     - [ ] preference tabs

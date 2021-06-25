@@ -10,17 +10,19 @@ import RelatedResults from "./RelatedResults.svelte";
 import Reviews from "./Reviews.svelte";
 import MediaSection from "./media/MediaSection.svelte";
 import {GetSCSSVars} from '../../../util'
+import Genres from "./Genres.svelte";
+import QuickInfoLabel from "./QuickInfoLabel.svelte";
 
 export let media_type;
 export let data;
 const scss = GetSCSSVars()
 
 
-
 const getImages = async ()=>{
   const initialImage = data.backdrop_path
   const res = await GetImages(data.id,media_type)
   const OtherImages = res.backdrops.map(bd=>bd.file_path);
+  if(!initialImage) return [getLazyImage(res.posters[0].file_path)]
   return [initialImage,...OtherImages].map(path=>getLazyImage(path))
 }
 
@@ -50,10 +52,19 @@ getImages().then(i=>{
 </section>
 <section class="quickinfo">
   <h1 class="title">{data.title}</h1>
-  <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
-  <Certification releaseDates={data.release_dates.results} {media_type}/>
-  <p class="runtime">{data.runtime} minutes</p>
-  <StarRating rating={data.vote_average} ratingCount={data.vote_count} {media_type} id={data.id}/>
+  <QuickInfoLabel label="Release date:">
+    <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
+  </QuickInfoLabel>
+  <QuickInfoLabel label="Age Rating:">
+    <Certification releaseDates={data.release_dates.results} {media_type}/>
+  </QuickInfoLabel>
+  <QuickInfoLabel label="Genres:">
+    <Genres genres={data.genres} {media_type}/>
+  </QuickInfoLabel>
+  <QuickInfoLabel label="Run Time:">
+    <p class="runtime">{data.runtime} minutes</p>
+  </QuickInfoLabel>
+  <StarRating rating={data.vote_average} ratingCount={data.vote_count} {media_type} id={data.id} title={data.title}/>
   <p class="synopsis">{data.overview}</p>
 </section>
 <section class="media_section">
@@ -82,8 +93,7 @@ getImages().then(i=>{
     margin: 0 0.5rem 0.5rem 0.5rem;
     display: grid;
     grid-template: "quickinfo quickinfo images images images" auto
-                   "media media media media media" auto
-                   "reviews reviews reviews reviews reviews" auto
+                   "media media media reviews reviews" auto
                    "suggestions suggestions suggestions suggestions suggestions" auto / 1fr 1fr 1fr 1fr 1fr;
     .imagesSlider{
       grid-area: images;
@@ -91,6 +101,7 @@ getImages().then(i=>{
     }
     .quickinfo{
       grid-area: quickinfo;
+      margin-right: 1rem;
     }
     .suggestions{
       grid-area:suggestions;
@@ -100,6 +111,7 @@ getImages().then(i=>{
     }
     .media_section{
       grid-area: media;
+      padding-right: 1rem;
     }
   }
 
@@ -112,6 +124,22 @@ getImages().then(i=>{
     color:$FontColor;
   }
 
+  @media only screen and (max-width: $LargeWidth){
+    div.mainContainer{
+      grid-template: "quickinfo quickinfo images images images" auto
+                    "media media reviews reviews reviews" auto
+                    "suggestions suggestions suggestions suggestions suggestions" auto / 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+
+  @media only screen and (max-width: $MediumWidth){
+    div.mainContainer{
+      grid-template: "quickinfo quickinfo images images images" auto
+                    "media reviews reviews reviews reviews" auto
+                    "suggestions suggestions suggestions suggestions suggestions" auto / 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+
   @media only screen and (max-width: $MobileWidth){
     div.mainContainer{
       grid-template: "images images images images images" 40vh
@@ -119,6 +147,10 @@ getImages().then(i=>{
                      "media media media media media" auto
                      "reviews reviews reviews reviews reviews" auto
                      "suggestions suggestions suggestions suggestions suggestions" auto / 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    .media_section{
+      padding-right: 0;
     }
   }
   

@@ -1,5 +1,5 @@
 <script>
-import {QueryToJSON} from '../../../util'
+import {GetSCSSVars, QueryToJSON} from '../../../util'
 import { onMount, onDestroy, afterUpdate} from 'svelte';
 import {location, querystring, replace} from 'svelte-spa-router'
 import {LoadQueue, Loaded} from '../../../stores/resultsStore';
@@ -10,6 +10,7 @@ import Sort from './Sort.svelte'
 import ErrorSmall from '../../general/ErrorSmall.svelte';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
+import AnimatedIcon from '../../general/AnimatedIcon.svelte';
 
 export let FetchMethod;
 export let MethodParams =[];
@@ -22,10 +23,7 @@ let currentPage = StartPage;
 let resultPromise;
 let pages = [];
 let loadedPages = [];
-let cardContainer;
-let pageElements;
 let shownPage = StartPage;
-let loadTopY = 0;
 
 let loadDir = 0;
 $:currentPage
@@ -35,51 +33,59 @@ $:{
   loadedPages = loadedPages.slice(loadedPages.length-2)
 }
 
-let loadBottom
-let loadTop
-// $:initIntersectionObserver(loadTop, loadBottom)
-var observer;
+let bottomCards
+let topCards
+var loadObserver;
 var currentPageObserver;
-var target_page_focused = false;
-var unsubscribeLoadQueue;
-$:{
-  if(target_page_focused) unsubscribeLoadQueue()
-}
+const scss = GetSCSSVars();
+
 onMount(()=>{
   resultPromise = GetPages(currentPage)
-  
   //If user reloads page after scrolling, load the last page and focus it
   if(currentPage !=  1){
-    let target_page_queued = false;
-    target_page_focused = false;
-    unsubscribeLoadQueue = LoadQueue.subscribe(queue=>{
-      if(target_page_focused) return
-      const page_element = document.getElementById("page-"+currentPage)
-      if(target_page_queued && !queue.includes(currentPage) && page_element){
-        window.scrollTo(0, page_element.offsetTop)
-        target_page_focused = true
-        initIntersectionObserver(loadTop, loadBottom)
-      }
-      target_page_queued = queue.includes(currentPage)
+    shownPage = currentPage
+    getFirstCardAsync(shownPage).then(firstCard => {
+      pageLoaderEnabled = false;
+      setTimeout(()=>{
+        firstCard.scrollIntoView()
+        setTimeout(()=>pageLoaderEnabled=true,2000)
+      },1000)
     })
   }else{
     window.scrollTo(0,0)
-    initIntersectionObserver(loadTop, loadBottom)
   }
+  initLoadObserver()
 })
 onDestroy(()=>{
-  if(observer) observer.disconnect()
+  if(loadObserver) loadObserver.disconnect()
   if(currentPageObserver) currentPageObserver.disconnect()
 })
-afterUpdate(()=>{
-  pageElements = document.querySelectorAll('.page')
-  initPageObserver(pageElements)
-  moveTopLoad()
+afterUpdate(async ()=>{
+  await waitTillLoaded()
+  const cards = document.querySelectorAll(".resultCard")
+  initPageObserver(cards)
+  initLoadObserver()
 })
 
-function moveTopLoad(){
-  if(document.querySelector('.page.Active')) loadTopY= document.querySelector('.page.Active').offsetTop
-}
+const waitTillLoaded = async()=>{
+    return new Promise(function (resolve, reject) {
+        (function wait(){
+            if ($Loaded) return resolve();
+            setTimeout(wait, 30);
+        })();
+    });
+  }
+
+
+  const getFirstCardAsync = async page=>{
+    return new Promise(function (resolve, reject) {
+        (function wait(){
+          const res = document.querySelector(`#page-${page}>.resultCard`)
+          if (res) return resolve(res);
+          setTimeout(wait, 30);
+        })();
+    });
+  }
 
 function GetPages(page){
   let promise = FetchMethod(...MethodParams, {page:page, ...QueryToJSON($querystring)}).then(res=>{
@@ -91,36 +97,40 @@ function GetPages(page){
 }
 
 const checkForPageLoad = async entry => {
-  const overlapBottom = entry.target == loadBottom && entry.isIntersecting
-  const overlapTop = entry.target == loadTop && entry.isIntersecting
+  const overlapBottom = bottomCards.includes(entry.target) && entry.isIntersecting
+  const overlapTop = topCards.includes(entry.target) && entry.isIntersecting
 
   const bottomPage = loadedPages[loadedPages.length-1]
   const topPage = loadedPages[0]
-  
-  if (overlapBottom) {
-    if(bottomPage<totalPages && $Loaded){
-      console.log("load bottom")
-      loadDir = 0
-      currentPage = bottomPage+1;
-      LoadQueue.update(v=> [...v,currentPage])
+  if($Loaded){
+    if (overlapBottom) {
+        loadPage(bottomPage+1)
+        loadDir = 0
     }
-  }
-  
-  if (overlapTop) {
-    if(topPage>1 && $Loaded){
-      console.log("load top")
-      loadDir = 1;
-      currentPage = topPage-1;
-      LoadQueue.update(v=> [...v,currentPage])
+    else if (overlapTop) {
+      if(topPage>1 && $Loaded){
+        loadPage(topPage-1)
+        loadDir = 1;
+      }
     }
   }
 
 }
 
-const checkForNewPage = entry => {
-  const page = entry.target.dataset.page
-  if(entry.isIntersecting && shownPage != page) {
-    console.log(`changing to page ${page}`)
+const loadPage = newPage => {
+  if(loadedPages.includes(newPage) || newPage > totalPages) return
+  currentPage = newPage;
+  LoadQueue.update(currentQueue=> [...currentQueue,newPage])
+}
+
+const checkForNewPage = entries =>{
+  const pageCounts = [...new Set(entries.map(entry=>{
+      const el = entry.target
+      const page = el.parentElement.dataset.page
+      return Number(page)
+  }))]
+  const page = pageCounts[0]
+  if(shownPage != page && pageCounts.length == 1) {
     shownPage = page
     let regexRes = /\/(?<page>\d+)/.exec($location)
     let newLocation = regexRes ? $location.replace("/"+regexRes.groups.page,"/"+page) :
@@ -131,8 +141,15 @@ const checkForNewPage = entry => {
 
 var pageLoaderEnabled = true;
 
-const initIntersectionObserver = (topDiv, bottomDiv) => {
-  if(!topDiv || !bottomDiv) return
+const initLoadObserver = () => {
+
+  const activeCards = document.querySelectorAll(".page.Active");
+  if(activeCards.length == 0) return 
+  topCards = [...activeCards[0].querySelectorAll(".resultCard")]
+  bottomCards = [...activeCards[activeCards.length-1].querySelectorAll(".resultCard")]
+
+  topCards = topCards.slice(0, 4)
+  bottomCards= bottomCards.slice(bottomCards.length-4)
   const callback = entries => {
     entries.forEach(entry => {
       if(pageLoaderEnabled) checkForPageLoad(entry);
@@ -143,26 +160,21 @@ const initIntersectionObserver = (topDiv, bottomDiv) => {
       rootMargin: "0px",
       threshold: 1.0
   };
-  if(observer) observer.disconnect()
-  observer = new IntersectionObserver(callback, options);
-  observer.observe(topDiv);
-  observer.observe(bottomDiv);
+  if(loadObserver) loadObserver.disconnect()
+  loadObserver = new IntersectionObserver(callback, options);
+  topCards.forEach(el=>loadObserver.observe(el));
+  bottomCards.forEach(el=>loadObserver.observe(el));
 }
 
-const initPageObserver = (pages) => {
-  const callback = entries => {
-    entries.forEach(entry =>{
-      checkForNewPage(entry)
-    })
-  }
+const initPageObserver = (cards) => {
   var options = {
       root: null, // Page as root
       rootMargin: "0px",
-      threshold: 0.1
+      threshold: 1
   };
   if(currentPageObserver) currentPageObserver.disconnect()
-  currentPageObserver = new IntersectionObserver(callback, options);
-  pages.forEach(page=>currentPageObserver.observe(page))
+  currentPageObserver = new IntersectionObserver(checkForNewPage, options);
+  cards.forEach(card=>currentPageObserver.observe(card))
 }
 
 function scrollClicked(){
@@ -170,22 +182,28 @@ function scrollClicked(){
   currentPage = 1
   setTimeout(e=>pageLoaderEnabled=true,1000)
 }
+
+
 </script>
 {#if UseResultSort}
   <Sort defaultSelected={QueryToJSON($querystring).sort_by ?? DefaultSort}/>
 {/if}
-<div class="card-list" bind:this={cardContainer}>
-  <div class="scroll-block top" bind:this={loadTop} style={"top:"+loadTopY+"px"}/>
+<div class="card-list">
   {#key $querystring}
     {#await resultPromise}
     {:then pageData}
       {#each pages as page (page)}
         {#if loadedPages.includes(page) || page<=currentPage}
-          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} Active={loadedPages.includes(page)}/>
+          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} Active={loadedPages.includes(page)} topPage={loadedPages[0] == page}/>
         {/if}
       {:else}
         <div class="center_container">
-          <h2>No results found</h2>
+          
+          <div class="icon-container">
+            <AnimatedIcon src="images/animatedIcons/warning.json" autoplay={true} styles={`#ID *{ stroke:${scss.FontColor};}`} id="searchError"/>
+          </div>
+          <p class="info-message">
+             No results found</p>
         </div>
       {/each}
     {:catch error}
@@ -194,7 +212,6 @@ function scrollClicked(){
     </div>
     {/await}
   {/key}
-  <div class="scroll-block bottom" bind:this={loadBottom}/>
   <ScrollButton on:clicked={scrollClicked}/>
 </div>
 
@@ -205,30 +222,22 @@ h2{
   font-size: $HeaderFontSize;
 }
 
-.scroll-block{
-  height: 50vh;
-  width: 100%;
-  z-index: -1;
-}
-
-.scroll-block.top{
-  position: absolute;
-  top:0;
-  left:0;
-}
-
-.scroll-block.bottom{
-  position: relative;
-  top: -50vh;
-}
-
 .card-list{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   margin: 0 15rem;
 }
 
 .center_container{
   display:flex;
   justify-content: center;
+  .info-message{
+    flex-grow: 1;
+    font-size: 1.5rem;
+    color:$FontColor;
+    margin-left: 0.5rem;
+  }
 }
 @media only screen and (max-width: $MobileWidth){
   .card-list{

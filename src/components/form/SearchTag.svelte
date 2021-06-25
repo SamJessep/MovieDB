@@ -19,7 +19,6 @@ const loadSuggestions = debounce(async e=>{
   }
   suggestions = await getSuggestions(text);
   suggestions = suggestions.slice(0,5)
-  console.log("SUGGESTIONS", suggestions)
   tryCreateTag()
 }, 300);
 
@@ -29,7 +28,6 @@ function tryCreateTag(){
     selected.find(i=>i.text.toLowerCase()==text.toLocaleLowerCase()) == undefined
     ){
     selected = [...selected, findSelected()];
-    console.log("SELECTED", selected)
     suggestions = []
     text = ""
   }

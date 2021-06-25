@@ -1,6 +1,7 @@
 <script>
 import {Preferences, Certifications} from "../../../stores/store";
 import ErrorSmall from "../../general/ErrorSmall.svelte";
+import Warning from "../../general/Warning.svelte";
 export let media_type
 export let releaseDates;
 let usingLocalReleaseDate = true;
@@ -19,12 +20,14 @@ if(releaseDate.release_dates[0].certification != ""){
 }
 </script>
 <div>
-  <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>
   {#if !usingLocalReleaseDate}
-  <ErrorSmall
-    compact={true}
-    userMessage={`showing ${certificationCountry} certification`} 
-    errorMessage={`a certification was not found for this ${media_type == "movie" ? "movie" : "tv show"} in your region (${$Preferences.RequestParams.region})`}/>
+  <Warning 
+    title={`showing ${certificationCountry} certification`}
+    error={`a certification was not found for this ${media_type == "movie" ? "movie" : "tv show"} in your region (${$Preferences.RequestParams.region}). So showing ${certificationCountry} certification instead `}>
+    <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>
+  </Warning>
+  {:else}
+    <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>
   {/if}
 </div>
 
@@ -35,6 +38,7 @@ if(releaseDate.release_dates[0].certification != ""){
 
   abbr{
     text-decoration: underline $AccentColor;
+    margin-right: 0.5rem;
     &:hover {
       cursor: help;
     }

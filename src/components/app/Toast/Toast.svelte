@@ -31,10 +31,8 @@
   }
   
   const removeToast = ()=>{
-    console.log("Ejecting toast", {id:id,message:message})
     dispatch("remove", {id:id,message:message})
   }
-  onMount(()=>console.log(message, id))
 </script>
 
 <div class={"toast "+theme} transition:fly="{{delay: 50, duration: 500, x:window.innerWidth/2, easing: quintOut}}">

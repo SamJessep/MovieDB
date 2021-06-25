@@ -14,12 +14,11 @@ import config from '../../../../config';
 <style lang="scss">
   .provider{
     display: inline-block;
-    grid-row:2;
     padding: 0.6rem;
-    width: min-content;
     img{
-      max-width: 50px;
-      max-height: 50px;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
       border-radius: 0.9rem;
     }
   }

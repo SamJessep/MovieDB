@@ -2,6 +2,7 @@
 import { onMount } from "svelte";
 import {Rate} from "../../../model/TMDbAPI"
 import {User, IsLoggedIn} from '../../../stores/userStore'
+import { PostToast } from "../../../util";
 
 import SvgIcon from "../../general/SvgIcon.svelte";
 
@@ -9,6 +10,7 @@ export let rating;
 export let id;
 export let media_type;
 export let ratingCount;
+export let title;
 
 let voted = false;
 let ratingElement
@@ -37,15 +39,18 @@ const stopPreview = ()=>{
 
 const rateElement = async rating=>{
   if(!$IsLoggedIn) return alert("You need to be logged in to rate movies")
-  const res = await Rate(id,$User.session_id,rating,media_type)
-  if(res.success){
-    //TODO: Create toasts
-    alert("you rated this "+rating+"/5")
-    voted = true;
-    userRating = rating;
-    ratingElementUser.style.width=(rating/5)*100+"%";
-  }else{
-    alert("Somthing went wrong")
+  try{
+    const res = await Rate(id,$User.session_id,rating,media_type)
+    if(res.success){
+      //TODO: Create toasts
+      PostToast(`You rated ${title} a ${rating}/5`, {duration:8000})
+      voted = true;
+      userRating = rating;
+      ratingElementUser.style.width=(rating/5)*100+"%";
+    }else{ throw("Rating failed")}
+  }catch(e){
+    console.error(e)
+    PostToast("Somthing went wrong", {theme:"error"})
   }
 }
 </script>
@@ -77,7 +82,7 @@ const rateElement = async rating=>{
       {/each}
     </div>
   </div>
-  <span title={"this "+(media_type=="movie "?"movie":"tv show")+" has "+ratingCount+" ratings"}>{ratingCount}</span>
+  <span title={"this "+(media_type=="movie"?"movie":"tv show")+" has "+ratingCount+" ratings"}>{ratingCount}</span>
 
 </div>
 

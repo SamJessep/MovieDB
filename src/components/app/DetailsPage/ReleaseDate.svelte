@@ -1,6 +1,6 @@
 <script>
   import {Preferences} from "../../../stores/store";
-import ErrorSmall from "../../general/ErrorSmall.svelte";
+  import Warning from '../../general/Warning.svelte'
   export let releaseDates;
   export let media_type;
   
@@ -25,19 +25,24 @@ import ErrorSmall from "../../general/ErrorSmall.svelte";
     }
   }
 </script>
-
 <div>
-  <time>{formatReleaseDate(releaseDate.release_dates[0])}</time>
   {#if usingOtherRegion}
-  <ErrorSmall
-    compact={true}
-    userMessage={`showing ${otherRegion} release date`} 
-    errorMessage={`a release was not found for this ${media_type == "movie" ? "movie" : "tv show"} in your region (${$Preferences.RequestParams.region}).`}/>
+  <Warning
+    title={`showing ${otherRegion} release date`} 
+    error={`a release was not found for this ${media_type == "movie" ? "movie" : "tv show"} in your region (${$Preferences.RequestParams.region}). So showing ${otherRegion} release date`}>
+    <time>{formatReleaseDate(releaseDate.release_dates[0])}</time>
+  </Warning>
+  {:else}
+  <time>{formatReleaseDate(releaseDate.release_dates[0])}</time>
   {/if}
 </div>
 
 <style lang="scss">
   div{
     display: flex;
+  }
+
+  time{
+    margin-right: 0.5rem;
   }
 </style>

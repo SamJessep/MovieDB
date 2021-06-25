@@ -1,5 +1,5 @@
 <script>
-  import {push, location, querystring} from "svelte-spa-router"
+  import {replace, location, querystring} from "svelte-spa-router"
   import {slide, fly} from 'svelte/transition'
   import {quintOut} from 'svelte/easing'
 
@@ -36,7 +36,7 @@
       params.set(SORT_KEY, selected)
     }
     const newUrl = $location+(params.toString()?"?"+params:params)
-    push(newUrl)
+    replace(newUrl)
 
   }
 

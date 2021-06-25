@@ -15,33 +15,45 @@ import {fade} from 'svelte/transition'
 
   var getProviders = {watchtypes:[]}
   var preferedRegion = $Preferences.RequestParams.region
-  var lastRegion = preferedRegion
+  var selectedRegion
   const defaultRegion = "US"
   var regions
   var regionSelect;
+  var selectEnabled;
+
+  $:{
+    selectEnabled = regions && regions.length>0
+  }
+
   const scss = GetSCSSVars()
   onMount(()=>{
     loadProviders()
   })
 
+  Preferences.subscribe(p=>{
+    if(p.RequestParams.region != preferedRegion){
+      preferedRegion = p.RequestParams.region
+      loadProviders()
+    }
+  })
+
   const loadProviders = ()=>{
     getProviders = GetResultWatchProviders(id, media_type).then(res=>{
       if(!regions) regions = Object.keys(res.results)
-      var selectedRegion = regions.includes(preferedRegion) ? preferedRegion :
-                           regions.includes(defaultRegion) ? defaultRegion :
-                           regions[0]
-      console.log(res.results)
+      if(regions.length == 0) return {watchtypes:[], noRegions:true}
+      if(!regions.includes(preferedRegion)){
+        return {watchtypes:[], noProviders:true}
+      }
       const results = [
-        {type:"flatrate",  providers:res.results[selectedRegion].flatrate ?? []},
-        {type:"rent",  providers:res.results[selectedRegion].rent ?? []},
-        {type:"buy",  providers:res.results[selectedRegion].buy ?? []}
+        {type:"flatrate",  providers:res.results[preferedRegion].flatrate ?? []},
+        {type:"rent",  providers:res.results[preferedRegion].rent ?? []},
+        {type:"buy",  providers:res.results[preferedRegion].buy ?? []}
       ]
-      return {watchtypes:results, tmdb_link:res.results[selectedRegion].link}
+      return {watchtypes:results, tmdb_link:res.results[preferedRegion].link}
     })
   }
 
   const changeRegion = e=>{
-    console.log(e.detail.selected[0].value)
     preferedRegion = e.detail.selected[0].value;
     loadProviders()
   }
@@ -60,12 +72,14 @@ const updatePreferedRegion = ()=>{
   $Settings.useAccountSettings = $User.iso_3166_1 == preferedRegion;
 }
 </script>
-<h1>
+<h2>
   Watch providers
-</h1>
-<Selector fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect}/>
+</h2>
+<div class="select_container">
+  <Selector selectID="watch_provider_select" fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect} disabled={!selectEnabled} placeholder={selectEnabled?"Select a region":"No providers found"}/>
+</div>
 
-{#if preferedRegion != $Preferences.RequestParams.region}
+{#if preferedRegion != $Preferences.RequestParams.region && selectEnabled}
   <button class="link-btn" on:click={updatePreferedRegion}>
     use {$Countries.find(c=>c.value == preferedRegion).text} as my default region
   </button>
@@ -77,28 +91,36 @@ Getting providers
   <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`}/>
 </div>
 {:then results}
-<div class="providersContainer">
-  {#each results.watchtypes as watchtype}
-    {#if watchtype.providers.length>0}
-    <div class="providertype">
-      <h1 class="sectionName">{watchtype.type}</h1>
-      {#each watchtype.providers as provider}
-      <WatchProvider src={provider.logo_path} title={provider.provider_name} tmdb_link={results.tmdb_link}/>
-      {/each}
-    </div>
-    {/if}
-  {/each}
-</div>
+{#if results.noProviders}
+  No watch providers found for {$Countries.find(c=>c.value == preferedRegion).text}. Try select a different region
+{:else}
+  <div class="providersContainer">
+    {#each results.watchtypes as watchtype}
+      {#if watchtype.providers.length>0}
+      <div class="providertype">
+        <h3 class="sectionName">{watchtype.type}</h3>
+        {#each watchtype.providers as provider}
+        <WatchProvider src={provider.logo_path} title={provider.provider_name} tmdb_link={results.tmdb_link}/>
+        {/each}
+      </div>
+      {/if}
+    {/each}
+  </div>
+{/if}
 {/await}
 
 <style lang="scss">
+  .select_container{
+    max-width: 500px;
+  }
+
   .providertype{
     display: grid;
     grid-template-rows: min-content 1fr;
-    grid-template-columns: max-content;
+    grid-template-columns: repeat(auto-fit, 75px);
     justify-content: flex-start;
-    .sectionName{
-      grid-row: 1;
+    h3{
+      grid-column: 1/-1;
     }
   }
 

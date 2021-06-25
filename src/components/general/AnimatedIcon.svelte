@@ -42,7 +42,6 @@
     //   }
     // }
     animation.addEventListener("DOMLoaded", ()=>{
-      console.log(animation.getDuration(), src)
       // add styles
       let stylesElement = document.createElement("style")
       if(id){
@@ -56,7 +55,6 @@
   })
 
   export const Play = (start,end)=>{
-    console.log("playing", src, start+"-"+end)
     animation.playSegments([start,end], true)
   }
 

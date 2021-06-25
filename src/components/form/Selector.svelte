@@ -12,6 +12,7 @@ export let multiple=false;
 export let size = 5;
 export let placeholder="Select a value"
 export let mandatoryChoice = false;
+export let disabled = false;
 
 let selectElement;
 let hasSelectedPlaceholder = bindedValue=="" && mandatoryChoice==false;
@@ -50,6 +51,7 @@ const change = e=>{
         class:off={hasSelectedPlaceholder} 
         class:hasPlaceholder={!mandatoryChoice} 
         on:change={change}
+        {disabled}
       >
         {#if !mandatoryChoice}
           <option selected value="">{placeholder}</option>

@@ -22,6 +22,8 @@ const scssVars = GetSCSSVars();
 export let Result;
 export let cardId;
 export let Loaded = true;
+export let page = null;
+export let className = ""
 let loading = true;
 
 var toolbarElement;
@@ -99,7 +101,7 @@ const selectCard = e=>{
 }
 
 </script>
-<button class="resultCard nonStandard" id={cardId} transition:fade title={title} on:click={selectCard}>
+<button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}>
   {#if Loaded}
   <div class="poster-container" bind:this={poster_container}>
     {#if Result.poster_path}
@@ -171,7 +173,7 @@ const selectCard = e=>{
   --cardWidth: 21rem;
 }
 .resultCard{
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
 
