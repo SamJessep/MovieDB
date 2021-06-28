@@ -152,6 +152,9 @@ getImages().then(i=>{
     .media_section{
       padding-right: 0;
     }
+    section{
+      margin-bottom: 1.5rem;
+    }
   }
   
 </style>

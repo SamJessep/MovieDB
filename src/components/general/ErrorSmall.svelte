@@ -1,7 +1,7 @@
 <script>
   export let userMessage;
   export let errorMessage;
-  export let compact;
+  export let compact = false;
   let isOpen = false;
 </script>
 

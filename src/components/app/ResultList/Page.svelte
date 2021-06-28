@@ -10,9 +10,7 @@ export let FetchMethod;
 export let MethodParams =[];
 export let page;
 export let PagePromise = []
-export let Active;
-
-export let topPage;
+export let Active=true;
 let shownResults = []
 let loading = true;
 

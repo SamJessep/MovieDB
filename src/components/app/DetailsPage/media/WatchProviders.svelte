@@ -3,11 +3,12 @@ import { onMount } from "svelte";
 import { GetResultWatchProviders, GetWatchProviders } from "../../../../model/TMDbAPI";
 import { Countries, Preferences, Settings } from "../../../../stores/store";
 import { User } from "../../../../stores/userStore";
-import { GetSCSSVars } from "../../../../util";
+import { GetSCSSVars, IsMobile } from "../../../../util";
 import Selector from "../../../form/Selector.svelte";
 import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
 import WatchProvider from "./WatchProvider.svelte";
 import {GetWatchProviderDirectLinks} from "../../../../model/Api";
+import ErrorSmall from "../../../general/ErrorSmall.svelte";
 
   export let title;
   export let id;
@@ -86,42 +87,46 @@ const updatePreferedRegion = ()=>{
   $Settings.useAccountSettings = $User.iso_3166_1 == preferedRegion;
 }
 </script>
-<h2>
-  Watch providers
-</h2>
-<div class="select_container">
-  <Selector selectID="watch_provider_select" fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect} disabled={!selectEnabled} placeholder={selectEnabled?"Select a region":"No providers found"}/>
-</div>
-
-{#if preferedRegion != $Preferences.RequestParams.region && selectEnabled}
-  <button class="link-btn" on:click={updatePreferedRegion}>
-    use {$Countries.find(c=>c.value == preferedRegion).text} as my default region
-  </button>
-{/if}
-
-{#await getProviders}
-Getting providers
-<div style="width:50px; height:50px display:inline;">
-  <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`}/>
-</div>
-{:then results}
-{#if results.noProviders}
-  No watch providers found for {$Countries.find(c=>c.value == preferedRegion).text}. Try select a different region
-{:else}
-  <div class="providersContainer">
-    {#each results.watchtypes as watchtype}
-      {#if watchtype.providers.length>0}
-      <div class="providertype">
-        <h3 class="sectionName">{watchtype.type}</h3>
-        {#each watchtype.providers as provider}
-        <WatchProvider src={provider.logo_path} title={provider.provider_name} link={provider.direct_link}/>
-        {/each}
-      </div>
+<details open={!IsMobile()}>
+  <summary class="h2">Watch providers</summary>
+  <div class="section-container">
+    <div class="select_container">
+      <Selector selectID="watch_provider_select" fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect} disabled={!selectEnabled} placeholder={selectEnabled?"Select a region":"No providers found"}/>
+    </div>
+    
+    {#await getProviders}
+    Getting providers
+    <div style="width:50px; height:50px display:inline;">
+      <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`}/>
+    </div>
+    {:then results}
+      {#if preferedRegion != $Preferences.RequestParams.region && selectEnabled}
+        <button class="link-btn" on:click={updatePreferedRegion}>
+          use {$Countries.find(c=>c.value == preferedRegion).text} as my default region
+        </button>
       {/if}
-    {/each}
+    
+      {#if results.noProviders}
+        No watch providers found for {$Countries.find(c=>c.value == preferedRegion).text}. Try select a different region
+      {:else}
+        <div class="providersContainer">
+          {#each results.watchtypes as watchtype}
+            {#if watchtype.providers.length>0}
+            <div class="providertype">
+              <h3 class="sectionName">{watchtype.type}</h3>
+              {#each watchtype.providers as provider}
+              <WatchProvider src={provider.logo_path} title={provider.provider_name} link={provider.direct_link}/>
+              {/each}
+            </div>
+            {/if}
+          {/each}
+        </div>
+      {/if}
+    {:catch error}
+    <ErrorSmall errorMessage={error} userMessage="hmm... something went wrong"/>
+    {/await}
   </div>
-{/if}
-{/await}
+</details>
 
 <style lang="scss">
   .select_container{

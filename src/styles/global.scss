@@ -114,8 +114,9 @@ option:hover {
   cursor: pointer;
 }
 
-h2{
+h2 ,.h2{
   font-size: $HeaderFontSize;
+  font-weight: 600;
 }
 
 label{
@@ -124,4 +125,27 @@ label{
 
 input[type="radio"], input[type="checkbox"]{
   cursor: pointer;
+}
+
+details[open] > summary::after{
+  content: " -";
+}
+
+summary{
+  list-style-type:none;
+  list-style-image: none;
+  transition: color 0.5s;
+}
+summary::after{
+  position: relative;
+  font-weight: 700;
+  content: "+";
+  left: 1ch;
+  font-size: 1.2rem;
+}
+
+summary:hover{
+  cursor: pointer;
+  user-select: none;
+  color:$AccentColor;
 }
