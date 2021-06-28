@@ -63,7 +63,7 @@ const imgNext = ()=>{
 }
 
 const imgBack = ()=>{
-  const newIndex = activeImageIndex-1 > 0 ?
+  const newIndex = activeImageIndex-1 >= 0 ?
     activeImageIndex-1 :
     images.length-1;
   selectImage(newIndex)
