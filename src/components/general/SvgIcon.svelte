@@ -2,6 +2,9 @@
 export let src;
 export let styles = "";
 export let cache = true;
+export let width = "100%"
+export let height = "100%"
+export let attributes = []
 let name = /([^\/]*).svg/g.exec(src)[1]
 
 async function LoadSvgFile(src){
@@ -16,6 +19,12 @@ async function LoadSvgFile(src){
     create_svg_ref(name, inner, svg)
   }
   svg.innerHTML = `<use href="#svg_ref_${name}"/>`
+  attributes = [
+    {name:"width", value:width},
+    {name:"height", value:height},
+    ...attributes
+  ]
+  attributes.forEach(atribute=>svg.setAttribute(atribute.name, atribute.value))
   return svg.outerHTML;
 }
 

@@ -98,7 +98,7 @@ const imgBack = ()=>{
     </div>
   </div>
   <button class="controls next" on:click={imgNext} aria-label="next image">
-    <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles}/>
+    <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles} attributes={[{name:"transform", value:"rotate(180)"}]}/>
   </button>
   <div class="preview_nav" bind:this={previewContainer}>
     {#if ghost}
@@ -208,13 +208,15 @@ img{
   cursor: pointer;
   background-color: $TransparentBackground;
   grid-area: back;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover{
     color:$AccentColor;
     background-color: $TransparentBackgroundHover;
   }
   &.next{
     grid-area: next;
-    transform: rotate(180deg);
   }
 }
 
@@ -241,11 +243,11 @@ img{
 @media only screen and (max-width: $MobileWidth){
   .image_slider_container{
     display: grid;
-    grid-template-columns: 3rem 1fr 3rem 3rem;
+    grid-template-columns: 3rem 1fr 3rem 0.25rem 3rem;
     grid-template-rows: 1fr 3rem min-content;
-    grid-template-areas: "img img img img"
-                         ". . back next"
-                         "nav nav nav nav";
+    grid-template-areas: "img img img img img"
+                         ". . back . next"
+                         "nav nav nav nav nav";
   }
 }
 </style>
