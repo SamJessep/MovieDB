@@ -3,7 +3,7 @@ import {QueryToJSON} from '../../../util'
 import Card from '../ResultList/Card.svelte'
 import {querystring} from 'svelte-spa-router'
 import LoadingIcon from './LoadingIcon.svelte';
-import { onMount, afterUpdate } from 'svelte';
+import { onMount, afterUpdate, beforeUpdate } from 'svelte';
 import {LoadQueue} from '../../../stores/resultsStore';
 
 export let FetchMethod;
@@ -34,7 +34,6 @@ afterUpdate(async ()=>{
   if(!loading) LoadQueue.update(val=>val.filter(v=>v!=page))
 })
 
-
 </script>
 <div class="page" class:loading={loading||!Active} class:Active data-page={page} id={"page-"+page}>
   {#if !Active}
@@ -42,7 +41,9 @@ afterUpdate(async ()=>{
   {/if}
   {#await PagePromise}
   {#if page != 1}
-    <LoadingIcon/>
+    <div class="loadingContainer">
+      <LoadingIcon/>
+    </div>
   {/if}
   {:then results}
   {#if Active}
@@ -70,5 +71,12 @@ afterUpdate(async ()=>{
       display: block;
       width: 100%;
     }
+  }
+
+  .loadingContainer{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
   }
 </style>

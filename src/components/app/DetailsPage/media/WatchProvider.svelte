@@ -4,10 +4,10 @@ import config from '../../../../config';
   import {GetBestImageSize} from '../../../../model/dataHelper'
   export let title;
   export let src;
-  export let tmdb_link
+  export let link
 </script>
 
-<a class="provider" {title} href={tmdb_link}>
+<a class="provider" {title} href={link}>
   <img src={config.BASE_IMAGE_URL + GetBestImageSize("logo", 100) + src} alt={title}/>
 </a>
 

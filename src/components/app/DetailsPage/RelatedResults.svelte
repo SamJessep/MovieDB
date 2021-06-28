@@ -11,8 +11,14 @@ const fetchResults = async (id, media_type)=>{
 }
 </script>
 <h2>Similar {media_type == "movie" ? "Movies" : "TV Shows"}</h2>
-<Page FetchMethod={fetchResults} MethodParams={[id,media_type]} page={1} Active={true}/>
+<div class="card-contianer">
+  <Page FetchMethod={fetchResults} MethodParams={[id,media_type]} page={1} Active={true}/>
+</div>
 
 <style lang="scss">
-  
+  .card-contianer{
+    display:flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
 </style>

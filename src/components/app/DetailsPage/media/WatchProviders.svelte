@@ -1,15 +1,15 @@
 <script>
 import { onMount } from "svelte";
-import { validate_each_argument } from "svelte/internal";
-import { GetResultWatchProviders } from "../../../../model/TMDbAPI";
+import { GetResultWatchProviders, GetWatchProviders } from "../../../../model/TMDbAPI";
 import { Countries, Preferences, Settings } from "../../../../stores/store";
 import { User } from "../../../../stores/userStore";
 import { GetSCSSVars } from "../../../../util";
 import Selector from "../../../form/Selector.svelte";
 import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
 import WatchProvider from "./WatchProvider.svelte";
-import {fade} from 'svelte/transition'
+import {GetWatchProviderDirectLinks} from "../../../../model/Api";
 
+  export let title;
   export let id;
   export let media_type;
 
@@ -38,19 +38,33 @@ import {fade} from 'svelte/transition'
   })
 
   const loadProviders = ()=>{
-    getProviders = GetResultWatchProviders(id, media_type).then(res=>{
+    getProviders = GetResultWatchProviders(id, media_type).then(async res=>{
       if(!regions) regions = Object.keys(res.results)
       if(regions.length == 0) return {watchtypes:[], noRegions:true}
       if(!regions.includes(preferedRegion)){
         return {watchtypes:[], noProviders:true}
       }
+
+      const direct_links = await GetWatchProviderDirectLinks(title, res.results[preferedRegion].link)
+      console.log("DIRECT",direct_links)
       const results = [
-        {type:"flatrate",  providers:res.results[preferedRegion].flatrate ?? []},
-        {type:"rent",  providers:res.results[preferedRegion].rent ?? []},
-        {type:"buy",  providers:res.results[preferedRegion].buy ?? []}
+        {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
+        {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},
+        {type:"buy",  providers:addDirectLinks(direct_links,res.results[preferedRegion].buy) ?? []}
       ]
+      console.log({watchtypes:results, tmdb_link:res.results[preferedRegion].link})
       return {watchtypes:results, tmdb_link:res.results[preferedRegion].link}
     })
+  }
+
+  const addDirectLinks = (direct_links, providers)=>{
+    if(!providers) return providers
+    const providers_with_direct_links = providers.map(provider=>{
+      const direct_provider = direct_links.find(dl=>dl.name.toLowerCase() == provider.provider_name.toLowerCase())
+      provider.direct_link = direct_provider.url
+      return provider
+    })
+    return providers_with_direct_links
   }
 
   const changeRegion = e=>{
@@ -100,7 +114,7 @@ Getting providers
       <div class="providertype">
         <h3 class="sectionName">{watchtype.type}</h3>
         {#each watchtype.providers as provider}
-        <WatchProvider src={provider.logo_path} title={provider.provider_name} tmdb_link={results.tmdb_link}/>
+        <WatchProvider src={provider.logo_path} title={provider.provider_name} link={provider.direct_link}/>
         {/each}
       </div>
       {/if}

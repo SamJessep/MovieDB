@@ -194,7 +194,7 @@ function scrollClicked(){
     {:then pageData}
       {#each pages as page (page)}
         {#if loadedPages.includes(page) || page<=currentPage}
-          <Page page={page} FetchMethod={FetchMethod} MethodParams={MethodParams} Active={loadedPages.includes(page)} topPage={loadedPages[0] == page}/>
+          <Page {page} {FetchMethod} {MethodParams} Active={loadedPages.includes(page)} topPage={loadedPages[0] == page}/>
         {/if}
       {:else}
         <div class="center_container">

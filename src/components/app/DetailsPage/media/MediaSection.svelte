@@ -29,7 +29,7 @@
     }
   }
 </script>
-<WatchProviders {id} {media_type}/>
+<WatchProviders {title} {id} {media_type}/>
 <div class="btn_container">
 <button on:click={()=>showVideo("YouTube")} disabled={trailer == null}>Trailer</button>
 <button on:click={()=>showVideo("Stream")}>Stream</button>
