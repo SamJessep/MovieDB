@@ -18,7 +18,7 @@
   const formatReleaseDate = release =>{
     try{
       const dateString = release.release_date;
-      return new Date(dateString).toLocaleDateString($Preferences.RequestParams.language+"-"+$Preferences.RequestParams.region)
+      return new Date(dateString).toDateString().split(' ').slice(1).join(' ')//toLocaleDateString($Preferences.RequestParams.language+"-"+$Preferences.RequestParams.region)
     }catch(e){
       console.error(e)
       return "Unknown release date"

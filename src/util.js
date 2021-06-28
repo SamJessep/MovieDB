@@ -65,3 +65,10 @@ export function isElementInViewport (el) {
       rect.right <= (window.innerWidth || document.documentElement.clientWidth) /* or $(window).width() */
   );
   }
+
+  export function ToReadableDate(date){
+    const day = date.getDate()
+    const month = date.getMonth()
+    const year = date.getFullYear()
+    return `${day} of ${month} ${year}`
+  }

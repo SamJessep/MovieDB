@@ -30,7 +30,7 @@ const getProfileImageUrl = path=>{
       {/if}
       <p class="author">{review.author_details.name!=""?review.author_details.name:review.author}</p>
     </a>
-    <p class="date">{new Date(review.updated_at ?? review.created_at).toLocaleDateString($Preferences.RequestParams.region)}</p>
+    <p class="date">{new Date(review.updated_at ?? review.created_at).toDateString().split(' ').slice(1).join(' ')}</p>
   </div>
   <p class="quote">"{review.content.open ? review.content.original+"\"" : review.content.short} 
     {#if review.content.short.length < review.content.original.length}

@@ -1,9 +1,8 @@
 import { ParamsToString } from "../util";
-
-const base_url = "https://localhost:44371/api/"
+import config from "../config";
 
 export async function GetWatchProviderDirectLinks(title, tmdb_link){
-  const res = await fetch(base_url+"WatchProviders?"+ParamsToString({
+  const res = await fetch(config.AZURE_API+"WatchProviders?"+ParamsToString({
     title:title,
     url:tmdb_link
   }));
