@@ -1,8 +1,9 @@
 # MovieDB
 Javascript Web app using
-  - The Movie Database API: for movie data
-  - Svelte framework for creating UI
-  - NodeJs for backend services
+  - [The Movie Database](https://www.themoviedb.org/) API: for movie data
+  - [Just Watch](https://www.justwatch.com/) API for streaming services links
+  - [Svelte](https://svelte.dev/) framework for creating UI
+  - .NET backend API ([MoviedbAPI](https://github.com/SamJessep/MoviedbWebAPI)) for additional backend features
 
 ## Tasks
   ### Major Features
