@@ -47,13 +47,11 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       }
 
       const direct_links = await GetWatchProviderDirectLinks(title, res.results[preferedRegion].link)
-      console.log("DIRECT",direct_links)
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
         {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},
         {type:"buy",  providers:addDirectLinks(direct_links,res.results[preferedRegion].buy) ?? []}
       ]
-      console.log({watchtypes:results, tmdb_link:res.results[preferedRegion].link})
       return {watchtypes:results, tmdb_link:res.results[preferedRegion].link}
     })
   }

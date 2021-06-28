@@ -7,19 +7,11 @@ Javascript Web app using
 
 ## Tasks
   ### Major Features
-  - [ ] Recreate details page
-    - [x] add basic info, title, release date, runtime
-    - [x] add related results
-    - [x] add reviews
-    - [x] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
-    - [x] watch trailer
-    - [x] watch providers
-    - [x] add genres
+  - [ ] Re-create backend services with nodejs
     - [ ] download as torrent
     - [ ] streaming torrent functionality
-  - [ ] Re-create backend services with nodejs
   - [ ] Implement more preferences
-    - [ ] preference tabs
+  - [ ] preference tabs
   ### Minor/Possible Features
   - [ ] Save preferences to mongo db
   - [ ] Implement movie Tinder ?
@@ -32,15 +24,8 @@ Javascript Web app using
     - [ ] Color themes, Dark mode/Light mode
 
   ## Bug Fixes
-  - [ ] Infinate loop when changing pages sometimes
-    - [ ] implement better page check algorithm
   - [ ] Janky animation for sort element
-  - [ ] Some performace issues on mobile
   - [ ] fix popup dialog
-  - [x] implement toasts
-  - [x] Reloading a discover page resets the sort type
-  - [x] Fix image sizing, some posters are different sizes and get stretched
-  - [x] Add to fav button breaks nearly half the time
   
   ### Done
   - [x] Sort results 
@@ -63,3 +48,17 @@ Javascript Web app using
     - [x] select media type e.g. movie/tv/
   - [x] Revamp genre search
   - [x] Modified bottom bar for mobile
+  - [x] add basic info, title, release date, runtime
+  - [x] add related results
+  - [x] add reviews
+  - [x] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
+  - [x] watch trailer
+  - [x] watch providers
+  - [x] add genres
+  - [x] Infinate loop when changing pages sometimes
+  - [x] implement better page check algorithm
+  - [x] Some performace issues on mobile
+  - [x] implement toasts
+  - [x] Reloading a discover page resets the sort type
+  - [x] Fix image sizing, some posters are different sizes and get stretched
+  - [x] Add to fav button breaks nearly half the time

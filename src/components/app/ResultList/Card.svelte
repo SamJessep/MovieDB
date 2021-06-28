@@ -14,7 +14,6 @@ var poster_container
 onMount(()=>{
   if(poster_container){
     const maxPosterWidth = poster_container.getBoundingClientRect().width > 0 ? poster_container.getBoundingClientRect().width : window.innerWidth/2
-    console.log(maxPosterWidth)
     ImageUrl =  GetImageUrls(maxPosterWidth)
   } 
 })
