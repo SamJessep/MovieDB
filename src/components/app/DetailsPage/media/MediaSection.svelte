@@ -31,22 +31,18 @@
   }
 
 </script>
-<WatchProviders {title} {id} {media_type}/>
 <div class="btn_container">
-<button on:click={()=>showVideo("YouTube")} disabled={trailer == null}>Trailer</button>
-<!-- <button on:click={()=>showVideo("Stream")}>Stream</button> -->
-<button>Download</button>
+<button on:click={()=>showVideo("YouTube")} disabled={trailer == null}>Watch Trailer</button>
 
 <div class="video_popup" class:popupOpen on:click={hideVideo} bind:this={videoBackground}>
   <div class="video_container" bind:this={videoContainer}>
     {#if shownVideo == "YouTube"}
       <YouTubePlayer video_id={trailer.key} width={"100%"} height={"100%"} shown={popupOpen}/>
-    <!-- {:else if shownVideo == "Stream"}
-      <StreamPlayer width={"100%"} height={"100%"} shown={popupOpen} {title}/> -->
     {/if}
   </div>
 </div>
 </div>
+<WatchProviders {title} {id} {media_type}/>
 
 <style lang="scss">
   .btn_container{

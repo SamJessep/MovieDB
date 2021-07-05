@@ -3,8 +3,8 @@ import { onMount } from "svelte";
 import {Rate} from "../../../model/TMDbAPI"
 import {User, IsLoggedIn} from '../../../stores/userStore'
 import { PostToast } from "../../../util";
-
 import SvgIcon from "../../general/SvgIcon.svelte";
+import tippy from "tippy.js"
 
 export let rating;
 export let id;
@@ -24,9 +24,9 @@ min-height:1.5rem;
 padding:0;
 margin:0;
 `
-
 onMount(()=>{
-  ratingElement.style.width = (rating/10)*100+"%"
+  ratingElement.style.width = (rating/10)*100+"%";
+  tippy("[data-tippy-content]");
 })
 
 const previewRating = star =>{
@@ -42,7 +42,6 @@ const rateElement = async rating=>{
   try{
     const res = await Rate(id,$User.session_id,rating,media_type)
     if(res.success){
-      //TODO: Create toasts
       PostToast(`You rated ${title} a ${rating}/5`, {duration:8000})
       voted = true;
       userRating = rating;
@@ -82,7 +81,7 @@ const rateElement = async rating=>{
       {/each}
     </div>
   </div>
-  <span title={"this "+(media_type=="movie"?"movie":"tv show")+" has "+ratingCount+" ratings"}>{ratingCount}</span>
+  <span data-tippy-content={"this "+(media_type=="movie"?"movie":"tv show")+" has "+ratingCount+" ratings"} tabindex="0">{ratingCount}</span>
 
 </div>
 

@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
 import scss from 'rollup-plugin-scss'
+import replace from '@rollup/plugin-replace';
 
 const preprocessOptions = require("./svelte.config").preprocessOptions;
 
@@ -41,6 +42,9 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
 		svelte({
 			preprocess: sveltePreprocess(preprocessOptions),
 			compilerOptions: {

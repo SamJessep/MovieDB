@@ -1,7 +1,9 @@
 <script>
+import { onMount } from "svelte";
 import {Preferences, Certifications} from "../../../stores/store";
-import ErrorSmall from "../../general/ErrorSmall.svelte";
 import Warning from "../../general/Warning.svelte";
+import tippy from 'tippy.js'
+
 export let media_type
 export let releaseDates;
 let usingLocalReleaseDate = true;
@@ -16,8 +18,9 @@ certificationCountry = releaseDate.iso_3166_1
 var certification_meaning = ""
 if(releaseDate.release_dates[0].certification != ""){
    certification_meaning = $Certifications[media_type][certificationCountry].find(c=>c.certification === releaseDate.release_dates[0].certification).meaning
-
 }
+
+onMount(()=>tippy("[data-tippy-content]"))
 </script>
 <div>
   {#if !usingLocalReleaseDate}
@@ -27,7 +30,7 @@ if(releaseDate.release_dates[0].certification != ""){
     <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>
   </Warning>
   {:else}
-    <abbr title={certification_meaning}>{releaseDate.release_dates[0].certification}</abbr>
+    <abbr  data-tippy-content={certification_meaning} tabindex="0">{releaseDate.release_dates[0].certification}</abbr>
   {/if}
 </div>
 

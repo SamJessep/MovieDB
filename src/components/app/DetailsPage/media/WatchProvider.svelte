@@ -7,7 +7,7 @@ import config from '../../../../config';
   export let link
 </script>
 
-<a class="provider" {title} href={link}>
+<a class="provider" {title} href={link} target="_blank">
   <img src={config.BASE_IMAGE_URL + GetBestImageSize("logo", 100) + src} alt={title}/>
 </a>
 
