@@ -23,6 +23,9 @@ const menuStyles = `
 function windowClick(e){
   try{
     if(!(menuElement.contains(e.target) || buttonElement.contains(e.target))){
+      if(document.getElementById('modal-container') && document.getElementById('modal-container').contains(e.target)){
+        return
+      }
       CloseMenu()
     }
   }catch(e){}

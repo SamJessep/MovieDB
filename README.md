@@ -7,13 +7,17 @@ Javascript Web app using
 
 ## Tasks
   ### Major Features
-  - [ ] Implement more preferences
-  - [ ] preference tabs
+  - [ ] add theme select to preferences
+  - [ ] implement global color themes using css vars & local storage
+  - [ ] preference tabs - sections of preferences
+  - [ ] add tv advanced search
+  - [ ] create tv detailed view
+  - [ ] show involved people on details page e.g actors
+  - [ ] like from detail page
+  - [ ] implement download torrent via magnet link 
   ### Minor/Possible Features
   - [ ] Save preferences to mongo db
-  - [ ] Implement movie Tinder ?
   - [ ] signup to recive notification when movie is available to download
-  - [ ] Link to streaming platforms
   - [ ] Junk filter
       - [x]  only if results with posters
       - [ ]  only results with local releases
@@ -25,6 +29,8 @@ Javascript Web app using
   - [ ] fix popup dialog
   
   ### Done
+  - [x] Recreated the modals
+  - [x] Link to streaming platforms
   - [x] Sort results 
   - [x] Import search feature
   - [x] Implement setting section

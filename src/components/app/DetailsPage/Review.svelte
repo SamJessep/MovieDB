@@ -4,30 +4,19 @@ import Config from '../../../config'
 import {GetBestImageSize} from '../../../model/dataHelper'
 import SvgIcon from '../../general/SvgIcon.svelte';
 import {GetSCSSVars} from '../../../util'
+import ProfilePicture from '../../general/ProfilePicture.svelte';
 export let review;
 
-const vars = GetSCSSVars()
 // No Profile
-const styles = `
-  margin: auto;
-  width: 3.5rem;
-  color: ${vars.FontColor};
-`
-const src = "images/user.svg";
-
 const profileImageSize = GetBestImageSize("profile", 56) 
-const getProfileImageUrl = path=>{
-  return path.startsWith("/http") ? path.substr(1) : Config.BASE_IMAGE_URL+profileImageSize+path
-}
+
 </script>
 <li>
   <div class="profileContainer">
     <a href={review.url} class="profile">
-      {#if review.author_details.avatar_path == null}
-        <SvgIcon {styles} {src}/>
-      {:else}
-        <img src={getProfileImageUrl(review.author_details.avatar_path)} alt={`${review.author_details.name!=""?review.author_details.name:review.author} profile picture`}/>
-      {/if}
+      <div class="img">
+        <ProfilePicture src={review.author_details.avatar_path} alt="{review.author_details.name||review.author}'s profile" size={56}/>
+      </div>
       <p class="author">{review.author_details.name!=""?review.author_details.name:review.author}</p>
     </a>
     <p class="date">{new Date(review.updated_at ?? review.created_at).toDateString().split(' ').slice(1).join(' ')}</p>
@@ -65,12 +54,11 @@ const getProfileImageUrl = path=>{
       display: flex;
       flex-direction: column;
     }
-    img{
+    .img{
       color:$FontColor;
       margin: auto;
       width: 56px;
       height: 56px;
-      border-radius: 0.5rem;
     }
     p.quote{
       grid-column: 2;

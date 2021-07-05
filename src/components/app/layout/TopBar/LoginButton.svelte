@@ -1,17 +1,17 @@
 <script>
-import Popup from '../../../general/Popup.svelte'
 import Account from '../../../../model/account'
-import {IsLoggedIn, clearLocalStorage, User} from "../../../../stores/userStore.js"
-import {GetLanguageText, GetCountryText} from '../../../../model/dataHelper'
-import {QueryToJSON} from '../../../../util'
+import {IsLoggedIn, User} from "../../../../stores/userStore.js"
+import {GetSCSSVars, QueryToJSON} from '../../../../util'
 import {location, push, querystring, replace} from 'svelte-spa-router'
 import SvgIcon from "../../../general/SvgIcon.svelte"
 import MobileButton from './MobileButton.svelte'
 import AnimatedIcon from '../../../general/AnimatedIcon.svelte'
+import { ModalView } from '../../../../stores/store';
+import LoginModal from './LoginModal.svelte';
 
 export let isMobile = false;
-let LoginOpen = false;
 let profilePromise
+const scss = GetSCSSVars()
 
 function TryLoadProfile(){
   let id = localStorage.getItem("session_id")
@@ -49,47 +49,54 @@ if($IsLoggedIn){
   TryLoadProfile()
 }
 
-async function LogOut(){
-  //Delete session on TMDB
-  let sessionID = localStorage.getItem("session_id")
-  Account.Logout(sessionID)
-  //Delete session & account from local storage
-  clearLocalStorage()
-  //Refresh page
-  window.location.reload()
-  //Show toast
-  alert("logged out")
-}
 
-let userBtnStyles = `
+
+const userBtnStyles = `
   width: 3.5rem;
   height: 3.5rem;
   padding: 0.3rem;
   transition: fill 0.5s;`;
+const loadingstyles = `
+  #ID * {
+    stroke:${scss.FontColor};
+  }
+`
 
+
+const OpenModal = ()=>{
+  ModalView.set({
+    component: LoginModal,
+    props: {
+      profilePromise:profilePromise
+    },
+    options:{
+      title: "My Profile"
+    }
+  })
+}
 </script>
 <div>
   {#if $IsLoggedIn}
     {#if isMobile}
-    <MobileButton title="My Account" click={()=>LoginOpen=!LoginOpen}>
+    <MobileButton title="My Account" click={OpenModal}>
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </MobileButton>
     {:else}
-    <button id="openLogin" on:click={()=>LoginOpen=!LoginOpen} class="icon-btn roundedBtn dark" aria-label="My Account" title="My Account">
+    <button id="openLogin" on:click={OpenModal} class="icon-btn roundedBtn dark login-btn" aria-label="My Account" title="My Account">
       <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
     </button>
     {/if}
   {:else}
     {#if isMobile}
       {#if params["approved"]}
-        <MobileButton title="Loading" disabled={false}>
-          <AnimatedIcon src="images/animatedIcons/loading.json" autoplay={true} loop={true}/>
-        </MobileButton>
-      {:else}
-        <MobileButton title="Login" click={Account.StartLogin}>
-          <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
-        </MobileButton>
-      {/if}
+          <MobileButton title="Loading" disabled={false}>
+            <AnimatedIcon src="images/animatedIcons/loading.json" autoplay={true} loop={true} styles={loadingstyles} id="loginLoadingIndicator"/>
+          </MobileButton>
+        {:else}
+          <MobileButton title="Login" click={Account.StartLogin}>
+            <SvgIcon src="images/user.svg" styles={userBtnStyles}/>
+          </MobileButton>
+        {/if}
     {:else}
     <button id="openLogin" on:click={Account.StartLogin} class="roundedBtn dark login-btn" title="Login">
       <div>
@@ -98,40 +105,14 @@ let userBtnStyles = `
     </button>
     {/if}
   {/if}
-  <Popup bind:MenuOpen={LoginOpen} HasDefaultClose=true>
-    <div slot="contents">
-    {#if profilePromise}
-      {#await profilePromise}
-        <p>Loading Profile...</p>
-      {:then profile}
-        {#if profile.name == ""}
-          <h1>{profile.username}</h1>
-        {:else}
-          <h1>{profile.name}</h1>
-          <small>{profile.username}</small>
-        {/if}
-        <p>Language: <b>{GetLanguageText(profile.iso_639_1)}</b></p>
-        <p>Country: <b>{GetCountryText(profile.iso_3166_1)}</b></p>
-      {:catch e}
-        <p>error loading profile
-          <button on:click={TryLoadProfile}>click here to try again</button>
-        </p>
-      {/await}
-      <button on:click={LogOut} class="logout-btn">Log Out</button>
-    {/if}
-    </div>
-  </Popup>
 </div>
 
 <style lang="scss">
 
-div[slot="contents"]{
-  text-align: center;
-}
-
 .login-btn{
   display: flex;
   align-items: center;
+  cursor: pointer;
   &>div{
     display: flex;
     width: 3.5rem;
@@ -142,13 +123,4 @@ div[slot="contents"]{
   }
 }
 
-.logout-btn{
-  @include darkBtnOutline;
-}
-
-h1.title{
-  color:white;
-  margin: auto;
-  font-size: $HeaderFontSize;
-}
 </style>

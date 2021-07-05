@@ -4,13 +4,17 @@
 	import routes from './routes.js'
 	import {querystring, location} from 'svelte-spa-router'
 	import Toasts from './components/app/Toast/Toasts.svelte'
+	import Modal from './components/general/Modal.svelte'
 	import { onMount } from 'svelte';
+	import { Preferences } from './stores/store'
 	import tippy from 'tippy.js';
 	import 'tippy.js/dist/tippy.css';
+	import 'tippy.js/themes/dark.css';
 	import 'tippy.js/themes/light.css';
-	onMount(()=>{
+
+	Preferences.subscribe(p=>{
 		tippy.setDefaultProps({
-			theme: 'light'
+			theme: p.theme
 		})
 	})
 </script>
@@ -19,6 +23,7 @@
 <AppShell>
 	<Router {routes} restoreScrollState={false}/>
 	<Toasts/>
+	<Modal/>
 </AppShell>
 
 <style lang="scss">

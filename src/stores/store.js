@@ -11,7 +11,8 @@ let defaultSettings = {
       region: "NZ",
       language: "en",
       include_adult: false,
-    }
+    },
+    theme: "dark"
   },
   useAccountSettings: true
 }
@@ -28,6 +29,7 @@ export const Languages = writable([]);
 export const Countries = writable([]);
 export const Certifications = writable([])
 export const ToastsQueue = writable([])
+export const ModalView = writable({})
 
 Preferences.subscribe(p => {
   Settings.update(s=>{return {...s, Preferences:p}})

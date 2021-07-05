@@ -6,8 +6,6 @@ import { slide, fly } from 'svelte/transition';
 import { fade } from 'svelte/transition';
 import debounce from 'lodash/debounce'
 
-import {querystring, location} from 'svelte-spa-router'
-
 //UI components
 import ErrorSmall from '../../../general/ErrorSmall.svelte';
 
@@ -32,14 +30,22 @@ let searchValue = "";
 let oldSearchValue = "";
 let suggestionIndex = -1;
 let searchOpen = false;
+let suggestionsListElement;
 
-function clickTab(tabName){
+function selectTab(tabName){
   let tmpTabs = $tabs
   for(let t of tmpTabs){
     t.active = t.name == tabName
   }
   tabs.set(tmpTabs)
   Loadsuggestions()
+}
+
+function clickTab(tabName){
+  selectTab(tabName)
+  const tabElement = document.getElementById("tab-"+$tabs.find(t=>t.name == tabName).name);
+  if(tabElement) tabElement.focus()
+  suggestionIndex = -1;
 }
 
 function SendSearch(query){
@@ -55,20 +61,45 @@ function SelectSuggestion(suggestion){
   SendSearch(suggestion)
 }
 
-function KeyPressed(e){
-  searchOpen=searchValue != "";
-  if(e.keyCode == 32 && e.ctrlKey){
+function KeyDown(e){
+  if(SearchArea.contains(e.target) && e.code == "ArrowUp" || e.code == "ArrowDown"){
+   e.preventDefault()
+  }
+  if(e.keyCode == 81 && e.ctrlKey){
+    e.preventDefault()
     SearchField.focus()
+  }
+}
+
+function KeyPressed(e){
+  if(SearchArea.contains(document.activeElement)){
+    searchOpen=searchValue != "";
   }
   if(!SearchArea.contains(document.activeElement)) return
   let btns = document.querySelectorAll(".result-item")
   if(searchValue != oldSearchValue){
       Loadsuggestions()
   }
+  //Left Arrow
+  else if(e.keyCode == 37){
+    if(suggestionsListElement.contains(document.activeElement)){
+      const tabIndex = $tabs.indexOf($tabs.find(t=>t.active))
+      const newTabIndex = tabIndex-1>-1 ? tabIndex-1 : $tabs.length-1
+      clickTab($tabs[newTabIndex].name)
+    }
+  }
   //Up Arrow
   else if(e.keyCode == 38){
     suggestionIndex = suggestionIndex>0? suggestionIndex-1 : btns.length-1;
     btns[suggestionIndex].focus()
+  }
+  //Right Arrow
+  else if(e.keyCode == 39){
+    if(suggestionsListElement.contains(document.activeElement)){
+      const tabIndex = $tabs.indexOf($tabs.find(t=>t.active))
+      const newTabIndex = tabIndex+1<$tabs.length ? tabIndex+1 : 0
+      clickTab($tabs[newTabIndex].name)
+    }
   }
   //Down Arrow
   else if(e.keyCode == 40){
@@ -93,7 +124,7 @@ function DocumentClick(e){
   if(SearchArea.contains(e.target)) return
   if([...e.target.classList].includes("volatile-btn")) return
   searchOpen = false
-  clickTab("All");
+  selectTab("All");
 }
 
 const Loadsuggestions = debounce(async ()=>{
@@ -124,11 +155,9 @@ const Loadsuggestions = debounce(async ()=>{
 }, 200)
 
 function SearchFieldFocusChanged(event){
-  if(event.type === "blur"){
-    suggestionIndex = -1;
-  }
-  searchOpen = searchValue!="" && event.type === "focus";
-  searchBarFocused = event.type === "focus";
+  searchOpen = searchValue != "" && !(event.type == "blur" && !(SearchArea.contains(event.relatedTarget) || SearchArea.contains(document.activeElement)))
+  searchBarFocused = event.type === "focus" && event.target === SearchField;
+  if(!searchOpen) suggestionIndex = -1;
 }
 
 export function Clear(){
@@ -146,24 +175,25 @@ var searchBarFocused = false
         class="input is-large SB"
         placeholder="Search MovieDB"
         bind:this={SearchField}
-        bind:value={searchValue} 
-        on:focus={SearchFieldFocusChanged} 
+        bind:value={searchValue}
         on:blur={SearchFieldFocusChanged}
+        on:focus={SearchFieldFocusChanged}
         on:search={()=>{SendSearch(searchValue)}}
       />
       <span class="icon is-left" id="searchIcon">
         <i class="fas fa-search" aria-hidden="true"></i>
       </span>
       <span class="shortcut" class:shown={!searchBarFocused && searchValue == ""}>
-        <kbd>Ctrl</kbd> + <kbd>Space</kbd>
+        <kbd>Ctrl</kbd> + <kbd>q</kbd>
       </span>
     </p>
   </div>
   {#if searchOpen}
-  <div id="datalist" transition:slide>
+  <div id="datalist" transition:slide bind:this={suggestionsListElement}>
     <p class="panel-tabs">
       {#each $tabs as tab,index (tab.name)}
-          <button class:is-active={tab.active} on:click={()=>clickTab(tab.name)} on:focus={suggestionIndex=index}>{tab.name}</button>
+          <button id="tab-{tab.name}"class:is-active={tab.active} on:blur={SearchFieldFocusChanged}
+          on:focus={SearchFieldFocusChanged} on:click={()=>clickTab(tab.name)}>{tab.name}</button>
       {/each}
     </p>
     <p class="results">
@@ -171,7 +201,8 @@ var searchBarFocused = false
         <div class="info-message result-item" in:fade>Loading...</div>
       {:then suggestions}
         {#each suggestions as suggestion}
-          <button class="result-item" on:click={()=>SelectSuggestion(suggestion.text)} in:fade>
+          <button class="result-item" on:click={()=>SelectSuggestion(suggestion.text)}         on:blur={SearchFieldFocusChanged}
+            on:focus={SearchFieldFocusChanged} in:fade>
             <p>
               {#each suggestion.parts as suggestionPart}
                 {#if suggestionPart.highlighted}
@@ -195,9 +226,8 @@ var searchBarFocused = false
   </div>
   {/if}
   </div>
-  <svelte:window on:click={DocumentClick} on:keyup={KeyPressed} on:keydown={(e)=>{
-    if(SearchArea.contains(e.target) && e.code == "ArrowUp" || e.code == "ArrowDown") e.preventDefault()}
-  }/>
+  <svelte:window on:click={DocumentClick} on:keyup={KeyPressed} on:keydown={KeyDown}
+  />
 
 <style lang="scss">
 /* Fix search icon showing through overlays */
