@@ -109,6 +109,7 @@ ModalView.subscribe(v=>{
   .content{
     overflow-y: auto;
     height: 100%;
+    flex-grow: 1;
   }
 
   @media only screen and (max-width: $MobileWidth){

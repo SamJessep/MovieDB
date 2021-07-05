@@ -39,11 +39,13 @@
   };
 
   const resize = e=>{
-    if(window.innerWidth>window.innerHeight && isMobile()){
-      document.getElementById("player").requestFullscreen()
-      player.playVideo()
-    }else{
-      document.exitFullscreen()
+    if(isMobile()){
+      if(window.innerWidth>window.innerHeight){
+        document.getElementById("player").requestFullscreen()
+        player.playVideo()
+      }else{
+        if(document.fullscreenElement) document.exitFullscreen()
+      }
     }
   }
 </script>
