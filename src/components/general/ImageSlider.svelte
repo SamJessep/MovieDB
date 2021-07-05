@@ -244,8 +244,9 @@ img{
   .image_slider_container{
     display: grid;
     grid-template-columns: 3rem 1fr 3rem 0.25rem 3rem;
-    grid-template-rows: 1fr 3rem min-content;
+    grid-template-rows: 1fr 0.5rem 3rem min-content;
     grid-template-areas: "img img img img img"
+                         ". . . . ."
                          ". . back . next"
                          "nav nav nav nav nav";
   }

@@ -63,13 +63,13 @@ const GetRatings = async()=>{
           <fieldset>
             <legend></legend>
             <h2>Use account settings</h2>
-            <label>Yes
+            <label class="fit-content">Yes
               <input type="radio" name="useAccountSettings" checked={$Settings.useAccountSettings} on:change={val=>{
                 $Settings.useAccountSettings=val.target.checked
                 if(val.target.checked)resetAccountPreferences();
                 }}/>
             </label>
-            <label>No
+            <label class="fit-content">No
               <input type="radio" name="useAccountSettings" checked={!$Settings.useAccountSettings} on:change={val=>$Settings.useAccountSettings=!val.target.checked}/>
             </label>
           </fieldset>

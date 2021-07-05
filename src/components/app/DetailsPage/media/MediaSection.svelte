@@ -8,10 +8,10 @@
   export let id;
 
   let popupOpen = false;
-  let shownVideo;
+  let shownVideo = "";
   let videoContainer;
-
   let trailer
+  let videoBackground;
   (async()=>{
     const res = await GetVideos(id, media_type);
     trailer = res.results.find(video=>video.type.toLowerCase()=="trailer" && video.site.toLowerCase() == "youtube")
@@ -23,24 +23,26 @@
   }
 
   const hideVideo = e=>{
-    if(!videoContainer.contains(e.target)){
+    console.log()
+    if(e.target == videoBackground){
       popupOpen = false;
       shownVideo = "";
     }
   }
+
 </script>
 <WatchProviders {title} {id} {media_type}/>
 <div class="btn_container">
 <button on:click={()=>showVideo("YouTube")} disabled={trailer == null}>Trailer</button>
-<button on:click={()=>showVideo("Stream")}>Stream</button>
+<!-- <button on:click={()=>showVideo("Stream")}>Stream</button> -->
 <button>Download</button>
 
-<div class="video_popup" class:popupOpen on:click={hideVideo}>
+<div class="video_popup" class:popupOpen on:click={hideVideo} bind:this={videoBackground}>
   <div class="video_container" bind:this={videoContainer}>
     {#if shownVideo == "YouTube"}
-        <YouTubePlayer video_id={trailer.key} width={"100%"} height={"100%"} shown={popupOpen}/>
-    {:else if shownVideo == "Stream"}
-      <StreamPlayer width={"100%"} height={"100%"} shown={popupOpen}/>
+      <YouTubePlayer video_id={trailer.key} width={"100%"} height={"100%"} shown={popupOpen}/>
+    <!-- {:else if shownVideo == "Stream"}
+      <StreamPlayer width={"100%"} height={"100%"} shown={popupOpen} {title}/> -->
     {/if}
   </div>
 </div>

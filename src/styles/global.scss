@@ -89,6 +89,7 @@ option:hover {
     cursor: pointer;
   }
   &:disabled{
+    cursor: not-allowed;
     background-color: grey;
   }
 }
@@ -119,7 +120,7 @@ h2 ,.h2{
   font-weight: 600;
 }
 
-label{
+.fit-content{
   width: fit-content;
 }
 

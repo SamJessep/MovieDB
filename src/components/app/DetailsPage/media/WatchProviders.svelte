@@ -7,7 +7,7 @@ import { GetSCSSVars, IsMobile } from "../../../../util";
 import Selector from "../../../form/Selector.svelte";
 import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
 import WatchProvider from "./WatchProvider.svelte";
-import {GetWatchProviderDirectLinks} from "../../../../model/Api";
+import Api from "../../../../model/Api";
 import ErrorSmall from "../../../general/ErrorSmall.svelte";
 
   export let title;
@@ -46,7 +46,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
         return {watchtypes:[], noProviders:true}
       }
 
-      const direct_links = await GetWatchProviderDirectLinks(title, res.results[preferedRegion].link)
+      const direct_links = await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link)
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
         {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},

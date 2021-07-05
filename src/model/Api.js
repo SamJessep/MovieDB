@@ -1,10 +1,23 @@
 import { ParamsToString } from "../util";
 import config from "../config";
 
-export async function GetWatchProviderDirectLinks(title, tmdb_link){
-  const res = await fetch(config.AZURE_API+"WatchProviders?"+ParamsToString({
-    title:title,
-    url:tmdb_link
-  }));
-  return res.json()
+export default class Api{
+
+  static StreamPath = "api/TorrentStream";
+
+  static async GetWatchProviderDirectLinks(title, tmdb_link){
+    const res = await fetch(config.AZURE_URL+"api/WatchProviders?"+ParamsToString({
+      title:title,
+      url:tmdb_link
+    }));
+    return res.json()
+  }
+  
+  static async GetStreamLinks(title){
+    const res = await fetch(config.AZURE_URL+"api/TorrentLink?"+ParamsToString({
+      title:title
+    }));
+    return res.json()
+  }
+
 }

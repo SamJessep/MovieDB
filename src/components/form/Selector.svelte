@@ -13,6 +13,7 @@ export let size = 5;
 export let placeholder="Select a value"
 export let mandatoryChoice = false;
 export let disabled = false;
+export let className = ""
 
 let selectElement;
 let hasSelectedPlaceholder = bindedValue=="" && mandatoryChoice==false;
@@ -31,7 +32,7 @@ const change = e=>{
 }
 </script>
 
-<label for={selectID}>{label}
+<label for={selectID} class={className}>{label}
     {#await GetItems}
       <p>Loading...</p>
     {:then Items}
