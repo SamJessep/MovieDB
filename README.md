@@ -7,9 +7,6 @@ Javascript Web app using
 
 ## Tasks
   ### Major Features
-  - [ ] Re-create backend services with nodejs
-    - [ ] download as torrent
-    - [ ] streaming torrent functionality
   - [ ] Implement more preferences
   - [ ] preference tabs
   ### Minor/Possible Features
