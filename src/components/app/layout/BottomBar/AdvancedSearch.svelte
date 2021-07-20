@@ -237,7 +237,6 @@ const submit = e=>{
 }
 
 const selectMediaType = e=>{
-  media_type = e.detail.selected[0].value
   if(media_type === "tv"){
     formItems = tvItems
   }else if (media_type === "movie"){
@@ -248,7 +247,11 @@ const selectMediaType = e=>{
 
 
 <form action="" class="advancedSearchForm" on:submit|preventDefault={submit}>
-  <Selector on:select={selectMediaType} selectID={"media_type"} name={"media_type"} fetchItemsFunction={()=>[{text:"Movies", value:"movie"},{text:"TV", value:"tv"}]} label={"Media Type"} mandatoryChoice={true}/>
+  <fieldset>
+    <legend>Media Type</legend>
+    <label>TV<input type="radio" value="tv" bind:group={media_type} on:change={selectMediaType}></label>    
+    <label>Movie<input type="radio" value="movie" bind:group={media_type} on:change={selectMediaType}></label>
+  </fieldset>
   {#each formItems as formItem}
   <div class:controlWrapper={formItem.type!=null}>
     {#if formItem.type === "select"}
@@ -285,6 +288,15 @@ const selectMediaType = e=>{
     max-width: 50%;
     margin: auto;
   }
+
+  fieldset label{
+    display: inline;
+    text-align: center;
+    input{
+      flex-grow:0;
+    }
+  }
+
   label{
     display: flex;
     input{
