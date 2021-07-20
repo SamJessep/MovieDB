@@ -2,6 +2,10 @@
 import LoadingIcon from "../app/ResultList/LoadingIcon.svelte";
 import SvgIcon from "./SvgIcon.svelte";
 import {fade} from 'svelte/transition'
+import { createEventDispatcher } from "svelte";
+import { ModalView } from "../../stores/store";
+import ExpandedImage from "./ExpandedImage.svelte";
+const dispatch = createEventDispatcher()
 
 export let images=[]
 export let useLazy=false;
@@ -68,6 +72,16 @@ const imgBack = ()=>{
     images.length-1;
   selectImage(newIndex)
 }
+
+const ExpandImage = (src)=>{
+  ModalView.set({
+      component:ExpandedImage,
+      props:{
+        src: src
+      },
+      options:{useTitle:false}
+    }) 
+}
 </script>
 <div class="image_slider_container" class:ghost>
   <button class="controls back" on:click={imgBack} aria-label="previous image">
@@ -90,6 +104,7 @@ const imgBack = ()=>{
           class:active={activeImageIndex == index}
           loading={index>5?"lazy":"eager"} 
           on:load={imgLoad}
+          on:click={()=>ExpandImage(image.src)}
         />
       {:else}
         <img src={image} alt={"image"+index}/>
@@ -124,6 +139,10 @@ img{
   &.loading{
     filter: blur(0.5rem);
   }
+}
+
+.image_container img:hover{
+  cursor: zoom-in;
 }
 
 .image_slider_container{

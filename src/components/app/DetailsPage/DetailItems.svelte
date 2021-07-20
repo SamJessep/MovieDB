@@ -33,7 +33,8 @@ const getLazyImage = path => {
   let finalSize = GetBestImageSize("backdrop", imageGallaryWidth)
   return {
     initial:Config.BASE_IMAGE_URL + initialSize + path,
-    final:Config.BASE_IMAGE_URL + finalSize + path
+    final:Config.BASE_IMAGE_URL + finalSize + path,
+    src:Config.BASE_IMAGE_URL + "original" + path
   }
 }
 
@@ -80,7 +81,8 @@ getImages().then(i=>{
 {:else if media_type == "tv"}
 <div>
   <!-- <ImageSlider {images} useLazy={true}/> -->
-  <h1>{data.name}</h1>
+  <h1 class="title">{data.name}</h1>
+  TV SHOW DETAILED PAGES COMING SOON
   <!-- <h1>{data.runtime}</h1> -->
 </div>
 {/if}
