@@ -82,6 +82,7 @@ import { ModalView } from '../../../../stores/store';
 
   <style lang="scss">
     .searchBtn{
+      margin-top: 0.5rem;
       @include darkBtnOutline;
     }
   </style>
