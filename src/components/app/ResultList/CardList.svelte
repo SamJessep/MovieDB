@@ -232,6 +232,7 @@ h2{
 .center_container{
   display:flex;
   justify-content: center;
+  align-items: center;
   .info-message{
     flex-grow: 1;
     font-size: 1.5rem;
@@ -239,6 +240,7 @@ h2{
     margin-left: 0.5rem;
   }
 }
+
 @media only screen and (max-width: $MobileWidth){
   .card-list{
     margin: 0;

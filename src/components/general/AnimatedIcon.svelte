@@ -78,7 +78,9 @@
 <style lang="scss">
   div{
     display: inherit;
-    width: 100%;
-    height: 100%;
+    max-width: 5rem;
+    max-height: 5rem;
+    // width: 100%;
+    // height: 100%;
   }
 </style>
