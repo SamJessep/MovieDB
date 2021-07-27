@@ -181,11 +181,11 @@ const movieItems = [
     {value:"vote_count", text:"Rating Count" }
   ],false,true),
   new defaultselect(),
-  new select("vote_average.gte", "Rating greater than", ratingItems, false),
-  new select("vote_average.lte", "Rating less than", ratingItems, false),
+  new select("vote_average.gte", "Min star rating", ratingItems, false),
+  new select("vote_average.lte", "Max star rating", ratingItems, false),
   new select("primary_release_year","Release Year", generateYearsList()),
-  new datepicker("primary_release_date.lte","Release Date Less than", {minDate:"1900-01", maxDate:"today"}), 
-  new datepicker("primary_release_date.gte","Release Date Greater than", {minDate:"1900-01", maxDate:"today"}),
+  new datepicker("primary_release_date.lte","Release Before", {minDate:"1900-01", maxDate:"today"}), 
+  new datepicker("primary_release_date.gte","Released After", {minDate:"1900-01", maxDate:"today"}),
   new select("with_release_type", "Release Type", [
     {value:"1", text:"Premiere"},
     {value:"2", text:"Theatrical (limited)"},
