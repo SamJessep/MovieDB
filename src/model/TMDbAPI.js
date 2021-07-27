@@ -23,6 +23,7 @@ async function Send(url, params, media_type){
     }
   });
   res = await res.json()
+  console.log(res)
   if(res.results){
     res.results = res.results.map(r=>{return {media_type:media_type, ...r}})
     //Filter results if dont have poster and feature is enabled
@@ -73,7 +74,7 @@ export async function Search(query, search_type="multi", params = {}) {
     query: encodeURI(query),
     ...params
   };
-  return await Send(`${Config.BASE_URL}search/${search_type}`, params)
+  return await Send(`${Config.BASE_URL}search/${search_type}`, params, search_type)
 }
 
 export async function Discover(media_type, params={}){

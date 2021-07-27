@@ -8,8 +8,6 @@ import ScrollButton from './ScrollButton.svelte';
 import Page from './Page.svelte'
 import Sort from './Sort.svelte'
 import ErrorSmall from '../../general/ErrorSmall.svelte';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
 import AnimatedIcon from '../../general/AnimatedIcon.svelte';
 
 export let FetchMethod;
