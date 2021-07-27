@@ -26,7 +26,8 @@ function windowClick(e){
       if(document.getElementById('modal-container') && document.getElementById('modal-container').contains(e.target)){
         return
       }
-      CloseMenu()
+      //Menu already open? then close it
+      if(menuElement.computedStyleMap().get('right').value == 0) CloseMenu()
     }
   }catch(e){}
 }
@@ -37,13 +38,13 @@ function checkIfMobile(e){
 }
 
 const OpenMenu = ()=>{
-  menuOpen=true
   MenuIcon.Play(0,60)
+  menuOpen=true
 }
 
 const CloseMenu = ()=>{
-  menuOpen=false
   MenuIcon.Play(60,0)
+  menuOpen=false
 }
 
 checkIfMobile()
@@ -51,13 +52,11 @@ checkIfMobile()
 
 {#if isMobile}
 <button class="roundedBtn dark mobileMenuButton" on:click={()=>menuOpen?CloseMenu():OpenMenu()} bind:this={buttonElement}>
-  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={3} id="mobile_menu_svg"/>
+  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={4} id="mobile_menu_svg"/>
 </button>
-{#if menuOpen}
-<div class="mobileMenu" bind:this={menuElement} transition:fly={{x:window.outerWidth}}>
+<div class="mobileMenu" class:menuOpen bind:this={menuElement}>
   <slot {isMobile} />
 </div>
-{/if}
 {:else}
   <slot/>
 {/if}
@@ -67,10 +66,14 @@ checkIfMobile()
 .mobileMenu{
   position: fixed;
   background-color: $PanelColor;
-  right:0;
   top:96px;
   border-radius: 0 0 0 2rem;
   width: 60vw;
+  right:-100%;
+  transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  &.menuOpen{
+    right:0;
+  }
 }
 
 .mobileMenuButton{
