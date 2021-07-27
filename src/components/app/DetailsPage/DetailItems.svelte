@@ -144,11 +144,14 @@ getImages().then(i=>{
 
   @media only screen and (max-width: $MobileWidth){
     div.mainContainer{
-      grid-template: "images images images images images" 40vh
+      grid-template: "images images images images images" minmax(40vh, 346px)
                      "quickinfo quickinfo quickinfo quickinfo quickinfo" auto
                      "media media media media media" auto
                      "reviews reviews reviews reviews reviews" auto
-                     "suggestions suggestions suggestions suggestions suggestions" auto / 1fr 1fr 1fr 1fr 1fr;
+                     "suggestions suggestions suggestions suggestions suggestions" auto/1fr 1fr 1fr 1fr 1fr;
+      .imagesSlider{
+        max-height: 100%;
+      }
     }
 
     .media_section{
