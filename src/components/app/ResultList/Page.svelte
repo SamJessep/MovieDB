@@ -59,6 +59,10 @@ afterUpdate(async ()=>{
 </div>
 
 <style lang="scss">
+  h2{
+    color: $FontColor;
+  }
+
   .page{
     justify-content: space-evenly;
     flex-wrap: wrap;

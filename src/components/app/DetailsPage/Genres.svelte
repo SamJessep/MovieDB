@@ -14,5 +14,6 @@ export let media_type
   .genre_container{
     display: flex;
     justify-items: flex-start;
+    flex-wrap: wrap;
   }
 </style>

@@ -13,6 +13,7 @@
   a{
     @include link;
     margin-right: 0.25rem;
+    white-space: nowrap;
     &:not(.last)::after{
       content: ",";
     }
