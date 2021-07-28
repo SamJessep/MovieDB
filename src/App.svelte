@@ -21,6 +21,10 @@
 	const checkIfMobile = () => {
 		IsMobile.set(window.innerWidth<750)
 	}
+
+	onMount(()=>{
+		checkIfMobile()
+	})
 </script>
 
 <defs id="svg_refs" />

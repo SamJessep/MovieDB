@@ -56,7 +56,7 @@ ModalView.subscribe(v=>{
       {/if}
     </div>
     <div class="content">
-      <svelte:component this={component} {...props} on:submit={events.submit}/>
+      <svelte:component this={component} {...props} on:submit={events.submit} on:clear={events.clear} on:cancel={events.cancel}/>
     </div>
   </div>
 </div>

@@ -65,7 +65,7 @@ getImages().then(i=>{
   <QuickInfoLabel label="Run Time:">
     <p class="runtime">{data.runtime} minutes</p>
   </QuickInfoLabel>
-  <StarRating rating={data.vote_average} ratingCount={data.vote_count} {media_type} id={data.id} title={data.title}/>
+  <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.title}/>
   <p class="synopsis">{data.overview}</p>
 </section>
 <section class="media_section">

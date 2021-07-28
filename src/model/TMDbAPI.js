@@ -33,7 +33,7 @@ async function Send(url, params, media_type){
   return res;
 }
 
-async function SendClean(url, params, usePreferences=true){
+async function SendClean(url, params, usePreferences=true, request_method="get"){
   params = usePreferences ? {
     ...get(RequestParams),
     ...params
@@ -44,7 +44,7 @@ async function SendClean(url, params, usePreferences=true){
     Object.entries(params).filter(([key, value]) => value !== null) )
 
   var res = await fetch(url + "?" + ParamsToString(params),{
-    method:'get',
+    method:request_method,
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json;charset=utf-8',
@@ -64,6 +64,18 @@ async function Post(url, body){
       'Authorization': 'Bearer '+Config.API_KEY_V4
     },
     body: JSON.stringify(body)
+  });
+  return await rawResponse.json();
+}
+
+async function Delete(url){
+  const rawResponse = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': 'Bearer '+Config.API_KEY_V4
+    }
   });
   return await rawResponse.json();
 }
@@ -168,8 +180,15 @@ export async function GetGenres(media_type="movie"){
   return await SendClean(Config.BASE_URL+`genre/${media_type.toLocaleLowerCase()}/list`)
 }
 
-export async function GetDetails(id,media_type="movie"){
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}`,{append_to_response:"release_dates"})
+export async function GetDetails(id,media_type="movie",session_id){
+  let params = {
+    append_to_response:"release_dates,account_states"
+  }
+  if(session_id) params = {
+    ...params,
+    session_id:session_id
+  }
+  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}`,params)
 }
 
 export async function GetImages(id,media_type="movie"){
@@ -178,6 +197,10 @@ export async function GetImages(id,media_type="movie"){
 
 export async function Rate(id,session_id,rating,media_type="movie"){
   return await Post(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`,{value:rating})
+}
+
+export async function DeleteRating(id,session_id,media_type="movie"){
+  return await Delete(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`)
 }
 
 export async function GetRecommendedResults(id, media_type){
