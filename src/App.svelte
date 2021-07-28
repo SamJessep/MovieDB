@@ -6,7 +6,7 @@
 	import Toasts from './components/app/Toast/Toasts.svelte'
 	import Modal from './components/general/Modal.svelte'
 	import { onMount } from 'svelte';
-	import { Preferences } from './stores/store'
+	import { IsMobile, Preferences } from './stores/store'
 	import tippy from 'tippy.js';
 	import 'tippy.js/dist/tippy.css';
 	import 'tippy.js/themes/dark.css';
@@ -17,6 +17,10 @@
 			theme: p.theme
 		})
 	})
+
+	const checkIfMobile = () => {
+		IsMobile.set(window.innerWidth<750)
+	}
 </script>
 
 <defs id="svg_refs" />
@@ -25,6 +29,8 @@
 	<Toasts/>
 	<Modal/>
 </AppShell>
+
+<svelte:window on:resize={checkIfMobile}/>
 
 <style lang="scss">
 	:global(body){

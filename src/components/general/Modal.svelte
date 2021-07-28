@@ -8,6 +8,7 @@ import { Boolean } from 'lodash/_freeGlobal';
   
   let component;
   let props;
+  let events;
   let options = {
     title: "_",
     useDefaultClose: true,
@@ -34,6 +35,7 @@ const Close = ()=>{
 ModalView.subscribe(v=>{
   component = v.component;
   props = v.props;
+  events = v.events;
   options = {...options,...v.options}
   open = Boolean(component)
 })
@@ -54,7 +56,7 @@ ModalView.subscribe(v=>{
       {/if}
     </div>
     <div class="content">
-      <svelte:component this={component} {...props}/>
+      <svelte:component this={component} {...props} on:submit={events.submit}/>
     </div>
   </div>
 </div>

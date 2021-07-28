@@ -5,12 +5,18 @@ import {User, IsLoggedIn} from '../../../stores/userStore'
 import { PostToast } from "../../../util";
 import SvgIcon from "../../general/SvgIcon.svelte";
 import tippy from "tippy.js"
+import { IsMobile, ModalView } from "../../../stores/store";
+import MobileStarRating from "./MobileStarRating.svelte";
+
+
 
 export let rating;
 export let id;
 export let media_type;
 export let ratingCount;
 export let title;
+let isMobile = false;
+IsMobile.subscribe(mobile=>isMobile=mobile)
 
 let voted = false;
 let ratingElement
@@ -30,14 +36,17 @@ onMount(()=>{
 })
 
 const previewRating = star =>{
+  if(isMobile) return
   ratingElementUser.style.width = (star/5)*100+"%"
 }
 
 const stopPreview = ()=>{
+  if(isMobile) return
   ratingElementUser.style.width = (userRating/5)*100+"%"
 }
 
 const rateElement = async rating=>{
+  if(isMobile) return
   if(!$IsLoggedIn) return alert("You need to be logged in to rate movies")
   try{
     const res = await Rate(id,$User.session_id,rating,media_type)
@@ -52,9 +61,30 @@ const rateElement = async rating=>{
     PostToast("Somthing went wrong", {theme:"error"})
   }
 }
+
+const showMobileRater = ()=>{
+  if(!isMobile) return
+  ModalView.set({
+    component:MobileStarRating,
+    props:{
+      ...$$props
+    },
+    events:{
+      submit:(e)=>showMobileRating(e.detail.rating)
+    },
+    options:{
+      title:"Rate this "+media_type == "movie" ? "movie" : "TV show"
+    }
+  })
+}
+
+const showMobileRating = rating =>{
+  ratingElementUser.style.width=(rating/5)*100+"%";
+}
+
 </script>
 
-<div class="rating_wrapper">
+<div class="rating_wrapper" on:click={showMobileRater}>
   <div class="rating_container" on:mouseleave={()=>stopPreview()}>
     <div class="bg">
       {#each [1,2,3,4,5] as rating}
@@ -84,7 +114,6 @@ const rateElement = async rating=>{
   <span data-tippy-content={"this "+(media_type=="movie"?"movie":"tv show")+" has "+ratingCount+" ratings"} tabindex="0">{ratingCount}</span>
 
 </div>
-
 <style lang="scss">
 
 .bg, .fg, .fg-user{

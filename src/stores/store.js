@@ -30,6 +30,7 @@ export const Countries = writable([]);
 export const Certifications = writable([])
 export const ToastsQueue = writable([])
 export const ModalView = writable({})
+export const IsMobile = writable(false);
 
 Preferences.subscribe(p => {
   Settings.update(s=>{return {...s, Preferences:p}})

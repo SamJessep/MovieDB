@@ -23,7 +23,6 @@ async function Send(url, params, media_type){
     }
   });
   res = await res.json()
-  console.log(res)
   if(res.results){
     res.results = res.results.map(r=>{return {media_type:media_type, ...r}})
     //Filter results if dont have poster and feature is enabled
