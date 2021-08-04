@@ -77,7 +77,7 @@
   
   <div class="rating_wrapper" on:click={e=>dispatch("click")}>
     <div class="rating_container" on:mouseleave={()=>stopPreview()} class:fullscreen>
-      <div class="bg star_container">
+      <div class="bg star_container" class:LoggedIn={$IsLoggedIn}>
         {#each [1,2,3,4,5] as rating}
         <span on:mouseover={()=>previewRating(rating)} on:click={()=>rateElement(rating)}>
           <SvgIcon src="images/star_outline.svg" {styles}/>
@@ -143,7 +143,10 @@
   
   .bg{
     color:$RatingBlank;
-    cursor: pointer;
+    cursor: not-allowed;
+    &.LoggedIn{
+      cursor: pointer;
+    }
   }
   
   .rating_container{

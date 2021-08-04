@@ -2,7 +2,7 @@
 import LoadingIcon from "../app/ResultList/LoadingIcon.svelte";
 import SvgIcon from "./SvgIcon.svelte";
 import {fade} from 'svelte/transition'
-import { createEventDispatcher } from "svelte";
+import { createEventDispatcher, onMount } from "svelte";
 import { ModalView } from "../../stores/store";
 import ExpandedImage from "./ExpandedImage.svelte";
 const dispatch = createEventDispatcher()
@@ -17,6 +17,50 @@ const control_btn_styles = `
   width: 2rem;
   height: 2rem;
   transition: color 0.2s;`
+
+// Swipe Variables
+var swipeElement
+var xDown = null;                                                        
+var yDown = null;
+
+function getTouches(evt) {
+  return evt.touches ||             // browser API
+  evt.originalEvent.touches; // jQuery
+}                                                     
+
+function handleTouchStart(evt) {
+  const firstTouch = getTouches(evt)[0];                                      
+  xDown = firstTouch.clientX;                                      
+  yDown = firstTouch.clientY;                                      
+};                                                
+
+function handleTouchMove(evt) {
+  if ( ! xDown || ! yDown ) {
+    return;
+  }
+  
+  var xUp = evt.touches[0].clientX;                                    
+  var yUp = evt.touches[0].clientY;
+  
+  var xDiff = xDown - xUp;
+  var yDiff = yDown - yUp;
+  
+  if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+    if ( xDiff > 0 ) {
+      imgNext()
+    } else {
+      imgBack()
+    }                                                                
+  }
+  /* reset values */
+  xDown = null;
+  yDown = null;                                             
+};
+
+onMount(()=>{
+  swipeElement.ontouchstart = handleTouchStart
+  swipeElement.ontouchmove = handleTouchMove
+})
 
 const removeDuplicateImages = ()=>{
   let imgIndex = 0;
@@ -73,11 +117,20 @@ const imgBack = ()=>{
   selectImage(newIndex)
 }
 
-const ExpandImage = (src)=>{
+const handleImageSwipe = ({detail}) =>{
+  const newIndex = detail.index + detail.change < images.length ? detail.index + detail.change : detail.index
+  ExpandImage(images[newIndex].src, newIndex)
+}
+
+const ExpandImage = (src, index)=>{
   ModalView.set({
       component:ExpandedImage,
       props:{
-        src: src
+        src: src,
+        index: index
+      },
+      events:{
+        submit:handleImageSwipe
       },
       options:{useTitle:false}
     }) 
@@ -93,7 +146,7 @@ const ExpandImage = (src)=>{
       <LoadingIcon Message="Fetching images"/>
     </div>
     {/if}
-    <div class="image_container">
+    <div class="image_container" bind:this={swipeElement}>
     {#each images as image,index}
       {#if useLazy}
         <img 
@@ -104,7 +157,7 @@ const ExpandImage = (src)=>{
           class:active={activeImageIndex == index}
           loading={index>5?"lazy":"eager"} 
           on:load={imgLoad}
-          on:click={()=>ExpandImage(image.src)}
+          on:click={()=>ExpandImage(image.src, index)}
         />
       {:else}
         <img src={image} alt={"image"+index}/>
