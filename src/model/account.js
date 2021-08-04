@@ -56,4 +56,5 @@ export default class Account{
     const content = await rawResponse.json();
     return content
   }
+
 }

@@ -109,8 +109,12 @@ export async function Popular(media_type, params={}){
   return Discover(media_type, params)
 }
 
-export async function Trending(media_type, time_window="week"){
-  return await Send(Config.BASE_URL+`trending/${media_type}/${time_window}`)
+export async function Trending(media_type, time_window="week", params){
+  return await Send(Config.BASE_URL+`trending/${media_type}/${time_window}`, params)
+}
+
+export async function AccountRecommendations(media_type, account_id){
+  return await Send(Config.BASE_URL_V4+`account/${account_id}/${media_type}/recommendations`)
 }
 
 export async function GetWatchList(media_type, params={sort_direction:"created_at.desc"}){
