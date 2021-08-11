@@ -51,3 +51,11 @@ onMount(()=>{
 </script>
 
 <img {src} {alt} bind:this={element} />
+
+<style lang="scss">
+  img{
+    max-height: 100%;
+    margin: auto;
+    display: inherit;
+  }
+</style>
