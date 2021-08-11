@@ -2,7 +2,7 @@
 import { onMount } from "svelte";
 import { GetResultWatchProviders, GetWatchProviders } from "../../../../model/TMDbAPI";
 import { Countries, Preferences, Settings } from "../../../../stores/store";
-import { User } from "../../../../stores/userStore";
+import { IsLoggedIn, User } from "../../../../stores/userStore";
 import { GetSCSSVars, IsMobile } from "../../../../util";
 import Selector from "../../../form/Selector.svelte";
 import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
@@ -21,6 +21,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   var regions
   var regionSelect;
   var selectEnabled;
+  var extra_feature_html=""
 
   $:{
     selectEnabled = regions && regions.length>0
@@ -45,8 +46,14 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       if(!regions.includes(preferedRegion)){
         return {watchtypes:[], noProviders:true}
       }
-
-      const direct_links = await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link)
+      
+      var username
+      if($IsLoggedIn) username = $User.username
+      const [direct_links,extra_feature_url] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username))
+      if(extra_feature_url){
+        extra_feature_html="Finding links..."
+        fetch(extra_feature_url).then(res=>res.text().then(html=>extra_feature_html=html))
+      }
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
         {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},
@@ -88,6 +95,7 @@ const updatePreferedRegion = ()=>{
 <details open={!IsMobile()}>
   <summary class="h2">Watch providers</summary>
   <div class="section-container">
+    {@html extra_feature_html}
     <div class="select_container">
       <Selector selectID="watch_provider_select" fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect} disabled={!selectEnabled} placeholder={selectEnabled?"Select a region":"No providers found"}/>
     </div>
@@ -145,4 +153,36 @@ const updatePreferedRegion = ()=>{
     @include resetbutton;
     @include link;
   }
+
+  :global(.extra-feature>button){
+    margin-top: 0.5rem;
+    @include darkBtnOutline;
+  }
+  :global(.extra-feature>select){
+      display: block;
+      max-width: 100%;
+      flex-grow: 1;
+      background-color: $PanelColor;
+      padding: 0.25rem;
+      color: $FontColor;
+      border-radius: 0.2rem;
+      border: solid $PanelHover 2px;
+      overflow-y: auto;
+    }
+    :global(.extra-feature>select[multiple]){
+      width: 100%;
+    }
+    
+    :global(.extra-feature>select:focus){
+      outline:none;
+      border-radius: 0.2rem;
+      border: solid $AccentColor 2px;
+    }
+    
+    :global(.extra-feature>select:not([multiple]) option){
+      color:$FontColor;
+    }
+    :global(.extra-feature>select:not([multiple]).hasPlaceholder option:first-child), :global(select.hasPlaceholder.off){
+      color:grey;
+    }
 </style>
