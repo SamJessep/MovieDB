@@ -49,7 +49,6 @@ onMount(()=>{
 })
 
 </script>
-
 <img {src} {alt} bind:this={element} />
 
 <style lang="scss">
