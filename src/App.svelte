@@ -20,7 +20,7 @@
 		if(modalOpen){
 			document.querySelector("html").style=`
 				overflow:hidden;
-				padding-right:15px;
+				padding-right:${$IsMobile ? "0" : "15"}px;
 			`
 		}else{
 			document.querySelector("html").style=``

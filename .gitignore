@@ -2,3 +2,5 @@
 /public/build/
 /src/config.js
 .DS_Store
+**/workbox*
+**/sw*

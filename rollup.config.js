@@ -7,6 +7,7 @@ import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
 import scss from 'rollup-plugin-scss'
 import replace from '@rollup/plugin-replace';
+import { generateSW } from 'rollup-plugin-workbox';
 
 const preprocessOptions = require("./svelte.config").preprocessOptions;
 
