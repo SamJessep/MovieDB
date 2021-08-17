@@ -1,6 +1,5 @@
 <script>
 import { Boolean } from 'lodash/_freeGlobal';
-
   import { fade } from 'svelte/transition';
   import {ModalView} from '../../stores/store'
   import SvgIcon from './SvgIcon.svelte'
@@ -30,6 +29,7 @@ const Click = e => {
 
 const Close = ()=>{
   open = false;
+  $ModalView = {}
 }
 
 ModalView.subscribe(v=>{
@@ -81,7 +81,7 @@ ModalView.subscribe(v=>{
     background-color: $BackgroundColor;
     box-shadow: 0.5rem 0.5rem 3px 0px $Dark-Shaddow;
     width: 75%;
-    height: 75%;
+    max-height: 75%;
     display: flex;
     flex-direction: column;
   }

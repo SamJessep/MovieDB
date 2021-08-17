@@ -42,6 +42,7 @@ onMount(()=>{
   //If user reloads page after scrolling, load the last page and focus it
   if(currentPage !=  1){
     shownPage = currentPage
+    console.log(shownPage)
     getFirstCardAsync(shownPage).then(firstCard => {
       pageLoaderEnabled = false;
       setTimeout(()=>{
