@@ -11,23 +11,27 @@ export let Result;
 const scss = GetSCSSVars();
 const dispatch = createEventDispatcher();
 const styles = `
-  #ID *{
-    stroke: ${scss.FontColor};
+  #ID:not(.ready) *{
     opacity: 0%;
+  }  
+  #ID *{
+    fill: ${scss.FontColor};
+    stroke: ${scss.FontColor};
     transition: 0.25s stroke;
   }
 
   #ID:hover *{
+    fill: ${scss.AccentColor};
     stroke: ${scss.AccentColor};
   }
 
   #ID.on *{
+    fill: ${scss.AccentColor};
     stroke: ${scss.AccentColor};
   }
 
   #ID.ready *{
     transition: 0.5s opacity;
-    opacity:100%;
   }
 `
 
@@ -37,10 +41,10 @@ var recivedWatchlist = false
 const toggleWatchlist = e =>{
   if(recivedWatchlist){
     if(isOnWatchlist){
-      AddIcon.Play(16,28)
+      AddIcon.Play(10,0,true)
       AddIcon.RemoveClass("on")
     }else{
-      AddIcon.Play(0,16)
+      AddIcon.Play(0,10)
       AddIcon.AddClass("on")
     }
     isOnWatchlist=!isOnWatchlist;
@@ -56,7 +60,7 @@ const showButtonState = ()=>{
     isOnWatchlist = onWatchList
     recivedWatchlist = true;
     if(onWatchList){
-      AddIcon.GoTo(16)
+      AddIcon.GoTo(10)
       AddIcon.AddClass("on")
     }else{
       AddIcon.GoTo(0)
@@ -71,7 +75,7 @@ const showButtonState = ()=>{
   {#if !recivedWatchlist}
     <div class="buttonPlaceHolder" />
   {/if}
-  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/add.json" {styles} {id} on:ready={showButtonState} speed={1.25} />
+  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/heart.json" {styles} {id} on:ready={showButtonState} speed={1.25} />
 </button>
 
 
@@ -79,12 +83,15 @@ const showButtonState = ()=>{
 
 button{
   padding: 0;
-  margin: 0.5rem;
+  margin: 0;
   background: transparent;
   border: none;
   cursor: pointer;
   position: relative;
   display: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .buttonPlaceHolder{
@@ -94,9 +101,8 @@ button{
 }
 
 @media only screen and (max-width: $MobileWidth){
-  button{
-    margin: 0.25rem;
-  }
+
+  
 }
 
 </style>

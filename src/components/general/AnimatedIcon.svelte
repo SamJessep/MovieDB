@@ -54,7 +54,8 @@
     })
   })
 
-  export const Play = (start,end)=>{
+  export const Play = (start,end,backwards=false)=>{
+    animation.setDirection(backwards?-1:1)
     animation.playSegments([start,end], true)
   }
 
