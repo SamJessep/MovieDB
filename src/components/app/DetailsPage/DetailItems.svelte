@@ -9,9 +9,10 @@ import ReleaseDate from "./ReleaseDate.svelte";
 import RelatedResults from "./RelatedResults.svelte";
 import Reviews from "./Reviews.svelte";
 import MediaSection from "./media/MediaSection.svelte";
-import {GetSCSSVars} from '../../../util'
+import {AddToList, GetSCSSVars} from '../../../util'
 import Genres from "./Genres.svelte";
 import QuickInfoLabel from "./QuickInfoLabel.svelte";
+import AddButton from "../ResultList/AddButton.svelte";
 
 export let media_type;
 export let data;
@@ -67,6 +68,7 @@ getImages().then(i=>{
   </QuickInfoLabel>
   <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.title}/>
   <p class="synopsis">{data.overview}</p>
+  <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
 </section>
 <section class="media_section">
   <MediaSection title={data.title} {media_type} id={data.id}/>
@@ -104,6 +106,12 @@ getImages().then(i=>{
     .quickinfo{
       grid-area: quickinfo;
       margin-right: 1rem;
+      display:flex;
+      flex-direction: column;
+      align-items: baseline;
+      .synopsis{
+        flex-grow: 1;
+      }
     }
     .suggestions{
       grid-area:suggestions;

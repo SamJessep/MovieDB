@@ -13,7 +13,7 @@ const sortOptions = [
 </script>
 
 {#if $IsLoggedIn}
-  <Sort {sortOptions}/>
+  <Sort {sortOptions} defaultSelected={"created_at.desc"}/>
   <CardList FetchMethod={GetWatchList} MethodParams={[media_type]} StartPage={params.page ?? 1} UseResultSort={false}/>
 {:else}
   <button>Login</button>

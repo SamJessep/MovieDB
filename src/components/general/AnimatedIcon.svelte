@@ -15,7 +15,6 @@
 	const dispatch = createEventDispatcher();
   var animation
   var container
-  var lastFrameEnter
 
   onMount(async () => {
     const options = {
@@ -34,13 +33,6 @@
     animation= lottie.loadAnimation(options)
     animation.setSpeed(speed)
     animation.onComplete = ()=>dispatch('complete')
-    // animation.onEnterFrame = ()=>{
-    //   const currentFrame = Math.floor(animation.currentFrame)
-    //   if(lastFrameEnter != currentFrame){
-    //     dispatch('frameEnter', {frame:currentFrame})
-    //     lastFrameEnter = currentFrame;
-    //   }
-    // }
     animation.addEventListener("DOMLoaded", ()=>{
       // add styles
       let stylesElement = document.createElement("style")
@@ -81,7 +73,5 @@
     display: inherit;
     max-width: 5rem;
     max-height: 5rem;
-    // width: 100%;
-    // height: 100%;
   }
 </style>

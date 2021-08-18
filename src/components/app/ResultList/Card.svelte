@@ -2,12 +2,11 @@
 import AddButton from './AddButton.svelte'
 import SvgIcon from '../../general/SvgIcon.svelte'
 import Config from '../../../config';
-import {AddToWatchlist} from '../../../model/TMDbAPI.js'
 import {IsLoggedIn} from '../../../stores/userStore.js'
 import { onMount } from 'svelte';
 import { fade } from 'svelte/transition';
 import {GetBestImageSize} from "../../../model/dataHelper.js"
-import {GetSCSSVars, PostToast} from "../../../util";
+import {AddToList, GetSCSSVars, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
 
 var poster_container
@@ -70,23 +69,6 @@ export function LoadResultPage(el){
   alert("Clicked "+ title)
 }
 
-export async function AddToList(event){
-  var checked = event.detail.checked;
-  var media_type = Result.media_type
-  try{
-    const res = await AddToWatchlist(Result.id, media_type, checked)
-    if(res.success){
-      PostToast(`${checked?"Added":"Removed"} ${title} to watchlist`, {duration:10000})
-    }else{
-      PostToast("Opps somthing went wrong", {duration:10000})
-    }
-
-  }catch(e){
-    PostToast("Opps somthing went wrong", {duration:10000, theme:"error"})
-  }
-}
-
-var addButton;
 
 const selectCard = e=>{
   let shouldShowDetailsPage
@@ -118,7 +100,7 @@ const selectCard = e=>{
   </div>
   <div class='toolbar' bind:this={toolbarElement}>
     {#if $IsLoggedIn}
-      <AddButton on:clicked={AddToList} {Result} bind:this={addButton} id={"AddButton_"+Result.id}/>
+      <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
     {/if}
     <p>{title}</p>
     <div class="mediaIcon">

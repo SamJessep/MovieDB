@@ -7,9 +7,12 @@ import { createEventDispatcher } from 'svelte';
 
 export let id;
 export let Result;
+export let compact = true;
 
 const scss = GetSCSSVars();
 const dispatch = createEventDispatcher();
+var label
+$:label=isOnWatchlist ? `Remove ${Result.title} from your watchlist` : `Add ${Result.title} to your watchlist`
 const styles = `
   #ID:not(.ready) *{
     opacity: 0%;
@@ -20,7 +23,7 @@ const styles = `
     transition: 0.25s stroke;
   }
 
-  #ID:hover *{
+  button:hover #ID *{
     fill: ${scss.AccentColor};
     stroke: ${scss.AccentColor};
   }
@@ -48,7 +51,7 @@ const toggleWatchlist = e =>{
       AddIcon.AddClass("on")
     }
     isOnWatchlist=!isOnWatchlist;
-    dispatch("clicked", {checked:isOnWatchlist})
+    dispatch("clicked", {checked:isOnWatchlist, item:Result})
   }
 }
 const CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
@@ -71,11 +74,20 @@ const showButtonState = ()=>{
 }
 
 </script>
-<button on:click={toggleWatchlist} aria-label={isOnWatchlist ? `Remove ${Result.title} from your watchlist` : `Add ${Result.title} to your watchlist`}>
+<button 
+  on:click={toggleWatchlist} 
+  aria-label={label}
+  title={label}
+>
   {#if !recivedWatchlist}
     <div class="buttonPlaceHolder" />
   {/if}
   <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/heart.json" {styles} {id} on:ready={showButtonState} speed={1.25} />
+  {#if !compact}
+  <span class="btn-title">
+    {isOnWatchlist ? "Remove" : "Add"} to watchlist
+  </span>
+  {/if}
 </button>
 
 
@@ -98,6 +110,16 @@ button{
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+button:hover{
+  .btn-title{
+    text-decoration: underline;
+    color:$AccentColor;
+  }  
+}
+.btn-title{
+  color:$FontColor;
 }
 
 @media only screen and (max-width: $MobileWidth){

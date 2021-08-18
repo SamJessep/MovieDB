@@ -1,6 +1,7 @@
 import scssVars from "./styles/_export.scss"
 import {ToastsQueue} from './stores/store'
 import { get } from "svelte/store";
+import {AddToWatchlist} from './model/TMDbAPI'
 
 export function QueryToJSON(queryString){
   try{
@@ -47,6 +48,23 @@ export function PostToast(message, options={duration:3000}){
     toaster.push(newToast)
     return toaster
   })
+}
+
+export async function AddToList(event){
+  var checked = event.detail.checked;
+  var {media_type, title, id} = event.detail.item
+  try{
+    const res = await AddToWatchlist(id, media_type, checked)
+    if(res.success){
+      PostToast(`${checked?"Added":"Removed"} ${title} to watchlist`, {duration:10000})
+    }else{
+      PostToast("Opps somthing went wrong", {duration:10000})
+    }
+
+  }catch(e){
+    console.error(e)
+    PostToast("Opps somthing went wrong", {duration:10000, theme:"error"})
+  }
 }
 
 export function isElementInViewport (el) {
