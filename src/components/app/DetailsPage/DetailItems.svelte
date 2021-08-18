@@ -13,6 +13,7 @@ import {AddToList, GetSCSSVars} from '../../../util'
 import Genres from "./Genres.svelte";
 import QuickInfoLabel from "./QuickInfoLabel.svelte";
 import AddButton from "../ResultList/AddButton.svelte";
+import { FeaturedBackground } from "../../../stores/store";
 
 export let media_type;
 export let data;
@@ -45,6 +46,10 @@ getImages().then(i=>{
   images = i
   loadingImages=false
 })
+console.log(data)
+if(data.backdrop_path){
+  FeaturedBackground.update(_=>Config.BASE_IMAGE_URL+"original"+data.backdrop_path)
+}
 </script>
 
 {#if media_type == "movie"}
@@ -82,15 +87,44 @@ getImages().then(i=>{
 </div>
 {:else if media_type == "tv"}
 <div>
-  <!-- <ImageSlider {images} useLazy={true}/> -->
-  <h1 class="title">{data.name}</h1>
-  TV SHOW DETAILED PAGES COMING SOON
-  <!-- <h1>{data.runtime}</h1> -->
+  <div class="mainContainer">
+    <section class="imagesSlider">
+      <ImageSlider {images} useLazy={true} ghost={loadingImages}/>
+    </section>
+    <section class="quickinfo">
+      <h1 class="title">{data.name}</h1>
+      <!-- <QuickInfoLabel label="Release date:">
+        <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
+      </QuickInfoLabel> -->
+      <!-- <QuickInfoLabel label="Age Rating:">
+        <Certification releaseDates={data.release_dates.results} {media_type}/>
+      </QuickInfoLabel> -->
+      <QuickInfoLabel label="Genres:">
+        <Genres genres={data.genres} {media_type}/>
+      </QuickInfoLabel>
+      <!-- <QuickInfoLabel label="Run Time:">
+        <p class="runtime">{data.runtime} minutes</p>
+      </QuickInfoLabel> -->
+      <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.title}/>
+      <p class="synopsis">{data.overview}</p>
+      <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
+    </section>
+    <section class="media_section">
+      <MediaSection title={data.title} {media_type} id={data.id}/>
+    </section>
+    <section class="reviews">
+      <Reviews id={data.id} {media_type}/>
+    </section>
+    <section class="suggestions">
+      <RelatedResults id={data.id} {media_type}/>
+    </section>
+  </div>
 </div>
 {/if}
 
 
 <style lang="scss">
+
   div.mainContainer{
     color:$FontColor;
     padding: 1rem;

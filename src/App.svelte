@@ -6,7 +6,7 @@
 	import Toasts from './components/app/Toast/Toasts.svelte'
 	import Modal from './components/general/Modal.svelte'
 	import { onMount } from 'svelte';
-	import { IsMobile, ModalView, Preferences } from './stores/store'
+	import { FeaturedBackground, IsMobile, ModalView, Preferences } from './stores/store'
 	import tippy from 'tippy.js';
 	import 'tippy.js/dist/tippy.css';
 	import 'tippy.js/themes/dark.css';
@@ -32,6 +32,10 @@
 		})
 	})
 
+	FeaturedBackground.subscribe(url=>{
+		document.body.style.backgroundImage=`url(${url})`
+	})
+
 	const checkIfMobile = () => {
 		IsMobile.set(window.innerWidth<750)
 	}
@@ -55,7 +59,14 @@
 <style lang="scss">
 	:global(body){
 		background-color: $AppBackground;
+		// background-image: url(https://image.tmdb.org/t/p/original/s56eyXy8rADp5DpZknfe2HXq4u4.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: 94px;
+    background-blend-mode: screen;
+    backdrop-filter: blur(1px);
 	}
+
 
 	// add position fixed when modal is open to prevent scroll in background
 	.modalOpen{
