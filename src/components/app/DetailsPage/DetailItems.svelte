@@ -13,7 +13,7 @@ import {AddToList, GetSCSSVars} from '../../../util'
 import Genres from "./Genres.svelte";
 import QuickInfoLabel from "./QuickInfoLabel.svelte";
 import AddButton from "../ResultList/AddButton.svelte";
-import { FeaturedBackground } from "../../../stores/store";
+import { FeaturedBackground, IsMobile } from "../../../stores/store";
 
 export let media_type;
 export let data;
@@ -47,9 +47,14 @@ getImages().then(i=>{
   loadingImages=false
 })
 console.log(data)
-if(data.backdrop_path){
-  FeaturedBackground.update(_=>Config.BASE_IMAGE_URL+"original"+data.backdrop_path)
+IsMobile.subscribe(_=>setBackground())
+const setBackground = () => {
+  if(data.backdrop_path && !$IsMobile){
+    FeaturedBackground.update(_=>Config.BASE_IMAGE_URL+"original"+data.backdrop_path)
+  }
 }
+
+setBackground()
 </script>
 
 {#if media_type == "movie"}
