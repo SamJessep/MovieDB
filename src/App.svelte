@@ -64,7 +64,6 @@
     background-repeat: no-repeat;
     background-position-y: 94px;
     background-blend-mode: screen;
-    backdrop-filter: blur(1px);
 	}
 
 

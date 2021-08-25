@@ -23,7 +23,7 @@ const styles = `
     transition: 0.25s stroke;
   }
 
-  button:hover #ID *{
+  button.like:hover #ID *{
     fill: ${scss.AccentColor};
     stroke: ${scss.AccentColor};
   }
@@ -41,6 +41,7 @@ const styles = `
 var AddIcon
 var isOnWatchlist;
 var recivedWatchlist = false
+
 const toggleWatchlist = e =>{
   if(recivedWatchlist){
     if(isOnWatchlist){
@@ -59,11 +60,10 @@ const CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
 
 const showButtonState = ()=>{
   CheckIfOnWatchList.then(onWatchList=>{
-    if(!AddIcon) return
     isOnWatchlist = onWatchList
     recivedWatchlist = true;
     if(onWatchList){
-      AddIcon.GoTo(10)
+      AddIcon.GoTo(9)
       AddIcon.AddClass("on")
     }else{
       AddIcon.GoTo(0)
@@ -72,9 +72,8 @@ const showButtonState = ()=>{
     AddIcon.AddClass("ready")
   })
 }
-
 </script>
-<button 
+<button class="like"
   on:click={toggleWatchlist} 
   aria-label={label}
   title={label}
