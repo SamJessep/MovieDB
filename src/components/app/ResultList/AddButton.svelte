@@ -23,18 +23,24 @@ const styles = `
     transition: 0.25s stroke;
   }
 
-  button.like:hover #ID *{
-    fill: ${scss.AccentColor};
-    stroke: ${scss.AccentColor};
-  }
-
   #ID.on *{
     fill: ${scss.AccentColor};
     stroke: ${scss.AccentColor};
   }
 
+  #ID:not(.on) *{
+    fill: ${scss.FontColor};
+    stroke: ${scss.FontColor};
+  }
+
   #ID.ready *{
     transition: 0.5s opacity;
+  }
+  @media (hover: hover) {
+    button.like:hover #ID *{
+      fill: ${scss.AccentColor};
+      stroke: ${scss.AccentColor};
+    }
   }
 `
 
@@ -59,18 +65,28 @@ const CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
 
 
 const showButtonState = ()=>{
-  CheckIfOnWatchList.then(onWatchList=>{
+  CheckIfOnWatchList.then(async onWatchList=>{
     isOnWatchlist = onWatchList
     recivedWatchlist = true;
+    if(!AddIcon) await waitForIconToLoad()
     if(onWatchList){
-      AddIcon.GoTo(9)
       AddIcon.AddClass("on")
+      AddIcon.GoTo(9)
     }else{
-      AddIcon.GoTo(0)
       AddIcon.RemoveClass("on")
+      AddIcon.GoTo(0)
     }
     AddIcon.AddClass("ready")
   })
+}
+
+const waitForIconToLoad = async () => {
+  return new Promise(function (resolve, reject) {
+        (function wait(){
+            if (AddIcon) return resolve();
+            setTimeout(wait, 30);
+        })();
+    });
 }
 </script>
 <button class="like"
