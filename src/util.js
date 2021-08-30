@@ -14,7 +14,7 @@ export function QueryToJSON(queryString){
 
 export function ParamsToString(params){
   try{
-    return Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    return Object.keys(params).map(key => key + '=' + encodeURIComponent(params[key])).join('&');
   }catch(e){
     return ""
   }

@@ -8,7 +8,7 @@ export default class Api{
   static async GetWatchProviderDirectLinks(title, tmdb_link, username){
     const res = await fetch(config.AZURE_URL+"api/WatchProviders?"+ParamsToString({
       title:title,
-      url:tmdb_link,
+      url: tmdb_link,
       username:username
     }));
     return res.json()
