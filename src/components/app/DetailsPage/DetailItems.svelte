@@ -47,12 +47,12 @@ getImages().then(i=>{
   loadingImages=false
 })
 console.log(data)
-IsMobile.subscribe(_=>setBackground())
 const setBackground = () => {
   if(data.backdrop_path && !$IsMobile){
     FeaturedBackground.update(_=>Config.BASE_IMAGE_URL+"original"+data.backdrop_path)
   }
 }
+IsMobile.subscribe(_=>setBackground())
 
 setBackground()
 </script>
