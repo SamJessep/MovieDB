@@ -33,7 +33,9 @@ import { PostToast } from "../../../util";
     <RatingStars {...$$props} fullscreen={true} on:submit={RatingSelected}/>
     <span data-tippy-content={"this "+(media_type=="movie"?"movie":"tv show")+" has "+ratingCount+" ratings"} tabindex="0" class="rating_count">{ratingCount}</span>
     <div class="controls">
+      {#if userRating != 0}
       <button on:click={ClearRating}>Clear Rating</button>
+      {/if}
     </div>
   </div>
   
