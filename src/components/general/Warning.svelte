@@ -27,6 +27,6 @@ let shown=false
 
   p{
     color:orangered;
-    background-color: $AppBackground;
+    // background-color: $AppBackground;
    }
 </style>
