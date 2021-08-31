@@ -60,7 +60,7 @@
 <div class="hero-foot">
   <nav class="tabs is-boxed is-fullwidth" on:loadResults>
     <div class="container">
-      <ul>
+      <div class="btn-container">
         {#if isMobile}
         <div class="flex-btn" bind:this={popup_btn}>
           <QuickButton text="Discover" on:quick_button_clicked={openPopup} url={null}/>
@@ -82,7 +82,7 @@
           {/each}
           {/if}
         <GenreButton/>
-      </ul>
+      </div>
     </div>
   </nav>
 </div>
@@ -94,7 +94,9 @@
   font-size: $BaseFontSize;
   outline-color: $AccentColor;
 }
-
+.btn-container{
+  display: flex;
+}
 .popup{
   position: absolute;
   bottom: 100%;

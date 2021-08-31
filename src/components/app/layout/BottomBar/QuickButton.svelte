@@ -17,10 +17,10 @@ export let click = ButtonClick
 
 </script>
 
-<li class="quickBtn">
+<div class="quickBtn">
   <button class:active on:click={click}>{text}</button>
   <slot/>
-</li>
+</div>
 
 <style lang="scss">
   

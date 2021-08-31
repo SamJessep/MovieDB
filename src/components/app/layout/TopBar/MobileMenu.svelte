@@ -51,7 +51,11 @@ checkIfMobile()
 </script>
 
 {#if isMobile}
-<button class="roundedBtn dark mobileMenuButton" on:click={()=>menuOpen?CloseMenu():OpenMenu()} bind:this={buttonElement}>
+<button 
+  class="roundedBtn dark mobileMenuButton" 
+  on:click={()=>menuOpen?CloseMenu():OpenMenu()} 
+  bind:this={buttonElement}
+  alt="Mobile menu">
   <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={4} id="mobile_menu_svg"/>
 </button>
 <div class="mobileMenu" class:menuOpen bind:this={menuElement}>
