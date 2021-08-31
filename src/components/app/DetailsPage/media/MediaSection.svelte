@@ -25,11 +25,11 @@
       options:{useTitle:false}
     })
   }
+
+  export const ShowTrailer = () => showVideo("YouTube")
 </script>
-<div class="btn_container">
-<button on:click={()=>showVideo("YouTube")} disabled={trailer == null}>Watch Trailer</button>
-</div>
 <WatchProviders {title} {id} {media_type}/>
+<svelte:options accessors={true}></svelte:options>
 
 <style lang="scss">
   .btn_container{

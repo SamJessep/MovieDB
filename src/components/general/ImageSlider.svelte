@@ -10,6 +10,7 @@ const dispatch = createEventDispatcher()
 export let images=[]
 export let useLazy=false;
 export let ghost = false;
+export let featureButton;
 let activeImageIndex = 0;
 let previewContainer;
 
@@ -137,6 +138,12 @@ const ExpandImage = (src, index)=>{
 }
 </script>
 <div class="image_slider_container" class:ghost>
+  {#if featureButton}
+    <button class="featureButton" on:click={()=>dispatch("featureclick")}>
+    <SvgIcon src={featureButton.icon}/>
+      {featureButton.text}
+    </button>
+  {/if}  
   <button class="controls back" on:click={imgBack} aria-label="previous image">
     <SvgIcon src="images/chevron-left.svg" styles={control_btn_styles}/>
   </button>
@@ -194,6 +201,21 @@ img{
   }
 }
 
+.featureButton{
+  @include darkBtnOutline;
+  grid-area: featureBtn;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  width: fit-content;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  &:hover{
+    color:$AccentColor;
+  }
+}
+
 .image_container img:hover{
   cursor: zoom-in;
 }
@@ -202,9 +224,10 @@ img{
   height: 100%;
   display: grid;
   grid-template-columns: 3rem 1fr 3rem;
-  grid-template-rows: 1fr min-content;
+  grid-template-rows: 1fr min-content min-content;
   grid-template-areas: "back img next"
-                       "nav nav nav";
+                       "nav nav nav"
+                       "featureBtn featureBtn featureBtn";
   .active_image_container{
     min-height: 100%;
     grid-area: img;
@@ -319,8 +342,13 @@ img{
     grid-template-rows: 1fr 0.5rem 3rem min-content;
     grid-template-areas: "img img img img img"
                          ". . . . ."
-                         ". . back . next"
+                         "featureBtn featureBtn back . next"
                          "nav nav nav nav nav";
+  }
+ 
+  .featureButton{
+    margin: 0;
+    margin-right: 1rem;
   }
 }
 </style>

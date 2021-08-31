@@ -1,6 +1,6 @@
 <script>
 export let src;
-export let styles = "";
+export let styles = "width:fit-content;";
 export let cache = true;
 export let width = "100%"
 export let height = "100%"

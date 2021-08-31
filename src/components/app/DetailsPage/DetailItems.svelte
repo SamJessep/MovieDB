@@ -18,6 +18,7 @@ import { FeaturedBackground, IsMobile } from "../../../stores/store";
 export let media_type;
 export let data;
 const scss = GetSCSSVars()
+var mediaElement;
 
 
 const getImages = async ()=>{
@@ -60,7 +61,7 @@ setBackground()
 {#if media_type == "movie"}
 <div class="mainContainer">
 <section class="imagesSlider">
-  <ImageSlider {images} useLazy={true} ghost={loadingImages}/>
+  <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg"}} on:featureclick={()=>mediaElement.ShowTrailer()}/>
 </section>
 <section class="quickinfo">
   <h1 class="title">{data.title}</h1>
@@ -81,7 +82,7 @@ setBackground()
   <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
 </section>
 <section class="media_section">
-  <MediaSection title={data.title} {media_type} id={data.id}/>
+  <MediaSection title={data.title} {media_type} id={data.id} bind:this={mediaElement}/>
 </section>
 <section class="reviews">
   <Reviews id={data.id} {media_type}/>
@@ -94,7 +95,7 @@ setBackground()
 <div>
   <div class="mainContainer">
     <section class="imagesSlider">
-      <ImageSlider {images} useLazy={true} ghost={loadingImages}/>
+      <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButtonText="Watch Trailer"/>
     </section>
     <section class="quickinfo">
       <h1 class="title">{data.name}</h1>
