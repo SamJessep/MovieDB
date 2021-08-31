@@ -168,8 +168,11 @@ const selectCard = e=>{
   padding-bottom: 0;
   margin: 1rem;
   width: var(--cardWidth, 21rem);
+  transition: box-shadow 0.5s, transform 0.25s;
+  box-shadow: 0px 4px 4px $ShaddowColor;
   &:hover, &:focus{
-    box-shadow: 0px 0px 20px 3px $AccentColor;
+    box-shadow: 7px 12px 4px 0px $ShaddowColor;
+    transform: matrix(1, 0, 0, 1, -2, 0);
   }
 }
 
