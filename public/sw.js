@@ -1,4 +1,4 @@
-self.__WB_DISABLE_DEV_LOGS = true
+// self.__WB_DISABLE_DEV_LOGS = true
 
 const cacheName = 'stale-with-revalidate'
 
