@@ -19,6 +19,7 @@ export function GetCountryText(value){
 }
 
 export function GetBestImageSize(imageType, width){
+  width=width*2
   if(width == 0) return Config.imageSizes[imageType][0]
   let selectedSize = Config.imageSizes[imageType].map(s=>{
     let size = Number(s.replace("w", ""))
