@@ -68,6 +68,7 @@ select{
   border: solid 2px white;
   &:hover, &:focus, &:focus-visible{
     border: solid 2px $AccentColor;
+    outline:none;
   }
 }
 

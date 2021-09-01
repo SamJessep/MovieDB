@@ -174,6 +174,9 @@ const selectCard = e=>{
     box-shadow: 7px 12px 4px 0px black;
     transform: matrix(1, 0, 0, 1, -2, 0);
   }
+  &:focus-visible{
+    background-color: darken($SelectedColor, 0%);
+  }
 }
 
 

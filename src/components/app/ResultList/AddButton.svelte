@@ -41,6 +41,15 @@ const styles = `
       fill: ${scss.AccentColor};
       stroke: ${scss.AccentColor};
     }
+
+    button.like:focus #ID *{
+      fill: ${scss.AccentColor};
+      stroke: ${scss.AccentColor};
+    }
+
+    button.like:focus-visible #ID *{
+      outline: none;
+    }
   }
 `
 
@@ -119,6 +128,7 @@ button{
   display: flex;
   justify-content: center;
   align-items: center;
+  outline: none !important;
 }
 
 .buttonPlaceHolder{
@@ -131,7 +141,7 @@ button:hover{
   .btn-title{
     text-decoration: underline;
     color:$AccentColor;
-  }  
+  }
 }
 .btn-title{
   color:$FontColor;
