@@ -2,7 +2,7 @@ import Config from "../config.js";
 import {get} from 'svelte/store';
 import {RequestParams, Preferences} from "../stores/store.js"
 import {User} from '../stores/userStore.js'
-import {ParamsToString} from '../util.js'
+import {NormaliseNames, ParamsToString} from '../util.js'
 
 
 async function Send(url, params, media_type){
@@ -25,6 +25,7 @@ async function Send(url, params, media_type){
   res = await res.json()
   if(res.results){
     res.results = res.results.map(r=>{return {media_type:media_type, ...r}})
+    res.results = NormaliseNames(res.results)
     //Filter results if dont have poster and feature is enabled
     if(get(Preferences).must_have_poster){
       res.results = res.results.filter(r=>r.poster_path !== null)
@@ -52,6 +53,7 @@ async function SendClean(url, params, usePreferences=true, request_method="get")
     }
   });
   res = await res.json()
+  res = NormaliseNames([res])[0]
   return res;
 }
 

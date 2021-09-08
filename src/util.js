@@ -52,11 +52,11 @@ export function PostToast(message, options={duration:3000}){
 
 export async function AddToList(event){
   var checked = event.detail.checked;
-  var {media_type, title, id} = event.detail.item
+  var {media_type, name, id} = event.detail.item
   try{
     const res = await AddToWatchlist(id, media_type, checked)
     if(res.success){
-      PostToast(`${checked?"Added":"Removed"} ${title} to watchlist`, {duration:10000})
+      PostToast(`${checked?"Added":"Removed"} ${name} to watchlist`, {duration:10000})
     }else{
       PostToast("Opps somthing went wrong", {duration:10000})
     }
@@ -89,4 +89,10 @@ export function isElementInViewport (el) {
     const month = date.getMonth()
     const year = date.getFullYear()
     return `${day} of ${month} ${year}`
+  }
+
+  export function NormaliseNames(results){
+    return results.map(result=>{
+      return {name:(result.name || result.title || result.original_title || result.original_name), ...result}
+    });
   }

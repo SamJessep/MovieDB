@@ -9,6 +9,8 @@ export let id;
 export let Result;
 export let compact = true;
 
+let button;
+
 const scss = GetSCSSVars();
 const dispatch = createEventDispatcher();
 var label
@@ -67,7 +69,7 @@ const toggleWatchlist = e =>{
       AddIcon.AddClass("on")
     }
     isOnWatchlist=!isOnWatchlist;
-    dispatch("clicked", {checked:isOnWatchlist, item:Result})
+    dispatch("clicked", {checked:isOnWatchlist, item:Result, button:button})
   }
 }
 const CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
@@ -102,6 +104,7 @@ const waitForIconToLoad = async () => {
   on:click={toggleWatchlist} 
   aria-label={label}
   title={label}
+  bind:this={button}
 >
   {#if !recivedWatchlist}
     <div class="buttonPlaceHolder" />

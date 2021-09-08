@@ -6,7 +6,7 @@ import {IsLoggedIn} from '../../../stores/userStore.js'
 import { onMount } from 'svelte';
 import { fade } from 'svelte/transition';
 import {GetBestImageSize} from "../../../model/dataHelper.js"
-import {AddToList, GetSCSSVars, PostToast} from "../../../util";
+import {AddToList, GetSCSSVars, ParamsToString, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
 import AltMenu from './AltMenu.svelte';
 
@@ -81,6 +81,11 @@ const selectCard = e=>{
   if(shouldShowDetailsPage){
     push(`/${Result.media_type}/${Result.id}`)
   }
+}
+
+const toolbarButtonClicked = (event,callback,params) => {
+  event.detail.button.focus()
+  callback(...params)
 }
 
 </script>

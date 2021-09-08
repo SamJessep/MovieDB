@@ -119,7 +119,8 @@ const imgBack = ()=>{
 }
 
 const handleImageSwipe = ({detail}) =>{
-  const newIndex = detail.index + detail.change < images.length ? detail.index + detail.change : detail.index
+  const potentialIndex = detail.index + detail.change
+  const newIndex = potentialIndex >= images.length ? 0 : potentialIndex < 0 ? images.length-1 : potentialIndex
   ExpandImage(images[newIndex].src, newIndex)
 }
 
@@ -128,12 +129,14 @@ const ExpandImage = (src, index)=>{
       component:ExpandedImage,
       props:{
         src: src,
-        index: index
+        index: index,
+        btnStyles:control_btn_styles,
+        totalImages:images.length
       },
       events:{
         submit:handleImageSwipe
       },
-      options:{useTitle:false}
+      options:{useTitle:false, singleView:true}
     }) 
 }
 </script>

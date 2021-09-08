@@ -11,7 +11,9 @@ import { Boolean } from 'lodash/_freeGlobal';
   let options = {
     title: "_",
     useDefaultClose: true,
-    useTitle: true
+    useTitle: true,
+    singleView: false,
+    height: "auto"
   }
   
   const closeStyles = `
@@ -44,7 +46,7 @@ ModalView.subscribe(v=>{
 
 {#if open}
 <div id="modal-container" class="background" on:click={Click} bind:this={background} transition:fade>
-  <div class="modal-container">
+  <div class="modal-container" class:singleView={options.singleView} style="height:{options.height}">
     <div class="info-bar">
       {#if options.useTitle}
         <h2>{options.title}</h2>
@@ -55,7 +57,7 @@ ModalView.subscribe(v=>{
         </button>
       {/if}
     </div>
-    <div class="content">
+    <div class="content" class:singleView={options.singleView}>
       <svelte:component this={component} {...props} on:submit={events.submit} on:clear={events.clear} on:cancel={events.cancel}/>
     </div>
   </div>
@@ -84,6 +86,10 @@ ModalView.subscribe(v=>{
     max-height: 75%;
     display: flex;
     flex-direction: column;
+    &.singleView{
+      max-height: 100%;
+      overflow: hidden;
+    }
   }
 
   .info-bar{
@@ -112,6 +118,9 @@ ModalView.subscribe(v=>{
     overflow-y: auto;
     height: 100%;
     flex-grow: 1;
+    &.singleView{
+      overflow-y: hidden;
+    }
   }
 
   @media only screen and (max-width: $MobileWidth){
