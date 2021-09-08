@@ -49,7 +49,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       
       var username
       if($IsLoggedIn) username = $User.username
-      const [direct_links,extra_feature_url] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username))
+      const [direct_links,extra_feature_url] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username,media_type))
       if(extra_feature_url){
         extra_feature_html="Finding links..."
         fetch(extra_feature_url).then(res=>res.text().then(html=>extra_feature_html=html))
