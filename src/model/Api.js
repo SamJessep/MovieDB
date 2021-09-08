@@ -5,12 +5,15 @@ export default class Api{
 
   static StreamPath = "api/TorrentStream";
 
-  static async GetWatchProviderDirectLinks(title, tmdb_link, username){
-    const res = await fetch(config.AZURE_URL+"api/WatchProviders?"+ParamsToString({
+  static async GetWatchProviderDirectLinks(title, tmdb_link, username, media_type, seasonsJSON){
+    let params = {
       title:title,
       url: tmdb_link,
-      username:username
-    }));
+      username:username,
+      mediatype:media_type,
+    }
+    if(seasonsJSON) params = {...params, seasonsJSON:seasonsJSON}
+    const res = await fetch(config.AZURE_URL+"api/WatchProviders?"+ParamsToString(params));
     return res.json()
   }
   

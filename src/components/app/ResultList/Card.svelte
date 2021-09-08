@@ -8,6 +8,7 @@ import { fade } from 'svelte/transition';
 import {GetBestImageSize} from "../../../model/dataHelper.js"
 import {AddToList, GetSCSSVars, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
+import AltMenu from './AltMenu.svelte';
 
 var poster_container
 onMount(()=>{
@@ -84,32 +85,35 @@ const selectCard = e=>{
 
 </script>
 <button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}>
-  {#if Loaded}
-  <div class="poster-container" bind:this={poster_container}>
-    {#if Result.poster_path}
-      {#if ImageUrl != undefined}
-        <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />
+  <AltMenu/>
+  <div class="card-content">
+    {#if Loaded}
+    <div class="poster-container" bind:this={poster_container}>
+      {#if Result.poster_path}
+        {#if ImageUrl != undefined}
+          <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />
+        {/if}
+      {:else}
+        <div class="placeholder_container poster aspect-ratio-box-inside" on:click={LoadResultPage}>
+            <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
+            <small>No Poster</small>
+        </div>
       {/if}
-    {:else}
-      <div class="placeholder_container poster aspect-ratio-box-inside" on:click={LoadResultPage}>
-          <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
-          <small>No Poster</small>
-      </div>
-    {/if}
-    
-  </div>
-  <div class='toolbar' bind:this={toolbarElement}>
-    {#if $IsLoggedIn}
-      <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
-    {/if}
-    <p>{title}</p>
-    <div class="mediaIcon">
-      {#if Result.media_type}
-        <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
-      {/if}
+      
     </div>
+    <div class='toolbar' bind:this={toolbarElement}>
+      {#if $IsLoggedIn}
+        <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
+      {/if}
+      <p>{title}</p>
+      <div class="mediaIcon">
+        {#if Result.media_type}
+          <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
+        {/if}
+      </div>
+    </div>
+    {/if}
   </div>
-  {/if}
 </button>
 <style lang="scss">
 .poster-container{
@@ -154,18 +158,24 @@ const selectCard = e=>{
 :root{
   --cardWidth: 21rem;
 }
-.resultCard{
-  display: inline-flex;
+
+.card-content{
+  display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 0;
+  padding:0;
+}
+
+.resultCard{
+  position: relative;
+  display: inline;
 
   background-color: $SecondBackgroundColor;
   outline: none;
   border:none !important;
   color: $FontColor;
   border-radius: 10px;
-  padding: 0.3rem;
-  padding-bottom: 0;
   margin: 1rem;
   width: var(--cardWidth, 21rem);
   transition: box-shadow 0.5s, transform 0.25s;
