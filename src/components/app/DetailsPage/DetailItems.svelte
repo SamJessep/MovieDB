@@ -64,7 +64,7 @@ setBackground()
   <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg"}} on:featureclick={()=>mediaElement.ShowTrailer()}/>
 </section>
 <section class="quickinfo">
-  <h1 class="title">{data.title}</h1>
+  <h1 class="title">{data.name}</h1>
   <QuickInfoLabel label="Release date:">
     <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
   </QuickInfoLabel>
@@ -77,12 +77,12 @@ setBackground()
   <QuickInfoLabel label="Run Time:">
     <p class="runtime">{data.runtime} minutes</p>
   </QuickInfoLabel>
-  <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.title}/>
+  <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.name}/>
   <p class="synopsis">{data.overview}</p>
   <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
 </section>
 <section class="media_section">
-  <MediaSection title={data.title} {media_type} id={data.id} bind:this={mediaElement}/>
+  <MediaSection title={data.name} {media_type} id={data.id} bind:this={mediaElement}/>
 </section>
 <section class="reviews">
   <Reviews id={data.id} {media_type}/>
@@ -111,12 +111,12 @@ setBackground()
       <!-- <QuickInfoLabel label="Run Time:">
         <p class="runtime">{data.runtime} minutes</p>
       </QuickInfoLabel> -->
-      <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.title}/>
+      <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.name}/>
       <p class="synopsis">{data.overview}</p>
       <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
     </section>
     <section class="media_section">
-      <MediaSection title={data.title} {media_type} id={data.id}/>
+      <MediaSection title={data.name} {media_type} id={data.id}/>
     </section>
     <section class="reviews">
       <Reviews id={data.id} {media_type}/>

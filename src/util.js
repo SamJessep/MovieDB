@@ -93,6 +93,6 @@ export function isElementInViewport (el) {
 
   export function NormaliseNames(results){
     return results.map(result=>{
-      return {name:(result.original_title || result.title || result.name || result.original_name), ...result}
+      return {name:(result.name || result.title || result.original_title || result.original_name), ...result}
     });
   }
