@@ -9,12 +9,14 @@ import Page from './Page.svelte'
 import Sort from './Sort.svelte'
 import ErrorSmall from '../../general/ErrorSmall.svelte';
 import AnimatedIcon from '../../general/AnimatedIcon.svelte';
+import PageNumber from './PageNumber.svelte';
 
 export let FetchMethod;
 export let MethodParams =[];
 export let StartPage;
 export let DefaultSort = "None";
 export let UseResultSort = true;
+export let ShowPageNumber=true;
 let totalResults = 0;
 let totalPages;
 let currentPage = StartPage;
@@ -42,11 +44,10 @@ onMount(()=>{
   //If user reloads page after scrolling, load the last page and focus it
   if(currentPage !=  1){
     shownPage = currentPage
-    console.log(shownPage)
-    getFirstCardAsync(shownPage).then(firstCard => {
+    getFirstCardAsync(shownPage).then(lastCardElement => {
       pageLoaderEnabled = false;
       setTimeout(()=>{
-        firstCard.scrollIntoView()
+        lastCardElement.scrollIntoView()
         setTimeout(()=>pageLoaderEnabled=true,2000)
       },1000)
     })
@@ -76,10 +77,10 @@ const waitTillLoaded = async()=>{
   }
 
 
-  const getFirstCardAsync = async page=>{
+  const getFirstCardAsync = async (page, card=0)=>{
     return new Promise(function (resolve, reject) {
         (function wait(){
-          const res = document.querySelector(`#page-${page}>.resultCard`)
+          const res = document.querySelector(`#page-${page} #card-${card}`)
           if (res) return resolve(res);
           setTimeout(wait, 30);
         })();
@@ -134,7 +135,7 @@ const checkForNewPage = entries =>{
     let regexRes = /\/(?<page>\d+)/.exec($location)
     let newLocation = regexRes ? $location.replace("/"+regexRes.groups.page,"/"+page) :
      $location + ($location.endsWith("/") ? "" : "/" )+currentPage
-    replace(newLocation+($querystring ? `?${$querystring}`:""))
+     replace(newLocation+($querystring ? `?${$querystring}`:""))
   }
 }
 
@@ -186,6 +187,10 @@ function scrollClicked(){
 </script>
 {#if UseResultSort}
   <Sort defaultSelected={QueryToJSON($querystring).sort_by ?? DefaultSort}/>
+{/if}
+
+{#if ShowPageNumber}
+  <PageNumber bind:page={shownPage}/>
 {/if}
 <div class="card-list">
   {#key $querystring}

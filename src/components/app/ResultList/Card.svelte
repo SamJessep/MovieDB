@@ -6,7 +6,7 @@ import {IsLoggedIn} from '../../../stores/userStore.js'
 import { onMount } from 'svelte';
 import { fade } from 'svelte/transition';
 import {GetBestImageSize} from "../../../model/dataHelper.js"
-import {AddToList, GetSCSSVars, PostToast} from "../../../util";
+import {AddToList, GetSCSSVars, ParamsToString, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
 
 var poster_container
@@ -82,6 +82,11 @@ const selectCard = e=>{
   }
 }
 
+const toolbarButtonClicked = (event,callback,params) => {
+  event.detail.button.focus()
+  callback(...params)
+}
+
 </script>
 <button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}>
   {#if Loaded}
@@ -100,7 +105,7 @@ const selectCard = e=>{
   </div>
   <div class='toolbar' bind:this={toolbarElement}>
     {#if $IsLoggedIn}
-      <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
+      <AddButton on:clicked={event=>toolbarButtonClicked(event,AddToList,[event])} {Result} id={"AddButton_"+Result.id}/>
     {/if}
     <p>{title}</p>
     <div class="mediaIcon">
