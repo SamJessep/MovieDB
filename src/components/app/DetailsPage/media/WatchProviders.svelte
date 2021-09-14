@@ -41,6 +41,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
     }
   })
 
+
   const loadProviders = ()=>{
     getProviders = GetResultWatchProviders(id, media_type).then(async res=>{
       if(!regions) regions = Object.keys(res.results)
@@ -51,10 +52,10 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       
       var username
       if($IsLoggedIn) username = $User.username
-      const [direct_links,extra_feature_url] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type, seasonsJSON))
+      const [direct_links,extra_feature_url] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type))
       if(extra_feature_url){
         extra_feature_html="Finding links..."
-        fetch(extra_feature_url).then(res=>res.text().then(html=>extra_feature_html=html))
+        extra_feature_html = await Api.GetFeatureHTML(extra_feature_url, seasonsJSON);
       }
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
