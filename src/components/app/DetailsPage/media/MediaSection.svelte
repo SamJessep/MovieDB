@@ -7,6 +7,7 @@
   export let media_type;
   export let title;
   export let id;
+  export let result
 
   let trailer
   (async()=>{
@@ -27,8 +28,20 @@
   }
 
   export const ShowTrailer = () => showVideo("YouTube")
+  const seasonsJSON = result.seasons.map(season=>{
+    return {
+      number:season.season_number,
+      name:season.name,
+      episodes:Array.from(Array(season.episode_count).keys()).map(v=>{
+        return {
+          name: `Episode ${v+1}`,
+          number: v+1
+        }
+      })
+    }
+  })
 </script>
-<WatchProviders {title} {id} {media_type}/>
+<WatchProviders {title} {id} {media_type} {seasonsJSON}/>
 <svelte:options accessors={true}></svelte:options>
 
 <style lang="scss">

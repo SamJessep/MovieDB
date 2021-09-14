@@ -82,7 +82,7 @@ setBackground()
   <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
 </section>
 <section class="media_section">
-  <MediaSection title={data.name} {media_type} id={data.id} bind:this={mediaElement}/>
+  <MediaSection title={data.name} {media_type} id={data.id} bind:this={mediaElement} result={data}/>
 </section>
 <section class="reviews">
   <Reviews id={data.id} {media_type}/>
@@ -116,7 +116,7 @@ setBackground()
       <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
     </section>
     <section class="media_section">
-      <MediaSection title={data.name} {media_type} id={data.id}/>
+      <MediaSection title={data.name} {media_type} id={data.id} result={data}/>
     </section>
     <section class="reviews">
       <Reviews id={data.id} {media_type}/>
