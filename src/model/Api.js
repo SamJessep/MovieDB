@@ -17,7 +17,6 @@ export default class Api{
   }
 
   static async GetFeatureHTML(url,seasonsJSON){
-    console.log(url, seasonsJSON)
     const res = await fetch(
       url,
       {
