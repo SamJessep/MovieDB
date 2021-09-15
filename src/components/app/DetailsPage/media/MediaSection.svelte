@@ -30,12 +30,12 @@
   export const ShowTrailer = () => showVideo("YouTube")
   const seasonsJSON = result.seasons.map(season=>{
     return {
-      number:season.season_number,
-      name:season.name,
-      episodes:Array.from(Array(season.episode_count).keys()).map(v=>{
+      Number:season.season_number,
+      Name:season.name,
+      Episodes:Array.from(Array(season.episode_count).keys()).map(v=>{
         return {
-          name: `Episode ${v+1}`,
-          number: v+1
+          Name: `Episode ${v+1}`,
+          Number: v+1
         }
       })
     }

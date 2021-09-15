@@ -27,7 +27,7 @@ export default class Api{
         body:JSON.stringify(seasonsJSON)
       });
       console.log(res)
-    return res.text()
+    return res.json()
   }
   
   static async GetStreamLinks(title){

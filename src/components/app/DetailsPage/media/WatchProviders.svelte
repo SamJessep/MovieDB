@@ -24,6 +24,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   var regionSelect;
   var selectEnabled;
   var extra_feature_html=""
+  var extra_feature_scripts=""
 
   $:{
     selectEnabled = regions && regions.length>0
@@ -52,10 +53,9 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       
       var username
       if($IsLoggedIn) username = $User.username
-      const [direct_links,extra_feature_url] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type))
+      const [direct_links,t_select_server] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type))
       if(extra_feature_url){
-        extra_feature_html="Finding links..."
-        extra_feature_html = await Api.GetFeatureHTML(extra_feature_url, seasonsJSON);
+        extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" seasonsjson=${escape(JSON.stringify(seasonsJSON))}></t-select>`
       }
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
@@ -95,6 +95,11 @@ const updatePreferedRegion = ()=>{
   $Settings.useAccountSettings = $User.iso_3166_1 == preferedRegion;
 }
 </script>
+
+<svelte:head>
+  <script src="t-select.js"></script>
+</svelte:head>
+
 <details open={!IsMobile()}>
   <summary class="h2">Watch providers</summary>
   <div class="section-container">
@@ -131,8 +136,8 @@ const updatePreferedRegion = ()=>{
           {/each}
         </div>
       {/if}
-    {:catch error}
-    <ErrorSmall errorMessage={error} userMessage="hmm... something went wrong"/>
+    <!-- {:catch error}
+    <ErrorSmall errorMessage={error} userMessage="hmm... something went wrong"/> -->
     {/await}
   </div>
 </details>
