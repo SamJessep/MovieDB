@@ -84,7 +84,7 @@ async function Delete(url){
 
 export async function Search(query, search_type="multi", params = {}) {
   params = {
-    query: encodeURI(query),
+    query: query,
     ...params
   };
   return await Send(`${Config.BASE_URL}search/${search_type}`, params, search_type)
@@ -147,7 +147,7 @@ export async function AddToWatchlist(media_id, media_type="movie", add=true){
   return rawResponse.json();
 }
 
-export async function IsOnWatchlist(item_id, media_type="movie"){
+export async function IsOnWatchlist(item_id, media_type){
   let params ={
     session_id:get(User).session_id
   }
@@ -186,7 +186,7 @@ export async function GetGenres(media_type="movie"){
   return await SendClean(Config.BASE_URL+`genre/${media_type.toLocaleLowerCase()}/list`)
 }
 
-export async function GetDetails(id,media_type="movie",session_id){
+export async function GetDetails(id,media_type,session_id){
   let params = {
     append_to_response:"release_dates,account_states"
   }
@@ -194,7 +194,9 @@ export async function GetDetails(id,media_type="movie",session_id){
     ...params,
     session_id:session_id
   }
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}`,params)
+  const details = await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}`,params)
+  details.media_type=media_type
+  return details
 }
 
 export async function GetImages(id,media_type="movie"){
