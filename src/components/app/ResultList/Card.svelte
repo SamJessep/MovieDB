@@ -92,7 +92,13 @@ const toolbarButtonClicked = (event,callback,params) => {
 
 var holdDelay;
 var holding=false;
+var startPoint
+var shouldCancelTouch=false
 const touchStart = e=>{
+  if(e.touches){
+    let {clientX:x,clientY:y} = e.touches[0];
+    startPoint={x:x,y:y};
+  }
   holdDelay = setTimeout(_=>{
     holding=true;
     altMenu.touchStart(e)
@@ -101,12 +107,20 @@ const touchStart = e=>{
 }
 const touchEnd = e=>{
   clearTimeout(holdDelay)
-  if(holding){
-  }else{
+  if(!holding && !shouldCancelTouch){
     selectCard()
   }
   altMenu.touchEnd(e)
   holding=false;
+}
+
+const touchMove = e=>{
+  const {clientX:x,clientY:y} = e.touches[0];
+  const movementThreshold = 20
+  const xDiff = Math.abs(x-startPoint.x)
+  const yDiff = Math.abs(y-startPoint.y)
+  shouldCancelTouch = xDiff>movementThreshold || yDiff>movementThreshold
+  if(shouldCancelTouch)altMenu.touchEnd(e)
 }
 </script>
 <button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}
@@ -116,7 +130,8 @@ const touchEnd = e=>{
   <div class="card-content">
     {#if Loaded}
     <div class="poster-container" bind:this={poster_container}
-    on:mouseup={touchEnd} on:touchend={touchEnd} on:touchstart={touchStart} on:mousedown={touchStart} on:contextmenu|preventDefault
+    on:mouseup={touchEnd} on:touchend={touchEnd} on:touchstart={touchStart} on:mousedown={touchStart} 
+    on:contextmenu|preventDefault on:touchmove={touchMove}
     >
       {#if Result.poster_path}
         {#if ImageUrl != undefined}
