@@ -15,20 +15,6 @@ export default class Api{
     const res = await fetch(config.AZURE_URL+"api/WatchProviders?"+ParamsToString(params));
     return res.json()
   }
-
-  static async GetFeatureHTML(url,seasonsJSON){
-    const res = await fetch(
-      url,
-      {
-        method:"POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(seasonsJSON)
-      });
-      console.log(res)
-    return res.json()
-  }
   
   static async GetStreamLinks(title){
     const res = await fetch(config.AZURE_URL+"api/TorrentLink?"+ParamsToString({
