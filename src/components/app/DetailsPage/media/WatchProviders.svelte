@@ -97,7 +97,9 @@ const updatePreferedRegion = ()=>{
 </script>
 
 <svelte:head>
+  {#if window.customElements.get('t-select') === undefined }
   <script src="t-select.js"></script>
+  {/if}
 </svelte:head>
 
 <details open={!IsMobile()}>

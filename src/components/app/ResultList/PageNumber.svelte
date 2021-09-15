@@ -1,11 +1,17 @@
 <script>
+import debounce from "lodash/debounce";
+import {fade} from "svelte/transition"
     export let page = 1;
+    const ShouldShowPageNumber = ()=>window.scrollY>150
+    var ShowPageNumber = ShouldShowPageNumber()
 </script>
+    {#if ShowPageNumber}
+        <div transition:fade>
+            {page}
+        </div>
+    {/if}
 
-<div>
-    {page}
-</div>
-
+<svelte:window on:scroll={debounce(()=>{ShowPageNumber = ShouldShowPageNumber()},1000)}/>
 <style lang="scss">
     div{
         $size:85px;

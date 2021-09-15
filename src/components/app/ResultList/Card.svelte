@@ -9,6 +9,7 @@ import {GetBestImageSize} from "../../../model/dataHelper.js"
 import {AddToList, GetSCSSVars, ParamsToString, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
 import AltMenu from './AltMenu.svelte';
+import { IsMobile } from '../../../stores/store';
 
 var poster_container
 onMount(()=>{
@@ -27,6 +28,7 @@ export let className = ""
 let loading = true;
 
 var toolbarElement;
+var altMenu;
 
 const imgLoad = e=>{
   let image = e.target
@@ -88,12 +90,34 @@ const toolbarButtonClicked = (event,callback,params) => {
   callback(...params)
 }
 
+var holdDelay;
+var holding=false;
+const touchStart = e=>{
+  holdDelay = setTimeout(_=>{
+    holding=true;
+    altMenu.touchStart(e)
+  }, 250)
+  if(!$IsMobile) clearTimeout(holdDelay)
+}
+const touchEnd = e=>{
+  clearTimeout(holdDelay)
+  if(holding){
+  }else{
+    selectCard()
+  }
+  altMenu.touchEnd(e)
+  holding=false;
+}
 </script>
-<button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}>
-  <AltMenu/>
+<button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}
+
+>
+  <AltMenu bind:this={altMenu}/>
   <div class="card-content">
     {#if Loaded}
-    <div class="poster-container" bind:this={poster_container}>
+    <div class="poster-container" bind:this={poster_container}
+    on:mouseup={touchEnd} on:touchend={touchEnd} on:touchstart={touchStart} on:mousedown={touchStart} on:contextmenu|preventDefault
+    >
       {#if Result.poster_path}
         {#if ImageUrl != undefined}
           <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />

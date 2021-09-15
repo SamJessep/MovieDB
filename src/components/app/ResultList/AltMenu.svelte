@@ -10,7 +10,7 @@
     holdAreaEl.style.background=`radial-gradient(circle at center, rgba(72, 206, 10, 0.472) ${progress}%, transparent 0%)`
   }
 
-  const touchStart = e => {
+  export const touchStart = e => {
     transitEffect(100, 1, ({clientX:x,clientY:y})=>{
       showMenu(x,y)
       progress = 0
@@ -18,9 +18,7 @@
     }, e)
   }
 
-  const touchEnd = e => {
-    e.preventDefault()
-    e.stopPropagation()
+  export const touchEnd = e => {
     if(progress<100){
       transitEffect(0,-1,()=>{
         console.log("reversed")
@@ -50,7 +48,7 @@
   }
 </script>
 
-<div class="holdArea" bind:this={holdAreaEl} on:mouseup={touchEnd} on:touchend={touchEnd} on:touchstart={touchStart} on:mousedown={touchStart}></div>
+<div class="holdArea" bind:this={holdAreaEl} ></div>
 {#if menuOpen}
 <div class="menu" bind:this={menuEl}>
   <button on:click={e=>e.preventDefault()}>Option 1</button>
@@ -58,13 +56,13 @@
   <button>Option 3</button>
 </div>
 {/if}
-<svelte:body on:contextmenu={e=>e.preventDefault()} on:click={e=>{if(menuEl){
+<svelte:body on:click={e=>{if(menuEl){
   menuOpen = menuEl.contains(e.target) || holdAreaEl.parentElement.contains(e.target)
 }}} />
-
+<svelte:options accessors={true}/>
 <style>
   div.holdArea{
-    pointer-events:painted;
+    pointer-events:none;
     position: absolute;
     background-color: transparent;
     z-index: 10;

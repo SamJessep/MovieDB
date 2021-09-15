@@ -37,7 +37,7 @@
 	})
 
 	const checkIfMobile = () => {
-		IsMobile.set(window.innerWidth<750)
+		IsMobile.set('ontouchstart' in document.documentElement && /mobi/i.test(navigator.userAgent))
 	}
 
 	onMount(()=>{
