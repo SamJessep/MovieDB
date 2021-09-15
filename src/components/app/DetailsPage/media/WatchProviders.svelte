@@ -138,8 +138,8 @@ const updatePreferedRegion = ()=>{
           {/each}
         </div>
       {/if}
-    <!-- {:catch error}
-    <ErrorSmall errorMessage={error} userMessage="hmm... something went wrong"/> -->
+    {:catch error}
+    <ErrorSmall errorMessage={error} userMessage="hmm... something went wrong"/>
     {/await}
   </div>
 </details>
