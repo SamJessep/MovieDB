@@ -10,6 +10,7 @@ import {AddToList, GetSCSSVars, ParamsToString, PostToast} from "../../../util";
 import { push } from 'svelte-spa-router';
 import AltMenu from './AltMenu.svelte';
 import { IsMobile } from '../../../stores/store';
+import AutoSizeText from "../../general/AutoSizeText.svelte"
 
 var poster_container
 onMount(()=>{
@@ -107,8 +108,9 @@ const touchStart = e=>{
 }
 const touchEnd = e=>{
   clearTimeout(holdDelay)
+  console.log(e.target)
   if(!holding && !shouldCancelTouch){
-    selectCard()
+    // selectCard()
   }
   altMenu.touchEnd(e)
   holding=false;
@@ -126,8 +128,9 @@ const touchMove = e=>{
 const IfMobile = (action)=>{
   if($IsMobile) action()
 }
+
 </script>
-<button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}
+<a class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} data-page={page} href="#/{Result.media_type}/{Result.id}"
 
 >
   {#if $IsMobile}
@@ -140,7 +143,7 @@ const IfMobile = (action)=>{
     on:touchend={e=>IfMobile(_=>touchEnd(e))} 
     on:touchstart={e=>IfMobile(_=>touchStart(e))} 
     on:mousedown={e=>IfMobile(_=>touchStart(e))} 
-    on:contextmenu={e=>IfMobile(_=>_.preventDefault())} 
+    on:contextmenu={e=>IfMobile(_=>e.preventDefault())} 
     on:touchmove={e=>IfMobile(_=>touchMove(e))}
     >
       {#if Result.poster_path}
@@ -159,7 +162,7 @@ const IfMobile = (action)=>{
       {#if $IsLoggedIn}
         <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
       {/if}
-      <p>{title}</p>
+      <AutoSizeText text={title}></AutoSizeText>
       <div class="mediaIcon">
         {#if Result.media_type}
           <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
@@ -168,7 +171,7 @@ const IfMobile = (action)=>{
     </div>
     {/if}
   </div>
-</button>
+</a>
 <style lang="scss">
 .poster-container{
   height: 0;
@@ -199,11 +202,6 @@ const IfMobile = (action)=>{
     display: block;
     display: -webkit-box;
     max-height: 2.6em;
-    line-height: 1.3em;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   & .mediaIcon{
     margin: 0.5rem;
@@ -244,6 +242,10 @@ const IfMobile = (action)=>{
   &:focus-visible{
     background-color: darken($SelectedColor, 0%);
   }
+}
+
+a.resultCard{
+  padding: 1px 6px;
 }
 
 
