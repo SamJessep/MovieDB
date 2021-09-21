@@ -22,7 +22,34 @@
 </head>
 
 <body>
-	<div class="background-filter"></div>
+	<style>
+		.loader {
+			-webkit-animation: spinAround 500ms infinite linear;
+							animation: spinAround 500ms infinite linear;
+			border: 2px solid #dbdbdb;
+			border-radius: 9999px;
+			border-right-color: transparent;
+			border-top-color: transparent;
+			content: "";
+			display: block;
+			height: 1em;
+			position: relative;
+			width: 1em;
+		}
+	</style>
+
+	<div class="background-filter">
+		<div id="loader" style="
+			position: fixed;
+			top:50%;
+			left:50%;
+			transform: translate(-50%,-50%);
+		">
+			<h2 style="font-size: 2rem; color:white; display:flex; align-items: center;">Loading 
+				<div class="loader" style="margin-left: 1rem;"></div>
+			</h2>
+		</div>
+	</div>
 </body>
 
 </html>

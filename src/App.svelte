@@ -42,6 +42,7 @@
 
 	onMount(()=>{
 		checkIfMobile()
+		document.getElementById("loader").remove()
 	})
 </script>
 
