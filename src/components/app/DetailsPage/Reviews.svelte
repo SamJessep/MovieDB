@@ -54,6 +54,6 @@ const fetchReviews = async ()=>{
   }
 
   .warning{
-    color:orange;
+    @include warning;
   }
 </style>

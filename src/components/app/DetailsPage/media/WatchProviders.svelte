@@ -109,10 +109,10 @@ const updatePreferedRegion = ()=>{
     <div class="select_container">
       <Selector selectID="watch_provider_select" fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect} disabled={!selectEnabled} placeholder={selectEnabled?"Select a region":"No providers found"}/>
     </div>
-    
+       
     {#await getProviders}
-    Getting providers
-    <div style="display:inline;">
+    <div class="loading-container">
+      Getting providers
       <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`} width="50px" height="50px"/>
     </div>
     {:then results}
@@ -147,6 +147,11 @@ const updatePreferedRegion = ()=>{
 <style lang="scss">
   .select_container{
     max-width: 500px;
+  }
+
+  .loading-container{
+    align-items: center;
+    display: flex;
   }
 
   .providertype{

@@ -141,6 +141,10 @@ option:hover {
   cursor: pointer;
 }
 
+@mixin warning{
+  color:orange;
+}
+
 h2 ,.h2{
   font-size: $HeaderFontSize;
   font-weight: 600;
@@ -213,3 +217,4 @@ kbd {
 	-webkit-border-radius: 3px;
 	text-shadow: 0 1px 0 #fff;
 }
+

@@ -206,7 +206,7 @@ function scrollClicked(){
           <div class="icon-container">
             <AnimatedIcon src="images/animatedIcons/warning.json" autoplay={true} styles={`#ID *{ stroke:${scss.FontColor};}`} id="searchError"/>
           </div>
-          <p class="info-message">
+          <p class="info-message warning">
              No results found</p>
         </div>
       {/each}
@@ -243,6 +243,10 @@ h2{
     color:$FontColor;
     margin-left: 0.5rem;
   }
+}
+
+.waring{
+  @include warning;
 }
 
 @media only screen and (max-width: $MobileWidth){

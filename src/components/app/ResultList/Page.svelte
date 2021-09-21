@@ -49,7 +49,7 @@ afterUpdate(async ()=>{
       <Card Result={result} cardId={"card-"+index} {page} className={"card-"+index}/>
     {:else}
       {#if page==1}
-        <h2>No Results :(</h2>      
+        <h2>No Results</h2>      
       {/if}
     {/each}
   {/if}
@@ -60,7 +60,7 @@ afterUpdate(async ()=>{
 
 <style lang="scss">
   h2{
-    color: $FontColor;
+    @include warning;
   }
 
   .page{
