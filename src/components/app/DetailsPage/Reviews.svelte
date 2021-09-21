@@ -32,21 +32,28 @@ const fetchReviews = async ()=>{
 <details open={!IsMobile()}>
   <summary class="h2">Reviews</summary>
   {#await  fetchReviews()}
-    Loading reviews
-    <div style="width:50px; height:50px display:inline;">
-      <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`}/>
+    <div class="loader-container">
+      Loading reviews
+      <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`} width="50px" height="50px"/>
     </div>
   {:then reviews} 
    <ul>
      {#each reviews as review (review.id)}
      <Review {review}/>
      {:else}
-     NO REVIEWS
+     <span class="warning">No reviews found</span>
      {/each}
    </ul> 
   {/await}
 </details>
 
 <style lang="scss">
+  .loader-container{
+    align-items: center;
+    display: flex;
+  }
 
+  .warning{
+    color:orange;
+  }
 </style>

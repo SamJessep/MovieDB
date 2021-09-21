@@ -59,8 +59,8 @@ function handleTouchMove(evt) {
 };
 
 onMount(()=>{
-  swipeElement.ontouchstart = handleTouchStart
-  swipeElement.ontouchmove = handleTouchMove
+  swipeElement.addEventListener('touchstart', handleTouchStart, {passive: true});
+  swipeElement.addEventListener('touchmove', handleTouchMove, {passive: true});
 })
 
 const removeDuplicateImages = ()=>{
@@ -142,7 +142,7 @@ const ExpandImage = (src, index)=>{
 </script>
 <div class="image_slider_container" class:ghost>
   {#if featureButton}
-    <button class="featureButton" on:click={()=>dispatch("featureclick")}>
+    <button class="featureButton" on:click={()=>dispatch("featureclick")} alt={featureButton.alt}>
     <SvgIcon src={featureButton.icon}/>
       {featureButton.text}
     </button>
@@ -165,7 +165,7 @@ const ExpandImage = (src, index)=>{
           alt={index == 0 ? "main image" : "image"+index} 
           class:loading={!image.loaded}
           class:active={activeImageIndex == index}
-          loading={index>5?"lazy":"eager"} 
+          loading={index>1?"lazy":"eager"} 
           on:load={imgLoad}
           on:click={()=>ExpandImage(image.src, index)}
         />
@@ -224,7 +224,8 @@ img{
 }
 
 .image_slider_container{
-  height: 100%;
+  // height: 100%;
+  height:50vmin;
   display: grid;
   grid-template-columns: 3rem 1fr 3rem;
   grid-template-rows: 1fr min-content min-content;
@@ -347,6 +348,7 @@ img{
                          ". . . . ."
                          "featureBtn featureBtn back . next"
                          "nav nav nav nav nav";
+    height: 100%;
   }
  
   .featureButton{

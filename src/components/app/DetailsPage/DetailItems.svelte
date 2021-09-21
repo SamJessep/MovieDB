@@ -61,7 +61,7 @@ setBackground()
 {#if media_type == "movie"}
 <div class="mainContainer">
 <section class="imagesSlider">
-  <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg"}} on:featureclick={()=>mediaElement.ShowTrailer()}/>
+  <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg", alt:`watch trailer for ${data.name}`}} on:featureclick={()=>mediaElement.ShowTrailer()}/>
 </section>
 <section class="quickinfo">
   <h1 class="title">{data.name}</h1>
@@ -95,7 +95,7 @@ setBackground()
 <div>
   <div class="mainContainer">
     <section class="imagesSlider">
-      <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButtonText="Watch Trailer"/>
+      <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg", alt:`watch trailer for ${data.name}`}}/>
     </section>
     <section class="quickinfo">
       <h1 class="title">{data.name}</h1>

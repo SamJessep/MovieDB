@@ -122,16 +122,26 @@ const touchMove = e=>{
   shouldCancelTouch = xDiff>movementThreshold || yDiff>movementThreshold
   if(shouldCancelTouch)altMenu.touchEnd(e)
 }
+
+const IfMobile = (action)=>{
+  if($IsMobile) action()
+}
 </script>
 <button class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} on:click={selectCard} data-page={page}
 
 >
-  <AltMenu bind:this={altMenu}/>
+  {#if $IsMobile}
+    <AltMenu bind:this={altMenu}/>
+  {/if}
   <div class="card-content">
     {#if Loaded}
     <div class="poster-container" bind:this={poster_container}
-    on:mouseup={touchEnd} on:touchend={touchEnd} on:touchstart={touchStart} on:mousedown={touchStart} 
-    on:contextmenu|preventDefault on:touchmove={touchMove}
+    on:mouseup={e=>IfMobile(_=>touchEnd(e))} 
+    on:touchend={e=>IfMobile(_=>touchEnd(e))} 
+    on:touchstart={e=>IfMobile(_=>touchStart(e))} 
+    on:mousedown={e=>IfMobile(_=>touchStart(e))} 
+    on:contextmenu={e=>IfMobile(_=>_.preventDefault())} 
+    on:touchmove={e=>IfMobile(_=>touchMove(e))}
     >
       {#if Result.poster_path}
         {#if ImageUrl != undefined}
@@ -166,6 +176,7 @@ const touchMove = e=>{
   padding-top:  513px / 342px * 100%;
   position: relative;
   width:100%;
+  user-select: none;
 }
 
 .aspect-ratio-box-inside {
@@ -209,6 +220,8 @@ const touchMove = e=>{
   align-items: center;
   padding-bottom: 0;
   padding:0;
+  height:100%;
+  padding-top: 5px;
 }
 
 .resultCard{

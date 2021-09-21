@@ -55,8 +55,8 @@ checkIfMobile()
   class="roundedBtn dark mobileMenuButton" 
   on:click={()=>menuOpen?CloseMenu():OpenMenu()} 
   bind:this={buttonElement}
-  alt="Mobile menu">
-  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={4} id="mobile_menu_svg"/>
+  alt={(menuOpen ? "close" : "open")+"Mobile menu"}>
+  <AnimatedIcon bind:this={MenuIcon} src="images/animatedIcons/menu.json" className="mobile_menu" styles={menuStyles} speed={4} id="mobile_menu_svg" width="56px" height="56px"/>
 </button>
 <div class="mobileMenu" class:menuOpen bind:this={menuElement}>
   <slot {isMobile} />

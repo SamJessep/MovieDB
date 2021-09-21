@@ -18,7 +18,7 @@
   #ID *{
     stroke: ${scss.FontColor};
   }`
-  const speed = (animationDuration/totalAnimationFrames)/((duration/1000)/totalAnimationFrames)
+  const speed = (animationDuration/totalAnimationFrames)/((/*duration*/500000/1000)/totalAnimationFrames)
   const dispatch = createEventDispatcher();
 
   var dissmissBtn;
@@ -38,7 +38,9 @@
 <div class={"toast "+theme} transition:fly="{{delay: 50, duration: 500, x:window.innerWidth/2, easing: quintOut}}">
   <span>{message}</span>
   <button on:click={removeToast}>
-    <AnimatedIcon 
+    <AnimatedIcon
+      width="48px"
+      height="48px"
       src="images/animatedIcons/arrowRightCircle.json" {styles} {speed} bind:this={dissmissBtn} {id} className={"toastDissmiss"}
       on:ready={ready} on:complete={removeToast}/>
   </button>

@@ -90,7 +90,7 @@ const OpenModal = ()=>{
     {#if isMobile}
       {#if params["approved"]}
           <MobileButton title="Loading" disabled={false}>
-            <AnimatedIcon src="images/animatedIcons/loading.json" autoplay={true} loop={true} styles={loadingstyles} id="loginLoadingIndicator"/>
+            <AnimatedIcon src="images/animatedIcons/loading.json" autoplay={true} loop={true} styles={loadingstyles} id="loginLoadingIndicator" width="32px" height="32px"/>
           </MobileButton>
         {:else}
           <MobileButton title="Login" click={Account.StartLogin}>

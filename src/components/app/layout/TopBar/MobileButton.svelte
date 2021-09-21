@@ -12,7 +12,7 @@
   transition: fill 0.5s;`
 </script>
 
-<button class="nonStandard roundedBtn" on:click={()=>{if(!disabled)click()}}>
+<button class="nonStandard roundedBtn" on:click={()=>{if(!disabled)click()}} alt={title}>
   <SvgIcon src="images/chevron-left.svg" styles={chevronStyles} />
   <h1>{title}</h1>
   <div class="icon">

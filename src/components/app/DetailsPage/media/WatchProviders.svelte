@@ -112,8 +112,8 @@ const updatePreferedRegion = ()=>{
     
     {#await getProviders}
     Getting providers
-    <div style="width:50px; height:50px display:inline;">
-      <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`}/>
+    <div style="display:inline;">
+      <AnimatedIcon src="images/animatedIcons/loading.json" id="watchProviderLoader" autoplay={true} loop={true} styles={`#ID *{stroke:${scss.FontColor};}`} width="50px" height="50px"/>
     </div>
     {:then results}
       {#if preferedRegion != $Preferences.RequestParams.region && selectEnabled}

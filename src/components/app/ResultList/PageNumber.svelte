@@ -6,7 +6,7 @@ import {fade} from "svelte/transition"
     var ShowPageNumber = ShouldShowPageNumber()
 </script>
     {#if ShowPageNumber}
-        <div transition:fade>
+        <div transition:fade="{{duration: 300}}">
             {page}
         </div>
     {/if}

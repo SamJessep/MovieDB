@@ -11,6 +11,10 @@
   export let id;
   export let autoplay = false
   export let loop = false;
+  export let width;
+  export let height;
+
+  const style = (width && height) ? `width: ${width}; height: ${height};` : undefined;
   
 	const dispatch = createEventDispatcher();
   var animation
@@ -65,7 +69,7 @@
 
 </script>
 
-<div bind:this={container} />
+<div bind:this={container} {style}/>
 <svelte:options accessors/>
 
 <style lang="scss">

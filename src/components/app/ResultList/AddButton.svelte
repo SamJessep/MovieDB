@@ -109,7 +109,7 @@ const waitForIconToLoad = async () => {
   {#if !recivedWatchlist}
     <div class="buttonPlaceHolder" />
   {/if}
-  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/heart.json" {styles} {id} on:ready={showButtonState} speed={1.25} />
+  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/heart.json" {styles} {id} on:ready={showButtonState} speed={1.25} width={compact?"100%":"32px"} height={compact?"100%":"32px"}/>
   {#if !compact}
   <span class="btn-title">
     {isOnWatchlist ? "Remove" : "Add"} to watchlist
