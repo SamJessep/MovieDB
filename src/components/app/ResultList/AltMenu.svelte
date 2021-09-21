@@ -20,9 +20,7 @@
 
   export const touchEnd = e => {
     if(progress<100){
-      transitEffect(0,-1,()=>{
-        console.log("reversed")
-      }, e)
+      transitEffect(0,-1,()=>{}, e)
     }
   }
 

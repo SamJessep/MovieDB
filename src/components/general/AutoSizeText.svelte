@@ -39,7 +39,6 @@ function getBestFontSize(targetSize){
 var fontSize
 onMount(()=>{
   fontSize = getBestFontSize(container.getBoundingClientRect().width)
-  console.log(container.getBoundingClientRect().width)
 })
 </script>
 

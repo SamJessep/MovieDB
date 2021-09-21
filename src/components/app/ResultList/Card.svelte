@@ -108,10 +108,6 @@ const touchStart = e=>{
 }
 const touchEnd = e=>{
   clearTimeout(holdDelay)
-  console.log(e.target)
-  if(!holding && !shouldCancelTouch){
-    // selectCard()
-  }
   altMenu.touchEnd(e)
   holding=false;
 }
