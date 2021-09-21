@@ -162,7 +162,9 @@ const IfMobile = (action)=>{
       {#if $IsLoggedIn}
         <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
       {/if}
-      <AutoSizeText text={title}></AutoSizeText>
+      <div class="name">
+        <AutoSizeText text={title} ></AutoSizeText>
+      </div>
     </div>
     {/if}
   </div>
@@ -191,12 +193,12 @@ const IfMobile = (action)=>{
   grid-template-columns: 16% 68% 16%;
   width: 100%;
   flex-grow:1;
-  &>p{
+  &>.name{
     grid-column: 2;
-    margin: auto;
-    display: block;
-    display: -webkit-box;
-    max-height: 2.6em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
   }
 }
 
@@ -276,6 +278,9 @@ a.resultCard{
   .toolbar{
     & .mediaIcon{
       margin: 0.25rem;
+    }
+    & .name{
+      min-height: 40px;
     }
   }
 
