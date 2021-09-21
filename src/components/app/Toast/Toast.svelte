@@ -18,7 +18,7 @@
   #ID *{
     stroke: ${scss.FontColor};
   }`
-  const speed = (animationDuration/totalAnimationFrames)/((/*duration*/500000/1000)/totalAnimationFrames)
+  const speed = (animationDuration/totalAnimationFrames)/((duration/1000)/totalAnimationFrames)
   const dispatch = createEventDispatcher();
 
   var dissmissBtn;

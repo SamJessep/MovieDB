@@ -49,7 +49,7 @@ let placeholderStyles = `
 `
 let mediaTypeStyles = `
     display:block;
-    fill:${scssVars.FontColor};
+    fill:${scssVars.AccentColor};
     transition: fill 0.3s;
     width:100%;
     height:100%;
@@ -152,18 +152,17 @@ const IfMobile = (action)=>{
             <small>No Poster</small>
         </div>
       {/if}
-      
+      {#if Result.media_type}
+        <div class="mediaIcon">
+          <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
+        </div>
+      {/if}
     </div>
     <div class='toolbar' bind:this={toolbarElement}>
       {#if $IsLoggedIn}
         <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
       {/if}
       <AutoSizeText text={title}></AutoSizeText>
-      <div class="mediaIcon">
-        {#if Result.media_type}
-          <SvgIcon src={"images/"+Result.media_type+".svg"} styles={mediaTypeStyles}/>
-        {/if}
-      </div>
     </div>
     {/if}
   </div>
@@ -199,9 +198,17 @@ const IfMobile = (action)=>{
     display: -webkit-box;
     max-height: 2.6em;
   }
-  & .mediaIcon{
-    margin: 0.5rem;
-  }
+}
+
+.mediaIcon{
+    margin: 0.25rem;
+    background-color: $TransparentBackground;
+    border-radius: 10%;
+    position: absolute;
+    top:0;
+    right: 0;
+    width: 13%;
+    padding: 2%;
 }
 
 :root{
