@@ -73,24 +73,6 @@ export function LoadResultPage(el){
   alert("Clicked "+ title)
 }
 
-
-const selectCard = e=>{
-  let shouldShowDetailsPage
-  try{
-    shouldShowDetailsPage = !toolbarElement.contains(e.target);
-  }catch{
-    shouldShowDetailsPage=true
-  }
-  if(shouldShowDetailsPage){
-    push(`/${Result.media_type}/${Result.id}`)
-  }
-}
-
-const toolbarButtonClicked = (event,callback,params) => {
-  event.detail.button.focus()
-  callback(...params)
-}
-
 var holdDelay;
 var holding=false;
 var startPoint
@@ -249,6 +231,7 @@ const cancelIfToolBarClicked = e=>{
   &:hover, &:focus{
     box-shadow: 7px 12px 4px 0px black;
     transform: matrix(1, 0, 0, 1, -2, 0);
+    transform: scale(1.025);
   }
   &:focus-visible{
     background-color: darken($SelectedColor, 0%);
