@@ -214,7 +214,8 @@ const cancelIfToolBarClicked = e=>{
     position: absolute;
     top:0;
     right: 0;
-    width: 13%;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 2%;
 }
 
@@ -282,12 +283,14 @@ a.resultCard{
   }
 
   .toolbar{
-    & .mediaIcon{
-      margin: 0.25rem;
-    }
     & .name{
       min-height: 40px;
     }
+  }
+  .mediaIcon{
+      margin: 0.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
   }
 
   .resultCard{

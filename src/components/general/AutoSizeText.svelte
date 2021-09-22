@@ -1,5 +1,7 @@
 <script>
   import {onMount} from "svelte";
+  import debounce from 'lodash/debounce'
+
   export let text
   export let maxFontSize=16
   var container
@@ -46,7 +48,7 @@ onMount(()=>{
   {text}
 </span>
 
-<svelte:window on:resize={()=>fontSize = getBestFontSize(container.getBoundingClientRect().width)}/>
+<svelte:window on:resize={ debounce(()=>fontSize = getBestFontSize(container.getBoundingClientRect().width),200)}/>
 
 <style lang="scss">
   span{
