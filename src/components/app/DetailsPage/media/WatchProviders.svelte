@@ -145,6 +145,9 @@ const updatePreferedRegion = ()=>{
 </details>
 
 <style lang="scss">
+  summary{
+    margin-right: 1rem;
+  }
   .select_container{
     max-width: 500px;
   }

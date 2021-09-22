@@ -8,7 +8,7 @@ import {Preferences, Settings} from './store.js'
 
 export const User = writable(false)
 export const IsLoggedIn = derived(User, $User => {
-  return $User && $User.session_id != null
+  return Boolean($User && $User.session_id != null)
 })
 
 export function clearLocalStorage(){

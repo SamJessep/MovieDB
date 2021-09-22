@@ -1,9 +1,10 @@
 <script>
 import AnimatedIcon from "../../general/AnimatedIcon.svelte";
-import {GetSCSSVars} from '../../../util'
+import {GetSCSSVars, PromptLogin} from '../../../util'
 import { onMount } from "svelte";
 import { IsOnWatchlist } from "../../../model/TMDbAPI";
 import { createEventDispatcher } from 'svelte';
+import { IsLoggedIn } from "../../../stores/userStore";
 
 export let id;
 export let Result;
@@ -60,6 +61,9 @@ var isOnWatchlist;
 var recivedWatchlist = false
 
 const toggleWatchlist = e =>{
+  if(!$IsLoggedIn) {
+    return PromptLogin()
+  }
   if(recivedWatchlist){
     if(isOnWatchlist){
       AddIcon.Play(10,0,true)
@@ -72,15 +76,25 @@ const toggleWatchlist = e =>{
     dispatch("clicked", {checked:isOnWatchlist, item:Result, button:button})
   }
 }
-const CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
+
+var CheckIfOnWatchList
+if($IsLoggedIn){
+  CheckIfOnWatchList = IsOnWatchlist(Result.id, Result.media_type);
+}
 
 
 const showButtonState = ()=>{
+  if(!$IsLoggedIn)return changeButtonState(false)
   CheckIfOnWatchList.then(async onWatchList=>{
     isOnWatchlist = onWatchList
     recivedWatchlist = true;
     if(!AddIcon) await waitForIconToLoad()
-    if(onWatchList){
+    changeButtonState(onWatchList)
+  })
+}
+
+const changeButtonState = ticked=>{
+  if(ticked){
       AddIcon.AddClass("on")
       AddIcon.GoTo(9)
     }else{
@@ -88,7 +102,6 @@ const showButtonState = ()=>{
       AddIcon.GoTo(0)
     }
     AddIcon.AddClass("ready")
-  })
 }
 
 const waitForIconToLoad = async () => {
@@ -109,7 +122,13 @@ const waitForIconToLoad = async () => {
   {#if !recivedWatchlist}
     <div class="buttonPlaceHolder" />
   {/if}
-  <AnimatedIcon bind:this={AddIcon} src="images/animatedIcons/heart.json" {styles} {id} on:ready={showButtonState} speed={1.25} width={compact?"100%":"32px"} height={compact?"100%":"32px"}/>
+  <AnimatedIcon 
+    bind:this={AddIcon} 
+    src="images/animatedIcons/heart.json" {styles} {id} 
+    on:ready={showButtonState} 
+    speed={1.25} 
+    width={compact?"100%":"32px"} 
+    height={compact?"100%":"32px"}/>
   {#if !compact}
   <span class="btn-title">
     {isOnWatchlist ? "Remove" : "Add"} to watchlist

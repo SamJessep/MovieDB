@@ -1,7 +1,8 @@
 import scssVars from "./styles/_export.scss"
-import {ToastsQueue} from './stores/store'
+import {ModalView, ToastsQueue} from './stores/store'
 import { get } from "svelte/store";
 import {AddToWatchlist} from './model/TMDbAPI'
+import LoginPrompt from './components/general/LoginPrompt.svelte'
 
 export function QueryToJSON(queryString){
   try{
@@ -95,4 +96,13 @@ export function isElementInViewport (el) {
     return results.map(result=>{
       return {name:(result.name || result.title || result.original_title || result.original_name), ...result}
     });
+  }
+
+  export function PromptLogin(props={}, options={}){
+    console.log(LoginPrompt)
+    ModalView.set({
+      component:LoginPrompt,
+      props:props,
+      options:{useTitle:true, singleView:true, title:"Login Required", ...options}
+    })
   }

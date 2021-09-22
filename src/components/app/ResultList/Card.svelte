@@ -125,8 +125,14 @@ const IfMobile = (action)=>{
   if($IsMobile) action()
 }
 
+const cancelIfToolBarClicked = e=>{
+  if(toolbarElement.contains(e.target)){
+    e.preventDefault()
+    return false
+  }
+}
 </script>
-<a class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} data-page={page} href="#/{Result.media_type}/{Result.id}"
+<a class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} data-page={page} href="#/{Result.media_type}/{Result.id}" on:click={cancelIfToolBarClicked}
 
 >
   {#if $IsMobile}
@@ -159,9 +165,7 @@ const IfMobile = (action)=>{
       {/if}
     </div>
     <div class='toolbar' bind:this={toolbarElement}>
-      {#if $IsLoggedIn}
-        <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
-      {/if}
+      <AddButton on:clicked={AddToList} {Result} id={"AddButton_"+Result.id}/>
       <div class="name">
         <AutoSizeText text={title} ></AutoSizeText>
       </div>
@@ -184,7 +188,7 @@ const IfMobile = (action)=>{
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  // height: 100%;
 }
 
 .toolbar{
@@ -193,6 +197,7 @@ const IfMobile = (action)=>{
   grid-template-columns: 16% 68% 16%;
   width: 100%;
   flex-grow:1;
+  cursor: initial;
   &>.name{
     grid-column: 2;
     display: flex;
@@ -251,6 +256,7 @@ const IfMobile = (action)=>{
 
 a.resultCard{
   padding: 1px 6px;
+  display:inline-block;
 }
 
 

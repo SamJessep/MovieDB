@@ -169,6 +169,7 @@ summary{
   position: relative;
   display: inline-block;
   margin-bottom: 8px;
+  white-space: nowrap;
 }
 
 summary::before{
