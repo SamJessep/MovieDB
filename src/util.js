@@ -1,8 +1,9 @@
 import scssVars from "./styles/_export.scss"
 import {ModalView, ToastsQueue} from './stores/store'
 import { get } from "svelte/store";
-import {AddToWatchlist} from './model/TMDbAPI'
+import {AddToWatchlist, GetVideos} from './model/TMDbAPI'
 import LoginPrompt from './components/general/LoginPrompt.svelte'
+import YouTubePlayer from './components/app/DetailsPage/media/YoutubePlayer.svelte'
 
 export function QueryToJSON(queryString){
   try{
@@ -105,3 +106,26 @@ export function isElementInViewport (el) {
       options:{useTitle:true, singleView:true, title:"Login Required", ...options}
     })
   }
+export async function GetTrailerInfo(id, media_type){
+    const res = await GetVideos(id, media_type);
+    const trailer = res.results.find(video=>video.type.toLowerCase()=="trailer" && video.site.toLowerCase() == "youtube")
+    return trailer
+}
+
+export function ShowTrailer({key}){
+  ModalView.set({
+    component:YouTubePlayer,
+    props:{
+      video_id: key,
+      width: "100%",
+      height: "100%",
+    },
+    options:{useTitle:false, singleView:true, height: "80%"}
+  })
+}
+
+export async function LoadTrailer(id, media_type){
+  console.log(id,media_type)
+  const trailer = await GetTrailerInfo(id, media_type);
+  ShowTrailer(trailer)
+}

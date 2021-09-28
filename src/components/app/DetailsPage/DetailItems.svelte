@@ -9,7 +9,7 @@ import ReleaseDate from "./ReleaseDate.svelte";
 import RelatedResults from "./RelatedResults.svelte";
 import Reviews from "./Reviews.svelte";
 import MediaSection from "./media/MediaSection.svelte";
-import {AddToList, GetSCSSVars} from '../../../util'
+import {AddToList, GetSCSSVars, LoadTrailer} from '../../../util'
 import Genres from "./Genres.svelte";
 import QuickInfoLabel from "./QuickInfoLabel.svelte";
 import AddButton from "../ResultList/AddButton.svelte";
@@ -18,7 +18,6 @@ import { FeaturedBackground, IsMobile } from "../../../stores/store";
 export let media_type;
 export let data;
 const scss = GetSCSSVars()
-var mediaElement;
 
 
 const getImages = async ()=>{
@@ -60,31 +59,36 @@ IsMobile.subscribe(_=>setBackground())
 setBackground()
 </script>
 
-{#if media_type == "movie"}
+
 <div class="mainContainer">
 <section class="imagesSlider">
-  <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg", alt:`watch trailer for ${data.name}`}} on:featureclick={()=>mediaElement.ShowTrailer()}/>
+  <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg", alt:`watch trailer for ${data.name}`}} on:featureclick={()=>LoadTrailer(data.id,media_type)}/>
 </section>
 <section class="quickinfo">
   <h1 class="title">{data.name}</h1>
+  {#if media_type == "movie"}
   <QuickInfoLabel label="Release date:">
     <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
   </QuickInfoLabel>
   <QuickInfoLabel label="Age Rating:">
     <Certification releaseDates={data.release_dates.results} {media_type}/>
   </QuickInfoLabel>
+  {:else if media_type == "tv"}
+  {/if}
   <QuickInfoLabel label="Genres:">
     <Genres genres={data.genres} {media_type}/>
   </QuickInfoLabel>
+  {#if media_type == "movie"}
   <QuickInfoLabel label="Run Time:">
     <p class="runtime">{data.runtime} minutes</p>
   </QuickInfoLabel>
+  {/if}
   <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.name}/>
   <p class="synopsis">{data.overview}</p>
   <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
 </section>
 <section class="media_section">
-  <MediaSection title={data.name} {media_type} id={data.id} bind:this={mediaElement} result={data}/>
+  <MediaSection title={data.name} {media_type} id={data.id} result={data}/>
 </section>
 <section class="reviews">
   <Reviews id={data.id} {media_type}/>
@@ -93,43 +97,6 @@ setBackground()
   <RelatedResults id={data.id} {media_type}/>
 </section>
 </div>
-{:else if media_type == "tv"}
-<div>
-  <div class="mainContainer">
-    <section class="imagesSlider">
-      <ImageSlider {images} useLazy={true} ghost={loadingImages} featureButton={{text:"Watch Trailer",icon:"images/play-filled.svg", alt:`watch trailer for ${data.name}`}}/>
-    </section>
-    <section class="quickinfo">
-      <h1 class="title">{data.name}</h1>
-      <!-- <QuickInfoLabel label="Release date:">
-        <ReleaseDate releaseDates={data.release_dates.results} {media_type}/>
-      </QuickInfoLabel> -->
-      <!-- <QuickInfoLabel label="Age Rating:">
-        <Certification releaseDates={data.release_dates.results} {media_type}/>
-      </QuickInfoLabel> -->
-      <QuickInfoLabel label="Genres:">
-        <Genres genres={data.genres} {media_type}/>
-      </QuickInfoLabel>
-      <!-- <QuickInfoLabel label="Run Time:">
-        <p class="runtime">{data.runtime} minutes</p>
-      </QuickInfoLabel> -->
-      <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.name}/>
-      <p class="synopsis">{data.overview}</p>
-      <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
-    </section>
-    <section class="media_section">
-      <MediaSection title={data.name} {media_type} id={data.id} result={data}/>
-    </section>
-    <section class="reviews">
-      <Reviews id={data.id} {media_type}/>
-    </section>
-    <section class="suggestions">
-      <RelatedResults id={data.id} {media_type}/>
-    </section>
-  </div>
-</div>
-{/if}
-
 
 <style lang="scss">
 

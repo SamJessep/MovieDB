@@ -30,6 +30,8 @@ let loading = true;
 
 var toolbarElement;
 var altMenu;
+var cardElement;
+var altMenuOpen = false
 
 const imgLoad = e=>{
   let image = e.target
@@ -113,12 +115,27 @@ const cancelIfToolBarClicked = e=>{
     return false
   }
 }
-</script>
-<a class={"resultCard nonStandard "+className} id={cardId} transition:fade title={title} data-page={page} href="#/{Result.media_type}/{Result.id}" on:click={cancelIfToolBarClicked}
 
+const tryCloseAltMenu = e => {
+  if(!cardElement.contains(e.target)){
+    altMenu.close()
+    console.log("trying to close"+Result.name)
+    document.body.removeEventListener("touchstart", tryCloseAltMenu)
+  }
+}
+</script>
+<a 
+  class={"resultCard nonStandard "+className} 
+  id={cardId} 
+  transition:fade 
+  title={title} 
+  data-page={page} 
+  href="#/{Result.media_type}/{Result.id}" 
+  on:click={cancelIfToolBarClicked}
+  bind:this={cardElement}
 >
   {#if $IsMobile}
-    <AltMenu bind:this={altMenu}/>
+    <AltMenu bind:this={altMenu} media_type={Result.media_type} id={Result.id} on:open={()=>document.body.addEventListener("touchstart", tryCloseAltMenu)} link={`${window.location.origin}#/${Result.media_type}/${Result.id}`} title={Result.name}/>
   {/if}
   <div class="card-content">
     {#if Loaded}
@@ -155,6 +172,7 @@ const cancelIfToolBarClicked = e=>{
     {/if}
   </div>
 </a>
+
 <style lang="scss">
 .poster-container{
   height: 0;
