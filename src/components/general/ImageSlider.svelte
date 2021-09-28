@@ -172,6 +172,10 @@ const ExpandImage = (src, index)=>{
       {:else}
         <img src={image} alt={"image"+index}/>
       {/if}
+      {:else}
+      <span style="display:flex; justify-content: center; align-items: center;">
+        No Images
+      </span>
     {/each}
     </div>
   </div>

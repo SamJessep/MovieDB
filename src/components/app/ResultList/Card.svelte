@@ -45,7 +45,7 @@ let placeholderStyles = `
     width:50%;
     height:50%;
     transition: fill 0.3s;
-    margin: auto;
+    fill:${scssVars.WarningColor};
 `
 let mediaTypeStyles = `
     display:block;
@@ -135,9 +135,9 @@ const cancelIfToolBarClicked = e=>{
           <img src={ImageUrl.initial} data-src={ImageUrl.final} alt="" class="poster aspect-ratio-box-inside" class:loading loading="lazy" on:load={imgLoad} />
         {/if}
       {:else}
-        <div class="placeholder_container poster aspect-ratio-box-inside" on:click={LoadResultPage}>
+        <div class="placeholder_container poster aspect-ratio-box-inside">
             <SvgIcon src="images/warning.svg" styles={placeholderStyles}/>
-            <small>No Poster</small>
+            <small class="warning">No Poster</small>
         </div>
       {/if}
       {#if Result.media_type}
@@ -258,6 +258,12 @@ a.resultCard{
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.warning{
+  color:$WarningColor;
 }
 
 @media only screen and (max-width: $MobileWidth){

@@ -33,7 +33,7 @@ export default class Account{
   
   static GetUserApproval(token){
     const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${encodeURIComponent(document.location.href)}`
-    window.location.replace(url)
+    window.location.assign(url)
   }
   
   static async CreateAccessToken(AuthToken){

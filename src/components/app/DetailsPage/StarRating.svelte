@@ -1,6 +1,7 @@
 <script>
 import { IsMobile, ModalView } from "../../../stores/store";
 import { IsLoggedIn } from "../../../stores/userStore";
+import { PromptLogin } from "../../../util";
 import MobileStarRating from "./MobileStarRating.svelte";
 import RatingStars from "./RatingStars.svelte";
 
@@ -16,7 +17,7 @@ let isMobile = false;
 IsMobile.subscribe(mobile=>isMobile=mobile)
 
 const showMobileRater = ()=>{
-  if(!$IsLoggedIn) return alert("You need to be logged in to rate movies")
+  if(!$IsLoggedIn) return PromptLogin()
   if(!isMobile) return
   ModalView.set({
     component:MobileStarRating,

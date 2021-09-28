@@ -83,17 +83,17 @@ if($IsLoggedIn){
 }
 
 
-const showButtonState = ()=>{
-  if(!$IsLoggedIn)return changeButtonState(false)
+const showButtonState = async ()=>{
+  if(!$IsLoggedIn) return changeButtonState(false)
   CheckIfOnWatchList.then(async onWatchList=>{
     isOnWatchlist = onWatchList
     recivedWatchlist = true;
-    if(!AddIcon) await waitForIconToLoad()
     changeButtonState(onWatchList)
   })
 }
 
-const changeButtonState = ticked=>{
+const changeButtonState = async (ticked)=>{
+  if(!AddIcon) await waitForIconToLoad()
   if(ticked){
       AddIcon.AddClass("on")
       AddIcon.GoTo(9)

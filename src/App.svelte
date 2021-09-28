@@ -49,7 +49,7 @@
 <defs id="svg_refs" />
 <AppShell>
 	<div class:modalOpen bind:this={mainDiv}>
-		<Router {routes} restoreScrollState={false}/>
+		<Router {routes} restoreScrollState={false} on:routeLoaded={()=>ModalView.set({})} />
 	</div>
 	<Toasts/>
 	<Modal/>

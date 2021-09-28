@@ -24,6 +24,9 @@ var mediaElement;
 const getImages = async ()=>{
   const initialImage = data.backdrop_path
   const res = await GetImages(data.id,media_type)
+  if(res.posters.length == 0 && res.backdrops.length == 0){
+    return[]
+  }
   const OtherImages = res.backdrops.map(bd=>bd.file_path);
   if(!initialImage) return [getLazyImage(res.posters[0].file_path)]
   return [initialImage,...OtherImages].map(path=>getLazyImage(path))

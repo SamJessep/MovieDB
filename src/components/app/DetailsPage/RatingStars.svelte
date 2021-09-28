@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from "svelte";
   import {Rate} from "../../../model/TMDbAPI"
   import {User, IsLoggedIn} from '../../../stores/userStore'
-  import { PostToast } from "../../../util";
+  import { PostToast, PromptLogin } from "../../../util";
   import SvgIcon from "../../general/SvgIcon.svelte";
   import tippy from "tippy.js"
   
@@ -52,7 +52,7 @@
   
   const rateElement = async rating=>{
     if(!ratingEnabled) return
-    if(!$IsLoggedIn) return alert("You need to be logged in to rate movies")
+    if(!$IsLoggedIn) return PromptLogin()
     try{
       const res = await Rate(id,$User.session_id,rating,media_type)
       if(res.success){

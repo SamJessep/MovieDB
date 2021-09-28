@@ -17,7 +17,8 @@ if(releaseDate == null){
 certificationCountry = releaseDate.iso_3166_1
 var certification_meaning = ""
 if(releaseDate.release_dates[0].certification != ""){
-   certification_meaning = $Certifications[media_type][certificationCountry].find(c=>c.certification === releaseDate.release_dates[0].certification).meaning
+  let cert = $Certifications[media_type][certificationCountry].find(c=>c.certification === releaseDate.release_dates[0].certification)
+  certification_meaning = cert ? cert.meaning : "?"
 }
 
 onMount(()=>tippy("[data-tippy-content]"))

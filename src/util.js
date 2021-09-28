@@ -99,7 +99,6 @@ export function isElementInViewport (el) {
   }
 
   export function PromptLogin(props={}, options={}){
-    console.log(LoginPrompt)
     ModalView.set({
       component:LoginPrompt,
       props:props,
