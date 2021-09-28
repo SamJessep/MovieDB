@@ -3,7 +3,7 @@ import {ModalView, ToastsQueue} from './stores/store'
 import { get } from "svelte/store";
 import {AddToWatchlist, GetVideos} from './model/TMDbAPI'
 import LoginPrompt from './components/general/LoginPrompt.svelte'
-import YouTubePlayer from './components/app/DetailsPage/media/YoutubePlayer.svelte'
+import YouTubePlayer from './components/app/DetailsPage/media/YouTubePlayer.svelte'
 
 export function QueryToJSON(queryString){
   try{
