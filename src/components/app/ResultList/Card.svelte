@@ -96,7 +96,7 @@ const touchEnd = e=>{
 
 const touchMove = e=>{
   const {clientX:x,clientY:y} = e.touches[0];
-  const movementThreshold = 20
+  const movementThreshold = 5
   const xDiff = Math.abs(x-startPoint.x)
   const yDiff = Math.abs(y-startPoint.y)
   shouldCancelTouch = xDiff>movementThreshold || yDiff>movementThreshold
