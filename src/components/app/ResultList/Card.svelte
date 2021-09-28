@@ -87,7 +87,7 @@ const touchStart = e=>{
   holdDelay = setTimeout(_=>{
     holding=true;
     altMenu.touchStart(e)
-  }, 250)
+  }, 1000)
   if(!$IsMobile) clearTimeout(holdDelay)
 }
 const touchEnd = e=>{
