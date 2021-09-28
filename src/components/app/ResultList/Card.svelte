@@ -240,7 +240,7 @@ const cancelIfToolBarClicked = e=>{
 
 a.resultCard{
   padding: 1px 6px;
-  display:inline-block;
+  display:table;
 }
 
 

@@ -7,48 +7,46 @@
   var container
 
 
-  function getSpan(){
-    const span = document.createElement('span')
-    span.style.position = 'fixed';
-    span.style.visibility = 'hidden';
-    document.body.appendChild(span);
-    return span;
-}
+//   function getSpan(){
+//     const span = document.createElement('span')
+//     span.style.position = 'fixed';
+//     span.style.visibility = 'hidden';
+//     document.body.appendChild(span);
+//     return span;
+// }
 
-function textWidth(str, css) {
-    const span = getSpan();
-    Object.assign(span.style, css || {});
-    span.innerText = str;
-    const w = Math.round(span.getBoundingClientRect().width);
+// function textWidth(str, css) {
+//     const span = getSpan();
+//     Object.assign(span.style, css || {});
+//     span.innerText = str;
+//     const w = Math.round(span.getBoundingClientRect().width);
     
-    span.remove();
+//     span.remove();
     
-    return w;
-}
+//     return w;
+// }
 
-function getBestFontSize(targetSize){
-  const allowedLines=2
-  const step = 0.5
+// function getBestFontSize(targetSize){
+//   const allowedLines=2
+//   const step = 0.5
 
-  let fontSizePx=maxFontSize
-  let currentSize = textWidth(text, {"fontSize":fontSizePx+"px"})
-  while(currentSize>((targetSize-15)*allowedLines)){
-    fontSizePx -= step;
-    currentSize = textWidth(text, {"fontSize":fontSizePx+"px"})
-  }
-  return fontSizePx+"px"
-}
-var fontSize
-onMount(()=>{
-  fontSize = getBestFontSize(container.getBoundingClientRect().width)
-})
+//   let fontSizePx=maxFontSize
+//   let currentSize = textWidth(text, {"fontSize":fontSizePx+"px"})
+//   while(currentSize>((targetSize-15)*allowedLines)){
+//     fontSizePx -= step;
+//     currentSize = textWidth(text, {"fontSize":fontSizePx+"px"})
+//   }
+//   return fontSizePx+"px"
+// }
+// var fontSize
+// onMount(()=>{
+//   fontSize = getBestFontSize(container.getBoundingClientRect().width)
+// })
 </script>
 
-<span bind:this={container} style="font-size:{fontSize}">
+<span bind:this={container}>
   {text}
 </span>
-
-<svelte:window on:resize={ debounce(()=>fontSize = getBestFontSize(container.getBoundingClientRect().width),200)}/>
 
 <style lang="scss">
   span{
