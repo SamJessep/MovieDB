@@ -1,6 +1,7 @@
 <script>
 import {GetReviews} from '../../../model/TMDbAPI'
-import { GetSCSSVars, IsMobile } from '../../../util';
+import { IsMobile } from '../../../stores/store';
+import { GetSCSSVars } from '../../../util';
 import AnimatedIcon from '../../general/AnimatedIcon.svelte';
 import Review from './Review.svelte';
 
@@ -29,7 +30,7 @@ const fetchReviews = async ()=>{
 
 
 </script>
-<details open={!IsMobile()}>
+<details open={!$IsMobile} data-mobile={$IsMobile}>
   <summary class="h2">Reviews</summary>
   {#await  fetchReviews()}
     <div class="loader-container">

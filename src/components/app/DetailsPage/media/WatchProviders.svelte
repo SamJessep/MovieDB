@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
 import { GetResultWatchProviders, GetWatchProviders } from "../../../../model/TMDbAPI";
-import { Countries, Preferences, Settings } from "../../../../stores/store";
+import { Countries, Preferences, Settings, IsMobile } from "../../../../stores/store";
 import { IsLoggedIn, User } from "../../../../stores/userStore";
-import { GetSCSSVars, IsMobile } from "../../../../util";
+import { GetSCSSVars } from "../../../../util";
 import Selector from "../../../form/Selector.svelte";
 import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
 import WatchProvider from "./WatchProvider.svelte";
@@ -102,7 +102,7 @@ const updatePreferedRegion = ()=>{
   {/if}
 </svelte:head>
 
-<details open={!IsMobile()}>
+<details open={$IsMobile} data-mobile={$IsMobile}>
   <summary class="h2">Watch providers</summary>
   <div class="section-container">
     {@html extra_feature_html}
