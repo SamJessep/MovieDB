@@ -1,0 +1,25 @@
+@import  "variables";
+
+:export{
+  WarningColor:$WarningColor;
+  BackgroundColor: $BackgroundColor;
+  SecondBackgroundColor: $SecondBackgroundColor;
+  FontColor: $FontColor;
+  FieldColor: $FieldColor;
+  FieldFontColor: $FieldFontColor;
+  AccentColor: $AccentColor;
+  AccentColor2: $AccentColor2;
+  SelectedColor: $SelectedColor;
+  PanelColor: $PanelColor;
+  PanelHover: $PanelHover;
+  PanelDarkHover: $PanelDarkHover;
+  VideoBackground: $VideoBackground;
+  ImgColor: $ImgColor;
+  ImgClickColor: $ImgClickColor;
+  BodyFontSize: $BodyFontSize;
+  HeaderFontSize: $HeaderFontSize;
+  BaseFontSize: $BaseFontSize;
+  StarWidth: $StarWidth;
+  MobileWidth: $MobileWidth;
+  ShaddowColor:$ShaddowColor;
+}

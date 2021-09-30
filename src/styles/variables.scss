@@ -1,0 +1,50 @@
+$BackgroundColor: #0e1015;
+$SecondBackgroundColor: #2f2f2fe6;
+$FontColor: #ffffff;
+$FieldColor: white;
+$FieldFontColor: #111111f0;
+$AccentColor: hsl(153, 100%, 42%);
+$AccentColor2: hsl(177, 100%, 42%);
+$SelectedColor: hsl(153, 100%, 22%);
+$ShaddowColor:rgba(0, 23, 15, 88%);
+$PanelColor:#3a3a3a;
+$PanelHover:rgb(44, 44, 44);
+$TransparentPanel:rgba(0, 0, 0, 0.705);
+$TransparentBackground:hsla(0, 0%, 0%, 0.329);
+$TransparentBackgroundHover:hsla(0, 0%, 0%, 0.529);
+$PanelDarkHover:rgb(19, 19, 19);
+$Dark-Shaddow:#000000c9;
+
+$VideoBackground: #000000f0;
+$ImgColor: invert(20%) sepia(0%) saturate(1891%) hue-rotate(174deg) brightness(110%) contrast(107%);
+$ImgClickColor: invert(82%) sepia(42%) saturate(6841%) hue-rotate(106deg) brightness(94%) contrast(101%);
+$AppBackground: #194119;
+$RatingGood: gold;
+$RatingUser: $AccentColor;
+$RatingBlank: rgb(131, 131, 131);
+
+$WarningColor: orange;
+
+
+$BodyFontSize: 1rem;
+$HeaderFontSize: 1.2rem;
+$TitleFontSize: 1.6rem;
+$BaseFontSize: 0.8rem;
+$PageNumberFontSize: 2.5rem;
+
+$StarWidth: 5vmin;
+$BodyFontSize-Mobile: 0.8rem;
+$HeaderFontSize-Mobile: 1rem;
+$TitleFontSize: 1.4rem;
+$BaseFontSize-Mobile: 0.6rem;
+$PageNumberFontSizeMobile: 1.6rem;
+
+$CardWidth: 21rem;
+$CardWidthMobile: 6rem;
+
+$MobileWidth: 750px;
+$LargeWidth: 1400px;
+$MediumWidth: 1000px;
+
+$ButtonBorder: solid 2px $FontColor;
+$ButtonBorderHover: solid 2px $AccentColor;

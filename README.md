@@ -1,33 +1,67 @@
 # MovieDB
 Javascript Web app using
-  - The Movie Database API: for movie data
-  - Youtube API: for movie trailers
-  - Bit of JQuery
-  - PHP web service for -https://github.com/SamJessep/PHP-Webscrap
-    - Scraping YT if the API is down
-    - Scraping torrent magnet links
+  - [The Movie Database](https://www.themoviedb.org/) API: for movie data
+  - [Just Watch](https://www.justwatch.com/) API for streaming services links
+  - [Svelte](https://svelte.dev/) framework for creating UI
+  - .NET backend API ([MoviedbAPI](https://github.com/SamJessep/MoviedbWebAPI)) for additional backend features
 
-## To do
-  - [ ] Add option to turn off darkmode
-    - [ ] Clean and segregate CSS
-    - [ ] Tidy php Torrent web scraper API
-      - [ ] Add scraping other torrent sites if i doesnt find any results
-## Future features
-  - [ ] Add user accounts
-    - [ ] Save movies to list
-    - [ ] signup to recive notification when movie is available to download
-  - [ ] Add to homescreen/PWA
-  - [ ] Make native android version/JAVA
+## Tasks
+  ### Major Features
+  - [ ] add theme select to preferences
+  - [ ] implement global color themes using css vars & local storage
+  - [ ] preference tabs - sections of preferences
+  - [ ] add tv advanced search
+  - [ ] create tv detailed view
+  - [ ] show involved people on details page e.g actors
+  - [ ] like from detail page
+  - [ ] implement download torrent via magnet link 
+  ### Minor/Possible Features
+  - [ ] Save preferences to mongo db
+  - [ ] signup to recive notification when movie is available to download
+  - [ ] Junk filter
+      - [x]  only if results with posters
+      - [ ]  only results with local releases
+      - [ ]  only results below specific age rating
+    - [ ] Color themes, Dark mode/Light mode
+
+  ## Bug Fixes
+  - [ ] Janky animation for sort element
+  - [ ] fix popup dialog
   
-### Old
-  - [X] save/cache preferences to local storage
-  - [X] Read saved preferences if saved
-  - [X] scrape YT if API down
-  - [X] Clean code into classes
-    - [X] Make App class
-    - [X] Make VideoResult class
-      - [X] Make Tv show class inherited from Video result
-      - [X] Make Movie inherited from video result
-    - [X] Clean HTML components into seperate functions
-
-
+  ### Done
+  - [x] Recreated the modals
+  - [x] Link to streaming platforms
+  - [x] Sort results 
+  - [x] Import search feature
+  - [x] Implement setting section
+  - [x] Implement account login via TMDb
+  - [x] Setup some kind or router 
+  - [x] Save a copy to local storage or cookies
+  - [x] Implement some kind of pagination for going back combination of scroll to and reloading all past pages(like news sites).
+  - [x] Redesign top bar, get new logo, add login & preferences section
+  - [x] Auto select region if not set
+  - [x] Add a user section w/ liked movies…
+  - [x] Fix search algorithm & make sure its accurate
+  - [x] Add user accounts
+  - [x] Save movies to list
+  - [x] Add advanced search to quick bar
+    - [x] choose date range
+    - [x] rating range
+    - [x] select multiple genres
+    - [x] select media type e.g. movie/tv/
+  - [x] Revamp genre search
+  - [x] Modified bottom bar for mobile
+  - [x] add basic info, title, release date, runtime
+  - [x] add related results
+  - [x] add reviews
+  - [x] Remake trailer feature. Maybe fetch from imdb to get more reliable trailers
+  - [x] watch trailer
+  - [x] watch providers
+  - [x] add genres
+  - [x] Infinate loop when changing pages sometimes
+  - [x] implement better page check algorithm
+  - [x] Some performace issues on mobile
+  - [x] implement toasts
+  - [x] Reloading a discover page resets the sort type
+  - [x] Fix image sizing, some posters are different sizes and get stretched
+  - [x] Add to fav button breaks nearly half the time

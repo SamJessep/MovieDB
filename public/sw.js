@@ -1,51 +1,26 @@
-// Use a cacheName for cache versioning
-var CACHE_STORE = 'v1:static';
-var $FILES = ['./']
-caches.delete('v1:static');
-// During the installation phase, you'll usually want to cache static assets.
-self.addEventListener('install', function(e) {
-    // Once the service worker is installed, go ahead and fetch the resources to make this work offline.
-    e.waitUntil(
-        caches.open(CACHE_STORE).then(function(cache) {
-            return cache.addAll($FILES).then(function() {
-                self.skipWaiting();
-            });
-        })
-    );
-});
+// self.__WB_DISABLE_DEV_LOGS = true
 
-self.addEventListener('activate', event => {
-   event.waitUntil(
-     caches.open(CACHE_STORE)
-       .then(cache => {
-         return cache.keys()
-           .then(cacheNames => {
-             return Promise.all(
-               cacheNames.filter(cacheName => {
-                 return $FILES.indexOf(cacheName) === -1;
-               }).map(cacheName => {
-                 return caches.delete(cacheName);
-               })
-             );
-           })
-           .then(() => {
-             return self.clients.claim();
-           });
-       })
-   );
- });
+const cacheName = 'stale-with-revalidate'
 
-// when the browser fetches a URL…
-self.addEventListener('fetch', function(event) {
-    // … either respond with the cached object or go ahead and fetch the actual URL
-    event.respondWith(
-        caches.match(event.request).then(function(response) {
-            if (response) {
-                // retrieve from cache
-                return response;
-            }
-            // fetch as normal
-            return fetch(event.request);
-        })
-    );
-});
+// import workbox 
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
+const { routing, strategies } = workbox
+
+// implements staleWhileRevalidate to all routes
+routing.registerRoute(
+  () => true,
+  new strategies.StaleWhileRevalidate({ cacheName }),
+)
+
+
+// removes all caches not named <cacheName>
+const invalidateOldCache = async () => {
+  const keys = await caches.keys()
+  const isOldCache = (key) => key !== cacheName
+  const oldKeys = keys.filter(isOldCache)
+
+  return Promise.all(oldKeys.map((key) => caches.delete(key)))
+}
+
+// runs invalidateOldCache on activation
+self.addEventListener('activate', (e) => e.waitUntil(invalidateOldCache()))
