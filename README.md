@@ -14,7 +14,7 @@ Javascript Web app using
   ### Minor/Possible Features
   - [ ] Save preferences to mongo db
   - [ ] Junk filter
-      - [x]  only if results with posters
+      - [x]  only results with posters
       - [ ]  only results with local releases
       - [ ]  only results below specific age rating
     - [ ] Color themes, Dark mode/Light mode
