@@ -54,9 +54,9 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       var username
       if($IsLoggedIn) username = $User.username
       const [direct_links,t_select_server] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type))
-      if(extra_feature_url){
-        extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" seasonsjson=${escape(JSON.stringify(seasonsJSON))}></t-select>`
-      }
+      // if(extra_feature_url){
+      //   extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" seasonsjson=${escape(JSON.stringify(seasonsJSON))}></t-select>`
+      // }
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
         {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},
