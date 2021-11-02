@@ -65,8 +65,8 @@ export function GetImageUrls(max_width){
   let final = GetBestImageSize("poster", max_width)
   let initial = GetBestImageSize("poster", 0);
   return {
-    initial:Config.BASE_IMAGE_URL + initial + "/"+Result.poster_path,
-    final:Config.BASE_IMAGE_URL + final + "/"+Result.poster_path
+    initial:Config.BASE_IMAGE_URL + initial + Result.poster_path,
+    final:Config.BASE_IMAGE_URL + final + Result.poster_path
   }
 }
 var ImageUrl
