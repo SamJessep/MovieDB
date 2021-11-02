@@ -1,7 +1,7 @@
 import {
   get
 } from 'svelte/store';
-import {Languages, Countries} from '../stores/store.js'
+import {Languages, Countries, Preferences} from '../stores/store.js'
 import Config from '../config'
 
 export function GetLanguageText(value, languages){
@@ -19,6 +19,7 @@ export function GetCountryText(value){
 }
 
 export function GetBestImageSize(imageType, width){
+  if(get(Preferences).use_HD_only) return "original"
   width=width*2
   if(width == 0) return Config.imageSizes[imageType][0]
   let selectedSize = Config.imageSizes[imageType].map(s=>{
@@ -28,7 +29,6 @@ export function GetBestImageSize(imageType, width){
       difference:Math.abs(width-size)
     }
   }).sort((a,b)=>a.difference>b.difference?1:-1)[0]
-  console.log(selectedSize.difference, width)
   return selectedSize.difference > 200 ? "original" : selectedSize.name;
 }
 

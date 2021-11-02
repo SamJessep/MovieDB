@@ -62,7 +62,7 @@ function SelectSuggestion(suggestion){
 }
 
 function KeyDown(e){
-  if(SearchArea.contains(e.target) && e.code == "ArrowUp" || e.code == "ArrowDown"){
+  if((SearchArea.contains(e.target) )&& e.code == "ArrowUp" || e.code == "ArrowDown"){
    e.preventDefault()
   }
   if(e.keyCode == 81 && e.ctrlKey){

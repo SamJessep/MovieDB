@@ -61,6 +61,12 @@ const GetRatings = async()=>{
     </label>
     <Selector bind:bindedValue={$Preferences.RequestParams["vote_average.gte"]} fetchItemsFunction={GetRatings} selectID="minRating" label="Minimum rating"/>
   </fieldset>
+  <fieldset>
+    <legend>Extra</legend>
+    <label class="checkControl">
+      Use highest definition images<input type="checkbox" bind:checked={$Preferences.use_HD_only}/>
+    </label>
+  </fieldset>
 {#if madeChanges}
   <div class="confirm-section" transition:slide>
     <small>Your changes have been saved</small>

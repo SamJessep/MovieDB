@@ -13,6 +13,7 @@ let defaultSettings = {
       language: "en",
       include_adult: false,
     },
+    use_HD_only:false,
     theme: "dark"
   },
   useAccountSettings: true

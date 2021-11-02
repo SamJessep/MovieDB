@@ -199,6 +199,11 @@ const ExpandImage = (src, index)=>{
   </div>
 </div>
 
+<svelte:window on:keydown={(e)=>{
+  const changeDir = e.code==="ArrowLeft"?-1:e.code==="ArrowRight"?1:0
+  if(changeDir!=0) (changeDir==1?imgNext:imgBack)()
+}}/>
+
 <style lang="scss">
 
 img{
