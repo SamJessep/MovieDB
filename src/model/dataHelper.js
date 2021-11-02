@@ -28,7 +28,8 @@ export function GetBestImageSize(imageType, width){
       difference:Math.abs(width-size)
     }
   }).sort((a,b)=>a.difference>b.difference?1:-1)[0]
-  return selectedSize.difference > 500 ? "original" : selectedSize.name;
+  console.log(selectedSize.difference, width)
+  return selectedSize.difference > 200 ? "original" : selectedSize.name;
 }
 
 
