@@ -25,7 +25,6 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   var selectEnabled;
   var extra_feature_html=""
   var extra_feature_scripts=""
-
   $:{
     selectEnabled = regions && regions.length>0
   }
@@ -55,7 +54,8 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
       if($IsLoggedIn) username = $User.username
       const [direct_links,t_select_server] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type))
       if(t_select_server){
-         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" seasonsjson=${escape(JSON.stringify(seasonsJSON))}></t-select>`
+         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
+         console.log(extra_feature_html)
        }
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
