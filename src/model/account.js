@@ -52,7 +52,15 @@ export default class Account{
   
   
   static async GetDetails(session_id){
-    const rawResponse = await fetch(Config.BASE_URL+"account?session_id="+session_id+"&api_key="+Config.API_KEY);
+    const rawResponse = await fetch(Config.BASE_URL+"account?session_id="+session_id+"&api_key="+Config.API_KEY,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': 'Bearer '+Config.API_KEY_V4
+      }
+    });
     const content = await rawResponse.json();
     return content
   }

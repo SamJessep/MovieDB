@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { GetResultWatchProviders, GetWatchProviders } from "../../../../model/TMDbAPI";
+import { GetResultWatchProviders, GetWatchProviders, GetTSelectUrl } from "../../../../model/TMDbAPI";
 import { Countries, Preferences, Settings, IsMobile } from "../../../../stores/store";
 import { IsLoggedIn, User } from "../../../../stores/userStore";
 import { GetSCSSVars } from "../../../../util";
@@ -32,12 +32,12 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   const scss = GetSCSSVars()
   onMount(()=>{
     loadProviders()
+    loadTSelect()
   })
 
   Preferences.subscribe(p=>{
     if(p.RequestParams.region != preferedRegion){
       preferedRegion = p.RequestParams.region
-      loadTSelect()
       loadProviders()
     }
   })
@@ -45,7 +45,9 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   const loadTSelect = async ()=>{
     var username
     if($IsLoggedIn) username = $User.username
-    if(t_select_server.includes("https")){
+    const url = await GetTSelectUrl(username)
+    console.log(url)
+    if(url.includes("https")){
          extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
          console.log(extra_feature_html)
     }

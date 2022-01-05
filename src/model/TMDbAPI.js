@@ -226,3 +226,7 @@ export async function GetVideos(id, media_type){
 export async function GetResultWatchProviders(id, media_type){
   return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/watch/providers`)
 }
+
+export async function GetTSelectUrl(username){
+  return await SendClean(Config.AZURE_URL+`api/tAccess?username=${username}`)
+}
