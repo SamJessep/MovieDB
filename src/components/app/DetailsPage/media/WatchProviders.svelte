@@ -42,6 +42,26 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
     }
   })
 
+  const btnstyles = `
+  button{
+    border-radius: 0.2rem;
+    padding: 0.3rem;
+    font-size: 1rem;
+    background-color: #3a3a3a;
+    color: #ffffff;
+    transition: border 0.2s;
+    border: solid 2px #ffffff;
+    grid-area: featureBtn;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: fit-content;
+    display: flex;
+    text-align: center;
+    align-items: center;
+  }
+  `
+
   const loadTSelect = async ()=>{
     var username
     if($IsLoggedIn) username = $User.username

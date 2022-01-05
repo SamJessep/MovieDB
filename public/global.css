@@ -17,3 +17,34 @@ select,
 a {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+
+
+[data-tbutton]{
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  font-size: 1rem;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  transition: border 0.2s;
+  border: solid 2px #ffffff;
+  grid-area: featureBtn;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  width: fit-content;
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+[data-tselect]{
+  width: 100%;
+  display: block;
+  max-width: 100%;
+  flex-grow: 1;
+  background-color: #3a3a3a;
+  padding: 0.25rem;
+  color: #ffffff;
+  border-radius: 0.2rem;
+  border: solid #2c2c2c 2px;
+}
