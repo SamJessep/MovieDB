@@ -37,9 +37,19 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   Preferences.subscribe(p=>{
     if(p.RequestParams.region != preferedRegion){
       preferedRegion = p.RequestParams.region
+      loadTSelect()
       loadProviders()
     }
   })
+
+  const loadTSelect = async ()=>{
+    var username
+    if($IsLoggedIn) username = $User.username
+    if(t_select_server.includes("https")){
+         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
+         console.log(extra_feature_html)
+    }
+  }
 
 
   const loadProviders = ()=>{
@@ -50,13 +60,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
         return {watchtypes:[], noProviders:true}
       }
       
-      var username
-      if($IsLoggedIn) username = $User.username
-      const [direct_links,t_select_server] = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, username, media_type))
-      if(t_select_server.includes("https")){
-         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
-         console.log(extra_feature_html)
-       }
+      const direct_links = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, media_type))
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
         {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},
