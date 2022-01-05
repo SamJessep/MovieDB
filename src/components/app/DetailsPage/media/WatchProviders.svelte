@@ -48,7 +48,7 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
     const url = await GetTSelectUrl(username)
     console.log(url)
     if(url.includes("https")){
-         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${t_select_server} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
+         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${url} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
          console.log(extra_feature_html)
     }
   }

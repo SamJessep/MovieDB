@@ -57,6 +57,18 @@ async function SendClean(url, params, usePreferences=true, request_method="get")
   return res;
 }
 
+async function SendBackend(relativeUrl, method="GET", params={}){
+  var res = await fetch(`${Config.AZURE_URL + relativeUrl}?${ParamsToString(params)}`,{
+    method,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+    }
+  });
+  res = await res.json()
+  return res;
+}
+
 async function Post(url, body){
   const rawResponse = await fetch(url, {
     method: 'POST',
@@ -200,33 +212,33 @@ export async function GetDetails(id,media_type,session_id){
 }
 
 export async function GetImages(id,media_type="movie"){
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/images`, [],false)
+  return SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/images`, [],false)
 }
 
 export async function Rate(id,session_id,rating,media_type="movie"){
-  return await Post(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`,{value:rating})
+  return Post(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`,{value:rating})
 }
 
 export async function DeleteRating(id,session_id,media_type="movie"){
-  return await Delete(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`)
+  return Delete(Config.BASE_URL+`${media_type}/${id}/rating?session_id=${session_id}`)
 }
 
 export async function GetRecommendedResults(id, media_type){
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/recommendations`)
+  return SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/recommendations`)
 }
 
 export async function GetReviews(id, media_type){
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/reviews`)
+  return SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/reviews`)
 }
 
 export async function GetVideos(id, media_type){
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/videos`)
+  return SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/videos`)
 }
 
 export async function GetResultWatchProviders(id, media_type){
-  return await SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/watch/providers`)
+  return SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/watch/providers`)
 }
 
 export async function GetTSelectUrl(username){
-  return await SendClean(Config.AZURE_URL+`api/tAccess?username=${username}`)
+  return SendBackend("api/tAccess", "GET",{username})
 }

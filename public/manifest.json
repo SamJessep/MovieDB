@@ -413,7 +413,8 @@
       ],
 	"theme_color": "#01d277",
 	"background_color": "#3b3f3d",
-	"display": "fullscreen",
+	"display": "standalone",
+  "display_override":["fullscreen","minimal-ui"],
 	"categories": ["entertainment", "utilities"],
 	"prefer_related_applications": false
 }
