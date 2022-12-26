@@ -27,7 +27,7 @@ const SelectTorrent = e =>{
 }
 
 const StartStream = ()=>{
-  src=config.AZURE_URL+Api.StreamPath+"?magnetLink="+selectedMagnet;
+  src=config.DOTNET_API_URL+Api.StreamPath+"?magnetLink="+selectedMagnet;
   streaming = true;
   socket = TorrentWebsocket.Connect();
   console.log("socket connected", socket)

@@ -12,12 +12,12 @@ export default class Api{
       username:username,
       mediatype:media_type,
     }
-    const res = await fetch(config.AZURE_URL+"api/WatchProviders?"+ParamsToString(params));
+    const res = await fetch(config.DOTNET_API_URL+"api/WatchProviders?"+ParamsToString(params));
     return res.json()
   }
   
   static async GetStreamLinks(title){
-    const res = await fetch(config.AZURE_URL+"api/TorrentLink?"+ParamsToString({
+    const res = await fetch(config.DOTNET_API_URL+"api/TorrentLink?"+ParamsToString({
       title:title
     }));
     return res.json()

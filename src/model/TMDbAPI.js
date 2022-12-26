@@ -58,7 +58,7 @@ async function SendClean(url, params, usePreferences=true, request_method="get")
 }
 
 async function SendBackend(relativeUrl, method="GET", params={}){
-  var res = await fetch(`${Config.AZURE_URL + relativeUrl}?${ParamsToString(params)}`,{
+  var res = await fetch(`${Config.DOTNET_API_URL + relativeUrl}?${ParamsToString(params)}`,{
     method,
     headers: {
       'Accept': 'application/json',

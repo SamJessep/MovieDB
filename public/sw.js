@@ -1,6 +1,6 @@
 // self.__WB_DISABLE_DEV_LOGS = true
 
-const cacheName = 'stale-with-revalidate'
+const cacheName = 'movie-db-cache'
 
 // import workbox 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
@@ -8,7 +8,7 @@ const { routing, strategies } = workbox
 
 // implements staleWhileRevalidate to all routes
 routing.registerRoute(
-  () => true,
+  ()=>true,
   new strategies.StaleWhileRevalidate({ cacheName }),
 )
 
