@@ -14,6 +14,7 @@ import Genres from "./Genres.svelte";
 import QuickInfoLabel from "./QuickInfoLabel.svelte";
 import AddButton from "../ResultList/AddButton.svelte";
 import { FeaturedBackground, IsMobile } from "../../../stores/store";
+  import Cast from "./Cast.svelte";
 
 export let media_type;
 export let data;
@@ -84,6 +85,7 @@ setBackground()
   </QuickInfoLabel>
   {/if}
   <StarRating rating={data.vote_average} ratingCount={data.vote_count} userRating={data.account_states ? data.account_states.rated.value : 0} {media_type} id={data.id} title={data.name}/>
+  <Cast id={data.id} {media_type}/>
   <p class="synopsis">{data.overview}</p>
   <AddButton on:clicked={AddToList} Result={data} id={"AddButton_"+data.id} compact={false}/>
 </section>

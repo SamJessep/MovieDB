@@ -242,3 +242,7 @@ export async function GetResultWatchProviders(id, media_type){
 export async function GetTSelectUrl(username){
   return SendBackend("api/tAccess", "GET",{username})
 }
+
+export async function GetCast(id, media_type){
+  return SendClean(Config.BASE_URL+`${media_type.toLocaleLowerCase()}/${id}/credits`)
+}
