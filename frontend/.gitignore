@@ -1,7 +1,6 @@
 /node_modules/
 /public/build/
-/src/config.js
 .DS_Store
 **/workbox*
 **/sw*
-src/config.js
+src/config.private.js

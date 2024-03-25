@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  backend:
+    build: backend
+    ports:
+      - "80:180"
+      - "443:1443"
+
+  frontend:
+    build: frontend
+    ports:
+      - "80:280"
+      - "443:2443"
