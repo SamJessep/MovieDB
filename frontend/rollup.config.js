@@ -45,6 +45,7 @@ export default {
 	plugins: [
 		replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.BACKEND_API_URL': JSON.stringify(process.env.BACKEND_API_URL || 'https://localhost:5001'),
     }),
 		svelte({
 			preprocess: sveltePreprocess(preprocessOptions),

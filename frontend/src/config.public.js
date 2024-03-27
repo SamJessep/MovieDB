@@ -2,6 +2,7 @@ export default{
   "BASE_URL":"https://api.themoviedb.org/3/",
   "BASE_URL_V4":"https://api.themoviedb.org/4/",
   "BASE_IMAGE_URL":"https://image.tmdb.org/t/p/",
+  "DOTNET_API_URL": process.env.BACKEND_API_URL,
   "imageSizes":{
      "backdrop":[
         "w780",
