@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { GetResultWatchProviders, GetWatchProviders, GetTSelectUrl } from "../../../../model/TMDbAPI";
+import { GetResultWatchProviders } from "../../../../model/TMDbAPI";
 import { Countries, Preferences, Settings, IsMobile } from "../../../../stores/store";
 import { IsLoggedIn, User } from "../../../../stores/userStore";
 import { GetSCSSVars } from "../../../../util";
@@ -9,7 +9,7 @@ import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
 import WatchProvider from "./WatchProvider.svelte";
 import Api from "../../../../model/Api";
 import ErrorSmall from "../../../general/ErrorSmall.svelte";
-import TorrentSelect from "../TorrentSelect.svelte";
+import TorrentSelect from "./TorrentSelect.svelte";
 import Config from "../../../../config.js";
 
   export let title;
@@ -20,14 +20,10 @@ import Config from "../../../../config.js";
 
   var getProviders = {watchtypes:[]}
   var preferedRegion = $Preferences.RequestParams.region
-  var selectedRegion
-  const defaultRegion = "US"
   var regions
   var regionSelect;
   var selectEnabled;
-  var extra_feature_html=""
-  var extra_feature_scripts=""
-  $:{
+ $:{
     selectEnabled = regions && regions.length>0
   }
 
@@ -43,25 +39,6 @@ import Config from "../../../../config.js";
     }
   })
 
-  const btnstyles = `
-  button{
-    border-radius: 0.2rem;
-    padding: 0.3rem;
-    font-size: 1rem;
-    background-color: #3a3a3a;
-    color: #ffffff;
-    transition: border 0.2s;
-    border: solid 2px #ffffff;
-    grid-area: featureBtn;
-    margin-top: 0.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    width: fit-content;
-    display: flex;
-    text-align: center;
-    align-items: center;
-  }
-  `
 
 
   const loadProviders = ()=>{
@@ -98,7 +75,7 @@ import Config from "../../../../config.js";
   }
 
   const getRegions = async()=>{
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
         (function waitForRegions(){
             if (regions != undefined) return resolve($Countries.filter(c=>regions.includes(c.value)));
             setTimeout(waitForRegions, 30);

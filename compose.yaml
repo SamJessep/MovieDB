@@ -5,7 +5,7 @@ services:
       - "1002:80"
       - "2002:443"
     environment:
-      - BACKEND_API_URL=http://192.168.4.101:1012
+      - BACKEND_API_URL=http://192.168.4.101:1012/
 
   backend:
     build: backend

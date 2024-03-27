@@ -7,7 +7,7 @@
 	}
 
 	export let title = "";
-	export let server = "https://localhost:5001/api/dl/links";
+	export let server = "";
 	export let options = []
 	export let seasons = []
 	export let seasonsjson;
