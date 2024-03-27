@@ -44,6 +44,7 @@ export default {
 	},
 	plugins: [
 		replace({
+			preventAssignment: false,
       'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env.BACKEND_API_URL': JSON.stringify(process.env.BACKEND_API_URL || 'https://localhost:5001'),
     }),

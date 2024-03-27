@@ -119,7 +119,6 @@ const cancelIfToolBarClicked = e=>{
 const tryCloseAltMenu = e => {
   if(!cardElement.contains(e.target)){
     altMenu.close()
-    console.log("trying to close"+Result.name)
     document.body.removeEventListener("touchstart", tryCloseAltMenu)
   }
 }
@@ -177,7 +176,7 @@ const tryCloseAltMenu = e => {
 .poster-container{
   height: 0;
   overflow: hidden;
-  padding-top:  513px / 342px * 100%;
+  padding-top:  calc(513px / 342px) * 100%;
   position: relative;
   width:100%;
   user-select: none;

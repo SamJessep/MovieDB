@@ -125,7 +125,6 @@ export function ShowTrailer({key}){
 }
 
 export async function LoadTrailer(id, media_type){
-  console.log(id,media_type)
   const trailer = await GetTrailerInfo(id, media_type);
   ShowTrailer(trailer)
 }

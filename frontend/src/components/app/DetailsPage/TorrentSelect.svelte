@@ -1,101 +1,63 @@
-<script lang="ts">
-import { onMount, tick } from "svelte";
-
-
-	enum MediaType{
-		MOVIE="MOVIE",
-		TV="TV"
-	}
-
-	type Option = {
-		value: string|Number,
-		text: string
-	}
-
-	type Episode = {
-		Name:string,
-		Number:Number
-	}
-
-	type Season = {
-		Number: Number,
-		Name?: string,
-		Episodes: Episode[]
-	}
-
-	type Torrent = {
-		text:string,
-		value:string
-	}
-
-	type Selected = {
-		Season:number,
-		Episode:number,
-		Torrent:string
-	}
-
-
-	export let title:string = "Harry Potter";
-	export let server:string = "https://localhost:5001/api/dl/links";
-	export let options : Option[] = [
-		{value:123, text:"321"}
-	]
+<script lang="js">
+	import { onMount, tick } from "svelte";
 	
-	export let seasons: Season[] = [
-		{Number: 1, Name: "Season 1", Episodes: [
-			{Name:"episode 1", Number:1},
-			{Name:"episode 2", Number:2},
-			{Name:"episode 3", Number:3}
-		]},
-		{Number: 2, Name: "Season 2", Episodes: [
-			{Name:"episode 1", Number:1}
-		]},
-		{Number: 3, Name: "Season 3", Episodes: [
-			
-		]}
-	]
+	const MediaType = {
+		MOVIE:"MOVIE",
+		TV:"TV"
+	}
 
-	export let seasonsjson:string
+	export let title = "";
+	export let server = "https://localhost:5001/api/dl/links";
+	export let options = []
+	export let seasons = []
+	export let seasonsjson;
 	if(seasonsjson) {
 		const decodedJSON = unescape(seasonsjson)
 		seasons = JSON.parse(decodedJSON)
 	}
 
-	export let mediatype:MediaType = MediaType.MOVIE;
+	export let mediatype = MediaType.MOVIE;
 
-	let selected:Selected = {
+	let selected = {
 		Season:null,
 		Episode:null,
 		Torrent:null
 	}
 	let shouldLoad=false
-	let torrentPromise:Promise<Torrent[]>
+	let torrentPromise
 
 	const download = () => window.location.href = selected.Torrent
 
-	const fetchTorrentLinks = async ():Promise<Torrent[]> =>{
+	const fetchTorrentLinks = async () =>{
 		const query = mediatype == MediaType.TV ? title + " S0"+ selected.Season +" E0" + selected.Episode : title;
 		const res = await fetch(server+"?query="+encodeURI(query))
 		const json = await res.json()
 		return json
 	}
 
-	const LoadTorrentLinks = () =>{ 
+	const loadTorrentLinks = () =>{ 
 		torrentPromise = fetchTorrentLinks()
 		shouldLoad=true
+	}
+
+	const seasonChange = () => {
+		if(selected.Episode !== null) loadTorrentLinks()
 	}
 	
 	
 	onMount(async () => {
 		await tick();
-		if(mediatype == MediaType.MOVIE) LoadTorrentLinks()
+		if(mediatype == MediaType.MOVIE) loadTorrentLinks()
   });
 </script>
 <div class='extra-feature'>
 	{#if mediatype == MediaType.TV}
 	<label>
 		Season
-		<select data-tselect name="season" bind:value={selected.Season} placeholder="Season" on:change={()=>{console.log(selected, seasons, seasons.find(s=>s.Number == selected.Season));if(selected.Episode !== null) LoadTorrentLinks()}}>
+		<select name="season" bind:value={selected.Season} placeholder="Season" on:change={seasonChange}>
+			{#if seasons.length > 0}
+				<option disabled selected>Select a season</option>
+			{/if}
 			{#each seasons as season}
 				<option value={season.Number}>{season.Number}: {season.Name}</option>
 			{:else}
@@ -107,7 +69,7 @@ import { onMount, tick } from "svelte";
 		{#if selected.Season !== null}
 		<label>
 			Episode
-			<select data-tselect name="episode" bind:value={selected.Episode} placeholder="Episode" on:change={LoadTorrentLinks}>
+			<select name="episode" bind:value={selected.Episode} placeholder="Episode" on:change={loadTorrentLinks}>
 				{#each seasons.find(s=>s.Number == selected.Season).Episodes as episode}
 					<option value={episode.Number}>{episode.Number}: {episode.Name}</option>
 				{:else}
@@ -126,7 +88,7 @@ import { onMount, tick } from "svelte";
 		{:then torrents}
 			<label>
 				Torrent
-				<select data-tselect name="torrent" bind:value={selected.Torrent} placeholder="Torrent">
+				<select name="torrent" bind:value={selected.Torrent} placeholder="Torrent">
 					{#each torrents as option}
 						<option value={option.value}>{option.text}</option>
 					{:else}
@@ -146,17 +108,14 @@ import { onMount, tick } from "svelte";
 	</button>
 </div>
 
-<svelte:options tag={"t-select"} immutable={false}/>
-
-
-<style>
+<style lang="css">
 	label{
-		display: block;
+		display: grid;
+		grid-template-columns: 25% auto;
 	}
+
 	select{
-		max-width: 100%;
-		display: block;
-    max-width: 100%;
+	  max-width: 100%;
     flex-grow: 1;
     background-color: #3a3a3a;
     padding: 0.25rem;

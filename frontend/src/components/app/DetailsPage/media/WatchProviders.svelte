@@ -9,6 +9,8 @@ import AnimatedIcon from "../../../general/AnimatedIcon.svelte";
 import WatchProvider from "./WatchProvider.svelte";
 import Api from "../../../../model/Api";
 import ErrorSmall from "../../../general/ErrorSmall.svelte";
+import TorrentSelect from "../TorrentSelect.svelte";
+import Config from "../../../../config.js";
 
   export let title;
   export let id;
@@ -32,7 +34,6 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
   const scss = GetSCSSVars()
   onMount(()=>{
     loadProviders()
-    loadTSelect()
   })
 
   Preferences.subscribe(p=>{
@@ -61,17 +62,6 @@ import ErrorSmall from "../../../general/ErrorSmall.svelte";
     align-items: center;
   }
   `
-
-  const loadTSelect = async ()=>{
-    var username
-    if($IsLoggedIn) username = $User.username
-    const url = await GetTSelectUrl(username)
-    console.log(url)
-    if(url.includes("https")){
-         extra_feature_html=`<t-select mediatype="${media_type.toUpperCase()}" server=${url} title="${title}" ${seasonsJSON ? "seasonsjson="+escape(JSON.stringify(seasonsJSON)):""}></t-select>`
-         console.log(extra_feature_html)
-    }
-  }
 
 
   const loadProviders = ()=>{
@@ -122,16 +112,12 @@ const updatePreferedRegion = ()=>{
 }
 </script>
 
-<svelte:head>
-  {#if window.customElements.get('t-select') === undefined }
-  <script src="t-select.js"></script>
-  {/if}
-</svelte:head>
-
 <details open={!$IsMobile} data-mobile={$IsMobile}>
   <summary class="h2">Watch providers</summary>
   <div class="section-container">
-    {@html extra_feature_html}
+    {#if $IsLoggedIn}
+      <TorrentSelect mediatype={media_type.toUpperCase()} server={Config.DOTNET_API_URL} title={title} seasonsjson={escape(JSON.stringify(seasonsJSON))}></TorrentSelect>
+    {/if}
     <div class="select_container">
       <Selector selectID="watch_provider_select" fetchItemsFunction={getRegions} label="Region" bindedValue={preferedRegion} on:select={changeRegion} bind:this={regionSelect} disabled={!selectEnabled} placeholder={selectEnabled?"Select a region":"No providers found"}/>
     </div>
