@@ -2,13 +2,13 @@ services:
   frontend:
     build: frontend
     ports:
-      - "80:1002"
-      - "443:2002"
+      - "1002:80"
+      - "2002:443"
     environment:
       - BACKEND_API_URL=http://192.168.4.101:1012
 
   backend:
     build: backend
     ports:
-      - "80:1012"
-      - "443:2012"
+      - "1012:80"
+      - "2012:443"
