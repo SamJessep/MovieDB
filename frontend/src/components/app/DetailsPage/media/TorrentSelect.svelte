@@ -36,7 +36,9 @@
 	}
 
 	const loadTorrentLinks = () =>{ 
-		torrentPromise = fetchTorrentLinks()
+		torrentPromise = fetchTorrentLinks().then(links=>{
+			if(links.length > 0) selected.Torrent = links[0].value
+		})
 		shouldLoad=true
 	}
 
@@ -84,7 +86,7 @@
 
 	{#if shouldLoad}
 		{#await torrentPromise}
-			Fetching Links... :)
+			Fetching Links...
 		{:then torrents}
 			<label>
 				Torrent
@@ -109,14 +111,9 @@
 </div>
 
 <style lang="css">
-	label{
-		display: grid;
-		grid-template-columns: 25% auto;
-	}
 
 	select{
 	  max-width: 100%;
-    flex-grow: 1;
     background-color: #3a3a3a;
     padding: 0.25rem;
     color: #ffffff;
