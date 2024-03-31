@@ -5,7 +5,7 @@ export default class Api{
 
   static StreamPath = "api/TorrentStream";
 
-  static async GetWatchProviderDirectLinks(title, tmdb_link, username, media_type){
+  static async GetWatchProviderDirectLinks(title, tmdb_link, media_type, username){
     let params = {
       title:title,
       url: tmdb_link,

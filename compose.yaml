@@ -1,14 +1,18 @@
 services:
   frontend:
-    build: frontend
+    build: 
+      context: frontend
+      args:
+        - BACKEND_API_URL=http://192.168.4.101:1012/
     ports:
       - "1002:80"
       - "2002:443"
-    environment:
-      - BACKEND_API_URL=http://192.168.4.101:1012/
 
   backend:
     build: backend
+    environment:
+      - USE_HTTPS=NO
+      - MOVIE_DB_FRONTEND_URL=http://192.168.4.101:1002
     ports:
       - "1012:80"
       - "2012:443"

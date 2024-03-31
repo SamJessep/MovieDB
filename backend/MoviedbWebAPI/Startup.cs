@@ -21,9 +21,16 @@ namespace MoviedbWebAPI
 {
     public class Startup
     {
+        private string frontend_url;
+        private bool useHttps = true;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            frontend_url = Environment.GetEnvironmentVariable("MOVIE_DB_FRONTEND_URL");
+            if(frontend_url == null) frontend_url = "http://localhost:5000";
+
+            string httpsFlag = Environment.GetEnvironmentVariable("USE_HTTPS");
+            useHttps = httpsFlag == null || httpsFlag.ToUpper() != "NO";
         }
 
         public IConfiguration Configuration { get; }
@@ -39,27 +46,12 @@ namespace MoviedbWebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("cors-allow",
-                    builder =>
-                    {
-                        builder.WithOrigins("https://mdb-sv.netlify.app")
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                        builder.WithOrigins("https://moviedb-77.netlify.app")
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                        builder.WithOrigins("http://192.168.1.80:5000")
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                        builder.WithOrigins("http://localhost:5000")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                    });
+                    builder => builder.WithOrigins(frontend_url)
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod()
+                );
 
-                    options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins("https://moviedb-77.netlify.app");
-                    });
+                options.AddDefaultPolicy(builder => builder.WithOrigins(frontend_url));
             });
         }
 
@@ -73,7 +65,7 @@ namespace MoviedbWebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MoviedbWebAPI v1"));
             }
 
-            app.UseHttpsRedirection();
+            if(useHttps) app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
