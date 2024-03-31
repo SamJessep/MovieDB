@@ -30,7 +30,7 @@
 
 	const fetchTorrentLinks = async () =>{
 		const query = mediatype == MediaType.TV ? title + " S0"+ selected.Season +" E0" + selected.Episode : title;
-		const res = await fetch(server+"?query="+encodeURI(query))
+		const res = await fetch(server+"api/dl/links?query="+encodeURI(query))
 		const json = await res.json()
 		return json
 	}

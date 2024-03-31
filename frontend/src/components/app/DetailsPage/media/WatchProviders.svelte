@@ -50,9 +50,7 @@ import Config from "../../../../config.js";
       }
       
       let direct_links = []
-      if($IsLoggedIn){
-        direct_links = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, media_type, $User.username))
-      } 
+      direct_links = Object.values(await Api.GetWatchProviderDirectLinks(title, res.results[preferedRegion].link, media_type, $User.username||""))
       const results = [
         {type:"flatrate",  providers:addDirectLinks(direct_links,res.results[preferedRegion].flatrate) ?? []},
         {type:"rent",  providers:addDirectLinks(direct_links,res.results[preferedRegion].rent) ?? []},

@@ -19,7 +19,8 @@ namespace MoviedbWebAPI.Controllers
         private readonly ILogger<WatchProvidersController> _logger;
         private List<string> torrent_whitelist = new List<string>()
         {
-            "srj0070"
+            "srj0070",
+            ""
         };
         public WatchProvidersController(ILogger<WatchProvidersController> logger)
         {
