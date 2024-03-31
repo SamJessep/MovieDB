@@ -29,7 +29,7 @@
 <header bind:this={header}>
 	<div class="brand">
 		<a href="/" class="navbar-item">
-			<img id="logo" src="images/MDB_logo.png" alt="App logo & Home Button"/>
+			<img id="logo" src="images/MDB_Logo.png" alt="App logo & Home Button"/>
 		</a>
 	</div>
 	<SearchBar bind:this={searchBar}/>
