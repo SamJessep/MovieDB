@@ -36,8 +36,9 @@
 	}
 
 	const loadTorrentLinks = () =>{ 
-		torrentPromise = fetchTorrentLinks().then(links=>{
-			if(links.length > 0) selected.Torrent = links[0].value
+		torrentPromise = fetchTorrentLinks()
+		torrentPromise.then(t=>{
+			if(t.length>0) selected.torrent = t[0].value
 		})
 		shouldLoad=true
 	}
